@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.bitschupfa.sw16.yaq.Activities.Join"
+    tools:showIn="@layout/activity_join"
+    android:background="#cae2ff">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:id="@+id/player1_layer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        style="@style/table_entry_gray">
+
+                        <ImageView
+                            android:id="@+id/player1_img"
+                            android:layout_width="30dp"
+                            android:layout_height="20dp"
+                            android:src="@mipmap/icon_player"
+                            android:paddingLeft="10dp"
+                            android:layout_gravity="center"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:id="@+id/player1_name"
+                            android:text="@string/player1"
+                            android:layout_width="wrap_content"
+                            style="@style/table_text_gray"
+                            android:paddingLeft="10dp"
+                            android:textIsSelectable="false"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/player2_layer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        style="@style/table_entry_gray">
+
+                        <ImageView
+                            android:id="@+id/player2_img"
+                            android:layout_width="30dp"
+                            android:layout_height="20dp"
+                            android:src="@mipmap/icon_player"
+                            android:paddingLeft="10dp"
+                            android:layout_gravity="center"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:id="@+id/player2_name"
+                            android:text="@string/player2"
+                            android:layout_width="wrap_content"
+                            android:paddingLeft="10dp"
+                            android:textIsSelectable="false"
+                            android:layout_height="wrap_content"
+                            style="@style/table_text_gray" />
+
+                    </LinearLayout>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:id="@+id/player3_layer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        style="@style/table_entry_gray">
+
+                        <ImageView
+                            android:id="@+id/player3_img"
+                            android:layout_width="30dp"
+                            android:layout_height="20dp"
+                            android:src="@mipmap/icon_player"
+                            android:paddingLeft="10dp"
+                            android:layout_gravity="center"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:id="@+id/player3_name"
+                            android:text="@string/player3"
+                            android:layout_width="wrap_content"
+                            style="@style/table_text_gray"
+                            android:paddingLeft="10dp"
+                            android:textIsSelectable="false"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/player4_layer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        style="@style/table_entry_gray">
+
+                        <ImageView
+                            android:id="@+id/player4_img"
+                            android:layout_width="30dp"
+                            android:layout_height="20dp"
+                            android:src="@mipmap/icon_player"
+                            android:paddingLeft="10dp"
+                            android:layout_gravity="center"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:id="@+id/player4_name"
+                            android:text="@string/player4"
+                            android:layout_width="wrap_content"
+                            style="@style/table_text_gray"
+                            android:paddingLeft="10dp"
+                            android:textIsSelectable="false"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:id="@+id/player5_layer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        style="@style/table_entry_gray">
+
+                        <ImageView
+                            android:id="@+id/player5_img"
+                            android:layout_width="30dp"
+                            android:layout_height="20dp"
+                            android:src="@mipmap/icon_player"
+                            android:paddingLeft="10dp"
+                            android:layout_gravity="center"
+                            android:visibility="invisible" /> />
+
+                        <TextView
+                            android:id="@+id/player5_name"
+                            android:text="@string/player5"
+                            android:layout_width="wrap_content"
+                            style="@style/table_text_gray"
+                            android:paddingLeft="10dp"
+                            android:textIsSelectable="false"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/player6_layer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        style="@style/table_entry_gray">
+
+                        <ImageView
+                            android:id="@+id/player6_img"
+                            android:layout_width="30dp"
+                            android:layout_height="20dp"
+                            android:src="@mipmap/icon_player"
+                            android:paddingLeft="10dp"
+                            android:layout_gravity="center"
+                            android:visibility="invisible" /> />
+
+                        <TextView
+                            android:id="@+id/player6_name"
+                            android:text="@string/player6"
+                            android:layout_width="wrap_content"
+                            style="@style/table_text_gray"
+                            android:paddingLeft="10dp"
+                            android:textIsSelectable="false"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:id="@+id/player7_layer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        style="@style/table_entry_gray">
+
+                        <ImageView
+                            android:id="@+id/player7_img"
+                            android:layout_width="30dp"
+                            android:layout_height="20dp"
+                            android:src="@mipmap/icon_player"
+                            android:paddingLeft="10dp"
+                            android:layout_gravity="center"
+                            android:visibility="invisible" /> />
+
+                        <TextView
+                            android:id="@+id/player7_name"
+                            android:text="@string/player7"
+                            android:layout_width="wrap_content"
+                            style="@style/table_text_gray"
+                            android:paddingLeft="10dp"
+                            android:textIsSelectable="false"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/player8_layer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        style="@style/table_entry_gray">
+
+                        <ImageView
+                            android:id="@+id/player8_img"
+                            android:layout_width="30dp"
+                            android:layout_height="20dp"
+                            android:src="@mipmap/icon_player"
+                            android:paddingLeft="10dp"
+                            android:layout_gravity="center"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:id="@+id/player8_name"
+                            android:text="@string/player8"
+                            android:layout_width="wrap_content"
+                            style="@style/table_text_gray"
+                            android:paddingLeft="10dp"
+                            android:textIsSelectable="false"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+                </TableRow>
+
+            </TableLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Waiting Animation"
+                android:id="@+id/textView" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
+
