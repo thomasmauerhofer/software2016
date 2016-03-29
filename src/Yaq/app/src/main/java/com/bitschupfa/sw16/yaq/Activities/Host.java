@@ -35,7 +35,7 @@ public class Host extends AppCompatActivity {
     }
 
     public void startButtonClicked(View view) {
-        Intent intent = new Intent(Host.this, QuesionsAsked.class);
+        Intent intent = new Intent(Host.this, QuestionsAsked.class);
         startActivity(intent);
         finish();
     }

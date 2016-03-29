@@ -3,9 +3,7 @@ package com.bitschupfa.sw16.yaq.ui;
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.bitschupfa.sw16.yaq.Activities.Host;
-import com.bitschupfa.sw16.yaq.Activities.Join;
-import com.bitschupfa.sw16.yaq.Activities.MainMenue;
-import com.bitschupfa.sw16.yaq.Activities.QuesionsAsked;
+import com.bitschupfa.sw16.yaq.Activities.QuestionsAsked;
 import com.bitschupfa.sw16.yaq.R;
 import com.robotium.solo.Solo;
 
@@ -33,6 +31,6 @@ public class HostTests extends ActivityInstrumentationTestCase2<Host> {
 
     public void testHost() {
         solo.clickOnButton(getActivity().getResources().getString(R.string.start_game));
-        assertTrue("Wrong Activity!", solo.waitForActivity(QuesionsAsked.class));
+        assertTrue("Wrong Activity!", solo.waitForActivity(QuestionsAsked.class));
     }
 }

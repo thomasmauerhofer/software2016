@@ -2,19 +2,19 @@ package com.bitschupfa.sw16.yaq.ui;
 
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.bitschupfa.sw16.yaq.Activities.QuesionsAsked;
+import com.bitschupfa.sw16.yaq.Activities.QuestionsAsked;
 import com.bitschupfa.sw16.yaq.Activities.Statistic;
 import com.robotium.solo.Solo;
 
 /**
  * Created by thomas on 22.03.16.
  */
-public class QuestionsAskedTests extends ActivityInstrumentationTestCase2<QuesionsAsked> {
+public class QuestionsAskedTests extends ActivityInstrumentationTestCase2<QuestionsAsked> {
 
     private Solo solo;
 
     public QuestionsAskedTests() {
-        super(QuesionsAsked.class);
+        super(QuestionsAsked.class);
     }
 
     @Override

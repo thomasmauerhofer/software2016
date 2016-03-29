@@ -9,10 +9,10 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.bitschupfa.sw16.yaq.Activities.QuesionsAsked"
-    tools:showIn="@layout/activity_quesions_asked"
-    android:background="#cae2ff">
-
+    tools:context=".Activities.QuestionsAsked"
+    tools:showIn="@layout/activity_questions_asked"
+    android:background="#cae2ff"
+    android:id="@+id/questionAskedView">
 
     <LinearLayout
         android:orientation="vertical"
