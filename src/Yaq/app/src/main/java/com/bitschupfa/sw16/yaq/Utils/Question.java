@@ -8,12 +8,12 @@ import java.util.ArrayList;
 public class Question {
     private String question;
     private String correctAnswer;
-    private ArrayList<String> wrongAnswers;
+    private ArrayList<String> allAnswers;
 
     public Question(){
         this.question = "";
         this.correctAnswer = "";
-        this.wrongAnswers = new ArrayList<String>();
+        this.allAnswers = new ArrayList<String>();
     }
 
     public void setQuestion(String _question){
@@ -32,11 +32,11 @@ public class Question {
         return this.correctAnswer;
     }
 
-    public void setWrongAnswers(ArrayList<String> _wrongAnswers){
-        this.wrongAnswers = _wrongAnswers;
+    public void setAllAnswers(ArrayList<String> _allAnswers){
+        this.allAnswers = _allAnswers;
     }
 
-    public ArrayList<String> getWrongAnswers(){
-        return this.wrongAnswers;
+    public ArrayList<String> getAllAnswers(){
+        return this.allAnswers;
     }
 }
