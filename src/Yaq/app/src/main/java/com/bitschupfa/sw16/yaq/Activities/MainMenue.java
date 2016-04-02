@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.bitschupfa.sw16.yaq.Database.QuestionQuerier;
 import com.bitschupfa.sw16.yaq.R;
 
 public class MainMenue extends AppCompatActivity {
