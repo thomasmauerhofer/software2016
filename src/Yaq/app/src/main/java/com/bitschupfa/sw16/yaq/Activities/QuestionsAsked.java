@@ -1,20 +1,15 @@
 package com.bitschupfa.sw16.yaq.Activities;
 
-import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -70,46 +65,47 @@ public class QuestionsAsked extends AppCompatActivity {
         answer3Button = (Button) findViewById(R.id.answer3);
         answer4Button = (Button) findViewById(R.id.answer4);
 
+        buttonLayout = (LinearLayout) findViewById(R.id.linearLayout);
+        askedView = (RelativeLayout) findViewById(R.id.questionAskedView);
+
         q = new ArrayList<String>();
         cA = new ArrayList<String>();
         wA = new ArrayList<ArrayList<String>>();
 
         dummyAA = new ArrayList<String>();
-        dummyAA.add("Antwort 1");
-        dummyAA.add("Antwort 2");
-        dummyAA.add("Antwort 3");
+        dummyAA.add("1992");
+        dummyAA.add("1991");
+        dummyAA.add("1990");
         dummyAA.add("1989");
 
         dummyAA1 = new ArrayList<String>();
-        dummyAA1.add("Antwort 11");
-        dummyAA1.add("Antwort 22");
-        dummyAA1.add("Antwort 33");
+        dummyAA1.add("Deutschland");
+        dummyAA1.add("Spanien");
+        dummyAA1.add("Brasilien");
         dummyAA1.add("Italien");
 
         dummyAA2 = new ArrayList<String>();
-        dummyAA2.add("Antwort 111");
-        dummyAA2.add("Antwort 222");
-        dummyAA2.add("Antwort 333");
+        dummyAA2.add("Hunden");
+        dummyAA2.add("Spinnen");
+        dummyAA2.add("Schlangen");
         dummyAA2.add("Katzen");
 
         dummyAA3 = new ArrayList<String>();
-        dummyAA3.add("Antwort 1111");
-        dummyAA3.add("Antwort 2222");
-        dummyAA3.add("Antwort 3333");
+        dummyAA3.add("Europa");
+        dummyAA3.add("Afrika");
+        dummyAA3.add("Australien");
         dummyAA3.add("Asien");
 
         question = new Question();
         dummyQuestions = new ArrayList<Question>();
 
-        endTime = 6000;
+        endTime = 10000;
 
         loadQuestions();
         showQuestions();
 
-        buttonLayout = (LinearLayout) findViewById(R.id.linearLayout);
-        askedView = (RelativeLayout) findViewById(R.id.questionAskedView);
+        askedView.setEnabled(false);
 
-        askedView.setClickable(false);
         askedView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,25 +144,22 @@ public class QuestionsAsked extends AppCompatActivity {
         progressAnimator.start();
     }
 
-    public void loadQuestions()
-    {
+    public void loadQuestions() {
         fillQuestions("Wann wurde die Mauer in Berlin niedergerissen?", "1989", dummyAA);
         fillQuestions("Wer wurde 2006 Fussball Weltmeister?", "Italien", dummyAA1);
         fillQuestions("Vor welchem Tieren fürchtete sich Napoleon?", "Katzen", dummyAA2);
         fillQuestions("Welcher Kontinent ist der Größte?", "Asien", dummyAA3);
 
-        for(int counter = 0; counter < q.size(); counter++) {
+        for (int counter = 0; counter < q.size(); counter++) {
             question = new Question();
             question.setQuestion(q.get(counter));
             question.setCorrectAnswer(cA.get(counter));
             question.setAllAnswers(wA.get(counter));
             dummyQuestions.add(question);
-            //Log.d("blah","add: " + dummyQuestions.get(counter).getQuestion());
         }
     }
 
-    public void showQuestions()
-    {
+    public void showQuestions() {
         Collections.shuffle(dummyQuestions);
 
         questionView.setText(dummyQuestions.get(0).getQuestion());
@@ -176,22 +169,21 @@ public class QuestionsAsked extends AppCompatActivity {
         answer4Button.setText(dummyQuestions.get(0).getAllAnswers().get(3));
     }
 
-    public void fillQuestions(String questionText, String correctAnswer, ArrayList<String> allAnswers)
-    {
+    // only for dummy questions
+    public void fillQuestions(String questionText, String correctAnswer, ArrayList<String> allAnswers) {
         q.add(questionText);
         cA.add(correctAnswer);
         Collections.shuffle(allAnswers);
         wA.add(allAnswers);
     }
 
-    public void resetButtons()
-    {
+    public void resetButtons() {
         answer1Button.setBackground(getResources().getDrawable(R.drawable.button_blue));
         answer2Button.setBackground(getResources().getDrawable(R.drawable.button_blue));
         answer3Button.setBackground(getResources().getDrawable(R.drawable.button_blue));
         answer4Button.setBackground(getResources().getDrawable(R.drawable.button_blue));
 
-        askedView.setClickable(false);
+        askedView.setEnabled(false);
 
         for (int i = 0; i < buttonLayout.getChildCount(); i++) {
             View child = buttonLayout.getChildAt(i);
@@ -209,28 +201,32 @@ public class QuestionsAsked extends AppCompatActivity {
         if (buttonPressed != null) {
             String buttonText = buttonPressed.getText().toString();
 
-            if (buttonText.equals(dummyQuestions.get(0).getCorrectAnswer())) {
-                buttonPressed.setBackgroundColor(Color.GREEN);
-            } else {
+            if (!(buttonText.equals(dummyQuestions.get(0).getCorrectAnswer()))) {
                 buttonPressed.setBackgroundColor(Color.RED);
+                markRightButton();
+            } else {
+                markRightButton();
             }
         } else {
-            for (int i = 0; i < buttonLayout.getChildCount(); i++) {
-                buttonPressed = (Button) buttonLayout.getChildAt(i);
-                String buttonText = buttonPressed.getText().toString();
-
-                if (buttonText.equals(dummyQuestions.get(0).getCorrectAnswer())) {
-                    buttonPressed.setBackgroundColor(Color.GREEN);
-                }
-            }
+            markRightButton();
         }
         deactivateButtons();
-        askedView.setClickable(true);
+        askedView.setEnabled(true);
         buttonPressed = null;
     }
 
-    public void deactivateButtons()
-    {
+    public void markRightButton() {
+        for (int i = 0; i < buttonLayout.getChildCount(); i++) {
+            buttonPressed = (Button) buttonLayout.getChildAt(i);
+            String buttonText = buttonPressed.getText().toString();
+
+            if (buttonText.equals(dummyQuestions.get(0).getCorrectAnswer())) {
+                buttonPressed.setBackgroundColor(Color.GREEN);
+            }
+        }
+    }
+
+    public void deactivateButtons() {
         for (int i = 0; i < buttonLayout.getChildCount(); i++) {
             View child = buttonLayout.getChildAt(i);
             child.setClickable(false);

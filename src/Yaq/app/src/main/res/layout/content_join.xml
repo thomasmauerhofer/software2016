@@ -278,11 +278,19 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal">
 
+            <ProgressBar
+                android:id="@+id/loadingBar"
+                style="?android:attr/progressBarStyleLarge"
+                android:progressDrawable="@drawable/circular_progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Waiting Animation"
+                android:text="Waiting for host, to start the game!"
                 android:id="@+id/textView" />
         </LinearLayout>
 
