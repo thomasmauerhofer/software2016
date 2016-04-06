@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -16,6 +17,7 @@ import com.bitschupfa.sw16.yaq.Utils.Quiz;
 
 public class Host extends AppCompatActivity {
     private static final int REQUEST_ENABLE_BT = 42;
+    private static final int REQUEST_ENABLE_DISCOVERABLE_BT = 43;
 
     private final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     private PlayerList playerList;
@@ -75,15 +77,26 @@ public class Host extends AppCompatActivity {
                     .show();
         }
 
-        if (!bluetoothAdapter.isEnabled()) {
+        // this is not really required, since activating discoverability entails enabling BT
+        if (false && !bluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        }
+
+        if (bluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0);
+            startActivityForResult(discoverableIntent, REQUEST_ENABLE_DISCOVERABLE_BT);
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_ENABLE_BT && resultCode != RESULT_OK) {
+            Log.d("BT", "Could not enable discoverability.");
+            finish();
+        } else if (requestCode == REQUEST_ENABLE_DISCOVERABLE_BT && resultCode == RESULT_CANCELED) {
+            Log.d("BT", "Could not enable discoverability.");
             finish();
         }
     }
