@@ -97,7 +97,7 @@ public class Host extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_ENABLE_BT && resultCode != RESULT_OK) {
-            Log.d("BT", "Could not enable discoverability.");
+            Log.d("BT", "Could not enable bluetooth.");
             finish();
         } else if (requestCode == REQUEST_ENABLE_DISCOVERABLE_BT && resultCode == RESULT_CANCELED) {
             Log.d("BT", "Could not enable discoverability.");
