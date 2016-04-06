@@ -34,7 +34,7 @@ public class Statistic extends AppCompatActivity {
     }
 
     public void playAgainButtonClicked(View view) {
-        Intent intent = new Intent(Statistic.this, QuesionsAsked.class);
+        Intent intent = new Intent(Statistic.this, QuestionsAsked.class);
         startActivity(intent);
         finish();
     }

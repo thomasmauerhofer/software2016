@@ -9,10 +9,13 @@ import android.widget.Toast;
 
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.Utils.PlayerList;
+import com.bitschupfa.sw16.yaq.Utils.Quiz;
 
 public class Host extends AppCompatActivity {
 
     private PlayerList playerList;
+
+    private Quiz quiz;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +23,7 @@ public class Host extends AppCompatActivity {
         setContentView(R.layout.activity_host);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        quiz = new Quiz();
 
         playerList = new PlayerList(this);
 
@@ -35,7 +39,8 @@ public class Host extends AppCompatActivity {
     }
 
     public void startButtonClicked(View view) {
-        Intent intent = new Intent(Host.this, QuesionsAsked.class);
+        Intent intent = new Intent(Host.this, QuestionsAsked.class);
+        intent.putExtra("questions", quiz.createTmpQuiz());
         startActivity(intent);
         finish();
     }

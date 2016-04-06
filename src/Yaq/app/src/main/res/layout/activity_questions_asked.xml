@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.bitschupfa.sw16.yaq.Activities.QuesionsAsked">
+    tools:context=".Activities.QuestionsAsked">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -21,6 +21,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_quesions_asked" />
+    <include layout="@layout/content_questions_asked" />
 
 </android.support.design.widget.CoordinatorLayout>

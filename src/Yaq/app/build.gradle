@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.bitschupfa.sw16.yaq"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -25,4 +25,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.android.support:design:23.2.1'
     androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.2.1'
+    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
 }
