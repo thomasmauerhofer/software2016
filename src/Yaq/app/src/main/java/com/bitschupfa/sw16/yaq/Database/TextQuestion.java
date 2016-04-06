@@ -1,9 +1,16 @@
 package com.bitschupfa.sw16.yaq.Database;
 
+import android.widget.Toast;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created by Patrik on 01.04.2016.
  */
-public class TextQuestion {
+public class TextQuestion implements Serializable{
 
     private String question;
     private String answer1;
@@ -81,4 +88,30 @@ public class TextQuestion {
         this.difficulty = difficulty;
     }
 
+    public List<String> getShuffeledAnswers() {
+        List<String> tmp = new ArrayList();
+
+        tmp.add(answer1);
+        tmp.add(answer2);
+        tmp.add(answer3);
+        tmp.add(answer4);
+        Collections.shuffle(tmp);
+
+        return tmp;
+    }
+
+    public String getCorrectAnswer() {
+        switch (rightAnswer) {
+            case 1:
+                return answer1;
+            case 2:
+                return answer2;
+            case 3:
+                return answer3;
+            case 4:
+                return answer4;
+            default:
+                return null;
+        }
+    }
 }

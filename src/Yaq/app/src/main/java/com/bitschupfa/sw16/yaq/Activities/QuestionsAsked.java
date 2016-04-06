@@ -14,9 +14,11 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bitschupfa.sw16.yaq.Database.TextQuestion;
 import com.bitschupfa.sw16.yaq.R;
-import com.bitschupfa.sw16.yaq.Utils.Question;
 import com.bitschupfa.sw16.yaq.Utils.Quiz;
+
+import java.util.List;
 
 public class QuestionsAsked extends AppCompatActivity {
 
@@ -105,13 +107,14 @@ public class QuestionsAsked extends AppCompatActivity {
     }
 
     public void showQuestions() {
-        Question question = quiz.getCurrentQuestion();
+        TextQuestion question = quiz.getCurrentQuestion();
+        List<String> answers = question.getShuffeledAnswers();
 
         questionView.setText(question.getQuestion());
-        answer1Button.setText(question.getAllAnswers().get(0));
-        answer2Button.setText(question.getAllAnswers().get(1));
-        answer3Button.setText(question.getAllAnswers().get(2));
-        answer4Button.setText(question.getAllAnswers().get(3));
+        answer1Button.setText(answers.get(0));
+        answer2Button.setText(answers.get(1));
+        answer3Button.setText(answers.get(2));
+        answer4Button.setText(answers.get(3));
     }
 
 
@@ -137,7 +140,7 @@ public class QuestionsAsked extends AppCompatActivity {
     }
 
     public void checkAnswer() {
-        Question question = quiz.getCurrentQuestion();
+        TextQuestion question = quiz.getCurrentQuestion();
 
         if (buttonPressed != null) {
             String buttonText = buttonPressed.getText().toString();
@@ -158,7 +161,7 @@ public class QuestionsAsked extends AppCompatActivity {
     }
 
     public void markRightButton() {
-        Question question = quiz.getCurrentQuestion();
+        TextQuestion question = quiz.getCurrentQuestion();
 
         for (int i = 0; i < buttonLayout.getChildCount(); i++) {
             buttonPressed = (Button) buttonLayout.getChildAt(i);

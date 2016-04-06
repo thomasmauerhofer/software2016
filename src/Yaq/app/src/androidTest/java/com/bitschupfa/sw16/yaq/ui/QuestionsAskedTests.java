@@ -6,8 +6,8 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 
 import com.bitschupfa.sw16.yaq.Activities.QuestionsAsked;
+import com.bitschupfa.sw16.yaq.Database.TextQuestion;
 import com.bitschupfa.sw16.yaq.R;
-import com.bitschupfa.sw16.yaq.Utils.Question;
 import com.bitschupfa.sw16.yaq.Utils.Quiz;
 import com.robotium.solo.Solo;
 
@@ -53,7 +53,7 @@ public class QuestionsAskedTests extends ActivityInstrumentationTestCase2<Questi
     @Override
     public QuestionsAsked getActivity() {
         quiz = new Quiz();
-        quiz.addQuestion(new Question("Question1", "correct", "wrong1", "wrong2", "wrong3", "correct"));
+        quiz.addQuestion(new TextQuestion("Question1", "correct", "wrong1", "wrong2", "wrong3", 1, 1));
 
         Intent intent = new Intent();
         intent.putExtra("questions", quiz);

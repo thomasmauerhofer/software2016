@@ -77,14 +77,6 @@ public class QuestionQuerier {
             textQuestion = new TextQuestion(question,answer1,answer2,answer3,answer4,rightAnswer,difficulty);
             cursor.moveToNext();
             textQuestionList.add(textQuestion);
-
-            Log.v("Querier Log", "Question     : "+textQuestion.getQuestion());
-            Log.v("Querier Log", "Answer1      : "+textQuestion.getAnswer1());
-            Log.v("Querier Log", "Answer2      : "+textQuestion.getAnswer2());
-            Log.v("Querier Log", "Answer3      : "+textQuestion.getAnswer3());
-            Log.v("Querier Log", "Answer4      : "+textQuestion.getAnswer4());
-            Log.v("Querier Log", "Difficulty   : "+textQuestion.getDifficulty());
-            Log.v("Querier Log", "RightAnswer  : "+textQuestion.getRightAnswer());
         }
         return textQuestionList;
     }
@@ -93,9 +85,7 @@ public class QuestionQuerier {
         Cursor cursor = database.rawQuery("SELECT * FROM Question WHERE qcid="+catalog, null);
         cursor.moveToFirst();
 
-        List<TextQuestion> textQuestionList = new ArrayList<TextQuestion>();
-
-        Log.v("Querier Log", "TextQuestion");
+        List<TextQuestion> textQuestionList = new ArrayList<>();
         TextQuestion textQuestion = null;
 
         while (!cursor.isAfterLast()) {
@@ -109,14 +99,6 @@ public class QuestionQuerier {
             textQuestion = new TextQuestion(question,answer1,answer2,answer3,answer4,rightAnswer,difficulty);
             cursor.moveToNext();
             textQuestionList.add(textQuestion);
-
-            Log.v("Querier Log", "Question     : "+textQuestion.getQuestion());
-            Log.v("Querier Log", "Answer1      : "+textQuestion.getAnswer1());
-            Log.v("Querier Log", "Answer2      : "+textQuestion.getAnswer2());
-            Log.v("Querier Log", "Answer3      : "+textQuestion.getAnswer3());
-            Log.v("Querier Log", "Answer4      : "+textQuestion.getAnswer4());
-            Log.v("Querier Log", "Difficulty   : "+textQuestion.getDifficulty());
-            Log.v("Querier Log", "RightAnswer  : "+textQuestion.getRightAnswer());
         }
         return textQuestionList;
     }
@@ -127,16 +109,12 @@ public class QuestionQuerier {
 
         List<QuestionCatalog> questionCatalogs = new ArrayList<QuestionCatalog>();
 
-        Log.v("Querier Log", "QuestionCatalog");
-
         while (!cursor.isAfterLast()) {
             int catalogID = cursor.getInt(0);
             String name = cursor.getString(1);
             cursor.moveToNext();
             QuestionCatalog questionCatalog = new QuestionCatalog(catalogID, name, null);
             questionCatalogs.add(questionCatalog);
-            Log.v("Querier Log", "QuestionCatalog     : ");
-            Log.v("Querier Log", "CatalogID           : "+catalogID);
         }
 
         return questionCatalogs;
@@ -148,17 +126,11 @@ public class QuestionQuerier {
 
         QuestionCatalog questionCatalog = null;
 
-        Log.v("Querier Log", "QuestionCatalog");
-
-            int catalogID = cursor.getInt(0);
-            String question = cursor.getString(1);
-            cursor.moveToNext();
-            List<TextQuestion> textQuestionList = getAllQuestionsFromCatalog(catalogID);
-            questionCatalog = new QuestionCatalog(catalogID,question,textQuestionList);
-
-            Log.v("Querier Log", "QuestionCatalog     : ");
-            Log.v("Querier Log", "CatalogID           : " + questionCatalog.getCatalogID());
-            Log.v("Querier Log", "Name                : " + questionCatalog.getName());
+        int catalogID = cursor.getInt(0);
+        String question = cursor.getString(1);
+        cursor.moveToNext();
+        List<TextQuestion> textQuestionList = getAllQuestionsFromCatalog(catalogID);
+        questionCatalog = new QuestionCatalog(catalogID,question,textQuestionList);
 
         return questionCatalog;
     }
@@ -169,17 +141,11 @@ public class QuestionQuerier {
 
         QuestionCatalog questionCatalog = null;
 
-        Log.v("Querier Log", "QuestionCatalog");
-
         int catalogID = cursor.getInt(0);
         String question = cursor.getString(1);
         cursor.moveToNext();
         List<TextQuestion> textQuestionList = getAllQuestionsFromCatalogByDifficulty(catalogID, difficulty);
         questionCatalog = new QuestionCatalog(catalogID,question,textQuestionList);
-
-        Log.v("Querier Log", "QuestionCatalog     : ");
-        Log.v("Querier Log", "CatalogID           : "+questionCatalog.getCatalogID());
-        Log.v("Querier Log", "Name                : " + questionCatalog.getName());
 
         return questionCatalog;
     }
@@ -190,8 +156,6 @@ public class QuestionQuerier {
 
         List<QuestionCatalog> questionCatalogList = new ArrayList<QuestionCatalog>();
 
-        Log.v("Querier Log", "QuestionCatalog");
-
         while (!cursor.isAfterLast()) {
             int catalogID = cursor.getInt(0);
             String question = cursor.getString(1);
@@ -199,10 +163,6 @@ public class QuestionQuerier {
             List<TextQuestion> textQuestionList = getAllQuestionsFromCatalog(catalogID);
             QuestionCatalog questionCatalog = new QuestionCatalog(catalogID,question,textQuestionList);
             questionCatalogList.add(questionCatalog);
-
-            Log.v("Querier Log", "QuestionCatalog     : ");
-            Log.v("Querier Log", "CatalogID           : "+questionCatalog.getCatalogID());
-            Log.v("Querier Log", "Name                : "+questionCatalog.getName());
         }
 
         return questionCatalogList;

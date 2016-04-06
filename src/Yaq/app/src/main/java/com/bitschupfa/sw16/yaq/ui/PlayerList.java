@@ -1,6 +1,8 @@
-package com.bitschupfa.sw16.yaq.Utils;
+package com.bitschupfa.sw16.yaq.ui;
 
 import android.app.Activity;
+
+import com.bitschupfa.sw16.yaq.ui.PlayerEntry;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -10,7 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
-import com.bitschupfa.sw16.yaq.Utils.PlayerList;
+import com.bitschupfa.sw16.yaq.ui.PlayerList;
 
 public class Join extends AppCompatActivity {
 

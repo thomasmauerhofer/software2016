@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.bitschupfa.sw16.yaq.R;
-import com.bitschupfa.sw16.yaq.Utils.PlayerList;
+import com.bitschupfa.sw16.yaq.ui.PlayerList;
 import com.bitschupfa.sw16.yaq.Utils.Quiz;
 
 public class Host extends AppCompatActivity {
