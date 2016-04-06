@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bitschupfa.sw16.yaq.R;
@@ -31,6 +32,9 @@ public class Host extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         setupBluetooth();
+
+        TextView hostnameLabel = (TextView) findViewById(R.id.lbl_hostname);
+        hostnameLabel.append(bluetoothAdapter.getName());
 
         quiz = new Quiz();
 
