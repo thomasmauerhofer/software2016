@@ -1,5 +1,9 @@
 package com.bitschupfa.sw16.yaq.Utils;
 
+import android.content.Context;
+
+import com.bitschupfa.sw16.yaq.Database.QuestionCatalog;
+import com.bitschupfa.sw16.yaq.Database.QuestionQuerier;
 import com.bitschupfa.sw16.yaq.Database.TextQuestion;
 
 import java.io.Serializable;
@@ -48,12 +52,15 @@ public class Quiz implements Serializable {
     }
 
     @Deprecated
-    public Quiz createTmpQuiz() {
+    public Quiz createTmpQuiz(Context context) {
 
-        questions.add(new TextQuestion("Wann wurde die Mauer in Berlin niedergerissen?", "1989", "1992", "1991", "1990", 1, 1));
-        questions.add(new TextQuestion("Wer wurde 2006 Fussball Weltmeister?", "Italien", "Deutschland", "Spanien", "Brasilien", 1, 1));
-        questions.add(new TextQuestion("Vor welchem Tieren fürchtete sich Napoleon?", "Katzen", "Hunden", "Spinnen", "Schlangen", 1, 1));
-        questions.add(new TextQuestion("Welcher Kontinent ist der Größte?", "Asien", "Europa", "Afrika", "Australien", 1, 1));
+        QuestionQuerier questionQuerier = new QuestionQuerier(context);
+        questions = questionQuerier.getAllQuestionsFromCatalog(1);
+
+        //questions.add(new TextQuestion("Wann wurde die Mauer in Berlin niedergerissen?", "1989", "1992", "1991", "1990", 1, 1));
+        //questions.add(new TextQuestion("Wer wurde 2006 Fussball Weltmeister?", "Italien", "Deutschland", "Spanien", "Brasilien", 1, 1));
+        //questions.add(new TextQuestion("Vor welchem Tieren fürchtete sich Napoleon?", "Katzen", "Hunden", "Spinnen", "Schlangen", 1, 1));
+        //questions.add(new TextQuestion("Welcher Kontinent ist der Größte?", "Asien", "Europa", "Afrika", "Australien", 1, 1));
         shuffleQuestions();
         return this;
     }

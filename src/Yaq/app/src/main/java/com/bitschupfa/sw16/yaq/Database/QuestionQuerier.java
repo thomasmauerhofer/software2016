@@ -15,46 +15,32 @@ import java.util.List;
 public class QuestionQuerier {
     private Context context;
     private SQLiteDatabase database;
-    private QuestionCatalog currentQuestionCatalog;
-    private static QuestionQuerier instance_;
 
-    //Can be initialised as Singleton or Instance
     public QuestionQuerier(Context context){
         this.context = context;
         database = DBHelper.instance(context).getDatabase();
     }
 
-    private QuestionQuerier(Context context, int catalogId){
-        this.context = context;
-        database = DBHelper.instance(context).getDatabase();
-        currentQuestionCatalog = getQuestionCatalogById(catalogId);
-    }
 
-    //If you want to switch from one difficulty to another then you have to call refresh()
-    private QuestionQuerier(Context context, int catalogId, int difficulty){
-        this.context = context;
-        database = DBHelper.instance(context).getDatabase();
-        currentQuestionCatalog = getQuestionCatalogByIdAndDifficulty(catalogId, difficulty);
-    }
+    private TextQuestion fillTextQuestion(Cursor cursor){
+        Log.e("Columns: ", ""+cursor.getColumnCount());
+        int difficulty = cursor.getInt(2);
+        String question = cursor.getString(3);
+        String answer1String = cursor.getString(4);
+        String answer2String = cursor.getString(5);
+        String answer3String = cursor.getString(6);
+        String answer4String = cursor.getString(7);
+        boolean rightAnswer1 = (cursor.getInt(8) == 1) ? true : false;
+        boolean rightAnswer2 = (cursor.getInt(9) == 1) ? true : false;
+        boolean rightAnswer3 = (cursor.getInt(10) == 1) ? true : false;
+        boolean rightAnswer4 = (cursor.getInt(11) == 1) ? true : false;
 
-    public static QuestionQuerier instance(Context myContext, int catalogId) {
+        Answer answer1 = new Answer(answer1String, rightAnswer1);
+        Answer answer2 = new Answer(answer2String, rightAnswer2);
+        Answer answer3 = new Answer(answer3String, rightAnswer3);
+        Answer answer4 = new Answer(answer4String, rightAnswer4);
 
-        if(instance_ == null) {
-            instance_ = new QuestionQuerier(myContext, catalogId);
-        }
-        return instance_;
-    }
-
-    public static QuestionQuerier instance(Context myContext, int catalogId, int difficulty) {
-
-        if(instance_ == null) {
-            instance_ = new QuestionQuerier(myContext, catalogId, difficulty);
-        }
-        return instance_;
-    }
-
-    public static void refresh(){
-        instance_ = null;
+        return new TextQuestion(question,answer1,answer2,answer3,answer4, difficulty);
     }
 
     public List<TextQuestion> getAllQuestionsFromCatalogByDifficulty(int catalog, int difficulty){
@@ -67,16 +53,8 @@ public class QuestionQuerier {
         TextQuestion textQuestion = null;
 
         while (!cursor.isAfterLast()) {
-            difficulty = cursor.getInt(2);
-            String question = cursor.getString(3);
-            String answer1 = cursor.getString(4);
-            String answer2 = cursor.getString(5);
-            String answer3 = cursor.getString(6);
-            String answer4 = cursor.getString(7);
-            int rightAnswer = cursor.getInt(8);
-            textQuestion = new TextQuestion(question,answer1,answer2,answer3,answer4,rightAnswer,difficulty);
+            textQuestionList.add(fillTextQuestion(cursor));
             cursor.moveToNext();
-            textQuestionList.add(textQuestion);
         }
         return textQuestionList;
     }
@@ -86,19 +64,10 @@ public class QuestionQuerier {
         cursor.moveToFirst();
 
         List<TextQuestion> textQuestionList = new ArrayList<>();
-        TextQuestion textQuestion = null;
 
         while (!cursor.isAfterLast()) {
-            int difficulty = cursor.getInt(2);
-            String question = cursor.getString(3);
-            String answer1 = cursor.getString(4);
-            String answer2 = cursor.getString(5);
-            String answer3 = cursor.getString(6);
-            String answer4 = cursor.getString(7);
-            int rightAnswer = cursor.getInt(8);
-            textQuestion = new TextQuestion(question,answer1,answer2,answer3,answer4,rightAnswer,difficulty);
+            textQuestionList.add(fillTextQuestion(cursor));
             cursor.moveToNext();
-            textQuestionList.add(textQuestion);
         }
         return textQuestionList;
     }
@@ -166,15 +135,6 @@ public class QuestionQuerier {
         }
 
         return questionCatalogList;
-    }
-
-
-    public QuestionCatalog getCurrentQuestionCatalog() {
-        return currentQuestionCatalog;
-    }
-
-    public void setCurrentQuestionCatalog(QuestionCatalog currentQuestionCatalog) {
-        this.currentQuestionCatalog = currentQuestionCatalog;
     }
 
 }

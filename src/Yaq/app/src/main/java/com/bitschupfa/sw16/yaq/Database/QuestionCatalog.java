@@ -1,11 +1,12 @@
 package com.bitschupfa.sw16.yaq.Database;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Patrik on 01.04.2016.
  */
-public class QuestionCatalog {
+public class QuestionCatalog implements Serializable {
     private int catalogID;
     private String name;
     private List<TextQuestion> textQuestionList = null;

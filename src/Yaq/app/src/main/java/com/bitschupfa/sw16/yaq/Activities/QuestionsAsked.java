@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bitschupfa.sw16.yaq.Database.Answer;
 import com.bitschupfa.sw16.yaq.Database.TextQuestion;
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.Utils.Quiz;
@@ -62,7 +63,7 @@ public class QuestionsAsked extends AppCompatActivity {
             quiz = (Quiz) getIntent().getExtras().get("questions");
         } else {
             quiz = new Quiz();
-            quiz.createTmpQuiz();
+            quiz.createTmpQuiz(this);
         }
 
         showQuestions();
@@ -108,13 +109,13 @@ public class QuestionsAsked extends AppCompatActivity {
 
     public void showQuestions() {
         TextQuestion question = quiz.getCurrentQuestion();
-        List<String> answers = question.getShuffeledAnswers();
+        List<Answer> answers = question.getShuffeledAnswers();
 
         questionView.setText(question.getQuestion());
-        answer1Button.setText(answers.get(0));
-        answer2Button.setText(answers.get(1));
-        answer3Button.setText(answers.get(2));
-        answer4Button.setText(answers.get(3));
+        answer1Button.setText(answers.get(0).getAnswerString());
+        answer2Button.setText(answers.get(1).getAnswerString());
+        answer3Button.setText(answers.get(2).getAnswerString());
+        answer4Button.setText(answers.get(3).getAnswerString());
     }
 
 
@@ -145,7 +146,7 @@ public class QuestionsAsked extends AppCompatActivity {
         if (buttonPressed != null) {
             String buttonText = buttonPressed.getText().toString();
 
-            if (!(buttonText.equals(question.getCorrectAnswer()))) {
+            if (!(buttonText.equals(question.getCorrectAnswers().get(0).getAnswerString()))) {
                 buttonPressed.setBackgroundResource(R.drawable.button_red);
                 markRightButton();
             } else {
@@ -167,7 +168,7 @@ public class QuestionsAsked extends AppCompatActivity {
             buttonPressed = (Button) buttonLayout.getChildAt(i);
             String buttonText = buttonPressed.getText().toString();
 
-            if (buttonText.equals(question.getCorrectAnswer())) {
+            if (buttonText.equals(question.getCorrectAnswers().get(0).getAnswerString())) {
                 buttonPressed.setBackgroundResource(R.drawable.button_green);
             }
         }

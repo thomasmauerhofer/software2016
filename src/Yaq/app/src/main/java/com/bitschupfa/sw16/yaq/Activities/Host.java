@@ -40,7 +40,7 @@ public class Host extends AppCompatActivity {
 
     public void startButtonClicked(View view) {
         Intent intent = new Intent(Host.this, QuestionsAsked.class);
-        intent.putExtra("questions", quiz.createTmpQuiz());
+        intent.putExtra("questions", quiz.createTmpQuiz(this.getApplicationContext()));
         startActivity(intent);
         finish();
     }

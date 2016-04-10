@@ -6,6 +6,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 
 import com.bitschupfa.sw16.yaq.Activities.QuestionsAsked;
+import com.bitschupfa.sw16.yaq.Database.Answer;
 import com.bitschupfa.sw16.yaq.Database.TextQuestion;
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.Utils.Quiz;
@@ -53,7 +54,11 @@ public class QuestionsAskedTests extends ActivityInstrumentationTestCase2<Questi
     @Override
     public QuestionsAsked getActivity() {
         quiz = new Quiz();
-        quiz.addQuestion(new TextQuestion("Question1", "correct", "wrong1", "wrong2", "wrong3", 1, 1));
+        Answer answer1 = new Answer("correct", true);
+        Answer answer2 = new Answer("wrong1", true);
+        Answer answer3 = new Answer("wrong2", true);
+        Answer answer4 = new Answer("wrong3", true);
+        quiz.addQuestion(new TextQuestion("Question1", answer1, answer2, answer3, answer4, 1));
 
         Intent intent = new Intent();
         intent.putExtra("questions", quiz);
