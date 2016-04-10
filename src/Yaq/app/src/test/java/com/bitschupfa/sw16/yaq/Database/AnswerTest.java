@@ -9,7 +9,7 @@ import org.junit.Test;
 public class AnswerTest {
 
     @Test
-    public void testSetterAndGetter(){
+    public void test(){
         String test = "test";
         Answer answer = new Answer(test, false);
         assertEquals("Test answer String getter 1", answer.getAnswerString(), test);
