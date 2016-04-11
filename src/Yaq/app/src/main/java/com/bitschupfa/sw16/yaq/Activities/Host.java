@@ -2,8 +2,11 @@ package com.bitschupfa.sw16.yaq.Activities;
 
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -24,6 +27,7 @@ public class Host extends AppCompatActivity {
     private final ConnectionListener btConnectionListener = new ConnectionListener();
     private PlayerList playerList;
     private Quiz quiz;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,7 @@ public class Host extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         btConnectionListener.close();
+        unregisterReceiver(broadcastReceiver);
     }
 
     public void startButtonClicked(View view) {
@@ -75,6 +80,8 @@ public class Host extends AppCompatActivity {
     }
 
     private void setupBluetooth() {
+        registerReceiver(broadcastReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
+
         if (btAdapter == null) {
             new AlertDialog.Builder(this)
                     .setTitle("Error")
@@ -114,4 +121,17 @@ public class Host extends AppCompatActivity {
                 Log.d("Host:onActivityResult", "unknown requestCode: " + resultCode);
         }
     }
+
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+                int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
+                if (state == BluetoothAdapter.STATE_TURNING_OFF) {
+                    Log.d("BT", "Bluetooth was turned off!");
+                    finish();
+                }
+            }
+        }
+    };
 }
