@@ -8,30 +8,46 @@ import android.util.Log;
 import java.io.IOException;
 
 public class ConnectionListener implements Runnable {
-    private final BluetoothServerSocket serverSocket;
+    private final static String TAG = "BTConnectionListener";
 
-    public ConnectionListener(BluetoothAdapter btAdapter) {
-        BluetoothServerSocket tmp = null;
+    private BluetoothServerSocket btServerSocket;
+    private volatile boolean isDiscoverable = false;
 
-        try {
-            tmp = btAdapter.listenUsingRfcommWithServiceRecord(BTService.SERVICE_NAME, BTService.SERVICE_UUID);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public ConnectionListener() {
 
-        serverSocket = tmp;
     }
 
     @Override
     public void run() {
-        Log.d("BT", "waiting for new connections on the server socket.");
+        Log.d(TAG, "Starting thread.");
 
-        BluetoothSocket socket = null;
+        BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (btAdapter == null) {
+            Log.e(TAG, "Bluetooth not available on device. Killing thread.");
+            return;
+        }
+
+        if (!isDiscoverable) {
+            Log.d(TAG, "Device is not discoverable. Idle until status changes.");
+            while (!isDiscoverable);
+            Log.d(TAG, "Device is now discoverable.");
+        }
+
+        try {
+            btServerSocket = btAdapter.listenUsingRfcommWithServiceRecord(BTService.SERVICE_NAME, BTService.SERVICE_UUID);
+        } catch (IOException e) {
+            Log.e(TAG, "Could not create Server Socket: " + e.getMessage());
+            return;
+        }
+
+        Log.d(TAG, "Waiting for new connections on the Server Socket.");
+        BluetoothSocket socket;
         while (true) {
             try {
-                socket = serverSocket.accept();
+                socket = btServerSocket.accept();
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e(TAG, "Server Socket was killed: " + e.getMessage());
+                return;
             }
 
             if (socket != null) {
@@ -41,10 +57,14 @@ public class ConnectionListener implements Runnable {
     }
 
     public void close() {
-        Log.d("BT", "closing server socket.");
+        Log.d(TAG, "Killing thread.");
 
         try {
-            serverSocket.close();
+            btServerSocket.close();
         } catch (IOException e) { }
+    }
+
+    public void setDiscoverable(boolean discoverable) {
+        isDiscoverable = discoverable;
     }
 }

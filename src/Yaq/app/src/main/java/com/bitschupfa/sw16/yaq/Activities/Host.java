@@ -12,15 +12,16 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bitschupfa.sw16.yaq.Bluetooth.ConnectionListener;
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.Utils.PlayerList;
 import com.bitschupfa.sw16.yaq.Utils.Quiz;
 
 public class Host extends AppCompatActivity {
-    private static final int REQUEST_ENABLE_BT = 42;
-    private static final int REQUEST_ENABLE_DISCOVERABLE_BT = 43;
+    private static final int REQUEST_ENABLE_DISCOVERABLE_BT = 42;
 
-    private final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+    private final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+    private final ConnectionListener btConnectionListener = new ConnectionListener();
     private PlayerList playerList;
     private Quiz quiz;
 
@@ -32,9 +33,10 @@ public class Host extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         setupBluetooth();
+        new Thread(btConnectionListener, "BT Connection Listener Thread").start();
 
         TextView hostnameLabel = (TextView) findViewById(R.id.lbl_hostname);
-        hostnameLabel.append(bluetoothAdapter.getName());
+        hostnameLabel.append(btAdapter.getName());
 
         quiz = new Quiz();
 
@@ -49,6 +51,12 @@ public class Host extends AppCompatActivity {
 
 
         playerList.removePlayerWithName("Max");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        btConnectionListener.close();
     }
 
     public void startButtonClicked(View view) {
@@ -67,7 +75,7 @@ public class Host extends AppCompatActivity {
     }
 
     private void setupBluetooth() {
-        if (bluetoothAdapter == null) {
+        if (btAdapter == null) {
             new AlertDialog.Builder(this)
                     .setTitle("Error")
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -81,27 +89,29 @@ public class Host extends AppCompatActivity {
                     .show();
         }
 
-        // this is not really required, since activating discoverability entails enabling BT
-        if (false && !bluetoothAdapter.isEnabled()) {
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-        }
-
-        if (bluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+        if (btAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
             Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
             discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0);
             startActivityForResult(discoverableIntent, REQUEST_ENABLE_DISCOVERABLE_BT);
+        } else {
+            btConnectionListener.setDiscoverable(true);
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_ENABLE_BT && resultCode != RESULT_OK) {
-            Log.d("BT", "Could not enable bluetooth.");
-            finish();
-        } else if (requestCode == REQUEST_ENABLE_DISCOVERABLE_BT && resultCode == RESULT_CANCELED) {
-            Log.d("BT", "Could not enable discoverability.");
-            finish();
+        switch (requestCode) {
+            case REQUEST_ENABLE_DISCOVERABLE_BT:
+                Log.d("Host:onActivityResult", "requestCode: REQUEST_ENABLE_DISCOVERABLE_BT");
+                if (resultCode != RESULT_CANCELED) {
+                    btConnectionListener.setDiscoverable(true);
+                } else {
+                    Log.d("BT", "Could not enable discoverability.");
+                    finish();
+                }
+                break;
+            default:
+                Log.d("Host:onActivityResult", "unknown requestCode: " + resultCode);
         }
     }
 }
