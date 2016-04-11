@@ -1,10 +1,17 @@
 package com.bitschupfa.sw16.yaq.Activities;
 
+import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -13,7 +20,10 @@ import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.Utils.PlayerList;
 
 public class Join extends AppCompatActivity {
+    private final static String TAG = "JoinGameActivity";
+    private final static int REQUEST_ENABLE_BT = 42;
 
+    private final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
     private PlayerList playerList;
 
     private TextView textView;
@@ -25,6 +35,8 @@ public class Join extends AppCompatActivity {
         setContentView(R.layout.activity_join);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        setupBluetooth();
 
         playerList = new PlayerList(this);
 
@@ -49,6 +61,56 @@ public class Join extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
+    }
+
+    private void setupBluetooth() {
+        registerReceiver(broadcastReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
+
+        if (btAdapter == null) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Error")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setMessage("Bluetooth is not supported on this device.")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .show();
+        }
+
+        if (!btAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_ENABLE_BT && resultCode != RESULT_OK) {
+            Log.d(TAG, "Could not enable Bluetooth.");
+            finish();
+        }
+    }
+
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+                int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
+                if (state == BluetoothAdapter.STATE_TURNING_OFF) {
+                    Log.d(TAG, "Bluetooth was turned off!");
+                    finish();
+                }
+            }
+        }
+    };
 
     public void startTimer()
     {
