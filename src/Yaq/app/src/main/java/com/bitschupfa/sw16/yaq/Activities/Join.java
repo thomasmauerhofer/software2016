@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bitschupfa.sw16.yaq.Dialogs.FindDevicesDialog;
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.Utils.PlayerList;
 
@@ -42,8 +43,10 @@ public class Join extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        setupBluetooth();
-        findOtherBtDevices();
+        if(setupBluetooth()) {
+            findOtherBtDevices();
+        }
+
 
         playerList = new PlayerList(this);
 
@@ -67,6 +70,14 @@ public class Join extends AppCompatActivity {
                 startTimer();
             }
         });
+
+//        FindDevicesDialog dialog = new FindDevicesDialog();
+
+        //Bundle bdl = new Bundle(2);
+        //bdl.putSerializable();
+        //bdl.putString(EXTRA_MESSAGE, message);
+
+  //      dialog.show(getFragmentManager(), FindDevicesDialog.DIALOG_FRAGMENT_TAG);
     }
 
     @Override
@@ -75,7 +86,7 @@ public class Join extends AppCompatActivity {
         unregisterReceiver(broadcastReceiver);
     }
 
-    private void setupBluetooth() {
+    private boolean setupBluetooth() {
         registerReceiver(broadcastReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
 
         if (btAdapter == null) {
@@ -90,12 +101,14 @@ public class Join extends AppCompatActivity {
                         }
                     })
                     .show();
+             return false;
         }
 
         if (!btAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
+        return true;
     }
 
     @Override

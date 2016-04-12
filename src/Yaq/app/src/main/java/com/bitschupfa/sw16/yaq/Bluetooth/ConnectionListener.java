@@ -64,6 +64,9 @@ public class ConnectionListener implements Runnable {
     }
 
     public void close() {
+        if(btServerSocket == null) {
+            return;
+        }
         Log.d(TAG, "Killing thread.");
 
         try {

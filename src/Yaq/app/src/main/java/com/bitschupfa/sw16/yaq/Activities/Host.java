@@ -36,11 +36,11 @@ public class Host extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        setupBluetooth();
-        new Thread(btConnectionListener, "BT Connection Listener Thread").start();
-
-        TextView hostnameLabel = (TextView) findViewById(R.id.lbl_hostname);
-        hostnameLabel.append(btAdapter.getName());
+        if (setupBluetooth()) {
+            new Thread(btConnectionListener, "BT Connection Listener Thread").start();
+            TextView hostnameLabel = (TextView) findViewById(R.id.lbl_hostname);
+            hostnameLabel.append(btAdapter.getName());
+        }
 
         quiz = new Quiz();
 
@@ -79,7 +79,7 @@ public class Host extends AppCompatActivity {
         Toast.makeText(this, R.string.not_implemented, Toast.LENGTH_SHORT).show();
     }
 
-    private void setupBluetooth() {
+    private boolean setupBluetooth() {
         registerReceiver(broadcastReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
 
         if (btAdapter == null) {
@@ -94,6 +94,7 @@ public class Host extends AppCompatActivity {
                         }
                     })
                     .show();
+            return false;
         }
 
         if (btAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
@@ -103,6 +104,7 @@ public class Host extends AppCompatActivity {
         } else {
             btConnectionListener.setDiscoverable(true);
         }
+        return true;
     }
 
     @Override

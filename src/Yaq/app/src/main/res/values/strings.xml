@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">YAQ</string>
 
+    <string name="ok">ok</string>
+    <string name="cancel">cancel</string>
+
     <!-- MainActivity -->
     <string name="host">Host Game</string>
     <string name="join">Join Game</string>
@@ -31,6 +34,9 @@
 
     <!-- JoinActivity -->
     <string name="title_activity_join">Join Game</string>
+    <string name="dialog_find_device_title">Find Device</string>
+    <string name="dialog_paired_devices">Paired Devices:</string>
+    <string name="dialog_unpaired_devices">Unpaired Devices:</string>
 
     <!-- QestionsAskedActivity -->
     <string name="title_activity_quesions_asked">YAQ</string>
