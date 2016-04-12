@@ -1,4 +1,4 @@
-package com.bitschupfa.sw16.yaq.Utils;
+package com.bitschupfa.sw16.yaq.ui;
 
 import android.app.Activity;
 

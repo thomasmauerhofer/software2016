@@ -1,4 +1,4 @@
-package com.bitschupfa.sw16.yaq.Utils;
+package com.bitschupfa.sw16.yaq.ui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
+import com.bitschupfa.sw16.yaq.ui.RankingItem;
 
 import java.util.List;
 
