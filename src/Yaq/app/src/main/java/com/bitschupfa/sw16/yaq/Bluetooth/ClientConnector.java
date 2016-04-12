@@ -49,6 +49,7 @@ public class ClientConnector implements Runnable {
 
         try {
             ConnectedDevice server = new ConnectedDevice(btSocket);
+            new Thread(server).start();
             // TODO: pass device object to activity and send hello message
         } catch (IOException e) {
             Log.e(TAG, "Could not create new ConnectedDevice: " + e.getMessage());

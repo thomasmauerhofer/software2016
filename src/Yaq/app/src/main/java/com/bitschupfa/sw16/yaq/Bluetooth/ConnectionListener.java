@@ -75,6 +75,7 @@ public class ConnectionListener implements Runnable {
     }
 
     public void registerClient(ConnectedDevice client) {
+        new Thread(client).start();
         // TODO: register client in the game
     }
 
