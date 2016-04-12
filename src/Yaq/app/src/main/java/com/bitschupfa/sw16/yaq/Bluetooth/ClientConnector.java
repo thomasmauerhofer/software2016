@@ -6,6 +6,8 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
+import com.bitschupfa.sw16.yaq.Communication.ConnectedDevice;
+
 import java.io.IOException;
 
 public class ClientConnector implements Runnable {
@@ -41,11 +43,16 @@ public class ClientConnector implements Runnable {
         try {
             btSocket.connect();
         } catch (IOException e) {
-            Log.e(TAG, "Could not establish connection to other device.");
+            Log.e(TAG, "Could not establish connection to other device: " + e.getMessage());
             return;
         }
 
-        // TODO: do something with the connected socket
+        try {
+            ConnectedDevice server = new ConnectedDevice(btSocket);
+            // TODO: pass device object to activity and send hello message
+        } catch (IOException e) {
+            Log.e(TAG, "Could not create new ConnectedDevice: " + e.getMessage());
+        }
     }
 
     public void cancel() {

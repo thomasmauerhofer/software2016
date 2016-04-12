@@ -10,16 +10,16 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
 
-public class Client {
+public class ConnectedDevice {
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
 
-    public Client(BluetoothSocket s) throws IOException {
+    public ConnectedDevice(BluetoothSocket s) throws IOException {
         inputStream = new ObjectInputStream(s.getInputStream());
         outputStream = new ObjectOutputStream(s.getOutputStream());
     }
 
-    public Client (InputStream in, OutputStream out) throws IOException {
+    public ConnectedDevice(InputStream in, OutputStream out) throws IOException {
         inputStream = new ObjectInputStream(in);
         outputStream = new ObjectOutputStream(out);
     }
