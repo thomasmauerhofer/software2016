@@ -60,10 +60,10 @@
                             android:id="@+id/player1_img"
                             android:layout_width="30dp"
                             android:layout_height="20dp"
-                            android:src="@mipmap/icon_player"
+                            android:src="@mipmap/icon_player_black"
                             android:paddingLeft="10dp"
                             android:layout_gravity="center"
-                            android:visibility="invisible" />
+                            android:visibility="visible" />
 
                         <TextView
                             android:id="@+id/player1_name"
@@ -72,7 +72,8 @@
                             style="@style/table_text_gray"
                             android:paddingLeft="10dp"
                             android:textIsSelectable="false"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/player_table_inactive" />
 
                     </LinearLayout>
 
@@ -87,10 +88,10 @@
                             android:id="@+id/player2_img"
                             android:layout_width="30dp"
                             android:layout_height="20dp"
-                            android:src="@mipmap/icon_player"
+                            android:src="@mipmap/icon_player_black"
                             android:paddingLeft="10dp"
                             android:layout_gravity="center"
-                            android:visibility="invisible" />
+                            android:visibility="visible" />
 
                         <TextView
                             android:id="@+id/player2_name"
@@ -99,7 +100,8 @@
                             android:paddingLeft="10dp"
                             android:textIsSelectable="false"
                             android:layout_height="wrap_content"
-                            style="@style/table_text_gray" />
+                            style="@style/table_text_gray"
+                            android:textColor="@color/player_table_inactive"/>
 
                     </LinearLayout>
                 </TableRow>
@@ -120,10 +122,10 @@
                             android:id="@+id/player3_img"
                             android:layout_width="30dp"
                             android:layout_height="20dp"
-                            android:src="@mipmap/icon_player"
+                            android:src="@mipmap/icon_player_black"
                             android:paddingLeft="10dp"
                             android:layout_gravity="center"
-                            android:visibility="invisible" />
+                            android:visibility="visible" />
 
                         <TextView
                             android:id="@+id/player3_name"
@@ -132,7 +134,8 @@
                             style="@style/table_text_gray"
                             android:paddingLeft="10dp"
                             android:textIsSelectable="false"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/player_table_inactive"/>
 
                     </LinearLayout>
 
@@ -147,10 +150,10 @@
                             android:id="@+id/player4_img"
                             android:layout_width="30dp"
                             android:layout_height="20dp"
-                            android:src="@mipmap/icon_player"
+                            android:src="@mipmap/icon_player_black"
                             android:paddingLeft="10dp"
                             android:layout_gravity="center"
-                            android:visibility="invisible" />
+                            android:visibility="visible" />
 
                         <TextView
                             android:id="@+id/player4_name"
@@ -159,7 +162,8 @@
                             style="@style/table_text_gray"
                             android:paddingLeft="10dp"
                             android:textIsSelectable="false"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/player_table_inactive"/>
 
                     </LinearLayout>
                 </TableRow>
@@ -180,10 +184,10 @@
                             android:id="@+id/player5_img"
                             android:layout_width="30dp"
                             android:layout_height="20dp"
-                            android:src="@mipmap/icon_player"
+                            android:src="@mipmap/icon_player_black"
                             android:paddingLeft="10dp"
                             android:layout_gravity="center"
-                            android:visibility="invisible" /> />
+                            android:visibility="visible" /> />
 
                         <TextView
                             android:id="@+id/player5_name"
@@ -192,7 +196,8 @@
                             style="@style/table_text_gray"
                             android:paddingLeft="10dp"
                             android:textIsSelectable="false"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/player_table_inactive"/>
 
                     </LinearLayout>
 
@@ -207,10 +212,10 @@
                             android:id="@+id/player6_img"
                             android:layout_width="30dp"
                             android:layout_height="20dp"
-                            android:src="@mipmap/icon_player"
+                            android:src="@mipmap/icon_player_black"
                             android:paddingLeft="10dp"
                             android:layout_gravity="center"
-                            android:visibility="invisible" /> />
+                            android:visibility="visible" /> />
 
                         <TextView
                             android:id="@+id/player6_name"
@@ -219,7 +224,8 @@
                             style="@style/table_text_gray"
                             android:paddingLeft="10dp"
                             android:textIsSelectable="false"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/player_table_inactive"/>
 
                     </LinearLayout>
                 </TableRow>
@@ -240,10 +246,10 @@
                             android:id="@+id/player7_img"
                             android:layout_width="30dp"
                             android:layout_height="20dp"
-                            android:src="@mipmap/icon_player"
+                            android:src="@mipmap/icon_player_black"
                             android:paddingLeft="10dp"
                             android:layout_gravity="center"
-                            android:visibility="invisible" /> />
+                            android:visibility="visible" /> />
 
                         <TextView
                             android:id="@+id/player7_name"
@@ -252,7 +258,8 @@
                             style="@style/table_text_gray"
                             android:paddingLeft="10dp"
                             android:textIsSelectable="false"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/player_table_inactive"/>
 
                     </LinearLayout>
 
@@ -267,10 +274,10 @@
                             android:id="@+id/player8_img"
                             android:layout_width="30dp"
                             android:layout_height="20dp"
-                            android:src="@mipmap/icon_player"
+                            android:src="@mipmap/icon_player_black"
                             android:paddingLeft="10dp"
                             android:layout_gravity="center"
-                            android:visibility="invisible" />
+                            android:visibility="visible" />
 
                         <TextView
                             android:id="@+id/player8_name"
@@ -279,7 +286,8 @@
                             style="@style/table_text_gray"
                             android:paddingLeft="10dp"
                             android:textIsSelectable="false"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/player_table_inactive"/>
 
                     </LinearLayout>
                 </TableRow>

@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.bitschupfa.sw16.yaq.R;
-import com.bitschupfa.sw16.yaq.Utils.RankingItem;
-import com.bitschupfa.sw16.yaq.Utils.RankingList;
+import com.bitschupfa.sw16.yaq.ui.RankingItem;
+import com.bitschupfa.sw16.yaq.ui.RankingList;
 
 import java.util.ArrayList;
 

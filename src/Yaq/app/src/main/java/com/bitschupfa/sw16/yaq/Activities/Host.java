@@ -17,8 +17,9 @@ import android.widget.Toast;
 
 import com.bitschupfa.sw16.yaq.Bluetooth.ConnectionListener;
 import com.bitschupfa.sw16.yaq.R;
-import com.bitschupfa.sw16.yaq.Utils.PlayerList;
 import com.bitschupfa.sw16.yaq.Utils.Quiz;
+import com.bitschupfa.sw16.yaq.ui.PlayerEntry;
+import com.bitschupfa.sw16.yaq.ui.PlayerList;
 
 public class Host extends AppCompatActivity {
     private static final int REQUEST_ENABLE_DISCOVERABLE_BT = 42;
