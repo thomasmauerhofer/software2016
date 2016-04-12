@@ -2,6 +2,7 @@ package com.bitschupfa.sw16.yaq.Activities;
 
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,11 +20,16 @@ import android.widget.TextView;
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.Utils.PlayerList;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Join extends AppCompatActivity {
     private final static String TAG = "JoinGameActivity";
     private final static int REQUEST_ENABLE_BT = 42;
 
     private final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+    private final Set<BluetoothDevice> pairedDevices = new HashSet<>();
+    private final Set<BluetoothDevice> discoveredDevices = new HashSet<>();
     private PlayerList playerList;
 
     private TextView textView;
@@ -37,6 +43,7 @@ public class Join extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         setupBluetooth();
+        findOtherBtDevices();
 
         playerList = new PlayerList(this);
 
@@ -102,15 +109,33 @@ public class Join extends AppCompatActivity {
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
-                int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
-                if (state == BluetoothAdapter.STATE_TURNING_OFF) {
-                    Log.d(TAG, "Bluetooth was turned off!");
-                    finish();
-                }
+            switch (intent.getAction()) {
+                case BluetoothAdapter.ACTION_STATE_CHANGED:
+                    int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
+                    if (state == BluetoothAdapter.STATE_TURNING_OFF) {
+                        Log.d(TAG, "Bluetooth was turned off!");
+                        finish();
+                    }
+                    break;
+                case BluetoothDevice.ACTION_FOUND:
+                    BluetoothDevice dev = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                    discoveredDevices.add(dev);
+                    Log.d(TAG, "Discovered new device: " + dev.getName());
+                    break;
             }
         }
     };
+
+    private void findOtherBtDevices() {
+        for (BluetoothDevice dev : btAdapter.getBondedDevices()) {
+            pairedDevices.add(dev);
+            Log.d(TAG, "Added already paired device: " + dev.getName());
+        }
+
+        if (!btAdapter.startDiscovery()) {
+            Log.e(TAG, "Could not start Bluetooth device discovery.");
+        }
+    }
 
     public void startTimer()
     {
