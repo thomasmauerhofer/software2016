@@ -5,7 +5,7 @@ import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
-import com.bitschupfa.sw16.yaq.Communication.Client;
+import com.bitschupfa.sw16.yaq.Communication.ConnectedDevice;
 
 import java.io.IOException;
 
@@ -54,10 +54,10 @@ public class ConnectionListener implements Runnable {
 
             if (socket != null) {
                 try {
-                    Client client =  new Client(socket);
+                    ConnectedDevice client =  new ConnectedDevice(socket);
                     registerClient(client);
                 } catch (IOException e) {
-                    Log.e(TAG, "Could not create new Client: " + e.getMessage());
+                    Log.e(TAG, "Could not create new ConnectedDevice: " + e.getMessage());
                 }
             }
         }
@@ -74,7 +74,8 @@ public class ConnectionListener implements Runnable {
         } catch (IOException e) { }
     }
 
-    public void registerClient(Client client) {
+    public void registerClient(ConnectedDevice client) {
+        new Thread(client).start();
         // TODO: register client in the game
     }
 
