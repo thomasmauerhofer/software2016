@@ -1,13 +1,17 @@
-package com.bitschupfa.sw16.yaq.Utils;
+package com.bitschupfa.sw16.yaq.ui;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by thomas on 22.03.16.
@@ -28,15 +32,15 @@ public class PlayerEntry {
         layout.setBackgroundResource(R.drawable.boarder_table_entry_light);
         player_name.setText(name);
         player_name.setTextColor(Color.parseColor("#1F3255"));
-        avatar.setVisibility(View.VISIBLE);
+        avatar.setImageResource(R.mipmap.icon_player);
     }
 
     public void removePlayer() {
         layout.setBackgroundResource(R.drawable.boarder_table_entry_dark);
         player_name.setText(R.string.player);
         player_name.setText(player_name.getText().toString()+ " " + String.valueOf(id));
-        player_name.setTextColor(Color.parseColor("#353535"));
-        avatar.setVisibility(View.INVISIBLE);
+        player_name.setTextColor(ContextCompat.getColor(layout.getContext(), R.color.player_table_inactive));
+        avatar.setImageResource(R.mipmap.icon_player_black);
     }
 
     public String getName() {
