@@ -13,25 +13,26 @@ import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bitschupfa.sw16.yaq.Dialogs.FindDevicesDialog;
 import com.bitschupfa.sw16.yaq.R;
-import com.bitschupfa.sw16.yaq.ui.PlayerEntry;
+import com.bitschupfa.sw16.yaq.ui.BluetoothDeviceList;
 import com.bitschupfa.sw16.yaq.ui.PlayerList;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Join extends AppCompatActivity {
     private final static String TAG = "JoinGameActivity";
     private final static int REQUEST_ENABLE_BT = 42;
 
     private final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
-    private final Set<BluetoothDevice> pairedDevices = new HashSet<>();
-    private final Set<BluetoothDevice> discoveredDevices = new HashSet<>();
+    private final List<BluetoothDevice> pairedDevices = new ArrayList<>();
+    private final List<BluetoothDevice> discoveredDevices = new ArrayList<>();
     private PlayerList playerList;
 
     private TextView textView;
@@ -72,13 +73,7 @@ public class Join extends AppCompatActivity {
             }
         });
 
-//        FindDevicesDialog dialog = new FindDevicesDialog();
-
-        //Bundle bdl = new Bundle(2);
-        //bdl.putSerializable();
-        //bdl.putString(EXTRA_MESSAGE, message);
-
-  //      dialog.show(getFragmentManager(), FindDevicesDialog.DIALOG_FRAGMENT_TAG);
+        setBluetoothDeviceLists();
     }
 
     @Override
@@ -123,6 +118,7 @@ public class Join extends AppCompatActivity {
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+
             switch (intent.getAction()) {
                 case BluetoothAdapter.ACTION_STATE_CHANGED:
                     int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
@@ -163,5 +159,26 @@ public class Join extends AppCompatActivity {
                 startActivity(intent);
             }
         }.start();
+    }
+
+    public void setBluetoothDeviceLists() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.dialog_find_device, null);
+
+
+        alertDialog.setView(convertView);
+        alertDialog.setTitle("List");
+
+        ListView pairedList = (ListView) convertView.findViewById(R.id.paired_devices);
+        ListView unpairedList = (ListView) convertView.findViewById(R.id.unpaired_devices);
+
+
+        BluetoothDeviceList paired = new BluetoothDeviceList(this,  pairedDevices);
+        pairedList.setAdapter(paired);
+
+        BluetoothDeviceList unpaired = new BluetoothDeviceList(this, discoveredDevices);
+        unpairedList.setAdapter(unpaired);
+        alertDialog.show();
     }
 }
