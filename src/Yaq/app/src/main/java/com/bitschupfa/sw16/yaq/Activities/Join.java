@@ -1,6 +1,7 @@
 package com.bitschupfa.sw16.yaq.Activities;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -15,9 +16,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.ui.BluetoothDeviceList;
@@ -33,10 +36,14 @@ public class Join extends AppCompatActivity {
     private final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
     private final List<BluetoothDevice> pairedDevices = new ArrayList<>();
     private final List<BluetoothDevice> discoveredDevices = new ArrayList<>();
+    private BluetoothDevice usedDevice = null;
+
     private PlayerList playerList;
 
     private TextView textView;
     private ProgressBar pBar;
+
+    private Dialog findDeviceDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,23 +169,49 @@ public class Join extends AppCompatActivity {
     }
 
     public void setBluetoothDeviceLists() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        LayoutInflater inflater = getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.dialog_find_device, null);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_find_device, null);
+        findDeviceDialog = new AlertDialog.Builder(this)
+                .setView(dialogView)
+                .setTitle(R.string.dialog_find_device_title)
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Join.this.finish();
+                    }
+                }).create();
+        findDeviceDialog.setCanceledOnTouchOutside(false);
 
 
-        alertDialog.setView(convertView);
-        alertDialog.setTitle("List");
+        ListView pairedList = (ListView) dialogView.findViewById(R.id.paired_devices);
+        ListView unpairedList = (ListView) dialogView.findViewById(R.id.unpaired_devices);
+        TextView noPairedDevices = (TextView) dialogView.findViewById(R.id.no_paired_devices_found);
+        TextView noUnpairedDevices = (TextView) dialogView.findViewById(R.id.no_unpaired_devices_found);
 
-        ListView pairedList = (ListView) convertView.findViewById(R.id.paired_devices);
-        ListView unpairedList = (ListView) convertView.findViewById(R.id.unpaired_devices);
-
-
-        BluetoothDeviceList paired = new BluetoothDeviceList(this,  pairedDevices);
+        BluetoothDeviceList paired = new BluetoothDeviceList(this,  pairedDevices, noPairedDevices);
         pairedList.setAdapter(paired);
+        pairedList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3)
+            {
+                usedDevice = pairedDevices.get(position);
+                Toast.makeText(Join.this, getText(R.string.connect_to) + " " + usedDevice.getName(), Toast.LENGTH_SHORT).show();
+                findDeviceDialog.dismiss();
+            }
+        });
 
-        BluetoothDeviceList unpaired = new BluetoothDeviceList(this, discoveredDevices);
+        BluetoothDeviceList unpaired = new BluetoothDeviceList(this, discoveredDevices, noUnpairedDevices);
         unpairedList.setAdapter(unpaired);
-        alertDialog.show();
+        unpairedList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3)
+            {
+                usedDevice = discoveredDevices.get(position);
+                Toast.makeText(Join.this, getText(R.string.connect_to) + " " + usedDevice.getName(), Toast.LENGTH_SHORT).show();
+                findDeviceDialog.dismiss();
+            }
+        });
+        findDeviceDialog.show();
     }
 }

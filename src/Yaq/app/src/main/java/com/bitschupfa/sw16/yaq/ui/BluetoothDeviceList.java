@@ -22,24 +22,29 @@ public class BluetoothDeviceList extends ArrayAdapter<BluetoothDevice> {
 
     private List<BluetoothDevice> devices;
 
-    public BluetoothDeviceList(Activity activity, List<BluetoothDevice> devices) {
+    TextView listtext;
+
+    public BluetoothDeviceList(Activity activity, List<BluetoothDevice> devices, TextView listText) {
         super(activity, R.layout.list_bluetooth_device, devices);
         this.activity = activity;
         this.devices = devices;
+        this.listtext = listText;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+        if((listtext.getVisibility() == View.VISIBLE) && !devices.isEmpty()) {
+            listtext.setVisibility(View.INVISIBLE);
+        } else if((listtext.getVisibility() == View.INVISIBLE) && devices.isEmpty()) {
+            listtext.setVisibility(View.VISIBLE);
+        }
+
         View rowView = inflater.inflate(R.layout.list_bluetooth_device, parent, false);
         TextView deviceName = (TextView) rowView.findViewById(R.id.bluetoothEntry);
 
         deviceName.setText(devices.get(position).getName());
         return rowView;
-    }
-
-    public void addAllDevice(List<BluetoothDevice> devices) {
-        this.devices.addAll(devices);
     }
 }
