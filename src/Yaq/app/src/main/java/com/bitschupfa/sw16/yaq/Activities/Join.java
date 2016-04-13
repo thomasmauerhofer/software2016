@@ -22,6 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bitschupfa.sw16.yaq.Bluetooth.ClientConnector;
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.ui.BluetoothDeviceList;
 import com.bitschupfa.sw16.yaq.ui.PlayerList;
@@ -36,7 +37,7 @@ public class Join extends AppCompatActivity {
     private final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
     private final List<BluetoothDevice> pairedDevices = new ArrayList<>();
     private final List<BluetoothDevice> discoveredDevices = new ArrayList<>();
-    private BluetoothDevice usedDevice = null;
+    private ClientConnector connector = null;
 
     private PlayerList playerList;
 
@@ -194,9 +195,16 @@ public class Join extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3)
             {
-                usedDevice = pairedDevices.get(position);
-                Toast.makeText(Join.this, getText(R.string.connect_to) + " " + usedDevice.getName(), Toast.LENGTH_SHORT).show();
-                findDeviceDialog.dismiss();
+                connector = new ClientConnector(pairedDevices.get(position));
+                connector.run();
+
+                if(connector.getError()) {
+                    Toast.makeText(Join.this, getText(R.string.cant_connect_to)+ " " + pairedDevices.get(position).getName(), Toast.LENGTH_SHORT).show();
+                    connector.cancel();
+                } else {
+                    Toast.makeText(Join.this, getText(R.string.connect_to) + " " + pairedDevices.get(position).getName(), Toast.LENGTH_SHORT).show();
+                    findDeviceDialog.dismiss();
+                }
             }
         });
 
@@ -207,9 +215,16 @@ public class Join extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3)
             {
-                usedDevice = discoveredDevices.get(position);
-                Toast.makeText(Join.this, getText(R.string.connect_to) + " " + usedDevice.getName(), Toast.LENGTH_SHORT).show();
-                findDeviceDialog.dismiss();
+                connector = new ClientConnector(discoveredDevices.get(position));
+                connector.run();
+
+                if(connector.getError()) {
+                    Toast.makeText(Join.this, getText(R.string.cant_connect_to)+ " " + discoveredDevices.get(position).getName(), Toast.LENGTH_SHORT).show();
+                    connector.cancel();
+                } else {
+                    Toast.makeText(Join.this, getText(R.string.connect_to) + " " + discoveredDevices.get(position).getName(), Toast.LENGTH_SHORT).show();
+                    findDeviceDialog.dismiss();
+                }
             }
         });
         findDeviceDialog.show();
