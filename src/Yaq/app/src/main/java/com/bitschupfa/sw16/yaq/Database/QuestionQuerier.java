@@ -1,5 +1,6 @@
 package com.bitschupfa.sw16.yaq.Database;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,7 +13,7 @@ import java.util.List;
 /**
  * Created by Patrik on 01.04.2016.
  */
-public class QuestionQuerier {
+public class QuestionQuerier extends Activity {
     private Context context;
     private SQLiteDatabase database;
 
@@ -24,23 +25,24 @@ public class QuestionQuerier {
 
     private TextQuestion fillTextQuestion(Cursor cursor){
         Log.e("Columns: ", ""+cursor.getColumnCount());
+        int catalogID = cursor.getInt(1);
         int difficulty = cursor.getInt(2);
         String question = cursor.getString(3);
         String answer1String = cursor.getString(4);
         String answer2String = cursor.getString(5);
         String answer3String = cursor.getString(6);
         String answer4String = cursor.getString(7);
-        boolean rightAnswer1 = (cursor.getInt(8) == 1) ? true : false;
-        boolean rightAnswer2 = (cursor.getInt(9) == 1) ? true : false;
-        boolean rightAnswer3 = (cursor.getInt(10) == 1) ? true : false;
-        boolean rightAnswer4 = (cursor.getInt(11) == 1) ? true : false;
+        int rightAnswer1 = cursor.getInt(8);
+        int rightAnswer2 = cursor.getInt(9);
+        int rightAnswer3 = cursor.getInt(10);
+        int rightAnswer4 = cursor.getInt(11);
 
         Answer answer1 = new Answer(answer1String, rightAnswer1);
         Answer answer2 = new Answer(answer2String, rightAnswer2);
         Answer answer3 = new Answer(answer3String, rightAnswer3);
         Answer answer4 = new Answer(answer4String, rightAnswer4);
 
-        return new TextQuestion(question,answer1,answer2,answer3,answer4, difficulty);
+        return new TextQuestion(question,answer1,answer2,answer3,answer4, difficulty, catalogID);
     }
 
     public List<TextQuestion> getAllQuestionsFromCatalogByDifficulty(int catalog, int difficulty){

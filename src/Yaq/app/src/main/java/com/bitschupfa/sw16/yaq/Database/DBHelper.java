@@ -1,6 +1,7 @@
 package com.bitschupfa.sw16.yaq.Database;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -43,7 +44,7 @@ public class DBHelper extends SQLiteOpenHelper{
             } catch (IOException e) {
                 throw new Error("Error copying database");
             }
-            Toast.makeText(context, "Initial database is created", Toast.LENGTH_LONG).show();
+//            Toast.makeText(context, "Initial database is created", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -56,7 +57,8 @@ public class DBHelper extends SQLiteOpenHelper{
     }
 
     private void copyDataBase() throws IOException{
-        InputStream myInput = dbContext.getAssets().open(DATABASE_NAME);
+        AssetManager assetManager = dbContext.getAssets();
+        InputStream myInput = assetManager.open(DATABASE_NAME);
         String outFileName = DATABASE_PATH + DATABASE_NAME;
         OutputStream myOutput = new FileOutputStream(outFileName);
 

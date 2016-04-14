@@ -42,14 +42,4 @@ public class QuestionCatalog implements Serializable {
     public void setTextQuestionList(List<TextQuestion> textQuestionList) {
         this.textQuestionList = textQuestionList;
     }
-
-    public TextQuestion getNextQuestion(){
-        TextQuestion textQuestion = null;
-        if(counter < textQuestionList.size()){
-            textQuestion = textQuestionList.get(counter);
-        }
-        counter++;
-
-        return textQuestion;
-    }
 }

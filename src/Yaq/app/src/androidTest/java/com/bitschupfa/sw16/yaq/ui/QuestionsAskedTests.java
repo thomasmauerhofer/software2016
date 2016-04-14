@@ -54,11 +54,11 @@ public class QuestionsAskedTests extends ActivityInstrumentationTestCase2<Questi
     @Override
     public QuestionsAsked getActivity() {
         quiz = new Quiz();
-        Answer answer1 = new Answer("correct", true);
-        Answer answer2 = new Answer("wrong1", true);
-        Answer answer3 = new Answer("wrong2", true);
-        Answer answer4 = new Answer("wrong3", true);
-        quiz.addQuestion(new TextQuestion("Question1", answer1, answer2, answer3, answer4, 1));
+        Answer answer1 = new Answer("correct", 10);
+        Answer answer2 = new Answer("wrong1", 10);
+        Answer answer3 = new Answer("wrong2", 10);
+        Answer answer4 = new Answer("wrong3", 10);
+        quiz.addQuestion(new TextQuestion("Question1", answer1, answer2, answer3, answer4, 1, 1));
 
         Intent intent = new Intent();
         intent.putExtra("questions", quiz);

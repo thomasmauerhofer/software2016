@@ -7,18 +7,15 @@ import org.junit.Test;
  * Created by Patrik on 10.04.2016.
  */
 public class AnswerTest {
+    private final int RIGHT_ANSWER_DECREASE = 10;
 
     @Test
-    public void test(){
-        String test = "test";
-        Answer answer = new Answer(test, false);
-        assertEquals("Test answer String getter 1", answer.getAnswerString(), test);
-        assertEquals("Test right Answer getter 2", answer.isRightAnswer(), false);
-
-        String test1 = "test1";
-        answer.setAnswerString(test1);
-        answer.setIsRightAnswer(true);
-        assertEquals("Test answer String getter 1", answer.getAnswerString(), test1);
-        assertEquals("Test right Answer getter 2", answer.isRightAnswer(), true);
+    public void testRightAnswer(){
+        String test = "Test";
+        int testRightAnswer = 10;
+        int referenceRightAnswer = 10 - RIGHT_ANSWER_DECREASE;
+        Answer answer = new Answer(test, testRightAnswer);
+        assertEquals("Right Answer should be the Answer minus RIGHT_ANSWER_DECREASE", answer.getRightAnswerValue(), referenceRightAnswer);
+        assertEquals("Answer String should be the same", test, answer.getAnswerString());
     }
 }

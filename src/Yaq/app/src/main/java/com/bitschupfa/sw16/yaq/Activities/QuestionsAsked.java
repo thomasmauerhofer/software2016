@@ -146,7 +146,7 @@ public class QuestionsAsked extends AppCompatActivity {
         if (buttonPressed != null) {
             String buttonText = buttonPressed.getText().toString();
 
-            if (!(buttonText.equals(question.getCorrectAnswers().get(0).getAnswerString()))) {
+            if (!(buttonText.equals(question.getAnswers().get(0).getAnswerString()))) {
                 buttonPressed.setBackgroundResource(R.drawable.button_red);
                 markRightButton();
             } else {
@@ -168,7 +168,7 @@ public class QuestionsAsked extends AppCompatActivity {
             buttonPressed = (Button) buttonLayout.getChildAt(i);
             String buttonText = buttonPressed.getText().toString();
 
-            if (buttonText.equals(question.getCorrectAnswers().get(0).getAnswerString())) {
+            if (buttonText.equals(question.getAnswers().get(0).getAnswerString())) {
                 buttonPressed.setBackgroundResource(R.drawable.button_green);
             }
         }

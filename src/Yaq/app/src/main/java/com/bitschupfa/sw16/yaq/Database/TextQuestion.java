@@ -13,6 +13,7 @@ import java.util.List;
 public class TextQuestion implements Serializable{
 
     private String question;
+    private int catalogID;
     private Answer answer1;
     private Answer answer2;
     private Answer answer3;
@@ -20,13 +21,14 @@ public class TextQuestion implements Serializable{
 
     private int difficulty;
 
-    public TextQuestion(String question, Answer answer1, Answer answer2, Answer answer3, Answer answer4, int difficulty) {
+    public TextQuestion(String question, Answer answer1, Answer answer2, Answer answer3, Answer answer4, int difficulty, int catalogID) {
         this.question = question;
         this.answer1 = answer1;
         this.answer2 = answer2;
         this.answer3 = answer3;
         this.answer4 = answer4;
         this.difficulty = difficulty;
+        this.catalogID = catalogID;
     }
 
     public String getQuestion() {
@@ -57,21 +59,21 @@ public class TextQuestion implements Serializable{
         return tmp;
     }
 
-    public List<Answer> getCorrectAnswers() {
+    public List<Answer> getAnswers() {
         List<Answer> rightAnswers = new ArrayList<>();
-        if(answer1.isRightAnswer()){
-            rightAnswers.add(answer1);
-        }
-        if(answer2.isRightAnswer()){
-            rightAnswers.add(answer2);
-        }
-        if(answer3.isRightAnswer()){
-            rightAnswers.add(answer3);
-        }
-        if(answer4.isRightAnswer()){
-            rightAnswers.add(answer4);
-        }
+        rightAnswers.add(answer1);
+        rightAnswers.add(answer2);
+        rightAnswers.add(answer3);
+        rightAnswers.add(answer4);
 
         return rightAnswers;
+    }
+
+    public int getCatalogID() {
+        return catalogID;
+    }
+
+    public void setCatalogID(int catalogID) {
+        this.catalogID = catalogID;
     }
 }
