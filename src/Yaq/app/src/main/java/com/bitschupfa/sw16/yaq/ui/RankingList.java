@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
+import com.bitschupfa.sw16.yaq.ui.RankingItem;
 
 import java.util.List;
 
