@@ -17,9 +17,8 @@ import android.widget.Toast;
 
 import com.bitschupfa.sw16.yaq.Bluetooth.ConnectionListener;
 import com.bitschupfa.sw16.yaq.R;
-import com.bitschupfa.sw16.yaq.Utils.Quiz;
-import com.bitschupfa.sw16.yaq.ui.PlayerEntry;
 import com.bitschupfa.sw16.yaq.ui.PlayerList;
+import com.bitschupfa.sw16.yaq.Utils.Quiz;
 
 public class Host extends AppCompatActivity {
     private static final int REQUEST_ENABLE_DISCOVERABLE_BT = 42;
@@ -67,7 +66,7 @@ public class Host extends AppCompatActivity {
 
     public void startButtonClicked(View view) {
         Intent intent = new Intent(Host.this, QuestionsAsked.class);
-        intent.putExtra("questions", quiz.createTmpQuiz());
+        intent.putExtra("questions", quiz.createTmpQuiz(this.getApplicationContext()));
         startActivity(intent);
         finish();
     }

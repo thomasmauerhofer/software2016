@@ -1,5 +1,10 @@
 package com.bitschupfa.sw16.yaq.Utils;
 
+import android.content.Context;
+
+import com.bitschupfa.sw16.yaq.Database.Helper.QuestionQuerier;
+import com.bitschupfa.sw16.yaq.Database.Object.TextQuestion;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,7 +13,7 @@ import java.util.List;
 
 public class Quiz implements Serializable {
 
-    List<Question> questions;
+    List<TextQuestion> questions;
 
     int current_question;
 
@@ -17,7 +22,7 @@ public class Quiz implements Serializable {
         current_question = 0;
     }
 
-    public void addQuestion(Question question) {
+    public void addQuestion(TextQuestion question) {
         questions.add(question);
     }
 
@@ -25,7 +30,7 @@ public class Quiz implements Serializable {
         questions.addAll(questions);
     }
 
-    public Question getCurrentQuestion() {
+    public TextQuestion getCurrentQuestion() {
         return questions.get(current_question);
     }
 
@@ -37,7 +42,7 @@ public class Quiz implements Serializable {
         return current_question;
     }
 
-    public List<Question> getQuestions() {
+    public List<TextQuestion> getQuestions() {
         return questions;
     }
 
@@ -46,12 +51,15 @@ public class Quiz implements Serializable {
     }
 
     @Deprecated
-    public Quiz createTmpQuiz() {
+    public Quiz createTmpQuiz(Context context) {
 
-        questions.add(new Question("Wann wurde die Mauer in Berlin niedergerissen?", "1989", "1992", "1991", "1990", "1989"));
-        questions.add(new Question("Wer wurde 2006 Fussball Weltmeister?", "Italien", "Deutschland", "Spanien", "Brasilien", "Italien"));
-        questions.add(new Question("Vor welchem Tieren fürchtete sich Napoleon?", "Katzen", "Hunden", "Spinnen", "Schlangen", "Katzen"));
-        questions.add(new Question("Welcher Kontinent ist der Größte?", "Asien", "Europa", "Afrika", "Australien", "Asien"));
+        QuestionQuerier questionQuerier = new QuestionQuerier(context);
+        questions = questionQuerier.getAllQuestionsFromCatalog(1);
+
+        //questions.add(new TextQuestion("Wann wurde die Mauer in Berlin niedergerissen?", "1989", "1992", "1991", "1990", 1, 1));
+        //questions.add(new TextQuestion("Wer wurde 2006 Fussball Weltmeister?", "Italien", "Deutschland", "Spanien", "Brasilien", 1, 1));
+        //questions.add(new TextQuestion("Vor welchem Tieren fürchtete sich Napoleon?", "Katzen", "Hunden", "Spinnen", "Schlangen", 1, 1));
+        //questions.add(new TextQuestion("Welcher Kontinent ist der Größte?", "Asien", "Europa", "Afrika", "Australien", 1, 1));
         shuffleQuestions();
         return this;
     }
