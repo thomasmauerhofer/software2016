@@ -2,8 +2,11 @@ package com.bitschupfa.sw16.yaq.Database;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.RenamingDelegatingContext;
-import android.util.Log;
 
+import com.bitschupfa.sw16.yaq.Database.Helper.QuestionQuerier;
+import com.bitschupfa.sw16.yaq.Database.Object.Answer;
+import com.bitschupfa.sw16.yaq.Database.Object.QuestionCatalog;
+import com.bitschupfa.sw16.yaq.Database.Object.TextQuestion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +41,7 @@ public class QuestionQuerierTest extends ActivityInstrumentationTestCase2<Questi
             String question = textQuestion.getQuestion();
             int catalogID = textQuestion.getCatalogID();
             int difficulty = textQuestion.getDifficulty();
-            List<Answer> answers = textQuestion.getCorrectAnswers();
+            List<Answer> answers = textQuestion.getAnswers();
 
             assertTrue("Question shouldn't be null", question != null);
             assertTrue("Question shouldn't be empty", question != "");
@@ -54,7 +57,7 @@ public class QuestionQuerierTest extends ActivityInstrumentationTestCase2<Questi
 
 
             for(Answer answer : answers){
-                int answerValue = answer.isRightAnswer();
+                int answerValue = answer.getRightAnswerValue();
                 assertTrue("Is right answer should be between -10 and 10", answerValue >= -10 && difficulty <= 10);
             }
         }
