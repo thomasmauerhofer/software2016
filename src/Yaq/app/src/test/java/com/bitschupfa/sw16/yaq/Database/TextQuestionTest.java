@@ -1,5 +1,8 @@
 package com.bitschupfa.sw16.yaq.Database;
 
+import com.bitschupfa.sw16.yaq.Database.Object.Answer;
+import com.bitschupfa.sw16.yaq.Database.Object.TextQuestion;
+
 import org.junit.Test;
 
 import java.util.List;
