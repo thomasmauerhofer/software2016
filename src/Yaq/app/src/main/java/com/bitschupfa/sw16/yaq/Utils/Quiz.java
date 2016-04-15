@@ -2,9 +2,8 @@ package com.bitschupfa.sw16.yaq.Utils;
 
 import android.content.Context;
 
-import com.bitschupfa.sw16.yaq.Database.QuestionCatalog;
-import com.bitschupfa.sw16.yaq.Database.QuestionQuerier;
-import com.bitschupfa.sw16.yaq.Database.TextQuestion;
+import com.bitschupfa.sw16.yaq.Database.Helper.QuestionQuerier;
+import com.bitschupfa.sw16.yaq.Database.Object.TextQuestion;
 
 import java.io.Serializable;
 import java.util.ArrayList;

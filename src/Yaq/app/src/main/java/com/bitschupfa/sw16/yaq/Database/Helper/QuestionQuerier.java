@@ -6,9 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.bitschupfa.sw16.yaq.Database.object.Answer;
-import com.bitschupfa.sw16.yaq.Database.object.QuestionCatalog;
-import com.bitschupfa.sw16.yaq.Database.object.TextQuestion;
+import com.bitschupfa.sw16.yaq.Database.Object.Answer;
+import com.bitschupfa.sw16.yaq.Database.Object.QuestionCatalog;
+import com.bitschupfa.sw16.yaq.Database.Object.TextQuestion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,11 +51,8 @@ public class QuestionQuerier extends Activity {
     public List<TextQuestion> getAllQuestionsFromCatalogByDifficulty(int catalog, int difficulty){
         Cursor cursor = database.rawQuery("SELECT * FROM Question WHERE qcid="+catalog+" AND difficulty="+difficulty, null);
         cursor.moveToFirst();
-
-        List<TextQuestion> textQuestionList = new ArrayList<TextQuestion>();
-
+        List<TextQuestion> textQuestionList = new ArrayList<>();
         Log.v("Querier Log", "TextQuestion");
-        TextQuestion textQuestion = null;
 
         while (!cursor.isAfterLast()) {
             textQuestionList.add(fillTextQuestion(cursor));
@@ -81,7 +78,7 @@ public class QuestionQuerier extends Activity {
         Cursor cursor = database.rawQuery("SELECT * FROM QuestionCatalog", null);
         cursor.moveToFirst();
 
-        List<QuestionCatalog> questionCatalogs = new ArrayList<QuestionCatalog>();
+        List<QuestionCatalog> questionCatalogs = new ArrayList<>();
 
         while (!cursor.isAfterLast()) {
             int catalogID = cursor.getInt(0);
@@ -128,7 +125,7 @@ public class QuestionQuerier extends Activity {
         Cursor cursor = database.rawQuery("SELECT * FROM QuestionCatalog", null);
         cursor.moveToFirst();
 
-        List<QuestionCatalog> questionCatalogList = new ArrayList<QuestionCatalog>();
+        List<QuestionCatalog> questionCatalogList = new ArrayList<>();
 
         while (!cursor.isAfterLast()) {
             int catalogID = cursor.getInt(0);

@@ -6,8 +6,8 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 
 import com.bitschupfa.sw16.yaq.Activities.QuestionsAsked;
-import com.bitschupfa.sw16.yaq.Database.Answer;
-import com.bitschupfa.sw16.yaq.Database.TextQuestion;
+import com.bitschupfa.sw16.yaq.Database.Object.Answer;
+import com.bitschupfa.sw16.yaq.Database.Object.TextQuestion;
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.Utils.Quiz;
 import com.robotium.solo.Solo;
