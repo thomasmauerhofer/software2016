@@ -1,11 +1,14 @@
-package com.bitschupfa.sw16.yaq.Database;
+package com.bitschupfa.sw16.yaq.Database.Helper;
 
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import android.widget.Toast;
+
+import com.bitschupfa.sw16.yaq.Database.object.Answer;
+import com.bitschupfa.sw16.yaq.Database.object.QuestionCatalog;
+import com.bitschupfa.sw16.yaq.Database.object.TextQuestion;
 
 import java.util.ArrayList;
 import java.util.List;

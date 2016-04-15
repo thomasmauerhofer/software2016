@@ -1,4 +1,4 @@
-package com.bitschupfa.sw16.yaq.Database;
+package com.bitschupfa.sw16.yaq.Database.Helper;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -44,7 +43,6 @@ public class DBHelper extends SQLiteOpenHelper{
             } catch (IOException e) {
                 throw new Error("Error copying database");
             }
-//            Toast.makeText(context, "Initial database is created", Toast.LENGTH_LONG).show();
         }
     }
 

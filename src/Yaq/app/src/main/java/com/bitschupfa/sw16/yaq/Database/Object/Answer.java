@@ -1,4 +1,4 @@
-package com.bitschupfa.sw16.yaq.Database;
+package com.bitschupfa.sw16.yaq.Database.Object;
 
 import java.io.Serializable;
 

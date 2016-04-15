@@ -1,6 +1,4 @@
-package com.bitschupfa.sw16.yaq.Database;
-
-import android.widget.Toast;
+package com.bitschupfa.sw16.yaq.Database.Object;
 
 import java.io.Serializable;
 import java.util.ArrayList;
