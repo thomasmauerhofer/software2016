@@ -38,10 +38,11 @@ captures/
 
 # Intellij
 *.iml
+.idea/
+src/YAQ/.idea/
 
 # Keystore files
 *.jks
 
 ### Android Patch ###
 gen-external-apklibs
-
