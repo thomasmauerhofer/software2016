@@ -65,7 +65,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingBottom="20dp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -84,6 +85,15 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/paired_devices" />
         </RelativeLayout>
+
+        <ProgressBar
+            android:id="@+id/find_devices_bar"
+            style="@android:style/Widget.Holo.ProgressBar.Horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:indeterminateTint="#1F3255"
+            android:indeterminateOnly="true"/>
 
     </LinearLayout>
 

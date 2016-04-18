@@ -45,6 +45,7 @@ public class Join extends AppCompatActivity {
     private ProgressBar pBar;
 
     private Dialog findDeviceDialog;
+    BluetoothDeviceList unpaired = null;
 
     private final BroadcastReceiver btBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -65,9 +66,11 @@ public class Join extends AppCompatActivity {
                     break;
                 case BluetoothDevice.ACTION_FOUND:
                     BluetoothDevice dev = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                    discoveredDevices.add(dev);
-                    Toast.makeText(Join.this, "Discovered new device: " + dev.getName(), Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "Discovered new device: " + dev.getName());
+                    if(!discoveredDevices.contains(dev)) {
+                        discoveredDevices.add(dev);
+                        unpaired.notifyDataSetChanged();
+                        Log.d(TAG, "Discovered new device: " + dev.getName());
+                    }
                     break;
             }
         }
@@ -225,8 +228,9 @@ public class Join extends AppCompatActivity {
             }
         });
 
-        BluetoothDeviceList unpaired = new BluetoothDeviceList(this, discoveredDevices, noUnpairedDevices);
+        unpaired = new BluetoothDeviceList(this, discoveredDevices, noUnpairedDevices);
         unpairedList.setAdapter(unpaired);
+        unpaired.notifyDataSetChanged();
         unpairedList.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
