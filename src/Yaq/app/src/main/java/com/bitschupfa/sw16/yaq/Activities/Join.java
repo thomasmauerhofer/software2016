@@ -66,6 +66,7 @@ public class Join extends AppCompatActivity {
                 case BluetoothDevice.ACTION_FOUND:
                     BluetoothDevice dev = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                     discoveredDevices.add(dev);
+                    Toast.makeText(Join.this, "Discovered new device: " + dev.getName(), Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "Discovered new device: " + dev.getName());
                     break;
             }
@@ -166,9 +167,7 @@ public class Join extends AppCompatActivity {
             Log.d(TAG, "Device is already discovering. Cancel and begin again.");
             btAdapter.cancelDiscovery();
         }
-
         if (!btAdapter.startDiscovery()) {
-
             Log.e(TAG, "Could not start Bluetooth device discovery.");
         }
     }
