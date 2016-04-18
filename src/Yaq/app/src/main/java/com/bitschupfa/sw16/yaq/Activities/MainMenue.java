@@ -24,6 +24,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 public class MainMenue extends AppCompatActivity {
@@ -40,7 +43,7 @@ public class MainMenue extends AppCompatActivity {
     public static ConnectionCallbacks mConnectionCallbacks;
     public static ConnectionFailedListener mConnectionFailedListener;
 
-    public static HelloWorldChannel mHelloWorldChannel;
+    public static YaqGameChannel mYaqGameChannel;
 
     public static boolean mWaitingForReconnect;
     public static boolean mApplicationStarted;
@@ -126,7 +129,18 @@ public class MainMenue extends AppCompatActivity {
             return true;
         } else if (id == R.id.menu_manage) {
             Toast.makeText(this, R.string.not_implemented, Toast.LENGTH_SHORT).show();
-            sendMessage("Manage clicked");
+            JSONObject json = new JSONObject();
+            try {
+                json.put("type", "question");
+                json.put("question", "What is longer than the rest?");
+                json.put("answer_1", "2000 metres");
+                json.put("answer_2", "2 kilometres");
+                json.put("answer_3", "1.24274 miles");
+                json.put("answer_4", "1 light-year");
+            } catch (JSONException e) {
+                Log.d(TAG, e.getMessage());
+            }
+            sendMessage(json.toString());
             return true;
         }
 
@@ -167,6 +181,7 @@ public class MainMenue extends AppCompatActivity {
         @Override
         public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info) {
             //teardown();
+            mApiClient.disconnect();
             mSelectedDevice = null;
             Log.d(MainMenue.class.getCanonicalName(), "onRouteUnselected: ");
         }
@@ -196,11 +211,11 @@ public class MainMenue extends AppCompatActivity {
 
                                                 mApplicationStarted = true;
 
-                                                mHelloWorldChannel = new HelloWorldChannel();
+                                                mYaqGameChannel = new YaqGameChannel();
                                                 try {
                                                     Cast.CastApi.setMessageReceivedCallbacks(mApiClient,
-                                                            mHelloWorldChannel.getNamespace(),
-                                                            mHelloWorldChannel);
+                                                            mYaqGameChannel.getNamespace(),
+                                                            mYaqGameChannel);
                                                 } catch (IOException e) {
                                                     Log.e(TAG, "Exception while creating channel", e);
                                                 }
@@ -230,9 +245,9 @@ public class MainMenue extends AppCompatActivity {
         }
     }
 
-    class HelloWorldChannel implements Cast.MessageReceivedCallback {
+    class YaqGameChannel implements Cast.MessageReceivedCallback {
         public String getNamespace() {
-            return "urn:x-cast:com.google.cast.sample.helloworld";
+            return "urn:x-cast:com.bitschupfa.sw16.yaq";
         }
 
         @Override
@@ -243,9 +258,9 @@ public class MainMenue extends AppCompatActivity {
     }
 
     private void sendMessage(String message) {
-        if (mApiClient != null && mHelloWorldChannel != null) {
+        if (mApiClient != null && mYaqGameChannel != null) {
             try {
-                Cast.CastApi.sendMessage(mApiClient, mHelloWorldChannel.getNamespace(), message)
+                Cast.CastApi.sendMessage(mApiClient, mYaqGameChannel.getNamespace(), message)
                         .setResultCallback(
                                 new ResultCallback<Status>() {
                                     @Override
