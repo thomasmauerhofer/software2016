@@ -1,5 +1,6 @@
 package com.bitschupfa.sw16.yaq.Activities;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
@@ -9,8 +10,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -33,6 +37,7 @@ import java.util.List;
 public class Join extends AppCompatActivity {
     private final static String TAG = "JoinGameActivity";
     private final static int REQUEST_ENABLE_BT = 42;
+    private final static int REQUEST_COARSE_LOCATION_PERMISSIONS = 43;
 
     private final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
     private final List<BluetoothDevice> pairedDevices = new ArrayList<>();
@@ -81,7 +86,7 @@ public class Join extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         if(setupBluetooth()) {
-            findOtherBtDevices();
+            findOtherBluetoothDevices();
         }
 
         playerList = new PlayerList(this);
@@ -136,6 +141,7 @@ public class Join extends AppCompatActivity {
         }
 
         if (!btAdapter.isEnabled()) {
+            Log.d(TAG, "Bluetooth is disabled. Ask user to enable it.");
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             return false;
@@ -144,19 +150,16 @@ public class Join extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_ENABLE_BT && resultCode == RESULT_OK) {
-            Log.d(TAG, "Bluetooth was enabled. Starting device discovery.");
-            findOtherBtDevices();
-        } else if (requestCode == REQUEST_ENABLE_BT) {
-            Log.d(TAG, "Could not enable Bluetooth.");
-            finish();
+    private void findOtherBluetoothDevices() {
+        int hasPermission = ActivityCompat.checkSelfPermission(Join.this,
+                Manifest.permission.ACCESS_COARSE_LOCATION);
+        if (hasPermission != PackageManager.PERMISSION_GRANTED) {
+            Log.d(TAG, "Ask user for permission to discover nearby devices.");
+            ActivityCompat.requestPermissions(Join.this,
+                    new String[] { android.Manifest.permission.ACCESS_COARSE_LOCATION },
+                    REQUEST_COARSE_LOCATION_PERMISSIONS);
+            return;
         }
-    }
-
-    private void findOtherBtDevices() {
-        setBluetoothDeviceLists();
 
         for (BluetoothDevice dev : btAdapter.getBondedDevices()) {
             pairedDevices.add(dev);
@@ -169,11 +172,36 @@ public class Join extends AppCompatActivity {
         }
         if (!btAdapter.startDiscovery()) {
             Log.e(TAG, "Could not start Bluetooth device discovery.");
+            Toast.makeText(Join.this, "Could not start device discovery", Toast.LENGTH_LONG).show();
         }
     }
 
-    public void startTimer()
-    {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_ENABLE_BT && resultCode == RESULT_OK) {
+            Log.d(TAG, "Bluetooth was enabled. Starting device discovery.");
+            findOtherBluetoothDevices();
+        } else if (requestCode == REQUEST_ENABLE_BT) {
+            Log.d(TAG, "Could not enable Bluetooth.");
+            finish();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_COARSE_LOCATION_PERMISSIONS:
+                if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d(TAG, "Permission for device discovery was granted by the user.");
+                    findOtherBluetoothDevices();
+                } else {
+                    Log.d(TAG, "Permission for device discovery was not granted by the user.");
+                }
+                break;
+        }
+    }
+
+    public void startTimer() {
         new CountDownTimer(4000, 1000) {
             public void onTick(long millisUntilFinished) {
                 textView.setText("" + millisUntilFinished / 1000);
