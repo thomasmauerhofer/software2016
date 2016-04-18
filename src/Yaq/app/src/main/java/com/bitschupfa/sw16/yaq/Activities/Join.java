@@ -49,8 +49,9 @@ public class Join extends AppCompatActivity {
     private TextView textView;
     private ProgressBar pBar;
 
-    private Dialog findDeviceDialog;
+    private AlertDialog findDeviceDialog;
     BluetoothDeviceList discovered;
+    BluetoothDeviceList paired;
     ProgressBar dialogBar;
 
     private final BroadcastReceiver btBroadcastReceiver = new BroadcastReceiver() {
@@ -66,9 +67,11 @@ public class Join extends AppCompatActivity {
                     break;
                 case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
                     Log.d(TAG, "Bluetooth device discovery started.");
+                    dialogBar.setVisibility(View.VISIBLE);
                     break;
                 case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
                     Log.d(TAG, "Bluetooth device discovery finished.");
+                    dialogBar.setVisibility(View.INVISIBLE);
                     break;
                 case BluetoothDevice.ACTION_FOUND:
                     BluetoothDevice dev = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
@@ -224,29 +227,18 @@ public class Join extends AppCompatActivity {
         findDeviceDialog = new AlertDialog.Builder(this)
                 .setView(dialogView)
                 .setTitle(R.string.dialog_find_device_title)
-                .setNeutralButton(R.string.refresh, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //ProgressBar  = (ListView) dialogView.findViewById(R.id.paired_devices);
-
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Join.this.finish();
-                    }
-                })
+                .setPositiveButton(R.string.refresh, null)
+                .setNegativeButton(R.string.cancel, null)
                 .create();
         findDeviceDialog.setCanceledOnTouchOutside(false);
 
-
+        dialogBar  = (ProgressBar) dialogView.findViewById(R.id.find_devices_bar);
         ListView pairedList = (ListView) dialogView.findViewById(R.id.paired_devices);
         ListView unpairedList = (ListView) dialogView.findViewById(R.id.unpaired_devices);
         TextView noPairedDevices = (TextView) dialogView.findViewById(R.id.no_paired_devices_found);
         TextView noUnpairedDevices = (TextView) dialogView.findViewById(R.id.no_unpaired_devices_found);
 
-        BluetoothDeviceList paired = new BluetoothDeviceList(this,  pairedDevices, noPairedDevices);
+        paired = new BluetoothDeviceList(this,  pairedDevices, noPairedDevices);
         pairedList.setAdapter(paired);
         pairedList.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -286,5 +278,32 @@ public class Join extends AppCompatActivity {
             }
         });
         findDeviceDialog.show();
+
+        findDeviceDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pairedDevices.clear();
+                discoveredDevices.clear();
+                paired.notifyDataSetChanged();
+                discovered.notifyDataSetChanged();
+                findOtherBluetoothDevices();
+            }
+        });
+
+        findDeviceDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                findDeviceDialog.dismiss();
+                Join.this.finish();
+            }
+        });
+
+        findDeviceDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                findDeviceDialog.dismiss();
+                Join.this.finish();
+            }
+        });
     }
 }

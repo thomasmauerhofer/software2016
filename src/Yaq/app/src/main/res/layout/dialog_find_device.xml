@@ -93,7 +93,8 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:indeterminateTint="#1F3255"
-            android:indeterminateOnly="true"/>
+            android:indeterminateOnly="true"
+            android:visibility="invisible" />
 
     </LinearLayout>
 
