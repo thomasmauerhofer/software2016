@@ -46,6 +46,32 @@ public class Join extends AppCompatActivity {
 
     private Dialog findDeviceDialog;
 
+    private final BroadcastReceiver btBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case BluetoothAdapter.ACTION_STATE_CHANGED:
+                    int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
+                    if (state == BluetoothAdapter.STATE_TURNING_OFF) {
+                        Log.d(TAG, "Bluetooth was turned off!");
+                        finish();
+                    }
+                    break;
+                case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
+                    Log.d(TAG, "Bluetooth device discovery started.");
+                    break;
+                case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
+                    Log.d(TAG, "Bluetooth device discovery finished.");
+                    break;
+                case BluetoothDevice.ACTION_FOUND:
+                    BluetoothDevice dev = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                    discoveredDevices.add(dev);
+                    Log.d(TAG, "Discovered new device: " + dev.getName());
+                    break;
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,9 +83,7 @@ public class Join extends AppCompatActivity {
             findOtherBtDevices();
         }
 
-
         playerList = new PlayerList(this);
-
         playerList.addPlayer("Thomas");
         playerList.addPlayer("Manuel");
         playerList.addPlayer("Matthias");
@@ -80,18 +104,20 @@ public class Join extends AppCompatActivity {
                 startTimer();
             }
         });
-
-        setBluetoothDeviceLists();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(broadcastReceiver);
+        unregisterReceiver(btBroadcastReceiver);
     }
 
     private boolean setupBluetooth() {
-        registerReceiver(broadcastReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
+        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+        filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+        registerReceiver(btBroadcastReceiver, filter);
 
         if (btAdapter == null) {
             new AlertDialog.Builder(this)
@@ -111,46 +137,38 @@ public class Join extends AppCompatActivity {
         if (!btAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+            return false;
         }
+
         return true;
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_ENABLE_BT && resultCode != RESULT_OK) {
+        if (requestCode == REQUEST_ENABLE_BT && resultCode == RESULT_OK) {
+            Log.d(TAG, "Bluetooth was enabled. Starting device discovery.");
+            findOtherBtDevices();
+        } else if (requestCode == REQUEST_ENABLE_BT) {
             Log.d(TAG, "Could not enable Bluetooth.");
             finish();
         }
     }
 
-    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            switch (intent.getAction()) {
-                case BluetoothAdapter.ACTION_STATE_CHANGED:
-                    int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
-                    if (state == BluetoothAdapter.STATE_TURNING_OFF) {
-                        Log.d(TAG, "Bluetooth was turned off!");
-                        finish();
-                    }
-                    break;
-                case BluetoothDevice.ACTION_FOUND:
-                    BluetoothDevice dev = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                    discoveredDevices.add(dev);
-                    Log.d(TAG, "Discovered new device: " + dev.getName());
-                    break;
-            }
-        }
-    };
-
     private void findOtherBtDevices() {
+        setBluetoothDeviceLists();
+
         for (BluetoothDevice dev : btAdapter.getBondedDevices()) {
             pairedDevices.add(dev);
             Log.d(TAG, "Added already paired device: " + dev.getName());
         }
 
+        if (btAdapter.isDiscovering()) {
+            Log.d(TAG, "Device is already discovering. Cancel and begin again.");
+            btAdapter.cancelDiscovery();
+        }
+
         if (!btAdapter.startDiscovery()) {
+
             Log.e(TAG, "Could not start Bluetooth device discovery.");
         }
     }
