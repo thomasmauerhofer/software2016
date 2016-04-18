@@ -50,7 +50,8 @@ public class Join extends AppCompatActivity {
     private ProgressBar pBar;
 
     private Dialog findDeviceDialog;
-    BluetoothDeviceList unpaired = null;
+    BluetoothDeviceList discovered;
+    ProgressBar dialogBar;
 
     private final BroadcastReceiver btBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -73,7 +74,7 @@ public class Join extends AppCompatActivity {
                     BluetoothDevice dev = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                     if(!discoveredDevices.contains(dev)) {
                         discoveredDevices.add(dev);
-                        unpaired.notifyDataSetChanged();
+                        discovered.notifyDataSetChanged();
                         Log.d(TAG, "Discovered new device: " + dev.getName());
                     }
                     break;
@@ -150,6 +151,7 @@ public class Join extends AppCompatActivity {
             return false;
         }
 
+        setBluetoothDeviceLists();
         return true;
     }
 
@@ -218,16 +220,24 @@ public class Join extends AppCompatActivity {
     }
 
     public void setBluetoothDeviceLists() {
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_find_device, null);
+        final View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_find_device, null);
         findDeviceDialog = new AlertDialog.Builder(this)
                 .setView(dialogView)
                 .setTitle(R.string.dialog_find_device_title)
+                .setNeutralButton(R.string.refresh, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //ProgressBar  = (ListView) dialogView.findViewById(R.id.paired_devices);
+
+                    }
+                })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Join.this.finish();
                     }
-                }).create();
+                })
+                .create();
         findDeviceDialog.setCanceledOnTouchOutside(false);
 
 
@@ -256,9 +266,8 @@ public class Join extends AppCompatActivity {
             }
         });
 
-        unpaired = new BluetoothDeviceList(this, discoveredDevices, noUnpairedDevices);
-        unpairedList.setAdapter(unpaired);
-        unpaired.notifyDataSetChanged();
+        discovered = new BluetoothDeviceList(this, discoveredDevices, noUnpairedDevices);
+        unpairedList.setAdapter(discovered);
         unpairedList.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
