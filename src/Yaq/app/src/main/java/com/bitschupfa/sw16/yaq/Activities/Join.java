@@ -133,6 +133,8 @@ public class Join extends AppCompatActivity {
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         registerReceiver(btBroadcastReceiver, filter);
 
+        setBluetoothDeviceLists();
+
         if (btAdapter == null) {
             new AlertDialog.Builder(this)
                     .setTitle("Error")
@@ -155,7 +157,6 @@ public class Join extends AppCompatActivity {
             return false;
         }
 
-        setBluetoothDeviceLists();
         return true;
     }
 
