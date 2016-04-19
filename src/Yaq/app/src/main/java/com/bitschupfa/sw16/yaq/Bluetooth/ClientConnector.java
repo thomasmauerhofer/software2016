@@ -13,14 +13,12 @@ import java.io.IOException;
 public class ClientConnector implements Runnable {
     private final static String TAG = "BTClientConnector";
     private final BluetoothSocket btSocket;
-    private boolean error = false;
 
     public ClientConnector(BluetoothDevice dev) {
         BluetoothSocket tmp = null;
         try {
             tmp = dev.createRfcommSocketToServiceRecord(BTService.SERVICE_UUID);
         } catch (IOException e) {
-            error = true;
             Log.e(TAG, "Could not create Bluetooth socket: " + e.getMessage());
         }
 
@@ -32,7 +30,6 @@ public class ClientConnector implements Runnable {
         Log.d(TAG, "Starting thread.");
 
         if (btSocket == null) {
-            error = true;
             Log.e(TAG, "No Bluetooth socket available. Killing thread.");
             return;
         }
@@ -46,7 +43,6 @@ public class ClientConnector implements Runnable {
         try {
             btSocket.connect();
         } catch (IOException e) {
-            error = true;
             Log.e(TAG, "Could not establish connection to other device: " + e.getMessage());
             return;
         }
@@ -56,7 +52,6 @@ public class ClientConnector implements Runnable {
             new Thread(server).start();
             // TODO: pass device object to activity and send hello message
         } catch (IOException e) {
-            error = true;
             Log.e(TAG, "Could not create new ConnectedDevice: " + e.getMessage());
         }
     }
@@ -70,9 +65,5 @@ public class ClientConnector implements Runnable {
         try {
             btSocket.close();
         } catch (IOException e) { }
-    }
-
-    public boolean getError() {
-        return error;
     }
 }

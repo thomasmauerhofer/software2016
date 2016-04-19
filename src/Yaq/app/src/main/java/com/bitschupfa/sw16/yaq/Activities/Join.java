@@ -2,7 +2,6 @@ package com.bitschupfa.sw16.yaq.Activities;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -34,6 +33,7 @@ import com.bitschupfa.sw16.yaq.ui.PlayerList;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Join extends AppCompatActivity {
     private final static String TAG = "JoinGameActivity";
     private final static int REQUEST_ENABLE_BT = 42;
@@ -42,10 +42,8 @@ public class Join extends AppCompatActivity {
     private final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
     private final List<BluetoothDevice> pairedDevices = new ArrayList<>();
     private final List<BluetoothDevice> discoveredDevices = new ArrayList<>();
-    private ClientConnector connector = null;
 
     private PlayerList playerList;
-
     private TextView textView;
     private ProgressBar pBar;
 
@@ -75,11 +73,14 @@ public class Join extends AppCompatActivity {
                     break;
                 case BluetoothDevice.ACTION_FOUND:
                     BluetoothDevice dev = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                    if(!discoveredDevices.contains(dev)) {
+                    if (!discoveredDevices.contains(dev)) {
                         discoveredDevices.add(dev);
                         discovered.notifyDataSetChanged();
                         Log.d(TAG, "Discovered new device: " + dev.getName());
                     }
+                    break;
+                default:
+                    Log.d(TAG, intent.getAction() + " intent was not handled in BT broadcast receiver.");
                     break;
             }
         }
@@ -239,44 +240,24 @@ public class Join extends AppCompatActivity {
         TextView noUnpairedDevices = (TextView) dialogView.findViewById(R.id.no_unpaired_devices_found);
 
         paired = new BluetoothDeviceList(this,  pairedDevices, noPairedDevices);
-        pairedList.setAdapter(paired);
-        pairedList.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3)
-            {
-                connector = new ClientConnector(pairedDevices.get(position));
-                connector.run();
-
-                if(connector.getError()) {
-                    Toast.makeText(Join.this, getText(R.string.cant_connect_to)+ " " + pairedDevices.get(position).getName(), Toast.LENGTH_SHORT).show();
-                    connector.cancel();
-                } else {
-                    Toast.makeText(Join.this, getText(R.string.connect_to) + " " + pairedDevices.get(position).getName(), Toast.LENGTH_SHORT).show();
-                    findDeviceDialog.dismiss();
-                }
-            }
-        });
-
         discovered = new BluetoothDeviceList(this, discoveredDevices, noUnpairedDevices);
-        unpairedList.setAdapter(discovered);
-        unpairedList.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3)
-            {
-                connector = new ClientConnector(discoveredDevices.get(position));
-                connector.run();
 
-                if(connector.getError()) {
-                    Toast.makeText(Join.this, getText(R.string.cant_connect_to)+ " " + discoveredDevices.get(position).getName(), Toast.LENGTH_SHORT).show();
-                    connector.cancel();
-                } else {
-                    Toast.makeText(Join.this, getText(R.string.connect_to) + " " + discoveredDevices.get(position).getName(), Toast.LENGTH_SHORT).show();
-                    findDeviceDialog.dismiss();
-                }
+        pairedList.setAdapter(paired);
+        unpairedList.setAdapter(discovered);
+
+        AdapterView.OnItemClickListener onDevClickListener = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                BluetoothDevice selectedDev = pairedDevices.get(position);
+                new ClientConnector(selectedDev);
+
+                Toast.makeText(Join.this, R.string.not_implemented, Toast.LENGTH_LONG).show();
+                // TODO: connect to selected device and register callback
             }
-        });
+        };
+        pairedList.setOnItemClickListener(onDevClickListener);
+        unpairedList.setOnItemClickListener(onDevClickListener);
+
         findDeviceDialog.show();
 
         findDeviceDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
