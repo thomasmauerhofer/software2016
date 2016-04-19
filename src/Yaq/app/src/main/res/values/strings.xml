@@ -50,4 +50,7 @@
     <string name="title_activity_statistic">Statistic</string>
     <string name="play_again">Play Again</string>
 
+    <!-- TestStrings -->
+    <string name="allow">Allow</string>
+
 </resources>
