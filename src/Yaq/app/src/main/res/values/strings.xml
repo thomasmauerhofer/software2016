@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">YAQ</string>
 
+    <string name="ok">ok</string>
+    <string name="cancel">cancel</string>
+
     <!-- MainActivity -->
     <string name="host">Host Game</string>
     <string name="join">Join Game</string>
@@ -31,6 +34,13 @@
 
     <!-- JoinActivity -->
     <string name="title_activity_join">Join Game</string>
+    <string name="dialog_find_device_title">Find Device</string>
+    <string name="dialog_paired_devices">Paired Devices:</string>
+    <string name="dialog_unpaired_devices">Discovered Devices:</string>
+    <string name="dialog_no_devices_found">No Devices found...</string>
+    <string name="connect_to">Connect to</string>
+    <string name="cant_connect_to">Can\'t connect to</string>
+    <string name="refresh">Refresh</string>
 
     <!-- QestionsAskedActivity -->
     <string name="title_activity_quesions_asked">YAQ</string>
@@ -39,5 +49,8 @@
     <!-- StatisticActivity -->
     <string name="title_activity_statistic">Statistic</string>
     <string name="play_again">Play Again</string>
+
+    <!-- TestStrings -->
+    <string name="allow">Allow</string>
 
 </resources>

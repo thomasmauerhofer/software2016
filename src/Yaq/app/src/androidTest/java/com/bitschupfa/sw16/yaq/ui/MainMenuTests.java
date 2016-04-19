@@ -29,11 +29,12 @@ public class MainMenuTests extends ActivityInstrumentationTestCase2<MainMenue> {
         solo.finishOpenedActivities();
     }
 
-    public void testMainMenu() {
+    public void testMainMenuHost() {
         solo.clickOnButton(getActivity().getResources().getString(R.string.host));
         assertTrue("Wrong Activity!", solo.waitForActivity(Host.class));
+    }
 
-        solo.goBack();
+    public void testMainMenuJoin() {
         solo.clickOnButton(getActivity().getResources().getString(R.string.join));
         assertTrue("Wrong Activity!", solo.waitForActivity(Join.class));
     }
