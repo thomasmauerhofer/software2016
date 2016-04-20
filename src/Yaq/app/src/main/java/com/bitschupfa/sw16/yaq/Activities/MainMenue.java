@@ -39,7 +39,8 @@ public class MainMenue extends AppCompatActivity {
             Toast.makeText(this, R.string.not_implemented, Toast.LENGTH_SHORT).show();
             return true;
         } else if (id == R.id.menu_profile) {
-            Toast.makeText(this, R.string.not_implemented, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainMenue.this, Profile.class);
+            startActivity(intent);
             return true;
         } else if (id == R.id.menu_manage) {
             Toast.makeText(this, R.string.not_implemented, Toast.LENGTH_SHORT).show();
