@@ -12,4 +12,31 @@
     tools:context="com.bitschupfa.sw16.yaq.Activities.Profile"
     tools:showIn="@layout/activity_profile">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imgView_avatar"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:clickable="false"
+        android:minHeight="300dp"
+        android:minWidth="300dp"
+        android:maxHeight="300dp"
+        android:maxWidth="300dp"
+        android:layout_marginTop="20dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_playerName"
+        android:layout_below="@+id/imgView_avatar"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:hint="player name"
+        android:inputType="textCapCharacters"
+        android:textStyle="bold"
+        android:gravity="center" />
 </RelativeLayout>
