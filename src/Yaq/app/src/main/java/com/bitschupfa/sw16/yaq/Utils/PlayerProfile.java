@@ -31,7 +31,7 @@ public class PlayerProfile {
         defaultAvatar = BitmapFactory.decodeResource(context.getResources(), R.mipmap.default_avatar);
     }
 
-    public PlayerProfile getInstance(Context context) {
+    public static PlayerProfile getInstance(Context context) {
         if (instance == null) {
             instance = new PlayerProfile(context);
         }
@@ -61,6 +61,7 @@ public class PlayerProfile {
         String encodedAvatar = preferences.getString(PREF_PLAYER_AVATAR_KEY, null);
         if (encodedAvatar == null) {
             setPlayerAvatar(defaultAvatar);
+            return defaultAvatar;
         }
 
         return decodeBitmap(encodedAvatar);
