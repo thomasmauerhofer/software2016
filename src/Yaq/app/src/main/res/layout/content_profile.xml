@@ -36,7 +36,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:hint="player name"
-        android:inputType="textCapCharacters"
         android:textStyle="bold"
-        android:gravity="center" />
+        android:gravity="center"
+        android:inputType="text" />
 </RelativeLayout>
