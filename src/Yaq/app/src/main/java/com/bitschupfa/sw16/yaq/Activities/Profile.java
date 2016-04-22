@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bitschupfa.sw16.yaq.R;
-import com.bitschupfa.sw16.yaq.Utils.PlayerProfile;
+import com.bitschupfa.sw16.yaq.Profile.PlayerProfileStorage;
 import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
@@ -23,7 +23,7 @@ import java.io.IOException;
 public class Profile extends AppCompatActivity {
     private final static String TAG = "ProfileActivity";
 
-    private PlayerProfile profile;
+    private PlayerProfileStorage profile;
     private EditText nameTextBox;
     private ImageView avatarImageView;
     private FloatingActionButton actionButton;
@@ -36,7 +36,7 @@ public class Profile extends AppCompatActivity {
         actionButton = (FloatingActionButton) findViewById(R.id.fab);
         nameTextBox = (EditText) findViewById(R.id.txt_playerName);
         avatarImageView = (ImageView) findViewById(R.id.imgView_avatar);
-        profile = PlayerProfile.getInstance(this.getApplicationContext());
+        profile = PlayerProfileStorage.getInstance(Profile.this);
 
         nameTextBox.setText(profile.getPlayerName());
         avatarImageView.setImageBitmap(profile.getPlayerAvatar());
