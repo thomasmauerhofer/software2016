@@ -39,7 +39,9 @@ public class Host extends AppCompatActivity {
         if (setupBluetooth()) {
             new Thread(btConnectionListener, "BT Connection Listener Thread").start();
             TextView hostnameLabel = (TextView) findViewById(R.id.lbl_hostname);
-            hostnameLabel.append(btAdapter.getName());
+            if (hostnameLabel != null) {
+                hostnameLabel.append(btAdapter.getName());
+            }
         }
 
         quiz = new Quiz();
@@ -102,7 +104,7 @@ public class Host extends AppCompatActivity {
             discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0);
             startActivityForResult(discoverableIntent, REQUEST_ENABLE_DISCOVERABLE_BT);
         } else {
-            btConnectionListener.setDiscoverable(true);
+            btConnectionListener.setDiscoverable();
         }
         return true;
     }
@@ -113,7 +115,7 @@ public class Host extends AppCompatActivity {
             case REQUEST_ENABLE_DISCOVERABLE_BT:
                 Log.d("Host:onActivityResult", "requestCode: REQUEST_ENABLE_DISCOVERABLE_BT");
                 if (resultCode != RESULT_CANCELED) {
-                    btConnectionListener.setDiscoverable(true);
+                    btConnectionListener.setDiscoverable();
                 } else {
                     Log.d("BT", "Could not enable discoverability.");
                     finish();

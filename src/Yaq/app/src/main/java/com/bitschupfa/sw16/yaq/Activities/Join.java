@@ -48,9 +48,9 @@ public class Join extends AppCompatActivity {
     private ProgressBar pBar;
 
     private AlertDialog findDeviceDialog;
-    BluetoothDeviceList discovered;
-    BluetoothDeviceList paired;
-    ProgressBar dialogBar;
+    private BluetoothDeviceList discovered;
+    private BluetoothDeviceList paired;
+    private ProgressBar dialogBar;
 
     private final BroadcastReceiver btBroadcastReceiver = new BroadcastReceiver() {
         @Override

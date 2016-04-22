@@ -46,7 +46,7 @@ public class TextQuestion implements Serializable{
     }
 
     public List<Answer> getShuffeledAnswers() {
-        List<Answer> tmp = new ArrayList();
+        List<Answer> tmp = new ArrayList<>();
 
         tmp.add(answer1);
         tmp.add(answer2);

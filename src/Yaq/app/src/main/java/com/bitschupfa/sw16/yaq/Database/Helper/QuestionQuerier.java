@@ -95,30 +95,22 @@ public class QuestionQuerier extends Activity {
         Cursor cursor = database.rawQuery("SELECT * FROM QuestionCatalog WHERE qcid=" + catalogId, null);
         cursor.moveToFirst();
 
-        QuestionCatalog questionCatalog = null;
-
         int catalogID = cursor.getInt(0);
         String question = cursor.getString(1);
         cursor.moveToNext();
         List<TextQuestion> textQuestionList = getAllQuestionsFromCatalog(catalogID);
-        questionCatalog = new QuestionCatalog(catalogID,question,textQuestionList);
-
-        return questionCatalog;
+        return new QuestionCatalog(catalogID,question,textQuestionList);
     }
 
     public QuestionCatalog getQuestionCatalogByIdAndDifficulty(int catalogId, int difficulty){
         Cursor cursor = database.rawQuery("SELECT * FROM QuestionCatalog WHERE qcid=" + catalogId, null);
         cursor.moveToFirst();
 
-        QuestionCatalog questionCatalog = null;
-
         int catalogID = cursor.getInt(0);
         String question = cursor.getString(1);
         cursor.moveToNext();
         List<TextQuestion> textQuestionList = getAllQuestionsFromCatalogByDifficulty(catalogID, difficulty);
-        questionCatalog = new QuestionCatalog(catalogID,question,textQuestionList);
-
-        return questionCatalog;
+        return new QuestionCatalog(catalogID,question,textQuestionList);
     }
 
     public List<QuestionCatalog> getAllQuestionCatalogs(){

@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">YAQ</string>
 
-    <string name="ok">ok</string>
-    <string name="cancel">cancel</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 
     <!-- MainActivity -->
     <string name="host">Host Game</string>
@@ -37,7 +37,7 @@
     <string name="dialog_find_device_title">Find Device</string>
     <string name="dialog_paired_devices">Paired Devices:</string>
     <string name="dialog_unpaired_devices">Discovered Devices:</string>
-    <string name="dialog_no_devices_found">No Devices found...</string>
+    <string name="dialog_no_devices_found">No Devices found…</string>
     <string name="connect_to">Connect to</string>
     <string name="cant_connect_to">Can\'t connect to</string>
     <string name="refresh">Refresh</string>

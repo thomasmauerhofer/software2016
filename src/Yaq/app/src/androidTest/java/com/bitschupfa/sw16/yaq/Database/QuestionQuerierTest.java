@@ -43,8 +43,8 @@ public class QuestionQuerierTest extends ActivityInstrumentationTestCase2<Questi
             int difficulty = textQuestion.getDifficulty();
             List<Answer> answers = textQuestion.getAnswers();
 
-            assertTrue("Question shouldn't be null", question != null);
-            assertTrue("Question shouldn't be empty", question != "");
+            assertNotNull("Question shouldn't be null", question);
+            assertTrue("Question shouldn't be empty", !question.equals(""));
             assertTrue("Difficulty should be between 1 and 3", difficulty >= 1 && difficulty <= 3);
 
             if(referenceCatalogID != null){
@@ -72,8 +72,8 @@ public class QuestionQuerierTest extends ActivityInstrumentationTestCase2<Questi
                 List<TextQuestion> textQuestionList = questionCatalog.getTextQuestionList();
                 testAllQuestionsFromCatalogGeneric(textQuestionList, referenceCatalogID, referenceDifficulty);
 
-                assertTrue("Name shouldn't be null", questionCatalog.getName() != null);
-                assertTrue("Name shouldn't be empty", questionCatalog.getName() != "");
+                assertNotNull("Name shouldn't be null", questionCatalog.getName());
+                assertTrue("Name shouldn't be empty", !questionCatalog.getName().equals(""));
             }
         }
     }

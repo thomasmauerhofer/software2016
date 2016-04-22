@@ -79,7 +79,7 @@ public class ConnectionListener implements Runnable {
         // TODO: register client in the game
     }
 
-    public void setDiscoverable(boolean discoverable) {
-        isDiscoverable = discoverable;
+    public void setDiscoverable() {
+        isDiscoverable = true;
     }
 }

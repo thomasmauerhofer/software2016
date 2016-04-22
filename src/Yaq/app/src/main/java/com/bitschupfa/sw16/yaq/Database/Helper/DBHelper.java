@@ -13,9 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-/**
- * Created by Patrik on 01.04.2016.
- */
 public class DBHelper extends SQLiteOpenHelper{
 
     private static String DATABASE_NAME = "yaq.db";

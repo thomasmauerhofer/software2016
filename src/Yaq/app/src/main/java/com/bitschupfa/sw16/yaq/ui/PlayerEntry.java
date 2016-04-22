@@ -3,19 +3,14 @@ package com.bitschupfa.sw16.yaq.ui;
 import android.app.Activity;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
 
-import java.util.ArrayList;
-import java.util.List;
 
-/**
- * Created by thomas on 22.03.16.
- */
+
 public class PlayerEntry {
 
     private LinearLayout layout = null;
