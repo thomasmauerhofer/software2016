@@ -211,7 +211,7 @@ public class Join extends AppCompatActivity {
         }
     }
 
-    public void startTimer() {
+    private void startTimer() {
         new CountDownTimer(4000, 1000) {
             public void onTick(long millisUntilFinished) {
                 textView.setText("" + millisUntilFinished / 1000);
@@ -224,7 +224,7 @@ public class Join extends AppCompatActivity {
         }.start();
     }
 
-    public void setBluetoothDeviceLists() {
+    private void setBluetoothDeviceLists() {
         final View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_find_device, null);
         findDeviceDialog = new AlertDialog.Builder(this)
                 .setView(dialogView)

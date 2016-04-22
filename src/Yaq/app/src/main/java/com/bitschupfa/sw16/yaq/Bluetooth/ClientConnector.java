@@ -64,6 +64,8 @@ public class ClientConnector implements Runnable {
 
         try {
             btSocket.close();
-        } catch (IOException e) { }
+        } catch (IOException e) {
+            Log.e(TAG, "Error while closing the socket: " + e.getMessage());
+        }
     }
 }
