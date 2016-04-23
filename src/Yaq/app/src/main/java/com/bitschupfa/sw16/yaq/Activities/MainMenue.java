@@ -2,6 +2,7 @@ package com.bitschupfa.sw16.yaq.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.MediaRouteActionProvider;
@@ -19,6 +20,7 @@ import com.google.android.gms.cast.ApplicationMetadata;
 import com.google.android.gms.cast.Cast;
 import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastMediaControlIntent;
+import com.google.android.gms.cast.LaunchOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -31,24 +33,24 @@ import java.io.IOException;
 
 public class MainMenue extends AppCompatActivity {
 
-    public static String TAG = MainMenue.class.getCanonicalName();
+    private static final String TAG = MainMenue.class.getCanonicalName();
 
-    public static MediaRouter mMediaRouter;
-    public static MediaRouteSelector mMediaRouteSelector;
-    public static CastDevice mSelectedDevice;
-    public static MyMediaRouterCallback mMediaRouterCallback;
-    public static GoogleApiClient mApiClient;
+    private static MediaRouter mMediaRouter;
+    private static MediaRouteSelector mMediaRouteSelector;
+    private static CastDevice mSelectedDevice;
+    private static MediaRouter.Callback mMediaRouterCallback;
+    private static GoogleApiClient mApiClient;
 
-    public static Cast.Listener mCastClientListener;
-    public static ConnectionCallbacks mConnectionCallbacks;
-    public static ConnectionFailedListener mConnectionFailedListener;
+    private static Cast.Listener mCastClientListener;
+    private static ConnectionCallbacks mConnectionCallbacks;
+    private static ConnectionFailedListener mConnectionFailedListener;
 
-    public static YaqGameChannel mYaqGameChannel;
+    private static YaqGameChannel mYaqGameChannel;
 
-    public static boolean mWaitingForReconnect;
-    public static boolean mApplicationStarted;
+    private static boolean mWaitingForReconnect;
+    private static boolean mApplicationStarted;
 
-    private static String APPLICATION_ID = "5CC4A228";
+    private static final String APPLICATION_ID = "5CC4A228";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,30 +64,6 @@ public class MainMenue extends AppCompatActivity {
                 .addControlCategory(CastMediaControlIntent.categoryForCast(APPLICATION_ID))
                         .build();
         mMediaRouterCallback = new MyMediaRouterCallback();
-
-        mConnectionCallbacks = new ConnectionCallbacks();
-        mConnectionFailedListener = new ConnectionFailedListener();
-        mCastClientListener = new Cast.Listener() {
-            @Override
-            public void onApplicationStatusChanged() {
-                if (mApiClient != null) {
-                    Log.d(TAG, "onApplicationStatusChanged: "
-                            + Cast.CastApi.getApplicationStatus(mApiClient));
-                }
-            }
-
-            @Override
-            public void onVolumeChanged() {
-                if (mApiClient != null) {
-                    Log.d(TAG, "onVolumeChanged: " + Cast.CastApi.getVolume(mApiClient));
-                }
-            }
-
-            @Override
-            public void onApplicationDisconnected(int errorCode) {
-                //teardown();
-            }
-        };
     }
 
     @Override
@@ -147,12 +125,14 @@ public class MainMenue extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressWarnings("UnusedParameters")
     public void hostButtonClicked(View view)
     {
         Intent intent = new Intent(MainMenue.this, Host.class);
         startActivity(intent);
     }
 
+    @SuppressWarnings("UnusedParameters")
     public void joinButtonClicked(View view) {
         Intent intent = new Intent(MainMenue.this, Join.class);
         startActivity(intent);
@@ -166,23 +146,50 @@ public class MainMenue extends AppCompatActivity {
             String routeId = info.getId();
             Log.d(MainMenue.class.getCanonicalName(), "onRouteSelected: " + routeId);
 
-            Cast.CastOptions.Builder apiOptionsBuilder = Cast.CastOptions
-                    .builder(mSelectedDevice, mCastClientListener);
+            // launch the receiver application
+            try {
+                mCastClientListener = new Cast.Listener() {
+                    @Override
+                    public void onApplicationStatusChanged() {
+                        if (mApiClient != null) {
+                            Log.d(TAG, "onApplicationStatusChanged: "
+                                    + Cast.CastApi.getApplicationStatus(mApiClient));
+                        }
+                    }
 
-            mApiClient = new GoogleApiClient.Builder(getApplicationContext())
-                    .addApi(Cast.API, apiOptionsBuilder.build())
-                    .addConnectionCallbacks(mConnectionCallbacks)
-                    .addOnConnectionFailedListener(mConnectionFailedListener)
-                    .build();
+                    @Override
+                    public void onVolumeChanged() {
+                        if (mApiClient != null) {
+                            Log.d(TAG, "onVolumeChanged: " + Cast.CastApi.getVolume(mApiClient));
+                        }
+                    }
 
-            mApiClient.connect();
+                    @Override
+                    public void onApplicationDisconnected(int errorCode) {
+                        //teardown();
+                    }
+                };
+                mConnectionCallbacks = new ConnectionCallbacks();
+                mConnectionFailedListener = new ConnectionFailedListener();
+
+                Cast.CastOptions.Builder apiOptionsBuilder = new Cast.CastOptions
+                        .Builder(mSelectedDevice, mCastClientListener);
+
+                mApiClient = new GoogleApiClient.Builder(getApplicationContext())
+                        .addApi(Cast.API, apiOptionsBuilder.build())
+                        .addConnectionCallbacks(mConnectionCallbacks)
+                        .addOnConnectionFailedListener(mConnectionFailedListener)
+                        .build();
+
+                mApiClient.connect();
+            } catch (Exception e) {
+                Log.e(TAG, "Failed launchReceiver", e);
+            }
         }
 
         @Override
         public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info) {
-            //teardown();
-            mApiClient.disconnect();
-            mSelectedDevice = null;
+            teardown(true);
             Log.d(MainMenue.class.getCanonicalName(), "onRouteUnselected: ");
         }
     }
@@ -193,14 +200,15 @@ public class MainMenue extends AppCompatActivity {
         public void onConnected(Bundle connectionHint) {
             if (mWaitingForReconnect) {
                 mWaitingForReconnect = false;
-                //reconnectChannels();
+                // TODO: reconnect channels if needed (see HelloWorld Example)
             } else {
                 try {
-                    Cast.CastApi.launchApplication(mApiClient, APPLICATION_ID, false)
+                    LaunchOptions launchOptions = new LaunchOptions.Builder().setRelaunchIfRunning(true).build();
+                    Cast.CastApi.launchApplication(mApiClient, APPLICATION_ID, launchOptions)
                             .setResultCallback(
                                     new ResultCallback<Cast.ApplicationConnectionResult>() {
                                         @Override
-                                        public void onResult(Cast.ApplicationConnectionResult result) {
+                                        public void onResult(@NonNull Cast.ApplicationConnectionResult result) {
                                             Status status = result.getStatus();
                                             if (status.isSuccess()) {
                                                 ApplicationMetadata applicationMetadata =
@@ -208,6 +216,12 @@ public class MainMenue extends AppCompatActivity {
                                                 String sessionId = result.getSessionId();
                                                 String applicationStatus = result.getApplicationStatus();
                                                 boolean wasLaunched = result.getWasLaunched();
+
+                                                Log.d(TAG, "application name: "
+                                                        + applicationMetadata.getName()
+                                                        + ", status: " + applicationStatus
+                                                        + ", sessionId: " + sessionId
+                                                        + ", wasLaunched: " + wasLaunched);
 
                                                 mApplicationStarted = true;
 
@@ -220,7 +234,7 @@ public class MainMenue extends AppCompatActivity {
                                                     Log.e(TAG, "Exception while creating channel", e);
                                                 }
                                             } else {
-                                                //teardown();
+                                                teardown(true);
                                             }
                                         }
                                     });
@@ -240,12 +254,13 @@ public class MainMenue extends AppCompatActivity {
     private class ConnectionFailedListener implements
             GoogleApiClient.OnConnectionFailedListener {
         @Override
-        public void onConnectionFailed(ConnectionResult result) {
-            //teardown();
+        public void onConnectionFailed(@NonNull ConnectionResult result) {
+            teardown(true);
         }
     }
 
     class YaqGameChannel implements Cast.MessageReceivedCallback {
+        @SuppressWarnings("SameReturnValue")
         public String getNamespace() {
             return "urn:x-cast:com.bitschupfa.sw16.yaq";
         }
@@ -257,6 +272,34 @@ public class MainMenue extends AppCompatActivity {
         }
     }
 
+    private void teardown(boolean selectDefaultRoute) {
+        Log.d(TAG, "teardown");
+        if (mApiClient != null) {
+            if (mApplicationStarted) {
+                if (mApiClient.isConnected() || mApiClient.isConnecting()) {
+                    try {
+                        if (mYaqGameChannel != null) {
+                            Cast.CastApi.removeMessageReceivedCallbacks(
+                                    mApiClient,
+                                    mYaqGameChannel.getNamespace());
+                            mYaqGameChannel = null;
+                        }
+                    } catch (IOException e) {
+                        Log.e(TAG, "Exception while removing channel", e);
+                    }
+                    mApiClient.disconnect();
+                }
+                mApplicationStarted = false;
+            }
+            mApiClient = null;
+        }
+        if (selectDefaultRoute) {
+            mMediaRouter.selectRoute(mMediaRouter.getDefaultRoute());
+        }
+        mSelectedDevice = null;
+        mWaitingForReconnect = false;
+    }
+
     private void sendMessage(String message) {
         if (mApiClient != null && mYaqGameChannel != null) {
             try {
@@ -264,7 +307,7 @@ public class MainMenue extends AppCompatActivity {
                         .setResultCallback(
                                 new ResultCallback<Status>() {
                                     @Override
-                                    public void onResult(Status result) {
+                                    public void onResult(@NonNull Status result) {
                                         if (!result.isSuccess()) {
                                             Log.e(TAG, "Sending message failed");
                                         }
