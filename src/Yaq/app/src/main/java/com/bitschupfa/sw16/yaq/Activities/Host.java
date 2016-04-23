@@ -8,14 +8,20 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.MediaRouteActionProvider;
+import android.support.v7.media.MediaRouter;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bitschupfa.sw16.yaq.Bluetooth.ConnectionListener;
+import com.bitschupfa.sw16.yaq.Cast.CastHelper;
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.ui.PlayerList;
 import com.bitschupfa.sw16.yaq.Utils.Quiz;
@@ -27,6 +33,7 @@ public class Host extends AppCompatActivity {
     private final ConnectionListener btConnectionListener = new ConnectionListener();
     private PlayerList playerList;
     private Quiz quiz;
+    private CastHelper castHelper;
 
 
     @Override
@@ -41,6 +48,8 @@ public class Host extends AppCompatActivity {
             TextView hostnameLabel = (TextView) findViewById(R.id.lbl_hostname);
             hostnameLabel.append(btAdapter.getName());
         }
+
+        castHelper = CastHelper.getInstance(getApplicationContext());
 
         quiz = new Quiz();
 
@@ -58,6 +67,25 @@ public class Host extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main_menue, menu);
+        menu.findItem(R.id.menu_manage).setVisible(false);
+        menu.findItem(R.id.menu_settings).setVisible(false);
+        menu.findItem(R.id.menu_profile).setVisible(false);
+        MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
+        MediaRouteActionProvider mediaRouteActionProvider =
+                (MediaRouteActionProvider) MenuItemCompat.getActionProvider(mediaRouteMenuItem);
+        mediaRouteActionProvider.setRouteSelector(castHelper.mMediaRouteSelector);
+        return true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        castHelper.addCallbacks();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         btConnectionListener.close();
@@ -65,6 +93,7 @@ public class Host extends AppCompatActivity {
     }
 
     public void startButtonClicked(View view) {
+        castHelper.sendMessage("Start");
         Intent intent = new Intent(Host.this, QuestionsAsked.class);
         intent.putExtra("questions", quiz.createTmpQuiz(this.getApplicationContext()));
         startActivity(intent);
@@ -73,10 +102,12 @@ public class Host extends AppCompatActivity {
 
     public void buildQuizButtonClicked(View view) {
         Toast.makeText(this, R.string.not_implemented, Toast.LENGTH_SHORT).show();
+        castHelper.sendMessage("Build Quiz");
     }
 
     public void advancedSettingsButtonClicked(View view) {
         Toast.makeText(this, R.string.not_implemented, Toast.LENGTH_SHORT).show();
+        castHelper.sendMessage("Advanced Settings");
     }
 
     private boolean setupBluetooth() {
