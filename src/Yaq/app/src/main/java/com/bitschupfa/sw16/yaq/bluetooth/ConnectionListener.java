@@ -1,11 +1,11 @@
-package com.bitschupfa.sw16.yaq.Bluetooth;
+package com.bitschupfa.sw16.yaq.bluetooth;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
-import com.bitschupfa.sw16.yaq.Communication.ConnectedDevice;
+import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package com.bitschupfa.sw16.yaq.Database.Helper;
+package com.bitschupfa.sw16.yaq.database.helper;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,15 +16,14 @@ import java.io.OutputStream;
 
 public class DBHelper extends SQLiteOpenHelper{
 
-    private static String DATABASE_NAME = "yaq.db";
-    public final static String DATABASE_PATH = "/data/data/com.bitschupfa.sw16.yaq/databases/";
+    private static final String DATABASE_NAME = "yaq.db";
     private static final int DATABASE_VERSION = 1;
     private static DBHelper instance_ = null;
 
     private SQLiteDatabase dataBase;
     private final Context dbContext;
 
-    public DBHelper(Context context) {
+    private DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.dbContext = context;
         // checking database and open it if exists
@@ -54,8 +54,9 @@ public class DBHelper extends SQLiteOpenHelper{
     private void copyDataBase() throws IOException{
         AssetManager assetManager = dbContext.getAssets();
         InputStream myInput = assetManager.open(DATABASE_NAME);
-        String outFileName = DATABASE_PATH + DATABASE_NAME;
-        OutputStream myOutput = new FileOutputStream(outFileName);
+        File databasePath = dbContext.getDatabasePath(DATABASE_NAME);
+        String databasePathName = databasePath.getPath();
+        OutputStream myOutput = new FileOutputStream(databasePathName);
 
         byte[] buffer = new byte[1024];
         int length;
@@ -68,17 +69,19 @@ public class DBHelper extends SQLiteOpenHelper{
         myInput.close();
     }
 
-    public void openDataBase() throws SQLException {
-        String dbPath = DATABASE_PATH + DATABASE_NAME;
-        dataBase = SQLiteDatabase.openDatabase(dbPath, null, SQLiteDatabase.OPEN_READWRITE);
+    private void openDataBase() throws SQLException {
+        File databasePath = dbContext.getDatabasePath(DATABASE_NAME);
+        String databasePathName = databasePath.getPath();
+        dataBase = SQLiteDatabase.openDatabase(databasePathName, null, SQLiteDatabase.OPEN_READWRITE);
     }
 
     private boolean checkDataBase() {
         SQLiteDatabase checkDB = null;
         boolean exist = false;
         try {
-            String dbPath = DATABASE_PATH + DATABASE_NAME;
-            checkDB = SQLiteDatabase.openDatabase(dbPath, null,
+            File databasePath = dbContext.getDatabasePath(DATABASE_NAME);
+            String databasePathName = databasePath.getPath();
+            checkDB = SQLiteDatabase.openDatabase(databasePathName, null,
                     SQLiteDatabase.OPEN_READONLY);
         } catch (SQLiteException e) {
             Log.v("db log", "database does't exist");

@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="button_grey">#939393</color>
     <color name="player_table_inactive">#939393</color>
+    <color name="background">#cae2ff</color>
 </resources>

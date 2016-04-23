@@ -1,4 +1,4 @@
-package com.bitschupfa.sw16.yaq.Activities;
+package com.bitschupfa.sw16.yaq.activities;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -19,13 +19,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bitschupfa.sw16.yaq.Bluetooth.ClientConnector;
+import com.bitschupfa.sw16.yaq.bluetooth.ClientConnector;
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.ui.BluetoothDeviceList;
 import com.bitschupfa.sw16.yaq.ui.PlayerList;
@@ -214,7 +215,8 @@ public class Join extends AppCompatActivity {
     private void startTimer() {
         new CountDownTimer(4000, 1000) {
             public void onTick(long millisUntilFinished) {
-                textView.setText("" + millisUntilFinished / 1000);
+                long time = millisUntilFinished / 1000;
+                textView.setText(String.valueOf(time));
             }
 
             public void onFinish() {
@@ -225,7 +227,8 @@ public class Join extends AppCompatActivity {
     }
 
     private void setBluetoothDeviceLists() {
-        final View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_find_device, null);
+        ViewGroup parent = (ViewGroup) findViewById(android.R.id.content);
+        final View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_find_device, parent, false);
         findDeviceDialog = new AlertDialog.Builder(this)
                 .setView(dialogView)
                 .setTitle(R.string.dialog_find_device_title)

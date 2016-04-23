@@ -33,5 +33,4 @@
                 android:bottom="10dp" />
         </shape>
     </item>
-    <drawable android:name="grey_color">@color/button_grey</drawable>
 </selector>

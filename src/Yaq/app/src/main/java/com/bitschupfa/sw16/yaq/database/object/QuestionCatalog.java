@@ -1,11 +1,9 @@
-package com.bitschupfa.sw16.yaq.Database.Object;
+package com.bitschupfa.sw16.yaq.database.object;
 
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * Created by Patrik on 01.04.2016.
- */
+
 public class QuestionCatalog implements Serializable {
     private int catalogID;
     private String name;
@@ -41,5 +39,13 @@ public class QuestionCatalog implements Serializable {
 
     public void setTextQuestionList(List<TextQuestion> textQuestionList) {
         this.textQuestionList = textQuestionList;
+    }
+
+    public void setCounter(int counter) {
+        this.counter = counter;
+    }
+
+    public int getCounter() {
+        return counter;
     }
 }

@@ -9,9 +9,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".Activities.QuestionsAsked"
+    tools:context=".activities.QuestionsAsked"
     tools:showIn="@layout/activity_questions_asked"
-    android:background="#cae2ff"
     android:id="@+id/questionAskedView">
 
     <LinearLayout
@@ -42,7 +41,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Time Counter"
+                android:text="@string/time_counter"
                 android:id="@+id/time"
                 android:gravity="center"
                 android:layout_weight="1"/>
@@ -50,9 +49,8 @@
 
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Question"
             android:id="@+id/question"
             android:gravity="center"
             android:layout_weight="8"/>
@@ -67,34 +65,27 @@
         android:id="@+id/linearLayout">
 
         <Button
-            android:text="Answer 1"
             android:id="@+id/answer1"
             android:background="@drawable/button_blue"
             style="@style/button_text"
             android:onClick="answerButtonClicked"/>
 
         <Button
-            android:text="Answer 2"
             android:id="@+id/answer2"
             android:background="@drawable/button_blue"
             style="@style/button_text"
             android:onClick="answerButtonClicked"/>
 
         <Button
-            android:text="Answer 3"
             android:id="@+id/answer3"
             android:background="@drawable/button_blue"
             style="@style/button_text"
             android:onClick="answerButtonClicked"/>
 
         <Button
-            android:text="Answer 4"
             android:id="@+id/answer4"
             android:background="@drawable/button_blue"
             style="@style/button_text"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
             android:onClick="answerButtonClicked"/>
     </LinearLayout>
 

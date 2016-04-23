@@ -1,4 +1,4 @@
-package com.bitschupfa.sw16.yaq.Database.Helper;
+package com.bitschupfa.sw16.yaq.database.helper;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,19 +6,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.bitschupfa.sw16.yaq.Database.Object.Answer;
-import com.bitschupfa.sw16.yaq.Database.Object.QuestionCatalog;
-import com.bitschupfa.sw16.yaq.Database.Object.TextQuestion;
+import com.bitschupfa.sw16.yaq.database.object.Answer;
+import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
+import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Patrik on 01.04.2016.
- */
-public class QuestionQuerier extends Activity {
-    private Context context;
-    private SQLiteDatabase database;
+
+public class QuestionQuerier extends Activity{
+    private final Context context;
+    private final SQLiteDatabase database;
 
     public QuestionQuerier(Context context){
         this.context = context;
@@ -87,7 +85,7 @@ public class QuestionQuerier extends Activity {
             QuestionCatalog questionCatalog = new QuestionCatalog(catalogID, name, null);
             questionCatalogs.add(questionCatalog);
         }
-
+        cursor.close();
         return questionCatalogs;
     }
 
@@ -99,6 +97,7 @@ public class QuestionQuerier extends Activity {
         String question = cursor.getString(1);
         cursor.moveToNext();
         List<TextQuestion> textQuestionList = getAllQuestionsFromCatalog(catalogID);
+        cursor.close();
         return new QuestionCatalog(catalogID,question,textQuestionList);
     }
 
@@ -110,6 +109,7 @@ public class QuestionQuerier extends Activity {
         String question = cursor.getString(1);
         cursor.moveToNext();
         List<TextQuestion> textQuestionList = getAllQuestionsFromCatalogByDifficulty(catalogID, difficulty);
+        cursor.close();
         return new QuestionCatalog(catalogID,question,textQuestionList);
     }
 
@@ -127,8 +127,7 @@ public class QuestionQuerier extends Activity {
             QuestionCatalog questionCatalog = new QuestionCatalog(catalogID,question,textQuestionList);
             questionCatalogList.add(questionCatalog);
         }
-
+        cursor.close();
         return questionCatalogList;
     }
-
 }

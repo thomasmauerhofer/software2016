@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">YAQ</string>
 
-    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
 
     <!-- MainActivity -->
@@ -27,6 +26,7 @@
     <string name="player6">Player 6</string>
     <string name="player7">Player 7</string>
     <string name="player8">Player 8</string>
+    <string name="hostname">hostname:</string>
 
 
     <!-- Errors -->
@@ -38,19 +38,16 @@
     <string name="dialog_paired_devices">Paired Devices:</string>
     <string name="dialog_unpaired_devices">Discovered Devices:</string>
     <string name="dialog_no_devices_found">No Devices found…</string>
-    <string name="connect_to">Connect to</string>
-    <string name="cant_connect_to">Can\'t connect to</string>
     <string name="refresh">Refresh</string>
+    <string name="time_counter">Time Counter</string>
+    <string name="waiting">Waiting for host, to start the game!</string>
 
-    <!-- QestionsAskedActivity -->
+    <!-- QuestionsAskedActivity -->
     <string name="title_activity_quesions_asked">YAQ</string>
     <string name="time_up">Time\'s up!</string>
 
     <!-- StatisticActivity -->
     <string name="title_activity_statistic">Statistic</string>
     <string name="play_again">Play Again</string>
-
-    <!-- TestStrings -->
-    <string name="allow">Allow</string>
 
 </resources>

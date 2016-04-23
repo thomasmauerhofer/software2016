@@ -1,4 +1,4 @@
-package com.bitschupfa.sw16.yaq.Bluetooth;
+package com.bitschupfa.sw16.yaq.bluetooth;
 
 import java.util.UUID;
 

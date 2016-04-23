@@ -1,4 +1,4 @@
-package com.bitschupfa.sw16.yaq.Activities;
+package com.bitschupfa.sw16.yaq.activities;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
@@ -14,10 +14,10 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bitschupfa.sw16.yaq.Database.Object.Answer;
-import com.bitschupfa.sw16.yaq.Database.Object.TextQuestion;
+import com.bitschupfa.sw16.yaq.database.object.Answer;
+import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.R;
-import com.bitschupfa.sw16.yaq.Utils.Quiz;
+import com.bitschupfa.sw16.yaq.utils.Quiz;
 
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class QuestionsAsked extends AppCompatActivity {
 
     private Button buttonPressed;
 
-    Quiz quiz;
+    private Quiz quiz;
     private long endTime;
 
     @Override
@@ -88,11 +88,12 @@ public class QuestionsAsked extends AppCompatActivity {
         startCountdown(endTime);
     }
 
-    public void startCountdown(final long endTime) {
+    private void startCountdown(final long endTime) {
 
         new CountDownTimer(endTime, 1000) {
             public void onTick(long millisUntilFinished) {
-                countdownTimerText.setText("" + millisUntilFinished / 1000);
+                long time = millisUntilFinished / 1000;
+                countdownTimerText.setText(String.valueOf(time));
             }
 
             public void onFinish() {
@@ -107,7 +108,7 @@ public class QuestionsAsked extends AppCompatActivity {
         progressAnimator.start();
     }
 
-    public void showQuestions() {
+    private void showQuestions() {
         TextQuestion question = quiz.getCurrentQuestion();
         List<Answer> answers = question.getShuffeledAnswers();
 
@@ -120,7 +121,7 @@ public class QuestionsAsked extends AppCompatActivity {
 
 
 
-    public void resetButtons() {
+    private void resetButtons() {
         answer1Button.setBackgroundResource(R.drawable.button_blue);
         answer2Button.setBackgroundResource(R.drawable.button_blue);
         answer3Button.setBackgroundResource(R.drawable.button_blue);
@@ -140,7 +141,7 @@ public class QuestionsAsked extends AppCompatActivity {
         buttonPressed.setBackgroundResource(R.drawable.button_grey);
     }
 
-    public void checkAnswer() {
+    private void checkAnswer() {
         TextQuestion question = quiz.getCurrentQuestion();
 
         if (buttonPressed != null) {
@@ -161,7 +162,7 @@ public class QuestionsAsked extends AppCompatActivity {
         quiz.incrementCurrentQuestionCounter();
     }
 
-    public void markRightButton() {
+    private void markRightButton() {
         TextQuestion question = quiz.getCurrentQuestion();
 
         for (int i = 0; i < buttonLayout.getChildCount(); i++) {
@@ -174,7 +175,7 @@ public class QuestionsAsked extends AppCompatActivity {
         }
     }
 
-    public void deactivateButtons() {
+    private void deactivateButtons() {
         for (int i = 0; i < buttonLayout.getChildCount(); i++) {
             View child = buttonLayout.getChildAt(i);
             child.setClickable(false);

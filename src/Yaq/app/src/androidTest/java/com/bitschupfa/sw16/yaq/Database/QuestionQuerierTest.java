@@ -3,19 +3,16 @@ package com.bitschupfa.sw16.yaq.Database;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.RenamingDelegatingContext;
 
-import com.bitschupfa.sw16.yaq.Database.Helper.QuestionQuerier;
-import com.bitschupfa.sw16.yaq.Database.Object.Answer;
-import com.bitschupfa.sw16.yaq.Database.Object.QuestionCatalog;
-import com.bitschupfa.sw16.yaq.Database.Object.TextQuestion;
+import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
+import com.bitschupfa.sw16.yaq.database.object.Answer;
+import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
+import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Patrik on 10.04.2016.
- */
 public class QuestionQuerierTest extends ActivityInstrumentationTestCase2<QuestionQuerier> {
-    QuestionQuerier questionQuerier;
+    private QuestionQuerier questionQuerier;
 
     public QuestionQuerierTest() {
         super(QuestionQuerier.class);
@@ -52,7 +49,7 @@ public class QuestionQuerierTest extends ActivityInstrumentationTestCase2<Questi
             }
 
             if(referenceDifficulty != null){
-                assertTrue("Difficulty should be same as referenceDifficulty", difficulty == referenceDifficulty.intValue());
+                assertTrue("Difficulty should be same as referenceDifficulty", difficulty == referenceDifficulty);
             }
 
 
@@ -93,32 +90,32 @@ public class QuestionQuerierTest extends ActivityInstrumentationTestCase2<Questi
 
     public void testGetAllQuestionsFromCatalog1ByDifficulty1(){
         List<TextQuestion> textQuestionList = questionQuerier.getAllQuestionsFromCatalogByDifficulty(1, 1);
-        testAllQuestionsFromCatalogGeneric(textQuestionList, new Integer(1), new Integer(1));
+        testAllQuestionsFromCatalogGeneric(textQuestionList, 1, 1);
     }
 
     public void testGetAllQuestionsFromCatalog1ByDifficulty2(){
         List<TextQuestion> textQuestionList = questionQuerier.getAllQuestionsFromCatalogByDifficulty(1,2);
-        testAllQuestionsFromCatalogGeneric(textQuestionList, new Integer(1), new Integer(2));
+        testAllQuestionsFromCatalogGeneric(textQuestionList, 1, 2);
     }
 
     public void testGetAllQuestionsFromCatalog1ByDifficulty3(){
         List<TextQuestion> textQuestionList = questionQuerier.getAllQuestionsFromCatalogByDifficulty(1,3);
-        testAllQuestionsFromCatalogGeneric(textQuestionList, new Integer(1), new Integer(3));
+        testAllQuestionsFromCatalogGeneric(textQuestionList, 1, 3);
     }
 
     public void testGetAllQuestionsFromCatalog2ByDifficulty1(){
         List<TextQuestion> textQuestionList = questionQuerier.getAllQuestionsFromCatalogByDifficulty(2,1);
-        testAllQuestionsFromCatalogGeneric(textQuestionList, new Integer(2), new Integer(1));
+        testAllQuestionsFromCatalogGeneric(textQuestionList, 2, 1);
     }
 
     public void testGetAllQuestionsFromCatalog2ByDifficulty2(){
         List<TextQuestion> textQuestionList = questionQuerier.getAllQuestionsFromCatalogByDifficulty(2,2);
-        testAllQuestionsFromCatalogGeneric(textQuestionList, new Integer(2), new Integer(2));
+        testAllQuestionsFromCatalogGeneric(textQuestionList, 2, 2);
     }
 
     public void testGetAllQuestionsFromCatalog2ByDifficulty3(){
         List<TextQuestion> textQuestionList = questionQuerier.getAllQuestionsFromCatalogByDifficulty(2,3);
-        testAllQuestionsFromCatalogGeneric(textQuestionList, new Integer(2), new Integer(3));
+        testAllQuestionsFromCatalogGeneric(textQuestionList, 2, 3);
 
     }
 
@@ -126,28 +123,28 @@ public class QuestionQuerierTest extends ActivityInstrumentationTestCase2<Questi
         QuestionCatalog questionCatalog = questionQuerier.getQuestionCatalogById(1);
         List<QuestionCatalog> questionCatalogList = new ArrayList<>();
         questionCatalogList.add(questionCatalog);
-        testGetQuestionCatalogGeneric(questionCatalogList, true, new Integer(1), null);
+        testGetQuestionCatalogGeneric(questionCatalogList, true, 1, null);
     }
 
     public void testGetQuestionsCatalogById2(){
         QuestionCatalog questionCatalog = questionQuerier.getQuestionCatalogById(2);
         List<QuestionCatalog> questionCatalogList = new ArrayList<>();
         questionCatalogList.add(questionCatalog);
-        testGetQuestionCatalogGeneric(questionCatalogList, true, new Integer(2), null);
+        testGetQuestionCatalogGeneric(questionCatalogList, true, 2, null);
     }
 
     public void testGetQuestionsCatalogById1AndDifficulty1(){
         QuestionCatalog questionCatalog = questionQuerier.getQuestionCatalogById(2);
         List<QuestionCatalog> questionCatalogList = new ArrayList<>();
         questionCatalogList.add(questionCatalog);
-        testGetQuestionCatalogGeneric(questionCatalogList, true, new Integer(2), new Integer(1));
+        testGetQuestionCatalogGeneric(questionCatalogList, true, 2, 1);
     }
 
     public void testGetQuestionsCatalogById1AndDifficulty2(){
         QuestionCatalog questionCatalog = questionQuerier.getQuestionCatalogById(2);
         List<QuestionCatalog> questionCatalogList = new ArrayList<>();
         questionCatalogList.add(questionCatalog);
-        testGetQuestionCatalogGeneric(questionCatalogList, true, new Integer(2), new Integer(2));
+        testGetQuestionCatalogGeneric(questionCatalogList, true, 2, 2);
     }
 
 
@@ -155,14 +152,14 @@ public class QuestionQuerierTest extends ActivityInstrumentationTestCase2<Questi
         QuestionCatalog questionCatalog = questionQuerier.getQuestionCatalogById(2);
         List<QuestionCatalog> questionCatalogList = new ArrayList<>();
         questionCatalogList.add(questionCatalog);
-        testGetQuestionCatalogGeneric(questionCatalogList, true, new Integer(2), new Integer(1));
+        testGetQuestionCatalogGeneric(questionCatalogList, true, 2, 1);
     }
 
     public void testGetQuestionsCatalogById2AndDifficulty2(){
         QuestionCatalog questionCatalog = questionQuerier.getQuestionCatalogById(2);
         List<QuestionCatalog> questionCatalogList = new ArrayList<>();
         questionCatalogList.add(questionCatalog);
-        testGetQuestionCatalogGeneric(questionCatalogList, true, new Integer(2), new Integer(2));
+        testGetQuestionCatalogGeneric(questionCatalogList, true, 2, 2);
     }
 
 }

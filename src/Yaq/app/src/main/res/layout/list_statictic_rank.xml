@@ -13,9 +13,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="1"
         android:id="@+id/rank"
-        android:textSize="30dp"/>
+        android:textSize="30sp"/>
 
     <ImageView
         android:id="@+id/player_img"
@@ -23,7 +22,11 @@
         android:layout_height="20dp"
         android:src="@mipmap/icon_player"
         android:paddingLeft="10dp"
-        android:layout_gravity="center" />
+        android:paddingRight="0dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="0dp"
+        android:layout_gravity="center"
+        android:contentDescription="@string/player"/>
 
     <LinearLayout
         android:id="@+id/player"
@@ -37,6 +40,9 @@
             android:text="@string/player"
             android:layout_width="140dp"
             android:paddingLeft="10dp"
+            android:paddingRight="0dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="0dp"
             android:textIsSelectable="false"
             android:layout_height="wrap_content"
             style="@style/table_text_normal" />
@@ -45,9 +51,8 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Score"
             android:id="@+id/score"
-            android:textSize="20dp"
+            android:textSize="20sp"
             style="@style/table_text_normal"
             android:gravity="center" />
 

@@ -1,4 +1,4 @@
-package com.bitschupfa.sw16.yaq.Activities;
+package com.bitschupfa.sw16.yaq.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -49,12 +49,14 @@ public class MainMenue extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressWarnings("UnusedParameters")
     public void hostButtonClicked(View view)
     {
         Intent intent = new Intent(MainMenue.this, Host.class);
         startActivity(intent);
     }
 
+    @SuppressWarnings("UnusedParameters")
     public void joinButtonClicked(View view) {
         Intent intent = new Intent(MainMenue.this, Join.class);
         startActivity(intent);

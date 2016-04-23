@@ -3,9 +3,9 @@ package com.bitschupfa.sw16.yaq.ui;
 
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.bitschupfa.sw16.yaq.Activities.Host;
-import com.bitschupfa.sw16.yaq.Activities.Join;
-import com.bitschupfa.sw16.yaq.Activities.MainMenue;
+import com.bitschupfa.sw16.yaq.activities.Host;
+import com.bitschupfa.sw16.yaq.activities.Join;
+import com.bitschupfa.sw16.yaq.activities.MainMenue;
 import com.bitschupfa.sw16.yaq.R;
 import com.robotium.solo.Solo;
 

@@ -5,14 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".Activities.MainMenue"
-    tools:showIn="@layout/activity_main_menue"
-    android:background="#cae2ff">
+    tools:context=".activities.MainMenue"
+    tools:showIn="@layout/activity_main_menue">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -23,7 +22,8 @@
             android:minWidth="300dp"
             android:paddingBottom="20dp"
             android:paddingTop="10dp"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:contentDescription="@string/player"/>
 
         <LinearLayout
             android:orientation="vertical"

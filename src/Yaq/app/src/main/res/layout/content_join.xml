@@ -9,276 +9,182 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.bitschupfa.sw16.yaq.Activities.Join"
-    tools:showIn="@layout/activity_join"
-    android:background="#cae2ff">
+    tools:context="com.bitschupfa.sw16.yaq.activities.Join"
+    tools:showIn="@layout/activity_join">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:weightSum="1">
 
-        <LinearLayout
-            android:orientation="vertical"
+
+        <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="20dp"
             android:paddingBottom="20dp">
-
-            <TableLayout
+            <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TableRow
-                    android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2">
+
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/player1_name"
+                    android:text="@string/player1"
+                    android:layout_width="wrap_content"
+                    style="@style/table_text_gray"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="0dp"
+                    android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:weightSum="2">
+                    android:textColor="@color/player_table_inactive"
+                    android:drawableLeft="@mipmap/icon_player_black"
+                    android:drawableStart="@mipmap/icon_player_black"
+                    android:drawablePadding="5dp"/>
 
-                    <LinearLayout
-                        android:id="@+id/player1_layer"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        style="@style/table_entry_gray">
-
-                        <ImageView
-                            android:id="@+id/player1_img"
-                            android:layout_width="30dp"
-                            android:layout_height="20dp"
-                            android:src="@mipmap/icon_player_black"
-                            android:paddingLeft="10dp"
-                            android:layout_gravity="center"
-                            android:visibility="visible" />
-
-                        <TextView
-                            android:id="@+id/player1_name"
-                            android:text="@string/player1"
-                            android:layout_width="wrap_content"
-                            style="@style/table_text_gray"
-                            android:paddingLeft="10dp"
-                            android:textIsSelectable="false"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/player_table_inactive" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/player2_layer"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        style="@style/table_entry_gray">
-
-                        <ImageView
-                            android:id="@+id/player2_img"
-                            android:layout_width="30dp"
-                            android:layout_height="20dp"
-                            android:src="@mipmap/icon_player_black"
-                            android:paddingLeft="10dp"
-                            android:layout_gravity="center"
-                            android:visibility="visible" />
-
-                        <TextView
-                            android:id="@+id/player2_name"
-                            android:text="@string/player2"
-                            android:layout_width="wrap_content"
-                            android:paddingLeft="10dp"
-                            android:textIsSelectable="false"
-                            android:layout_height="wrap_content"
-                            style="@style/table_text_gray"
-                            android:textColor="@color/player_table_inactive" />
-
-                    </LinearLayout>
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/player2_name"
+                    android:text="@string/player2"
+                    android:layout_width="wrap_content"
+                    style="@style/table_text_gray"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="0dp"
+                    android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:weightSum="2">
+                    android:textColor="@color/player_table_inactive"
+                    android:drawableLeft="@mipmap/icon_player_black"
+                    android:drawableStart="@mipmap/icon_player_black"
+                    android:drawablePadding="5dp"/>
+            </TableRow>
 
-                    <LinearLayout
-                        android:id="@+id/player3_layer"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        style="@style/table_entry_gray">
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2">
 
-                        <ImageView
-                            android:id="@+id/player3_img"
-                            android:layout_width="30dp"
-                            android:layout_height="20dp"
-                            android:src="@mipmap/icon_player_black"
-                            android:paddingLeft="10dp"
-                            android:layout_gravity="center"
-                            android:visibility="visible" />
-
-                        <TextView
-                            android:id="@+id/player3_name"
-                            android:text="@string/player3"
-                            android:layout_width="wrap_content"
-                            style="@style/table_text_gray"
-                            android:paddingLeft="10dp"
-                            android:textIsSelectable="false"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/player_table_inactive" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/player4_layer"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        style="@style/table_entry_gray">
-
-                        <ImageView
-                            android:id="@+id/player4_img"
-                            android:layout_width="30dp"
-                            android:layout_height="20dp"
-                            android:src="@mipmap/icon_player_black"
-                            android:paddingLeft="10dp"
-                            android:layout_gravity="center"
-                            android:visibility="visible" />
-
-                        <TextView
-                            android:id="@+id/player4_name"
-                            android:text="@string/player4"
-                            android:layout_width="wrap_content"
-                            style="@style/table_text_gray"
-                            android:paddingLeft="10dp"
-                            android:textIsSelectable="false"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/player_table_inactive" />
-
-                    </LinearLayout>
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/player3_name"
+                    android:text="@string/player3"
+                    android:layout_width="wrap_content"
+                    style="@style/table_text_gray"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="0dp"
+                    android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:weightSum="2">
+                    android:textColor="@color/player_table_inactive"
+                    android:drawableLeft="@mipmap/icon_player_black"
+                    android:drawableStart="@mipmap/icon_player_black"
+                    android:drawablePadding="5dp"/>
 
-                    <LinearLayout
-                        android:id="@+id/player5_layer"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        style="@style/table_entry_gray">
-
-                        <ImageView
-                            android:id="@+id/player5_img"
-                            android:layout_width="30dp"
-                            android:layout_height="20dp"
-                            android:src="@mipmap/icon_player_black"
-                            android:paddingLeft="10dp"
-                            android:layout_gravity="center"
-                            android:visibility="visible" />
-
-                        <TextView
-                            android:id="@+id/player5_name"
-                            android:text="@string/player5"
-                            android:layout_width="wrap_content"
-                            style="@style/table_text_gray"
-                            android:paddingLeft="10dp"
-                            android:textIsSelectable="false"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/player_table_inactive" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/player6_layer"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        style="@style/table_entry_gray">
-
-                        <ImageView
-                            android:id="@+id/player6_img"
-                            android:layout_width="30dp"
-                            android:layout_height="20dp"
-                            android:src="@mipmap/icon_player_black"
-                            android:paddingLeft="10dp"
-                            android:layout_gravity="center"
-                            android:visibility="visible" /> />
-
-                        <TextView
-                            android:id="@+id/player6_name"
-                            android:text="@string/player6"
-                            android:layout_width="wrap_content"
-                            style="@style/table_text_gray"
-                            android:paddingLeft="10dp"
-                            android:textIsSelectable="false"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/player_table_inactive" />
-
-                    </LinearLayout>
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/player4_name"
+                    android:text="@string/player4"
+                    android:layout_width="wrap_content"
+                    style="@style/table_text_gray"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="0dp"
+                    android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:weightSum="2">
+                    android:textColor="@color/player_table_inactive"
+                    android:drawableLeft="@mipmap/icon_player_black"
+                    android:drawableStart="@mipmap/icon_player_black"
+                    android:drawablePadding="5dp"/>
+            </TableRow>
 
-                    <LinearLayout
-                        android:id="@+id/player7_layer"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        style="@style/table_entry_gray">
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2">
 
-                        <ImageView
-                            android:id="@+id/player7_img"
-                            android:layout_width="30dp"
-                            android:layout_height="20dp"
-                            android:src="@mipmap/icon_player_black"
-                            android:paddingLeft="10dp"
-                            android:layout_gravity="center"
-                            android:visibility="visible" /> />
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/player5_name"
+                    android:text="@string/player5"
+                    android:layout_width="wrap_content"
+                    style="@style/table_text_gray"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="0dp"
+                    android:textIsSelectable="false"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/player_table_inactive"
+                    android:drawableLeft="@mipmap/icon_player_black"
+                    android:drawableStart="@mipmap/icon_player_black"
+                    android:drawablePadding="5dp"/>
 
-                        <TextView
-                            android:id="@+id/player7_name"
-                            android:text="@string/player7"
-                            android:layout_width="wrap_content"
-                            style="@style/table_text_gray"
-                            android:paddingLeft="10dp"
-                            android:textIsSelectable="false"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/player_table_inactive" />
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/player6_name"
+                    android:text="@string/player6"
+                    android:layout_width="wrap_content"
+                    style="@style/table_text_gray"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="0dp"
+                    android:textIsSelectable="false"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/player_table_inactive"
+                    android:drawableLeft="@mipmap/icon_player_black"
+                    android:drawableStart="@mipmap/icon_player_black"
+                    android:drawablePadding="5dp"/>
+            </TableRow>
 
-                    </LinearLayout>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2">
 
-                    <LinearLayout
-                        android:id="@+id/player8_layer"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        style="@style/table_entry_gray">
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/player7_name"
+                    android:text="@string/player7"
+                    android:layout_width="wrap_content"
+                    style="@style/table_text_gray"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="0dp"
+                    android:textIsSelectable="false"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/player_table_inactive"
+                    android:drawableLeft="@mipmap/icon_player_black"
+                    android:drawableStart="@mipmap/icon_player_black"
+                    android:drawablePadding="5dp"/>
 
-                        <ImageView
-                            android:id="@+id/player8_img"
-                            android:layout_width="30dp"
-                            android:layout_height="20dp"
-                            android:src="@mipmap/icon_player_black"
-                            android:paddingLeft="10dp"
-                            android:layout_gravity="center"
-                            android:visibility="visible" />
+                <TextView
+                    android:layout_weight="1"
+                    android:id="@+id/player8_name"
+                    android:text="@string/player8"
+                    android:layout_width="wrap_content"
+                    style="@style/table_text_gray"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="0dp"
+                    android:textIsSelectable="false"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/player_table_inactive"
+                    android:drawableLeft="@mipmap/icon_player_black"
+                    android:drawableStart="@mipmap/icon_player_black"
+                    android:drawablePadding="5dp"/>
+            </TableRow>
 
-                        <TextView
-                            android:id="@+id/player8_name"
-                            android:text="@string/player8"
-                            android:layout_width="wrap_content"
-                            style="@style/table_text_gray"
-                            android:paddingLeft="10dp"
-                            android:textIsSelectable="false"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/player_table_inactive" />
-
-                    </LinearLayout>
-                </TableRow>
-
-            </TableLayout>
-        </LinearLayout>
+        </TableLayout>
 
         <LinearLayout
             android:orientation="vertical"
@@ -290,15 +196,13 @@
                 android:id="@+id/loadingBar"
                 android:progressDrawable="@drawable/circular_progress_bar"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:indeterminateTint="#1F3255"/>
+                android:layout_height="wrap_content"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Waiting for host, to start the game!"
+                android:text="@string/waiting"
                 android:id="@+id/textView" />
         </LinearLayout>
 

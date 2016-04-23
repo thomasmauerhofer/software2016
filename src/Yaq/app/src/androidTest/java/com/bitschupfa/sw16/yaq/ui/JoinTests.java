@@ -4,15 +4,13 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.bitschupfa.sw16.yaq.Activities.Join;
+import com.bitschupfa.sw16.yaq.activities.Join;
 import com.bitschupfa.sw16.yaq.R;
 import com.robotium.solo.Solo;
 
 import java.util.Set;
 
-/**
- * Created by thomas on 19.04.16.
- */
+
 public class JoinTests extends ActivityInstrumentationTestCase2<Join> {
 
     private Solo solo;

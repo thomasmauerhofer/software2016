@@ -1,4 +1,4 @@
-package com.bitschupfa.sw16.yaq.Communication;
+package com.bitschupfa.sw16.yaq.communication;
 
 
 import android.bluetooth.BluetoothSocket;
