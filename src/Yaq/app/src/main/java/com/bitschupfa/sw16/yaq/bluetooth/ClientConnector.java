@@ -1,4 +1,4 @@
-package com.bitschupfa.sw16.yaq.Bluetooth;
+package com.bitschupfa.sw16.yaq.bluetooth;
 
 
 import android.bluetooth.BluetoothAdapter;
@@ -6,7 +6,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
-import com.bitschupfa.sw16.yaq.Communication.ConnectedDevice;
+import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
 
 import java.io.IOException;
 
@@ -64,6 +64,8 @@ public class ClientConnector implements Runnable {
 
         try {
             btSocket.close();
-        } catch (IOException e) { }
+        } catch (IOException e) {
+            Log.e(TAG, "Error while closing the socket: " + e.getMessage());
+        }
     }
 }

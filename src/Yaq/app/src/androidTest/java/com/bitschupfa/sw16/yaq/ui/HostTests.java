@@ -3,14 +3,12 @@ package com.bitschupfa.sw16.yaq.ui;
 import android.bluetooth.BluetoothAdapter;
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.bitschupfa.sw16.yaq.Activities.Host;
-import com.bitschupfa.sw16.yaq.Activities.QuestionsAsked;
+import com.bitschupfa.sw16.yaq.activities.Host;
+import com.bitschupfa.sw16.yaq.activities.QuestionsAsked;
 import com.bitschupfa.sw16.yaq.R;
 import com.robotium.solo.Solo;
 
-/**
- * Created by thomas on 22.03.16.
- */
+
 public class HostTests extends ActivityInstrumentationTestCase2<Host> {
 
     private Solo solo;

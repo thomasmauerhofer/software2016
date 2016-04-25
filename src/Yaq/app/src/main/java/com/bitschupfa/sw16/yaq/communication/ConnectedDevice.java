@@ -1,4 +1,4 @@
-package com.bitschupfa.sw16.yaq.Communication;
+package com.bitschupfa.sw16.yaq.communication;
 
 
 import android.bluetooth.BluetoothSocket;
@@ -32,11 +32,11 @@ public class ConnectedDevice implements Runnable {
 
         while (true) {
             try {
+                //noinspection UnusedAssignment
                 Message msg = (Message) inputStream.readObject();
                 // TODO: handle message
             } catch (ClassNotFoundException e) {
                 Log.e(TAG, "Unable to parse received object: " + e.getMessage());
-                continue;
             } catch (IOException e) {
                 Log.e(TAG, "I/O Error: " + e.getMessage());
                 Log.e(TAG, "Killing Thread.");

@@ -1,21 +1,18 @@
-package com.bitschupfa.sw16.yaq.Database.Object;
+package com.bitschupfa.sw16.yaq.database.object;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by Patrik on 01.04.2016.
- */
 public class TextQuestion implements Serializable{
 
     private String question;
     private int catalogID;
-    private Answer answer1;
-    private Answer answer2;
-    private Answer answer3;
-    private Answer answer4;
+    private final Answer answer1;
+    private final Answer answer2;
+    private final Answer answer3;
+    private final Answer answer4;
 
     private int difficulty;
 
@@ -45,8 +42,8 @@ public class TextQuestion implements Serializable{
         this.difficulty = difficulty;
     }
 
-    public List<Answer> getShuffeledAnswers() {
-        List<Answer> tmp = new ArrayList();
+    public List<Answer> getShuffledAnswers() {
+        List<Answer> tmp = new ArrayList<>();
 
         tmp.add(answer1);
         tmp.add(answer2);

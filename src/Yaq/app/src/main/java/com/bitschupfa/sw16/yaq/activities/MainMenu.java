@@ -1,4 +1,4 @@
-package com.bitschupfa.sw16.yaq.Activities;
+package com.bitschupfa.sw16.yaq.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,12 +11,12 @@ import android.widget.Toast;
 
 import com.bitschupfa.sw16.yaq.R;
 
-public class MainMenue extends AppCompatActivity {
+public class MainMenu extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_menue);
+        setContentView(R.layout.activity_main_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
@@ -24,7 +24,7 @@ public class MainMenue extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main_menue, menu);
+        getMenuInflater().inflate(R.menu.menu_main_menu, menu);
         return true;
     }
 
@@ -49,14 +49,16 @@ public class MainMenue extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressWarnings("UnusedParameters")
     public void hostButtonClicked(View view)
     {
-        Intent intent = new Intent(MainMenue.this, Host.class);
+        Intent intent = new Intent(MainMenu.this, Host.class);
         startActivity(intent);
     }
 
+    @SuppressWarnings("UnusedParameters")
     public void joinButtonClicked(View view) {
-        Intent intent = new Intent(MainMenue.this, Join.class);
+        Intent intent = new Intent(MainMenu.this, Join.class);
         startActivity(intent);
     }
 }

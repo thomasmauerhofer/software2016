@@ -5,17 +5,13 @@ import android.graphics.drawable.Drawable;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 
-import com.bitschupfa.sw16.yaq.Activities.QuestionsAsked;
-import com.bitschupfa.sw16.yaq.Database.Object.Answer;
-import com.bitschupfa.sw16.yaq.Database.Object.TextQuestion;
+import com.bitschupfa.sw16.yaq.activities.QuestionsAsked;
+import com.bitschupfa.sw16.yaq.database.object.Answer;
+import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.R;
-import com.bitschupfa.sw16.yaq.Utils.Quiz;
+import com.bitschupfa.sw16.yaq.utils.Quiz;
 import com.robotium.solo.Solo;
 
-
-/**
- * Created by thomas on 22.03.16.
- */
 public class QuestionsAskedTests extends ActivityInstrumentationTestCase2<QuestionsAsked> {
 
     private Solo solo;

@@ -1,4 +1,4 @@
-package com.bitschupfa.sw16.yaq.Activities;
+package com.bitschupfa.sw16.yaq.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,6 +33,7 @@ public class Statistic extends AppCompatActivity {
         ranking.addItems();
     }
 
+    @SuppressWarnings("UnusedParameters")
     public void playAgainButtonClicked(View view) {
         Intent intent = new Intent(Statistic.this, QuestionsAsked.class);
         startActivity(intent);

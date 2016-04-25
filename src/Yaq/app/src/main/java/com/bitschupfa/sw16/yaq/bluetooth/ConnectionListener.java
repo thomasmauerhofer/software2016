@@ -1,11 +1,11 @@
-package com.bitschupfa.sw16.yaq.Bluetooth;
+package com.bitschupfa.sw16.yaq.bluetooth;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
-import com.bitschupfa.sw16.yaq.Communication.ConnectedDevice;
+import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
 
 import java.io.IOException;
 
@@ -31,6 +31,7 @@ public class ConnectionListener implements Runnable {
 
         if (!isDiscoverable) {
             Log.d(TAG, "Device is not discoverable. Idle until status changes.");
+            //noinspection StatementWithEmptyBody
             while (!isDiscoverable);
             Log.d(TAG, "Device is now discoverable.");
         }
@@ -71,15 +72,18 @@ public class ConnectionListener implements Runnable {
 
         try {
             btServerSocket.close();
-        } catch (IOException e) { }
+        } catch (IOException e) {
+            Log.e(TAG, "Error while closing the socket: " + e.getMessage());
+        }
     }
 
+    @SuppressWarnings("WeakerAccess")
     public void registerClient(ConnectedDevice client) {
         new Thread(client).start();
         // TODO: register client in the game
     }
 
-    public void setDiscoverable(boolean discoverable) {
-        isDiscoverable = discoverable;
+    public void setDiscoverable() {
+        isDiscoverable = true;
     }
 }

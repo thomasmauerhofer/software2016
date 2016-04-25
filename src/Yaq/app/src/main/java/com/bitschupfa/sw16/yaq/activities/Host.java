@@ -1,4 +1,4 @@
-package com.bitschupfa.sw16.yaq.Activities;
+package com.bitschupfa.sw16.yaq.activities;
 
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -15,10 +15,10 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bitschupfa.sw16.yaq.Bluetooth.ConnectionListener;
+import com.bitschupfa.sw16.yaq.bluetooth.ConnectionListener;
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.ui.PlayerList;
-import com.bitschupfa.sw16.yaq.Utils.Quiz;
+import com.bitschupfa.sw16.yaq.utils.Quiz;
 
 public class Host extends AppCompatActivity {
     private static final int REQUEST_ENABLE_DISCOVERABLE_BT = 42;
@@ -39,7 +39,9 @@ public class Host extends AppCompatActivity {
         if (setupBluetooth()) {
             new Thread(btConnectionListener, "BT Connection Listener Thread").start();
             TextView hostnameLabel = (TextView) findViewById(R.id.lbl_hostname);
-            hostnameLabel.append(btAdapter.getName());
+            if (hostnameLabel != null) {
+                hostnameLabel.append(btAdapter.getName());
+            }
         }
 
         quiz = new Quiz();
@@ -55,6 +57,7 @@ public class Host extends AppCompatActivity {
 
 
         playerList.removePlayerWithName("Max");
+        playerList.removePlayerWithName("bla");
     }
 
     @Override
@@ -64,6 +67,7 @@ public class Host extends AppCompatActivity {
         unregisterReceiver(broadcastReceiver);
     }
 
+    @SuppressWarnings("UnusedParameters")
     public void startButtonClicked(View view) {
         Intent intent = new Intent(Host.this, QuestionsAsked.class);
         intent.putExtra("questions", quiz.createTmpQuiz(this.getApplicationContext()));
@@ -71,10 +75,12 @@ public class Host extends AppCompatActivity {
         finish();
     }
 
+    @SuppressWarnings("UnusedParameters")
     public void buildQuizButtonClicked(View view) {
         Toast.makeText(this, R.string.not_implemented, Toast.LENGTH_SHORT).show();
     }
 
+    @SuppressWarnings("UnusedParameters")
     public void advancedSettingsButtonClicked(View view) {
         Toast.makeText(this, R.string.not_implemented, Toast.LENGTH_SHORT).show();
     }
@@ -102,7 +108,7 @@ public class Host extends AppCompatActivity {
             discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0);
             startActivityForResult(discoverableIntent, REQUEST_ENABLE_DISCOVERABLE_BT);
         } else {
-            btConnectionListener.setDiscoverable(true);
+            btConnectionListener.setDiscoverable();
         }
         return true;
     }
@@ -113,7 +119,7 @@ public class Host extends AppCompatActivity {
             case REQUEST_ENABLE_DISCOVERABLE_BT:
                 Log.d("Host:onActivityResult", "requestCode: REQUEST_ENABLE_DISCOVERABLE_BT");
                 if (resultCode != RESULT_CANCELED) {
-                    btConnectionListener.setDiscoverable(true);
+                    btConnectionListener.setDiscoverable();
                 } else {
                     Log.d("BT", "Could not enable discoverability.");
                     finish();

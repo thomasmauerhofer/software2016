@@ -1,7 +1,7 @@
 package com.bitschupfa.sw16.yaq.Database;
 
-import com.bitschupfa.sw16.yaq.Database.Object.Answer;
-import com.bitschupfa.sw16.yaq.Database.Object.TextQuestion;
+import com.bitschupfa.sw16.yaq.database.object.Answer;
+import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 
 import org.junit.Test;
 
@@ -9,9 +9,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by Patrik on 10.04.2016.
- */
 public class TextQuestionTest {
     private final int RIGHT_ANSWER_DECREASE = 10;
 
