@@ -42,7 +42,7 @@ public class TextQuestion implements Serializable{
         this.difficulty = difficulty;
     }
 
-    public List<Answer> getShuffeledAnswers() {
+    public List<Answer> getShuffledAnswers() {
         List<Answer> tmp = new ArrayList<>();
 
         tmp.add(answer1);

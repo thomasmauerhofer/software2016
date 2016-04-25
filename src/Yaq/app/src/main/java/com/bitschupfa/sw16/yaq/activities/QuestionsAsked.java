@@ -110,7 +110,7 @@ public class QuestionsAsked extends AppCompatActivity {
 
     private void showQuestions() {
         TextQuestion question = quiz.getCurrentQuestion();
-        List<Answer> answers = question.getShuffeledAnswers();
+        List<Answer> answers = question.getShuffledAnswers();
 
         questionView.setText(question.getQuestion());
         answer1Button.setText(answers.get(0).getAnswerString());

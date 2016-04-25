@@ -5,17 +5,17 @@ import android.test.ActivityInstrumentationTestCase2;
 
 import com.bitschupfa.sw16.yaq.activities.Host;
 import com.bitschupfa.sw16.yaq.activities.Join;
-import com.bitschupfa.sw16.yaq.activities.MainMenue;
+import com.bitschupfa.sw16.yaq.activities.MainMenu;
 import com.bitschupfa.sw16.yaq.R;
 import com.robotium.solo.Solo;
 
 
-public class MainMenuTests extends ActivityInstrumentationTestCase2<MainMenue> {
+public class MainMenuTests extends ActivityInstrumentationTestCase2<MainMenu> {
 
     private Solo solo;
 
     public MainMenuTests() {
-        super(MainMenue.class);
+        super(MainMenu.class);
     }
 
     @Override
