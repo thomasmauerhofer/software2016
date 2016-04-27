@@ -7,9 +7,7 @@ import com.bitschupfa.sw16.yaq.ui.PlayerEntry;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by thomas on 18.03.16.
- */
+
 public class PlayerList {
 
     private final Activity activity;
@@ -27,7 +25,7 @@ public class PlayerList {
         players.add(entry);
     }
 
-    public void removePlayer(int id) {
+    private void removePlayer(int id) {
 
         if(id == players.size()) {
             players.get(id - 1).removePlayer();
@@ -44,10 +42,13 @@ public class PlayerList {
 
     public void removePlayerWithName(String name) {
         int id = getPlayerIdWithName(name);
+        if(id == 0) {
+            return;
+        }
         removePlayer(id);
     }
 
-    public int getPlayerIdWithName(String name) {
+    private int getPlayerIdWithName(String name) {
         for(PlayerEntry entry : players) {
             if(entry.getName().equals(name)) {
                 return entry.getId();

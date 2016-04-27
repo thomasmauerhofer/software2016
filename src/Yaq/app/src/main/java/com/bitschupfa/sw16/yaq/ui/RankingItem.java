@@ -1,8 +1,5 @@
 package com.bitschupfa.sw16.yaq.ui;
 
-/**
- * Created by thomas on 22.03.16.
- */
 public class RankingItem {
 
     private String name;

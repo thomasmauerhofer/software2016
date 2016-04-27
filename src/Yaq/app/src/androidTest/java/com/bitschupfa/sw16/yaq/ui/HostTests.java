@@ -1,15 +1,14 @@
 package com.bitschupfa.sw16.yaq.ui;
 
+import android.bluetooth.BluetoothAdapter;
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.bitschupfa.sw16.yaq.Activities.Host;
-import com.bitschupfa.sw16.yaq.Activities.QuestionsAsked;
+import com.bitschupfa.sw16.yaq.activities.Host;
+import com.bitschupfa.sw16.yaq.activities.QuestionsAsked;
 import com.bitschupfa.sw16.yaq.R;
 import com.robotium.solo.Solo;
 
-/**
- * Created by thomas on 22.03.16.
- */
+
 public class HostTests extends ActivityInstrumentationTestCase2<Host> {
 
     private Solo solo;
@@ -21,8 +20,16 @@ public class HostTests extends ActivityInstrumentationTestCase2<Host> {
     @Override
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
-    }
 
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (mBluetoothAdapter == null) {
+            throw new Exception("Bluetooth is not supported.. Please don't use an emulator!");
+        } else {
+            if (!mBluetoothAdapter.isEnabled()) {
+                throw new Exception("Bluetooth is not enabled..");
+            }
+        }
+    }
 
     @Override
     public void tearDown() throws Exception {

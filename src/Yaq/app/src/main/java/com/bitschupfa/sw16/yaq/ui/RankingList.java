@@ -9,37 +9,37 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
-import com.bitschupfa.sw16.yaq.ui.RankingItem;
 
 import java.util.List;
 
 public class RankingList extends ArrayAdapter<RankingItem> {
 
-    private Activity activity;
+    private final Activity activity;
 
-    private List<RankingItem> items;
+    private final List<RankingItem> items;
 
     public RankingList(Activity activity, List<RankingItem> items) {
-        super(activity, R.layout.statictic_rank, items);
+        super(activity, R.layout.list_statictic_rank, items);
         this.items = items;
         this.activity = activity;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if(convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View rowView = inflater.inflate(R.layout.statictic_rank, parent, false);
-        TextView rank = (TextView) rowView.findViewById(R.id.rank);
-        TextView player = (TextView) rowView.findViewById(R.id.player_name);
-        TextView score = (TextView) rowView.findViewById(R.id.score);
+            convertView = inflater.inflate(R.layout.list_statictic_rank, parent, false);
+            TextView rank = (TextView) convertView.findViewById(R.id.rank);
+            TextView player = (TextView) convertView.findViewById(R.id.player_name);
+            TextView score = (TextView) convertView.findViewById(R.id.score);
 
 
-        rank.setText(String.valueOf(position + 1));
-        player.setText(items.get(position).getName());
-        score.setText(String.valueOf(items.get(position).getScore()));
-
-        return rowView;
+            rank.setText(String.valueOf(position + 1));
+            player.setText(items.get(position).getName());
+            score.setText(String.valueOf(items.get(position).getScore()));
+        }
+        return convertView;
     }
 
     public void addItems() {

@@ -3,19 +3,19 @@ package com.bitschupfa.sw16.yaq.ui;
 
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.bitschupfa.sw16.yaq.Activities.Host;
-import com.bitschupfa.sw16.yaq.Activities.Join;
-import com.bitschupfa.sw16.yaq.Activities.MainMenue;
+import com.bitschupfa.sw16.yaq.activities.Host;
+import com.bitschupfa.sw16.yaq.activities.Join;
+import com.bitschupfa.sw16.yaq.activities.MainMenu;
 import com.bitschupfa.sw16.yaq.R;
 import com.robotium.solo.Solo;
 
 
-public class MainMenuTests extends ActivityInstrumentationTestCase2<MainMenue> {
+public class MainMenuTests extends ActivityInstrumentationTestCase2<MainMenu> {
 
     private Solo solo;
 
     public MainMenuTests() {
-        super(MainMenue.class);
+        super(MainMenu.class);
     }
 
     @Override
@@ -29,11 +29,12 @@ public class MainMenuTests extends ActivityInstrumentationTestCase2<MainMenue> {
         solo.finishOpenedActivities();
     }
 
-    public void testMainMenu() {
+    public void testMainMenuHost() {
         solo.clickOnButton(getActivity().getResources().getString(R.string.host));
         assertTrue("Wrong Activity!", solo.waitForActivity(Host.class));
+    }
 
-        solo.goBack();
+    public void testMainMenuJoin() {
         solo.clickOnButton(getActivity().getResources().getString(R.string.join));
         assertTrue("Wrong Activity!", solo.waitForActivity(Join.class));
     }

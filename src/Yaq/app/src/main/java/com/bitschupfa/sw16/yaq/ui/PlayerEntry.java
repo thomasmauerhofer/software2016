@@ -3,24 +3,15 @@ package com.bitschupfa.sw16.yaq.ui;
 import android.app.Activity;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
 
-import java.util.ArrayList;
-import java.util.List;
 
-/**
- * Created by thomas on 22.03.16.
- */
-public class PlayerEntry {
 
-    private LinearLayout layout = null;
-    private TextView player_name = null;
-    private ImageView avatar = null;
+class PlayerEntry {
+
+    private TextView playerEntry = null;
     private int id = 0;
 
     PlayerEntry(Activity activity, int id) {
@@ -29,22 +20,21 @@ public class PlayerEntry {
     }
 
     public void setPlayer(String name) {
-        layout.setBackgroundResource(R.drawable.boarder_table_entry_light);
-        player_name.setText(name);
-        player_name.setTextColor(Color.parseColor("#1F3255"));
-        avatar.setImageResource(R.mipmap.icon_player);
+        playerEntry.setText(name);
+        playerEntry.setTextColor(Color.parseColor("#1F3255"));
+        playerEntry.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.icon_player, 0, 0, 0);
     }
 
     public void removePlayer() {
-        layout.setBackgroundResource(R.drawable.boarder_table_entry_dark);
-        player_name.setText(R.string.player);
-        player_name.setText(player_name.getText().toString()+ " " + String.valueOf(id));
-        player_name.setTextColor(ContextCompat.getColor(layout.getContext(), R.color.player_table_inactive));
-        avatar.setImageResource(R.mipmap.icon_player_black);
+        playerEntry.setText(R.string.player);
+        String text = playerEntry.getText().toString()+ " " + String.valueOf(id);
+        playerEntry.setText(text);
+        playerEntry.setTextColor(ContextCompat.getColor(playerEntry.getContext(), R.color.player_table_inactive));
+        playerEntry.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.icon_player_black, 0, 0, 0);
     }
 
     public String getName() {
-        return player_name.getText().toString();
+        return playerEntry.getText().toString();
     }
 
     public int getId() {
@@ -61,44 +51,28 @@ public class PlayerEntry {
 
         switch (id) {
             case 1:
-                layout = (LinearLayout) activity.findViewById(R.id.player1_layer);
-                player_name = (TextView) activity.findViewById(R.id.player1_name);
-                avatar = (ImageView) activity.findViewById(R.id.player1_img);
+                playerEntry = (TextView) activity.findViewById(R.id.player1_name);
                 break;
             case 2:
-                layout = (LinearLayout) activity.findViewById(R.id.player2_layer);
-                player_name = (TextView) activity.findViewById(R.id.player2_name);
-                avatar = (ImageView) activity.findViewById(R.id.player2_img);
+                playerEntry = (TextView) activity.findViewById(R.id.player2_name);
                 break;
             case 3:
-                layout = (LinearLayout) activity.findViewById(R.id.player3_layer);
-                player_name = (TextView) activity.findViewById(R.id.player3_name);
-                avatar = (ImageView) activity.findViewById(R.id.player3_img);
+                playerEntry = (TextView) activity.findViewById(R.id.player3_name);
                 break;
             case 4:
-                layout = (LinearLayout) activity.findViewById(R.id.player4_layer);
-                player_name = (TextView) activity.findViewById(R.id.player4_name);
-                avatar = (ImageView) activity.findViewById(R.id.player4_img);
+                playerEntry = (TextView) activity.findViewById(R.id.player4_name);
                 break;
             case 5:
-                layout = (LinearLayout) activity.findViewById(R.id.player5_layer);
-                player_name = (TextView) activity.findViewById(R.id.player5_name);
-                avatar = (ImageView) activity.findViewById(R.id.player5_img);
+                playerEntry = (TextView) activity.findViewById(R.id.player5_name);
                 break;
             case 6:
-                layout = (LinearLayout) activity.findViewById(R.id.player6_layer);
-                player_name = (TextView) activity.findViewById(R.id.player6_name);
-                avatar = (ImageView) activity.findViewById(R.id.player6_img);
+                playerEntry = (TextView) activity.findViewById(R.id.player6_name);
                 break;
             case 7:
-                layout = (LinearLayout) activity.findViewById(R.id.player7_layer);
-                player_name = (TextView) activity.findViewById(R.id.player7_name);
-                avatar = (ImageView) activity.findViewById(R.id.player7_img);
+                playerEntry = (TextView) activity.findViewById(R.id.player7_name);
                 break;
             case 8:
-                layout = (LinearLayout) activity.findViewById(R.id.player8_layer);
-                player_name = (TextView) activity.findViewById(R.id.player8_name);
-                avatar = (ImageView) activity.findViewById(R.id.player8_img);
+                playerEntry = (TextView) activity.findViewById(R.id.player8_name);
                 break;
         }
 

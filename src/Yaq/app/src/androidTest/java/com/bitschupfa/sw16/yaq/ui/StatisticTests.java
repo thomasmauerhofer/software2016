@@ -2,14 +2,11 @@ package com.bitschupfa.sw16.yaq.ui;
 
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.bitschupfa.sw16.yaq.Activities.QuestionsAsked;
-import com.bitschupfa.sw16.yaq.Activities.Statistic;
+import com.bitschupfa.sw16.yaq.activities.QuestionsAsked;
+import com.bitschupfa.sw16.yaq.activities.Statistic;
 import com.bitschupfa.sw16.yaq.R;
 import com.robotium.solo.Solo;
 
-/**
- * Created by thomas on 22.03.16.
- */
 public class StatisticTests extends ActivityInstrumentationTestCase2<Statistic> {
 
     private Solo solo;
