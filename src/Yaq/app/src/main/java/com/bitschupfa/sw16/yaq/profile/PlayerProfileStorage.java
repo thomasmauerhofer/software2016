@@ -14,29 +14,34 @@ import java.util.Random;
 
 public class PlayerProfileStorage {
     private static final String TAG = "PlayerProfileStorage";
-    private static final String PREF_FILE_NAME = "com.bitschupfa.sw16.yaq.PLAYER_PROFILE_PREF";
+
+    public static final String PREF_FILE_NAME = "com.bitschupfa.sw16.yaq.PLAYER_PROFILE_PREF";
     private static final String PREF_PLAYER_NAME_KEY = "com.bitschupfa.sw16.yaq.PLAYER_NAME";
     private static final String PREF_PLAYER_AVATAR_KEY = "com.bitschupfa.sw16.yaq.PLAYER_AVATAR";
 
     private static PlayerProfileStorage instance;
 
+    private String[] randomPlayerNames;
     private final Bitmap defaultAvatar;
-    private final String[] randomPlayerNames;
     private final SharedPreferences preferences;
 
 
     private PlayerProfileStorage(Context context) {
-        preferences = context.getApplicationContext().getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
-        randomPlayerNames = new String[]{"Yak", "Jak", "Bos mutus", "Bos grunniens", "Grunzochse"};
+        preferences = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
+        randomPlayerNames = new String[] {"Yak", "Jak", "Bos mutus", "Bos grunniens", "Grunzochse"};
         defaultAvatar = BitmapFactory.decodeResource(context.getResources(), R.mipmap.default_avatar);
     }
 
     public static PlayerProfileStorage getInstance(Context context) {
         if (instance == null) {
-            instance = new PlayerProfileStorage(context.getApplicationContext());
+            instance = new PlayerProfileStorage(context);
         }
 
         return instance;
+    }
+
+    public String[] getRandomPlayerNames() {
+        return randomPlayerNames;
     }
 
     public String getPlayerName() {
@@ -51,9 +56,12 @@ public class PlayerProfileStorage {
         return name;
     }
 
-    public boolean setPlayerName(String name) {
-        Log.d(TAG, "Update player name to: '" + name + "'");
+    public boolean setPlayerName(String name) throws IllegalArgumentException {
+        if (name == null || name.equals("")) {
+            throw new IllegalArgumentException("The player name must be a non-empty String.");
+        }
 
+        Log.d(TAG, "Update player name to: '" + name + "'");
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(PREF_PLAYER_NAME_KEY, name);
         return editor.commit();

@@ -26,14 +26,13 @@ public class Profile extends AppCompatActivity {
     private PlayerProfileStorage profile;
     private EditText nameTextBox;
     private ImageView avatarImageView;
-    private FloatingActionButton actionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        actionButton = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton actionButton = (FloatingActionButton) findViewById(R.id.fab);
         nameTextBox = (EditText) findViewById(R.id.txt_playerName);
         avatarImageView = (ImageView) findViewById(R.id.imgView_avatar);
         profile = PlayerProfileStorage.getInstance(Profile.this);
