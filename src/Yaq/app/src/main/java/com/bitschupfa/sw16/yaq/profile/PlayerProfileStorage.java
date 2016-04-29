@@ -29,7 +29,7 @@ public class PlayerProfileStorage {
     private PlayerProfileStorage(Context context) {
         preferences = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         randomPlayerNames = new String[] {"Yak", "Jak", "Bos mutus", "Bos grunniens", "Grunzochse"};
-        defaultAvatar = BitmapFactory.decodeResource(context.getResources(), R.mipmap.default_avatar);
+        defaultAvatar = BitmapFactory.decodeResource(context.getResources(), R.drawable.default_avatar);
     }
 
     public static PlayerProfileStorage getInstance(Context context) {
