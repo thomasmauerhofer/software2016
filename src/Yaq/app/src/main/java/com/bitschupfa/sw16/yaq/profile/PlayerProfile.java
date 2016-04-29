@@ -1,8 +1,6 @@
 package com.bitschupfa.sw16.yaq.profile;
 
-import android.graphics.Bitmap;
-
-import com.bitschupfa.sw16.yaq.utils.BitmapUtils;
+import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 
@@ -10,7 +8,14 @@ public class PlayerProfile implements Serializable {
     private final String playerName;
     private final String avatar;
 
-    public PlayerProfile(String name, String encodedAvatar) {
+    public PlayerProfile(@NonNull String name, @NonNull String encodedAvatar) {
+        if (name == null) {
+            throw new IllegalArgumentException("Player name may not be null");
+        }
+        if (encodedAvatar == null) {
+            throw new IllegalArgumentException("Encoded avatar may not be null");
+        }
+
         playerName = name;
         avatar = encodedAvatar;
     }
@@ -19,7 +24,7 @@ public class PlayerProfile implements Serializable {
         return playerName;
     }
 
-    public Bitmap getAvatar() {
-        return BitmapUtils.decodeBitmap(avatar);
+    public String getEncodedAvatar() {
+        return avatar;
     }
 }
