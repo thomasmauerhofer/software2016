@@ -37,6 +37,10 @@
             android:label="@string/title_activity_quesions_asked"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".activities.BuildQuiz"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".activities.Statistic"
             android:label="@string/title_activity_statistic"
             android:theme="@style/AppTheme.NoActionBar" />

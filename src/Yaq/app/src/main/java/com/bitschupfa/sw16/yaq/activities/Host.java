@@ -39,6 +39,7 @@ public class Host extends AppCompatActivity implements Lobby {
     private final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
     private final ConnectionListener btConnectionListener = new ConnectionListener();
     private PlayerList playerList = new PlayerList(this);
+    private Quiz quiz;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +75,8 @@ public class Host extends AppCompatActivity implements Lobby {
 
     @SuppressWarnings("UnusedParameters")
     public void buildQuizButtonClicked(View view) {
-        Toast.makeText(this, R.string.not_implemented, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(Host.this, BuildQuiz.class);
+        startActivity(intent);
     }
 
     @SuppressWarnings("UnusedParameters")

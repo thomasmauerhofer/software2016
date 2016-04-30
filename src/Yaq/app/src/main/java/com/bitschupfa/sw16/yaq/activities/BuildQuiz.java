@@ -1,20 +1,42 @@
 package com.bitschupfa.sw16.yaq.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckedTextView;
+import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
 import com.bitschupfa.sw16.yaq.R;
+import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
+import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
+import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 /**
  * Created by manu on 30.04.16.
  */
 public class BuildQuiz extends AppCompatActivity {
+
+    private ListView listView;
+    private QuestionQuerier questionQuerier;
+    private Button btnBuildQuiz;
+    private HashMap<String, Integer> questionCatalogMap = new HashMap<>();
+    private List<QuestionCatalog> questionCatalogList;
+    private List<TextQuestion> questions = new ArrayList<>();
+    private Queue<Integer> queue = new LinkedList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,33 +44,49 @@ public class BuildQuiz extends AppCompatActivity {
         setContentView(R.layout.activity_build_quiz);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main_menu, menu);
-        return true;
-    }
+        listView = (ListView) findViewById(R.id.ListViewBuildQuiz);
+        listView.setChoiceMode(listView.CHOICE_MODE_MULTIPLE);
+        listView.setTextFilterEnabled(true);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        btnBuildQuiz = (Button) findViewById(R.id.ButtonBuildQuiz);
 
-        if (id == R.id.menu_settings) {
-            Toast.makeText(this, R.string.not_implemented, Toast.LENGTH_SHORT).show();
-            return true;
-        } else if (id == R.id.menu_profile) {
-            Toast.makeText(this, R.string.not_implemented, Toast.LENGTH_SHORT).show();
-            return true;
-        } else if (id == R.id.menu_manage) {
-            Toast.makeText(this, R.string.not_implemented, Toast.LENGTH_SHORT).show();
-            return true;
+        questionQuerier = new QuestionQuerier(this);
+        questionCatalogList = questionQuerier.getAllQuestionCatalogs();
+
+        for (QuestionCatalog catalog : questionCatalogList) {
+            questionCatalogMap.put(catalog.getName(), catalog.getCatalogID());
         }
 
-        return super.onOptionsItemSelected(item);
+        listView.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_checked, new ArrayList<>(questionCatalogMap.keySet())));
+
+        listView.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                CheckedTextView item = (CheckedTextView) view;
+                Integer questionId = 0;
+                if (item.isChecked()) {
+                    questionId = questionCatalogMap.get(parent.getItemAtPosition(position));
+                    Log.d("BuildQuiz", "add id: " + questionId);
+                    queue.add(questionId);
+                } else {
+                    questionId = questionCatalogMap.get(parent.getItemAtPosition(position));
+                    Log.d("BuildQuiz", "remove id: " + questionId);
+                    queue.remove(questionId);
+                }
+            }
+        });
+
+        btnBuildQuiz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Iterator it = queue.iterator();
+
+                while (it.hasNext()) {
+                    questions.addAll(questionQuerier.getAllQuestionsFromCatalog((Integer) it.next()));
+                }
+                Toast.makeText(BuildQuiz.this, "questions: " + questions.size(), Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
     }
 }
