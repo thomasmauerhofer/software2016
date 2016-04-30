@@ -49,5 +49,9 @@
     <!-- StatisticActivity -->
     <string name="title_activity_statistic">Statistic</string>
     <string name="play_again">Play Again</string>
+    <string name="title_activity_profile">Profile</string>
+
+    <!-- ProfileActivity-->
+    <string name="player_name">player name</string>
 
 </resources>

@@ -125,6 +125,10 @@ public class Join extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(btBroadcastReceiver);
+
+        if ( findDeviceDialog != null && findDeviceDialog.isShowing() ){
+            findDeviceDialog.cancel();
+        }
     }
 
     private boolean setupBluetooth() {
@@ -278,7 +282,6 @@ public class Join extends AppCompatActivity {
         findDeviceDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findDeviceDialog.dismiss();
                 Join.this.finish();
             }
         });
@@ -286,7 +289,6 @@ public class Join extends AppCompatActivity {
         findDeviceDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                findDeviceDialog.dismiss();
                 Join.this.finish();
             }
         });
