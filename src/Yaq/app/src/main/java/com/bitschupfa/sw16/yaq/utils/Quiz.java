@@ -1,5 +1,7 @@
 package com.bitschupfa.sw16.yaq.utils;
 
+import android.util.Log;
+
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 
 import java.util.ArrayList;
@@ -39,5 +41,11 @@ public class Quiz implements Iterator<TextQuestion> {
 
     @Override
     public void remove() {
+    }
+
+    public void setQuiz(List<TextQuestion> questions_) {
+        questions = questions_;
+        Collections.shuffle(questions);
+        Log.d("Quiz", "setQuiz: " + questions.size());
     }
 }
