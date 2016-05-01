@@ -13,14 +13,15 @@ public class ConnectionListener implements Runnable {
     private final static String TAG = "BTConnectionListener";
 
     private BluetoothServerSocket btServerSocket;
-    private volatile boolean isDiscoverable = false;
+    private boolean isDiscoverable = false;
+
 
     public ConnectionListener() {
 
     }
 
     @Override
-    public void run() {
+    public synchronized void run() {
         Log.d(TAG, "Starting thread.");
 
         BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -30,9 +31,16 @@ public class ConnectionListener implements Runnable {
         }
 
         if (!isDiscoverable) {
-            Log.d(TAG, "Device is not discoverable. Idle until status changes.");
-            //noinspection StatementWithEmptyBody
-            while (!isDiscoverable);
+            Log.d(TAG, "Device is not discoverable. Wait until status changes.");
+            while (!isDiscoverable) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    Log.e(TAG, "Interrupted while waiting for device to be discoverable. Message: "
+                            + e.getMessage());
+                    return;
+                }
+            }
             Log.d(TAG, "Device is now discoverable.");
         }
 
@@ -83,7 +91,8 @@ public class ConnectionListener implements Runnable {
         // TODO: register client in the game
     }
 
-    public void setDiscoverable() {
+    public synchronized void setDiscoverable() {
         isDiscoverable = true;
+        notify();
     }
 }
