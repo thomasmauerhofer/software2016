@@ -4,12 +4,14 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
@@ -26,11 +28,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bitschupfa.sw16.yaq.bluetooth.ClientConnector;
+import com.bitschupfa.sw16.yaq.bluetooth.BTService;
 import com.bitschupfa.sw16.yaq.R;
+import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
+import com.bitschupfa.sw16.yaq.communication.HELLOMessage;
+import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
+import com.bitschupfa.sw16.yaq.profile.PlayerProfileStorage;
 import com.bitschupfa.sw16.yaq.ui.BluetoothDeviceList;
 import com.bitschupfa.sw16.yaq.ui.PlayerList;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -257,10 +264,7 @@ public class Join extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                 BluetoothDevice selectedDev = pairedDevices.get(position);
-                new ClientConnector(selectedDev);
-
-                Toast.makeText(Join.this, R.string.not_implemented, Toast.LENGTH_LONG).show();
-                // TODO: connect to selected device and register callback
+                new ClientConnector().execute(selectedDev);
             }
         };
         pairedList.setOnItemClickListener(onDevClickListener);
@@ -292,5 +296,70 @@ public class Join extends AppCompatActivity {
                 Join.this.finish();
             }
         });
+    }
+
+
+    private final class ClientConnector extends AsyncTask<BluetoothDevice, Void, ConnectedDevice> {
+        private final static String TAG = "BTClientConnector";
+
+        @Override
+        protected ConnectedDevice doInBackground(BluetoothDevice... params) {
+            if (params.length < 1) {
+                Log.e(TAG, "No Bluetooth device was submitted to the connection task.");
+                return null;
+            }
+            BluetoothDevice dev = params[0];
+
+            Log.d(TAG, "Create socket.");
+            BluetoothSocket btSocket;
+            try {
+                btSocket = dev.createRfcommSocketToServiceRecord(BTService.SERVICE_UUID);
+            } catch (IOException e) {
+                Log.e(TAG, "Could not create Bluetooth socket: " + e.getMessage());
+                return null;
+            }
+
+            Log.d(TAG, "Starting task.");
+            if (btSocket == null) {
+                Log.e(TAG, "No Bluetooth socket available. Stop task.");
+                return null;
+            }
+
+            BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+            if (btAdapter.isDiscovering()) {
+                Log.d(TAG, "Device is currently in discover mode. Cancel discovery to avoid connection issues.");
+                btAdapter.cancelDiscovery();
+            }
+
+            try {
+                btSocket.connect();
+            } catch (IOException e) {
+                Log.e(TAG, "Could not establish connection to other device: " + e.getMessage());
+                return null;
+            }
+
+            ConnectedDevice server = null;
+            try {
+                server = new ConnectedDevice(btSocket);
+            } catch (IOException e) {
+                Log.e(TAG, "Could not create new ConnectedDevice: " + e.getMessage());
+            }
+
+            return server;
+        }
+
+        @Override
+        protected void onPostExecute(ConnectedDevice connectedDevice) {
+            Log.d(TAG, "Task finished.");
+            if (connectedDevice != null) {
+                try {
+                    new Thread(connectedDevice).start();
+                    connectedDevice.sendMessage(new HELLOMessage(btAdapter.getAddress(),
+                            PlayerProfileStorage.getInstance(Join.this).getPlayerProfile()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
