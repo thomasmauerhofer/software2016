@@ -32,9 +32,8 @@ public class ConnectedDevice implements Runnable {
 
         while (true) {
             try {
-                //noinspection UnusedAssignment
                 Message msg = (Message) inputStream.readObject();
-                // TODO: handle message
+                msg.action(); // TODO: inject action target into message (e.g. the game object on the host side)
             } catch (ClassNotFoundException e) {
                 Log.e(TAG, "Unable to parse received object: " + e.getMessage());
             } catch (IOException e) {

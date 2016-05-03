@@ -88,7 +88,7 @@ public class ConnectionListener implements Runnable {
     @SuppressWarnings("WeakerAccess")
     public void registerClient(ConnectedDevice client) {
         new Thread(client).start();
-        // TODO: register client in the game
+        // TODO: register ConnectedDevice thread in the game to send messages to the client
     }
 
     public synchronized void setDiscoverable() {

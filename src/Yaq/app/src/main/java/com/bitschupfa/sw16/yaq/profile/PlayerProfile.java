@@ -27,4 +27,9 @@ public class PlayerProfile implements Serializable {
     public String getEncodedAvatar() {
         return avatar;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Player: %s", playerName);
+    }
 }
