@@ -1,10 +1,16 @@
 package com.bitschupfa.sw16.yaq.database.object;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+
+import com.bitschupfa.sw16.yaq.database.helper.DBHelper;
+
 import java.io.Serializable;
 import java.util.List;
 
 
-public class QuestionCatalog implements Serializable {
+public class QuestionCatalog implements Serializable{
     private int catalogID;
     private String name;
     private List<TextQuestion> textQuestionList = null;

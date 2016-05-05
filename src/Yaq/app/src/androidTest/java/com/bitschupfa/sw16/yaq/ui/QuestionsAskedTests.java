@@ -54,7 +54,7 @@ public class QuestionsAskedTests extends ActivityInstrumentationTestCase2<Questi
         Answer answer2 = new Answer("wrong1", 10);
         Answer answer3 = new Answer("wrong2", 10);
         Answer answer4 = new Answer("wrong3", 10);
-        quiz.addQuestion(new TextQuestion("Question1", answer1, answer2, answer3, answer4, 1, 1));
+        quiz.addQuestion(new TextQuestion(1, "Question1", answer1, answer2, answer3, answer4, 1, 1));
 
         Intent intent = new Intent();
         intent.putExtra("questions", quiz);
