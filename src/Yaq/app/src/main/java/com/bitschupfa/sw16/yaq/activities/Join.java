@@ -362,8 +362,9 @@ public class Join extends AppCompatActivity {
             if (connectedDevice != null) {
                 try {
                     new Thread(connectedDevice).start();
-                    connectedDevice.sendMessage(new HELLOMessage(BTService.MAC_ADDRESS,
-                            PlayerProfileStorage.getInstance(Join.this).getPlayerProfile()));
+                    connectedDevice.sendMessage(new HELLOMessage(
+                            PlayerProfileStorage.getInstance(Join.this).getPlayerProfile())
+                    );
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

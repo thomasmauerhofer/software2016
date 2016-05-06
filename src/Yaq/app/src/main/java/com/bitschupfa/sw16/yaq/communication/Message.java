@@ -1,7 +1,16 @@
 package com.bitschupfa.sw16.yaq.communication;
 
-abstract class Message {
+import android.bluetooth.BluetoothAdapter;
+
+import java.io.Serializable;
+
+abstract class Message implements Serializable {
     private final String senderAddress;
+
+    public Message() {
+        senderAddress = BluetoothAdapter.getDefaultAdapter() != null ?
+                BluetoothAdapter.getDefaultAdapter().getAddress() : "n/a";
+    }
 
     public Message(String address) {
         senderAddress = address;

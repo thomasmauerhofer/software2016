@@ -6,12 +6,22 @@ import android.util.Log;
 
 import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
 
+
 public class HELLOMessage extends Message {
     private static final String TAG = "HELLOMessage";
-    private final PlayerProfile playerProfile;
+    private PlayerProfile playerProfile;
+
+    public HELLOMessage(@NonNull PlayerProfile profile) {
+        super();
+        setPlayerProfile(profile);
+    }
 
     public HELLOMessage(@NonNull String address, @NonNull PlayerProfile profile) {
         super(address);
+        setPlayerProfile(profile);
+    }
+
+    public void setPlayerProfile(PlayerProfile profile) {
         if (profile == null) {
             throw new IllegalArgumentException("PlayerProfile may not be null!");
         }
@@ -20,7 +30,7 @@ public class HELLOMessage extends Message {
 
     @Override
     public void action() {
-        Log.d(TAG, playerProfile.toString());
+        Log.d(TAG, this.toString());
         // TODO: register client in game object: game.registerClient(playerProfile);
     }
 
