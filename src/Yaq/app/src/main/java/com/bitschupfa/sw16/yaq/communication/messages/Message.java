@@ -1,10 +1,13 @@
-package com.bitschupfa.sw16.yaq.communication;
+package com.bitschupfa.sw16.yaq.communication.messages;
 
 import android.bluetooth.BluetoothAdapter;
 
+import com.bitschupfa.sw16.yaq.communication.ClientMessageHandler;
+import com.bitschupfa.sw16.yaq.communication.HostMessageHandler;
+
 import java.io.Serializable;
 
-abstract class Message implements Serializable {
+public abstract class Message implements Serializable {
     private final String senderAddress;
 
     public Message() {
@@ -20,5 +23,6 @@ abstract class Message implements Serializable {
         return senderAddress;
     }
 
-    public abstract void action();
+    public abstract void action(HostMessageHandler handler);
+    public abstract void action(ClientMessageHandler handler);
 }

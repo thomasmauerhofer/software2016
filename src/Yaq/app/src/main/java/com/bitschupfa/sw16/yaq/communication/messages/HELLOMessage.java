@@ -1,9 +1,11 @@
-package com.bitschupfa.sw16.yaq.communication;
+package com.bitschupfa.sw16.yaq.communication.messages;
 
 
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.bitschupfa.sw16.yaq.communication.ClientMessageHandler;
+import com.bitschupfa.sw16.yaq.communication.HostMessageHandler;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
 
 
@@ -29,7 +31,12 @@ public class HELLOMessage extends Message {
     }
 
     @Override
-    public void action() {
+    public void action(HostMessageHandler handler) {
+        // noting to do here
+    }
+
+    @Override
+    public void action(ClientMessageHandler handler) {
         Log.d(TAG, this.toString());
         // TODO: register client in game object: game.registerClient(playerProfile);
     }

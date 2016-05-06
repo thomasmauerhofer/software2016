@@ -4,6 +4,8 @@ package com.bitschupfa.sw16.yaq.communication;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
+import com.bitschupfa.sw16.yaq.communication.messages.Message;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -11,7 +13,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
 
-public class ConnectedDevice implements Runnable {
+public abstract class ConnectedDevice implements Runnable {
     private final static String TAG = "BTConnectedDevice";
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
@@ -39,7 +41,7 @@ public class ConnectedDevice implements Runnable {
         while (true) {
             try {
                 Message msg = (Message) inputStream.readObject();
-                msg.action(); // TODO: inject action target into message (e.g. the game object on the host side)
+                onMessage(msg);
             } catch (ClassNotFoundException e) {
                 Log.e(TAG, "Unable to parse received object: " + e.getMessage());
             } catch (IOException e) {
@@ -54,4 +56,6 @@ public class ConnectedDevice implements Runnable {
         outputStream.writeObject(msg);
         outputStream.flush();
     }
+
+    protected abstract void onMessage(Message message);
 }
