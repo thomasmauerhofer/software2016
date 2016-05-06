@@ -17,13 +17,19 @@ public class ConnectedDevice implements Runnable {
     private final ObjectOutputStream outputStream;
 
     public ConnectedDevice(BluetoothSocket s) throws IOException {
-        inputStream = new ObjectInputStream(s.getInputStream());
+        // note: the ObjectOutputStream must be constructed first on both sides since the
+        // ObjectInputStream tries to read the object stream header first and this blocks until
+        // the ObjectOutputStream is constructed which leads to starvation if the ObjectInputStream
+        // is constructed first
         outputStream = new ObjectOutputStream(s.getOutputStream());
+        outputStream.flush();
+        inputStream = new ObjectInputStream(s.getInputStream());
     }
 
     public ConnectedDevice(InputStream in, OutputStream out) throws IOException {
-        inputStream = new ObjectInputStream(in);
         outputStream = new ObjectOutputStream(out);
+        out.flush();
+        inputStream = new ObjectInputStream(in);
     }
 
     @Override
