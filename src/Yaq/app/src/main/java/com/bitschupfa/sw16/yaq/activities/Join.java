@@ -32,7 +32,6 @@ import com.bitschupfa.sw16.yaq.bluetooth.BTService;
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
 import com.bitschupfa.sw16.yaq.communication.HELLOMessage;
-import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfileStorage;
 import com.bitschupfa.sw16.yaq.ui.BluetoothDeviceList;
 import com.bitschupfa.sw16.yaq.ui.PlayerList;
@@ -250,7 +249,7 @@ public class Join extends AppCompatActivity {
 
         dialogBar  = (ProgressBar) dialogView.findViewById(R.id.find_devices_bar);
         ListView pairedList = (ListView) dialogView.findViewById(R.id.paired_devices);
-        ListView unpairedList = (ListView) dialogView.findViewById(R.id.unpaired_devices);
+        ListView discoveredList = (ListView) dialogView.findViewById(R.id.unpaired_devices);
         TextView noPairedDevices = (TextView) dialogView.findViewById(R.id.no_paired_devices_found);
         TextView noUnpairedDevices = (TextView) dialogView.findViewById(R.id.no_unpaired_devices_found);
 
@@ -258,17 +257,27 @@ public class Join extends AppCompatActivity {
         discovered = new BluetoothDeviceList(this, discoveredDevices, noUnpairedDevices);
 
         pairedList.setAdapter(paired);
-        unpairedList.setAdapter(discovered);
+        discoveredList.setAdapter(discovered);
 
-        AdapterView.OnItemClickListener onDevClickListener = new AdapterView.OnItemClickListener() {
+        AdapterView.OnItemClickListener onPairedDevClickListener = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                 BluetoothDevice selectedDev = pairedDevices.get(position);
+                Log.d(TAG, "Selected already paired device: " + selectedDev.getName());
                 new ClientConnector().execute(selectedDev);
             }
         };
-        pairedList.setOnItemClickListener(onDevClickListener);
-        unpairedList.setOnItemClickListener(onDevClickListener);
+        AdapterView.OnItemClickListener onDiscoveredDevClickListener = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                BluetoothDevice selectedDev = discoveredDevices.get(position);
+                Log.d(TAG, "Selected discovered device: " + selectedDev.getName());
+                new ClientConnector().execute(selectedDev);
+            }
+        };
+
+        pairedList.setOnItemClickListener(onPairedDevClickListener);
+        discoveredList.setOnItemClickListener(onDiscoveredDevClickListener);
 
         findDeviceDialog.show();
 
@@ -297,7 +306,6 @@ public class Join extends AppCompatActivity {
             }
         });
     }
-
 
     private final class ClientConnector extends AsyncTask<BluetoothDevice, Void, ConnectedDevice> {
         private final static String TAG = "BTClientConnector";
@@ -354,7 +362,7 @@ public class Join extends AppCompatActivity {
             if (connectedDevice != null) {
                 try {
                     new Thread(connectedDevice).start();
-                    connectedDevice.sendMessage(new HELLOMessage(btAdapter.getAddress(),
+                    connectedDevice.sendMessage(new HELLOMessage(BTService.MAC_ADDRESS,
                             PlayerProfileStorage.getInstance(Join.this).getPlayerProfile()));
                 } catch (IOException e) {
                     e.printStackTrace();
