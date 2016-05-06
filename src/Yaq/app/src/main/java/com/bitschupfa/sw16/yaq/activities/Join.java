@@ -105,15 +105,6 @@ public class Join extends AppCompatActivity {
         }
 
         playerList = new PlayerList(this);
-        playerList.addPlayer("Thomas");
-        playerList.addPlayer("Manuel");
-        playerList.addPlayer("Matthias");
-        playerList.addPlayer("Max");
-        playerList.addPlayer("Johannes");
-        playerList.addPlayer("Patrik");
-
-        playerList.removePlayerWithName("Max");
-
         pBar = (ProgressBar) findViewById(R.id.loadingBar);
         textView = (TextView) findViewById(R.id.textView);
 

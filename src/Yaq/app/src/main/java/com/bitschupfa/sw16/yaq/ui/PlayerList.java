@@ -48,6 +48,20 @@ public class PlayerList {
         removePlayer(id);
     }
 
+    public void clear() {
+        for (PlayerEntry player : players) {
+            player.removePlayer();
+        }
+        players.clear();
+    }
+
+    public void addAll(String[] playerNames) {
+        clear();
+        for (String player : playerNames) {
+            addPlayer(player);
+        }
+    }
+
     private int getPlayerIdWithName(String name) {
         for(PlayerEntry entry : players) {
             if(entry.getName().equals(name)) {
