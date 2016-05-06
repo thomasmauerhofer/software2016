@@ -132,7 +132,7 @@ public class Join extends AppCompatActivity {
         super.onDestroy();
         unregisterReceiver(btBroadcastReceiver);
 
-        if ( findDeviceDialog != null && findDeviceDialog.isShowing() ){
+        if (findDeviceDialog != null && findDeviceDialog.isShowing()) {
             findDeviceDialog.cancel();
         }
     }
@@ -243,7 +243,6 @@ public class Join extends AppCompatActivity {
                 .setView(dialogView)
                 .setTitle(R.string.dialog_find_device_title)
                 .setPositiveButton(R.string.refresh, null)
-                .setNegativeButton(R.string.cancel, null)
                 .create();
         findDeviceDialog.setCanceledOnTouchOutside(false);
 
@@ -289,13 +288,6 @@ public class Join extends AppCompatActivity {
                 paired.notifyDataSetChanged();
                 discovered.notifyDataSetChanged();
                 findOtherBluetoothDevices();
-            }
-        });
-
-        findDeviceDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Join.this.finish();
             }
         });
 
@@ -363,11 +355,16 @@ public class Join extends AppCompatActivity {
                 try {
                     new Thread(connectedDevice).start();
                     connectedDevice.sendMessage(new HELLOMessage(
-                            PlayerProfileStorage.getInstance(Join.this).getPlayerProfile())
-                    );
+                            PlayerProfileStorage.getInstance(Join.this).getPlayerProfile()));
+                    findDeviceDialog.dismiss();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, "Could not send HELLO message to host: " + e.getMessage());
+                    Toast.makeText(Join.this, "Unable to communicate with the other device.",
+                            Toast.LENGTH_LONG).show();
                 }
+            } else {
+                Toast.makeText(Join.this, "Unable to connect to the other device.",
+                        Toast.LENGTH_LONG).show();
             }
         }
     }
