@@ -7,7 +7,6 @@ import android.util.Log;
 
 import com.bitschupfa.sw16.yaq.communication.ConnectedClientDevice;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
-import com.bitschupfa.sw16.yaq.communication.messages.NEWPLAYERMessage;
 
 import java.io.IOException;
 

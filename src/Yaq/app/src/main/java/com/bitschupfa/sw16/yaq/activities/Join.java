@@ -31,10 +31,8 @@ import android.widget.Toast;
 import com.bitschupfa.sw16.yaq.bluetooth.BTService;
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.communication.ConnectedHostDevice;
-import com.bitschupfa.sw16.yaq.communication.HostMessageHandler;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
-import com.bitschupfa.sw16.yaq.communication.messages.HELLOMessage;
-import com.bitschupfa.sw16.yaq.profile.PlayerProfileStorage;
+import com.bitschupfa.sw16.yaq.game.ClientGameLogic;
 import com.bitschupfa.sw16.yaq.ui.BluetoothDeviceList;
 import com.bitschupfa.sw16.yaq.ui.PlayerList;
 
@@ -43,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Join extends AppCompatActivity implements HostMessageHandler {
+public class Join extends AppCompatActivity {
     private final static String TAG = "JoinGameActivity";
     private final static int REQUEST_ENABLE_BT = 42;
     private final static int REQUEST_COARSE_LOCATION_PERMISSIONS = 43;
@@ -101,6 +99,8 @@ public class Join extends AppCompatActivity implements HostMessageHandler {
         setContentView(R.layout.activity_join);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ClientGameLogic.getInstance().setLobbyActivity(this);
 
         if(setupBluetooth()) {
             findOtherBluetoothDevices();
@@ -292,7 +292,6 @@ public class Join extends AppCompatActivity implements HostMessageHandler {
         });
     }
 
-    @Override
     public void updatePlayerList(final String[] playerNames) {
         runOnUiThread(new Runnable() {
             @Override
@@ -303,18 +302,10 @@ public class Join extends AppCompatActivity implements HostMessageHandler {
         });
     }
 
-    @Override
-    public void startGame() {
-        // XXX: maybe that should run on the ui thread?
+    public void openGameActivity() {
         Intent intent = new Intent(Join.this, QuestionsAsked.class);
         startActivity(intent);
         finish();
-    }
-
-    @Override
-    public void showNextQuestion() {
-        Log.wtf(TAG, "Huh that looks bad... show next question message is here not expected!");
-        assert false;
     }
 
     private final class ClientConnector extends AsyncTask<BluetoothDevice, Void, ConnectedDevice> {
@@ -358,7 +349,7 @@ public class Join extends AppCompatActivity implements HostMessageHandler {
 
             ConnectedDevice server = null;
             try {
-                server = new ConnectedHostDevice(btSocket, Join.this);
+                server = new ConnectedHostDevice(btSocket, ClientGameLogic.getInstance());
             } catch (IOException e) {
                 Log.e(TAG, "Could not create new ConnectedDevice: " + e.getMessage());
             }
@@ -371,9 +362,7 @@ public class Join extends AppCompatActivity implements HostMessageHandler {
             Log.d(TAG, "Task finished.");
             if (connectedDevice != null) {
                 try {
-                    new Thread(connectedDevice).start();
-                    connectedDevice.sendMessage(new HELLOMessage(
-                            PlayerProfileStorage.getInstance(Join.this).getPlayerProfile()));
+                    ClientGameLogic.getInstance().setConnectedHostDevice(connectedDevice);
                     findDeviceDialog.dismiss();
                 } catch (IOException e) {
                     Log.e(TAG, "Could not send HELLO message to host: " + e.getMessage());
