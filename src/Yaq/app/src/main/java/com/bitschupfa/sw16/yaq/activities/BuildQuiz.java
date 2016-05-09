@@ -1,15 +1,22 @@
 package com.bitschupfa.sw16.yaq.activities;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.Filter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +26,7 @@ import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
 import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.utils.Quiz;
+import com.bitschupfa.sw16.yaq.utils.QuizMonitor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,6 +55,58 @@ public class BuildQuiz extends AppCompatActivity {
 
         displayListView();
         checkButtonClick();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        final MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.search, menu);
+
+        SearchManager searchManager = (SearchManager)
+                getSystemService(Context.SEARCH_SERVICE);
+        final MenuItem searchMenuItem = menu.findItem(R.id.search);
+        final SearchView searchView = (SearchView) searchMenuItem.getActionView();
+
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setSubmitButtonEnabled(true);
+
+        if (searchManager != null && searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        if (searchMenuItem != null) {
+                            searchMenuItem.collapseActionView();
+                        }
+                        if (searchView != null) {
+                            searchView.setQuery("", false);
+                        }
+                    }
+                }
+            });
+
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    if (searchView != null) {
+                        searchView.setVisibility(View.INVISIBLE);
+                        searchView.setVisibility(View.VISIBLE);
+                    }
+                    Log.d("BuildQuiz", "onQueryTextSubmit: " + query);
+                    dataAdapter.getFilter().filter(query);
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    Log.d("BuildQuiz", "onQueryTextChange: " + newText);
+                    dataAdapter.getFilter().filter(newText);
+                    return true;
+                }
+            });
+        }
+        return true;
     }
 
     public void displayListView() {
@@ -86,13 +146,11 @@ public class BuildQuiz extends AppCompatActivity {
                 responseText.append("\n\nquestions: " + questions.size());
                 Toast.makeText(getApplicationContext(), responseText, Toast.LENGTH_LONG).show();
 
-                Quiz quiz;
-                if (getIntent().hasExtra("questions")) {
-                    quiz = (Quiz) getIntent().getExtras().get("questions");
-                } else {
-                    quiz = new Quiz();
+                QuizMonitor app = (QuizMonitor) getApplication();
+                if (app.getQuizClass() != null) {
+                    app.getQuizClass().addQuestions(questions);
                 }
-                quiz.setQuiz(questions);
+
                 finish();
             }
         });

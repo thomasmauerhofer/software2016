@@ -56,4 +56,7 @@
     <string name="error_cant_connect">An error occurs while create connection!</string>
     <string name="not_implemented">Not implemented yet!</string>
 
+    <!-- BuildQuizActivity-->
+    <string name="submit_quiz">submit</string>
+
 </resources>
