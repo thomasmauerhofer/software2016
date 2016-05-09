@@ -35,7 +35,7 @@ public class Statistic extends AppCompatActivity {
 
     @SuppressWarnings("UnusedParameters")
     public void playAgainButtonClicked(View view) {
-        Intent intent = new Intent(Statistic.this, QuestionsAsked.class);
+        Intent intent = new Intent(Statistic.this, Game.class);
         startActivity(intent);
         finish();
     }

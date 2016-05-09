@@ -4,7 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.bitschupfa.sw16.yaq.activities.Host;
-import com.bitschupfa.sw16.yaq.activities.QuestionsAsked;
+import com.bitschupfa.sw16.yaq.activities.Game;
 import com.bitschupfa.sw16.yaq.R;
 import com.robotium.solo.Solo;
 
@@ -38,6 +38,6 @@ public class HostTests extends ActivityInstrumentationTestCase2<Host> {
 
     public void testHost() {
         solo.clickOnButton(getActivity().getResources().getString(R.string.start_game));
-        assertTrue("Wrong Activity!", solo.waitForActivity(QuestionsAsked.class));
+        assertTrue("Wrong Activity!", solo.waitForActivity(Game.class));
     }
 }

@@ -69,7 +69,7 @@ public class Host extends AppCompatActivity {
 
     @SuppressWarnings("UnusedParameters")
     public void startButtonClicked(View view) {
-        Intent intent = new Intent(Host.this, QuestionsAsked.class);
+        Intent intent = new Intent(Host.this, Game.class);
         intent.putExtra("questions", quiz.createTmpQuiz(this.getApplicationContext()));
         startActivity(intent);
         finish();

@@ -5,14 +5,14 @@ import android.graphics.drawable.Drawable;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 
-import com.bitschupfa.sw16.yaq.activities.QuestionsAsked;
+import com.bitschupfa.sw16.yaq.activities.Game;
 import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.utils.Quiz;
 import com.robotium.solo.Solo;
 
-public class QuestionsAskedTests extends ActivityInstrumentationTestCase2<QuestionsAsked> {
+public class QuestionsAskedTests extends ActivityInstrumentationTestCase2<Game> {
 
     private Solo solo;
 
@@ -27,7 +27,7 @@ public class QuestionsAskedTests extends ActivityInstrumentationTestCase2<Questi
     private Button wrongAnswer3;
 
     public QuestionsAskedTests() {
-        super(QuestionsAsked.class);
+        super(Game.class);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class QuestionsAskedTests extends ActivityInstrumentationTestCase2<Questi
     }
 
     @Override
-    public QuestionsAsked getActivity() {
+    public Game getActivity() {
         quiz = new Quiz();
         Answer answer1 = new Answer("correct", 10);
         Answer answer2 = new Answer("wrong1", 10);

@@ -223,7 +223,7 @@ public class Join extends AppCompatActivity {
             }
 
             public void onFinish() {
-                Intent intent = new Intent(Join.this, QuestionsAsked.class);
+                Intent intent = new Intent(Join.this, Game.class);
                 startActivity(intent);
             }
         }.start();
@@ -303,7 +303,7 @@ public class Join extends AppCompatActivity {
     }
 
     public void openGameActivity() {
-        Intent intent = new Intent(Join.this, QuestionsAsked.class);
+        Intent intent = new Intent(Join.this, Game.class);
         startActivity(intent);
         finish();
     }
