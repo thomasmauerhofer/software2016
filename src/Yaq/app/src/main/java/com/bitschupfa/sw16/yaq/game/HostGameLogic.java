@@ -7,9 +7,11 @@ import com.bitschupfa.sw16.yaq.activities.GameAtHost;
 import com.bitschupfa.sw16.yaq.activities.Host;
 import com.bitschupfa.sw16.yaq.communication.ClientMessageHandler;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
+import com.bitschupfa.sw16.yaq.communication.messages.NEWPLAYERMessage;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
 import com.bitschupfa.sw16.yaq.utils.Quiz;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,7 +61,25 @@ public class HostGameLogic implements ClientMessageHandler{
     public void registerClient(String address, PlayerProfile profile) {
         playerProfiles.put(address, profile);
 
-        //todo: update Playerlist host
-        //      update playerlist for all other players
+        List<String> playerNames = new ArrayList<>();
+        for (PlayerProfile p : playerProfiles.values()) {
+            playerNames.add(p.getPlayerName());
+        }
+        String[] players = playerNames.toArray(new String[playerNames.size()]);
+
+        hostActivity.updatePlayerList(players);
+        for (ConnectedDevice client : playerDevices) {
+            try {
+                client.sendMessage(new NEWPLAYERMessage(players));
+            } catch (IOException e) {
+                Log.e(TAG, "Could not send any player message to client " + client.toString() +
+                        ". " + e.getMessage());
+            }
+        }
+    }
+
+    @Override
+    public void startGame() {
+
     }
 }

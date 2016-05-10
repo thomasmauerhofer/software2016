@@ -57,6 +57,7 @@ public class Host extends AppCompatActivity {
 
     @SuppressWarnings("UnusedParameters")
     public void startButtonClicked(View view) {
+        HostGameLogic.getInstance().startGame();
         Intent intent = new Intent(Host.this, GameAtHost.class);
         startActivity(intent);
         finish();

@@ -6,4 +6,5 @@ public interface ClientMessageHandler {
     void askNextQuestion();
     void registerConnectedDevice(ConnectedDevice client);
     void registerClient(String address, PlayerProfile profile);
+    void startGame();
 }
