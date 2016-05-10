@@ -26,7 +26,7 @@ public class Host extends AppCompatActivity {
 
     private final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
     private final ConnectionListener btConnectionListener = new ConnectionListener();
-    private PlayerList playerList;
+    private PlayerList playerList = new PlayerList(this);
     private Quiz quiz;
 
 
@@ -46,20 +46,6 @@ public class Host extends AppCompatActivity {
             }
         }
         quiz = new Quiz();
-
-        playerList = new PlayerList(this);
-
-        playerList.addPlayer("Thomas");
-        playerList.addPlayer("Manuel");
-        playerList.addPlayer("Matthias");
-        playerList.addPlayer("Max");
-        playerList.addPlayer("Johannes");
-        playerList.addPlayer("Patrik");
-
-
-        playerList.removePlayerWithName("Max");
-        playerList.removePlayerWithName("bla");
-
     }
 
     @Override
@@ -143,4 +129,14 @@ public class Host extends AppCompatActivity {
             }
         }
     };
+
+    public void updatePlayerList(final String[] playerNames) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                playerList.clear();
+                playerList.addAll(playerNames);
+            }
+        });
+    }
 }
