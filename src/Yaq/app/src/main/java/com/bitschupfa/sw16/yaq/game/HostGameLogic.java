@@ -7,7 +7,13 @@ import com.bitschupfa.sw16.yaq.activities.GameAtHost;
 import com.bitschupfa.sw16.yaq.activities.Host;
 import com.bitschupfa.sw16.yaq.communication.ClientMessageHandler;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
+import com.bitschupfa.sw16.yaq.communication.messages.ENDGAMEMessage;
+import com.bitschupfa.sw16.yaq.communication.messages.Message;
 import com.bitschupfa.sw16.yaq.communication.messages.NEWPLAYERMessage;
+import com.bitschupfa.sw16.yaq.communication.messages.QUESTIONMessage;
+import com.bitschupfa.sw16.yaq.communication.messages.STARTGAMEMessage;
+import com.bitschupfa.sw16.yaq.database.object.Answer;
+import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
 import com.bitschupfa.sw16.yaq.utils.Quiz;
 
@@ -26,6 +32,7 @@ public class HostGameLogic implements ClientMessageHandler{
     private Quiz quiz;
     private List<ConnectedDevice> playerDevices = new ArrayList<>();
     private Map<String, PlayerProfile> playerProfiles = new HashMap<>();
+    private int timeout = 10 * 1000;
 
     public static HostGameLogic getInstance() {
         return instance;
@@ -48,7 +55,11 @@ public class HostGameLogic implements ClientMessageHandler{
 
     @Override
     public void askNextQuestion() {
-
+        if(quiz.hasNext()) {
+            sendMessageToClients(new QUESTIONMessage(quiz.next(), timeout));
+        } else {
+            sendMessageToClients(new ENDGAMEMessage());
+        }
     }
 
     @Override
@@ -68,18 +79,22 @@ public class HostGameLogic implements ClientMessageHandler{
         String[] players = playerNames.toArray(new String[playerNames.size()]);
 
         hostActivity.updatePlayerList(players);
-        for (ConnectedDevice client : playerDevices) {
+        sendMessageToClients(new NEWPLAYERMessage(players));
+    }
+
+    @Override
+    public void startGame() {
+        sendMessageToClients(new STARTGAMEMessage());
+    }
+
+    private void sendMessageToClients(Message message) {
+        for(ConnectedDevice client : playerDevices) {
             try {
-                client.sendMessage(new NEWPLAYERMessage(players));
+                client.sendMessage(message);
             } catch (IOException e) {
                 Log.e(TAG, "Could not send any player message to client " + client.toString() +
                         ". " + e.getMessage());
             }
         }
-    }
-
-    @Override
-    public void startGame() {
-
     }
 }

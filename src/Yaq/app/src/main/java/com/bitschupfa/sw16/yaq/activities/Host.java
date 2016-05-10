@@ -17,9 +17,14 @@ import android.widget.Toast;
 
 import com.bitschupfa.sw16.yaq.bluetooth.ConnectionListener;
 import com.bitschupfa.sw16.yaq.R;
+import com.bitschupfa.sw16.yaq.database.object.Answer;
+import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.game.HostGameLogic;
 import com.bitschupfa.sw16.yaq.ui.PlayerList;
 import com.bitschupfa.sw16.yaq.utils.Quiz;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Host extends AppCompatActivity {
     private static final int REQUEST_ENABLE_DISCOVERABLE_BT = 42;
@@ -27,8 +32,6 @@ public class Host extends AppCompatActivity {
     private final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
     private final ConnectionListener btConnectionListener = new ConnectionListener();
     private PlayerList playerList = new PlayerList(this);
-    private Quiz quiz;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +48,7 @@ public class Host extends AppCompatActivity {
                 hostnameLabel.append(btAdapter.getName());
             }
         }
-        quiz = new Quiz();
+        HostGameLogic.getInstance().setQuiz(this.buildTmpQuiz());
     }
 
     @Override
@@ -57,9 +60,9 @@ public class Host extends AppCompatActivity {
 
     @SuppressWarnings("UnusedParameters")
     public void startButtonClicked(View view) {
-        HostGameLogic.getInstance().startGame();
         Intent intent = new Intent(Host.this, GameAtHost.class);
         startActivity(intent);
+        HostGameLogic.getInstance().startGame();
         finish();
     }
 
@@ -139,5 +142,17 @@ public class Host extends AppCompatActivity {
                 playerList.addAll(playerNames);
             }
         });
+    }
+
+    private Quiz buildTmpQuiz() {
+        Quiz quiz = new Quiz();
+
+        List<TextQuestion> tmp = new ArrayList<>();
+        tmp.add(new TextQuestion("A", new Answer("B", 1), new Answer("B", 0), new Answer("B", 0), new Answer("B", 0), 1, 0));
+        tmp.add(new TextQuestion("B", new Answer("B", 1), new Answer("B", 0), new Answer("B", 0), new Answer("B", 0), 1, 0));
+        tmp.add(new TextQuestion("C", new Answer("B", 1), new Answer("B", 0), new Answer("B", 0), new Answer("B", 0), 1, 0));
+        quiz.addQuestions(tmp);
+
+        return quiz;
     }
 }

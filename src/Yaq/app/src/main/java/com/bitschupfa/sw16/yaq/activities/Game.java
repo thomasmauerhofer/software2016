@@ -64,38 +64,49 @@ public class Game extends AppCompatActivity {
         finish();
     }
 
-    public void showQuestion(TextQuestion question, int timeout) {
-        setAnswerButtonsClickable(true);
-        for (Button answerButton : answerButtons) {
-            answerButton.setBackgroundResource(R.drawable.button_blue);
-        }
+    public void showQuestion(final TextQuestion question, final int timeout) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                setAnswerButtonsClickable(true);
+                for (Button answerButton : answerButtons) {
+                    answerButton.setBackgroundResource(R.drawable.button_blue);
+                }
 
-        questionView.setText(question.getQuestion());
+                questionView.setText(question.getQuestion());
 
-        List<Answer> answers = question.getShuffledAnswers();
-        answerMapping.clear();
-        for (int i = 0; i < 4; ++i) {
-            answerButtons.get(i).setText(answers.get(i).getAnswerString());
-            answerMapping.put(answerButtons.get(i), answers.get(i));
-        }
+                List<Answer> answers = question.getShuffledAnswers();
+                answerMapping.clear();
+                for (int i = 0; i < 4; ++i) {
+                    answerButtons.get(i).setText(answers.get(i).getAnswerString());
+                    answerMapping.put(answerButtons.get(i), answers.get(i));
+                }
 
-        startCountdown(timeout);
+                startCountdown(timeout);
+            }
+        });
     }
 
-    public void showAnswer(Answer correctAnswer) {
-        if (answerButtonPressed != null && selectedAnswer != null && selectedAnswer != correctAnswer) { // XXX: this *should* work, however, maybe implement and use equals...
-            answerButtonPressed.setBackgroundResource(R.drawable.button_red);
-        }
+    public void showAnswer(final Answer correctAnswer) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (answerButtonPressed != null && selectedAnswer != null && selectedAnswer != correctAnswer) { // XXX: this *should* work, however, maybe implement and use equals...
+                    answerButtonPressed.setBackgroundResource(R.drawable.button_red);
+                }
 
-        for (Map.Entry<Button, Answer> entry : answerMapping.entrySet()) {
-            if (entry.getValue() == correctAnswer) { // XXX: this *should* work, however, maybe implement and use equals...
-                entry.getKey().setBackgroundResource(R.drawable.button_green);
-                break;
+                for (Map.Entry<Button, Answer> entry : answerMapping.entrySet()) {
+                    if (entry.getValue() == correctAnswer) { // XXX: this *should* work, however, maybe implement and use equals...
+                        entry.getKey().setBackgroundResource(R.drawable.button_green);
+                        break;
+                    }
+                }
+
+                answerButtonPressed = null;
+                selectedAnswer = null;
             }
-        }
+        });
 
-        answerButtonPressed = null;
-        selectedAnswer = null;
     }
 
     public void answerButtonClicked(View view) {
