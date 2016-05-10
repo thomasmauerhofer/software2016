@@ -10,8 +10,8 @@ import java.io.IOException;
 public class ConnectedHostDevice extends ConnectedDevice {
     private final HostMessageHandler messageHandler;
 
-    public ConnectedHostDevice(BluetoothSocket socket, HostMessageHandler handler) throws IOException {
-        super(socket);
+    public ConnectedHostDevice(String address, BluetoothSocket socket, HostMessageHandler handler) throws IOException {
+        super(address, socket);
         messageHandler = handler;
     }
 

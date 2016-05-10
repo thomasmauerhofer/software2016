@@ -7,6 +7,7 @@ import com.bitschupfa.sw16.yaq.activities.GameAtHost;
 import com.bitschupfa.sw16.yaq.activities.Host;
 import com.bitschupfa.sw16.yaq.communication.ClientMessageHandler;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
+import com.bitschupfa.sw16.yaq.communication.messages.ANSWERMessage;
 import com.bitschupfa.sw16.yaq.communication.messages.ENDGAMEMessage;
 import com.bitschupfa.sw16.yaq.communication.messages.Message;
 import com.bitschupfa.sw16.yaq.communication.messages.NEWPLAYERMessage;
@@ -15,6 +16,7 @@ import com.bitschupfa.sw16.yaq.communication.messages.STARTGAMEMessage;
 import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
+import com.bitschupfa.sw16.yaq.utils.AnswerCollector;
 import com.bitschupfa.sw16.yaq.utils.Quiz;
 
 import java.io.IOException;
@@ -23,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+// TODO Handle disconnect of user(Remove from all maps, and answerCollector)
 public class HostGameLogic implements ClientMessageHandler{
     private static final String TAG = "HostGameLogic";
     private static HostGameLogic instance = new HostGameLogic();
@@ -30,9 +33,11 @@ public class HostGameLogic implements ClientMessageHandler{
     private Host hostActivity;
     private GameAtHost gameActivity;
     private Quiz quiz;
-    private List<ConnectedDevice> playerDevices = new ArrayList<>();
+    private Map<String, ConnectedDevice> playerDevices = new HashMap<>();
     private Map<String, PlayerProfile> playerProfiles = new HashMap<>();
     private int timeout = 10 * 1000;
+    private AnswerCollector answerCollector = new AnswerCollector();
+    private TextQuestion currentQuestion;
 
     public static HostGameLogic getInstance() {
         return instance;
@@ -56,7 +61,9 @@ public class HostGameLogic implements ClientMessageHandler{
     @Override
     public void askNextQuestion() {
         if(quiz.hasNext()) {
-            sendMessageToClients(new QUESTIONMessage(quiz.next(), timeout));
+            currentQuestion = quiz.next();
+            answerCollector.init(playerProfiles.keySet());
+            sendMessageToClients(new QUESTIONMessage(currentQuestion, timeout));
         } else {
             sendMessageToClients(new ENDGAMEMessage());
         }
@@ -65,7 +72,7 @@ public class HostGameLogic implements ClientMessageHandler{
     @Override
     public void registerConnectedDevice(ConnectedDevice client) {
         new Thread(client).start();
-        playerDevices.add(client);
+        playerDevices.put(client.getAddress(), client);
     }
 
     @Override
@@ -87,8 +94,13 @@ public class HostGameLogic implements ClientMessageHandler{
         sendMessageToClients(new STARTGAMEMessage());
     }
 
+    @Override
+    public void handleAnswer(String address, Answer answer) {
+        answerCollector.addAnswerForPlayer(address, answer);
+    }
+
     private void sendMessageToClients(Message message) {
-        for(ConnectedDevice client : playerDevices) {
+        for(ConnectedDevice client : playerDevices.values()) {
             try {
                 client.sendMessage(message);
             } catch (IOException e) {
@@ -96,5 +108,32 @@ public class HostGameLogic implements ClientMessageHandler{
                         ". " + e.getMessage());
             }
         }
+    }
+
+    public void questionFinished() {
+        Answer mostCorrectAnswer = currentQuestion.getAnswers().get(0);
+        for (int i = 1; i < currentQuestion.getAnswers().size(); ++i) {
+            Answer tmp = currentQuestion.getAnswers().get(i);
+            if (mostCorrectAnswer.getRightAnswerValue() < tmp.getRightAnswerValue()) {
+                mostCorrectAnswer = tmp;
+            }
+        }
+
+        for (Map.Entry<String, Answer> entry : answerCollector.getAnswers().entrySet()) {
+            String address = entry.getKey();
+            Answer answer = entry.getValue();
+
+            if (answer.getRightAnswerValue() < 0) {
+              answer = mostCorrectAnswer;
+            }
+
+            try {
+                playerDevices.get(address).sendMessage(new ANSWERMessage(answer));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // TODO: update scores or die in hell fsdfasfkjas
     }
 }

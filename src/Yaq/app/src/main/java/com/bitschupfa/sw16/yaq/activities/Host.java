@@ -148,9 +148,7 @@ public class Host extends AppCompatActivity {
         Quiz quiz = new Quiz();
 
         List<TextQuestion> tmp = new ArrayList<>();
-        tmp.add(new TextQuestion("A", new Answer("B", 1), new Answer("B", 0), new Answer("B", 0), new Answer("B", 0), 1, 0));
-        tmp.add(new TextQuestion("B", new Answer("B", 1), new Answer("B", 0), new Answer("B", 0), new Answer("B", 0), 1, 0));
-        tmp.add(new TextQuestion("C", new Answer("B", 1), new Answer("B", 0), new Answer("B", 0), new Answer("B", 0), 1, 0));
+        tmp.add(new TextQuestion("A", new Answer("right", 20), new Answer("Bqweqe", 0), new Answer("Bbvnvb", 0), new Answer("Bwewqw", 0), 1, 0));
         quiz.addQuestions(tmp);
 
         return quiz;

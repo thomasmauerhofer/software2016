@@ -27,4 +27,18 @@ public class Answer implements Serializable{
     public void setAnswerValue(int answerValue) {
         this.answerValue = answerValue;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o instanceof Answer) {
+            Answer other = (Answer) o;
+            return answer.equals(other.getAnswerString()) && answerValue == other.getRightAnswerValue();
+        }
+
+        return false;
+    }
 }

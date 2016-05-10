@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ClientGameLogic implements HostMessageHandler {
     private static final String TAG = "ClientGameLogic";
+    private static final Answer noAnswer = new Answer("no answer", 0);
     private static final ClientGameLogic instance = new ClientGameLogic();
     private final BlockingQueue<Answer> answerQueue = new ArrayBlockingQueue<>(1);
 
@@ -71,8 +72,8 @@ public class ClientGameLogic implements HostMessageHandler {
         } catch (InterruptedException e) {
         }
 
-        // TODO: maybe send a special message object if no answer was selected (i.e. answer is null)
         try {
+            answer = answer == null ? noAnswer : answer;
             hostDevice.sendMessage(new ANSWERMessage(answer));
         } catch (IOException e) {
             Log.e(TAG, "Could not send answer message to host: " + e.getMessage());

@@ -66,7 +66,7 @@ public class ConnectionListener implements Runnable {
 
             if (socket != null) {
                 try {
-                    ConnectedDevice client =  new ConnectedClientDevice(socket, HostGameLogic.getInstance());
+                    ConnectedDevice client =  new ConnectedClientDevice(btAdapter.getAddress(), socket, HostGameLogic.getInstance());
                     HostGameLogic.getInstance().registerConnectedDevice(client);
                 } catch (IOException e) {
                     Log.e(TAG, "Could not create new ConnectedDevice: " + e.getMessage());

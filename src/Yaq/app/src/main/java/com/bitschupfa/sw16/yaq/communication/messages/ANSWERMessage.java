@@ -38,7 +38,7 @@ public class ANSWERMessage extends Message {
     @Override
     public void action(ClientMessageHandler handler) {
         Log.d(TAG, this.toString());
-        // TODO: handle answer from client correctly
+        handler.handleAnswer(getSenderAddress(), answer);
     }
 
     @Override

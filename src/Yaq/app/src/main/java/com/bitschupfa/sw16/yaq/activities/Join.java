@@ -349,7 +349,7 @@ public class Join extends AppCompatActivity {
 
             ConnectedDevice server = null;
             try {
-                server = new ConnectedHostDevice(btSocket, ClientGameLogic.getInstance());
+                server = new ConnectedHostDevice(btAdapter.getAddress(), btSocket, ClientGameLogic.getInstance());
             } catch (IOException e) {
                 Log.e(TAG, "Could not create new ConnectedDevice: " + e.getMessage());
             }

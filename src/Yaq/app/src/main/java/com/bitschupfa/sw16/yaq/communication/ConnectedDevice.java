@@ -15,10 +15,13 @@ import java.io.OutputStream;
 
 public abstract class ConnectedDevice implements Runnable {
     private final static String TAG = "BTConnectedDevice";
+    private final String address;
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
 
-    public ConnectedDevice(BluetoothSocket s) throws IOException {
+    public ConnectedDevice(String address, BluetoothSocket s) throws IOException {
+        this.address = address;
+
         // note: the ObjectOutputStream must be constructed first on both sides since the
         // ObjectInputStream tries to read the object stream header first and this blocks until
         // the ObjectOutputStream is constructed which leads to starvation if the ObjectInputStream
@@ -28,7 +31,8 @@ public abstract class ConnectedDevice implements Runnable {
         inputStream = new ObjectInputStream(s.getInputStream());
     }
 
-    public ConnectedDevice(InputStream in, OutputStream out) throws IOException {
+    public ConnectedDevice(String address, InputStream in, OutputStream out) throws IOException {
+        this.address = address;
         outputStream = new ObjectOutputStream(out);
         out.flush();
         inputStream = new ObjectInputStream(in);
@@ -58,4 +62,8 @@ public abstract class ConnectedDevice implements Runnable {
     }
 
     protected abstract void onMessage(Message message);
+
+    public String getAddress() {
+        return address;
+    }
 }

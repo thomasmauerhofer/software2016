@@ -91,12 +91,12 @@ public class Game extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (answerButtonPressed != null && selectedAnswer != null && selectedAnswer != correctAnswer) { // XXX: this *should* work, however, maybe implement and use equals...
+                if (answerButtonPressed != null && selectedAnswer != null && !selectedAnswer.equals(correctAnswer)) {
                     answerButtonPressed.setBackgroundResource(R.drawable.button_red);
                 }
 
                 for (Map.Entry<Button, Answer> entry : answerMapping.entrySet()) {
-                    if (entry.getValue() == correctAnswer) { // XXX: this *should* work, however, maybe implement and use equals...
+                    if (entry.getValue().equals(correctAnswer)) {
                         entry.getKey().setBackgroundResource(R.drawable.button_green);
                         break;
                     }
