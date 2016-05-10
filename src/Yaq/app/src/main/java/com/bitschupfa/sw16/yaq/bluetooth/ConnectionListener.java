@@ -5,8 +5,10 @@ import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
+import com.bitschupfa.sw16.yaq.activities.Host;
 import com.bitschupfa.sw16.yaq.communication.ConnectedClientDevice;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
+import com.bitschupfa.sw16.yaq.game.HostGameLogic;
 
 import java.io.IOException;
 
@@ -64,8 +66,8 @@ public class ConnectionListener implements Runnable {
 
             if (socket != null) {
                 try {
-                    ConnectedDevice client =  new ConnectedClientDevice(socket, null); // TODO: inject here the correct client message handler (instead of null), i.e. the game object
-                    registerClient(client);
+                    ConnectedDevice client =  new ConnectedClientDevice(socket, HostGameLogic.getInstance());
+                    HostGameLogic.getInstance().registerConnectedDevice(client);
                 } catch (IOException e) {
                     Log.e(TAG, "Could not create new ConnectedDevice: " + e.getMessage());
                 }
@@ -84,12 +86,6 @@ public class ConnectionListener implements Runnable {
         } catch (IOException e) {
             Log.e(TAG, "Error while closing the socket: " + e.getMessage());
         }
-    }
-
-    @SuppressWarnings("WeakerAccess")
-    public void registerClient(ConnectedDevice client) {
-        new Thread(client).start();
-        // TODO: register ConnectedDevice thread in the game to send messages to the client
     }
 
     public synchronized void setDiscoverable() {

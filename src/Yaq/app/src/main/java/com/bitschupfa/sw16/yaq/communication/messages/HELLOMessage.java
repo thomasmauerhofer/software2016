@@ -37,8 +37,8 @@ public class HELLOMessage extends Message {
 
     @Override
     public void action(ClientMessageHandler handler) {
-        Log.d(TAG, this.toString());
-        // TODO: register client in game object: game.registerClient(playerProfile);
+        Log.d(TAG, toString());
+        handler.registerClient(getSenderAddress(), playerProfile);
     }
 
     @Override
