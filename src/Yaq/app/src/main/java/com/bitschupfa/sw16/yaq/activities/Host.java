@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.bitschupfa.sw16.yaq.bluetooth.ConnectionListener;
 import com.bitschupfa.sw16.yaq.R;
+import com.bitschupfa.sw16.yaq.game.HostGameLogic;
 import com.bitschupfa.sw16.yaq.ui.PlayerList;
 import com.bitschupfa.sw16.yaq.utils.Quiz;
 
@@ -35,6 +36,7 @@ public class Host extends AppCompatActivity {
         setContentView(R.layout.activity_host);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        HostGameLogic.getInstance().setHostActivity(this);
 
         if (setupBluetooth()) {
             new Thread(btConnectionListener, "BT Connection Listener Thread").start();
@@ -43,7 +45,6 @@ public class Host extends AppCompatActivity {
                 hostnameLabel.append(btAdapter.getName());
             }
         }
-
         quiz = new Quiz();
 
         playerList = new PlayerList(this);
@@ -58,6 +59,7 @@ public class Host extends AppCompatActivity {
 
         playerList.removePlayerWithName("Max");
         playerList.removePlayerWithName("bla");
+
     }
 
     @Override
@@ -69,8 +71,7 @@ public class Host extends AppCompatActivity {
 
     @SuppressWarnings("UnusedParameters")
     public void startButtonClicked(View view) {
-        Intent intent = new Intent(Host.this, Game.class);
-        intent.putExtra("questions", quiz.createTmpQuiz(this.getApplicationContext()));
+        Intent intent = new Intent(Host.this, GameAtHost.class);
         startActivity(intent);
         finish();
     }
