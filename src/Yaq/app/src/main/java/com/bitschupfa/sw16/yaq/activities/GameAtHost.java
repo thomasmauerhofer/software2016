@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.bitschupfa.sw16.yaq.R;
+import com.bitschupfa.sw16.yaq.game.ClientGameLogic;
 import com.bitschupfa.sw16.yaq.game.HostGameLogic;
 
 import java.util.Timer;
@@ -18,6 +19,7 @@ public class GameAtHost extends Game {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         HostGameLogic.getInstance().setGameActivity(this);
+        ClientGameLogic.getInstance().setGameActivity(this);
 
         askedView = (RelativeLayout) findViewById(R.id.questionAskedView);
         enableShowNextQuestion(false);
@@ -26,6 +28,7 @@ public class GameAtHost extends Game {
             @Override
             public void onClick(View v) {
                 HostGameLogic.getInstance().askNextQuestion();
+                enableShowNextQuestion(false);
             }
         });
 
@@ -38,7 +41,12 @@ public class GameAtHost extends Game {
         }, 500);
     }
 
-    public void enableShowNextQuestion(boolean active) {
-        askedView.setEnabled(active);
+    public void enableShowNextQuestion(final boolean active) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                askedView.setEnabled(active);
+            }
+        });
     }
 }

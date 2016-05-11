@@ -5,7 +5,6 @@ import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
-import com.bitschupfa.sw16.yaq.activities.Host;
 import com.bitschupfa.sw16.yaq.communication.ConnectedClientDevice;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
 import com.bitschupfa.sw16.yaq.game.HostGameLogic;
@@ -66,7 +65,9 @@ public class ConnectionListener implements Runnable {
 
             if (socket != null) {
                 try {
-                    ConnectedDevice client =  new ConnectedClientDevice(btAdapter.getAddress(), socket, HostGameLogic.getInstance());
+                    ConnectedDevice client =  new ConnectedClientDevice(
+                            socket.getRemoteDevice().getAddress(), socket,
+                            HostGameLogic.getInstance());
                     HostGameLogic.getInstance().registerConnectedDevice(client);
                 } catch (IOException e) {
                     Log.e(TAG, "Could not create new ConnectedDevice: " + e.getMessage());

@@ -3,20 +3,20 @@ package com.bitschupfa.sw16.yaq.game;
 
 import android.util.Log;
 
-import com.bitschupfa.sw16.yaq.activities.Join;
 import com.bitschupfa.sw16.yaq.activities.Game;
+import com.bitschupfa.sw16.yaq.activities.Lobby;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
 import com.bitschupfa.sw16.yaq.communication.HostMessageHandler;
 import com.bitschupfa.sw16.yaq.communication.messages.ANSWERMessage;
 import com.bitschupfa.sw16.yaq.communication.messages.HELLOMessage;
 import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
-import com.bitschupfa.sw16.yaq.profile.PlayerProfileStorage;
 
 import java.io.IOException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
+
 
 public class ClientGameLogic implements HostMessageHandler {
     private static final String TAG = "ClientGameLogic";
@@ -25,7 +25,7 @@ public class ClientGameLogic implements HostMessageHandler {
     private final BlockingQueue<Answer> answerQueue = new ArrayBlockingQueue<>(1);
 
     private ConnectedDevice hostDevice;
-    private Join lobbyActivity;
+    private Lobby lobbyActivity;
     private Game gameActivity;
 
 
@@ -36,7 +36,7 @@ public class ClientGameLogic implements HostMessageHandler {
         return instance;
     }
 
-    public void setLobbyActivity(Join lobby) {
+    public void setLobbyActivity(Lobby lobby) {
         lobbyActivity = lobby;
     }
 
@@ -47,9 +47,7 @@ public class ClientGameLogic implements HostMessageHandler {
     public void setConnectedHostDevice(ConnectedDevice connectedDevice) throws IOException {
         hostDevice = connectedDevice;
         new Thread(hostDevice).start();
-        hostDevice.sendMessage(new HELLOMessage(PlayerProfileStorage
-                .getInstance(lobbyActivity.getApplicationContext())
-                .getPlayerProfile()));
+        hostDevice.sendMessage(new HELLOMessage(lobbyActivity.accessPlayerProfile()));
     }
 
     @Override

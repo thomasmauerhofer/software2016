@@ -4,7 +4,6 @@ package com.bitschupfa.sw16.yaq.game;
 import android.util.Log;
 
 import com.bitschupfa.sw16.yaq.activities.GameAtHost;
-import com.bitschupfa.sw16.yaq.activities.Host;
 import com.bitschupfa.sw16.yaq.communication.ClientMessageHandler;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
 import com.bitschupfa.sw16.yaq.communication.messages.ANSWERMessage;
@@ -25,12 +24,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 // TODO Handle disconnect of user(Remove from all maps, and answerCollector)
 public class HostGameLogic implements ClientMessageHandler{
     private static final String TAG = "HostGameLogic";
     private static HostGameLogic instance = new HostGameLogic();
 
-    private Host hostActivity;
     private GameAtHost gameActivity;
     private Quiz quiz;
     private Map<String, ConnectedDevice> playerDevices = new HashMap<>();
@@ -50,10 +49,6 @@ public class HostGameLogic implements ClientMessageHandler{
         this.gameActivity = gameActivity;
     }
 
-    public void setHostActivity(Host hostActivity) {
-        this.hostActivity = hostActivity;
-    }
-
     public void setQuiz(Quiz quiz) {
         this.quiz = quiz;
     }
@@ -71,6 +66,7 @@ public class HostGameLogic implements ClientMessageHandler{
 
     @Override
     public void registerConnectedDevice(ConnectedDevice client) {
+        Log.d(TAG, "added new connected client device: " + client.getAddress());
         new Thread(client).start();
         playerDevices.put(client.getAddress(), client);
     }
@@ -85,7 +81,6 @@ public class HostGameLogic implements ClientMessageHandler{
         }
         String[] players = playerNames.toArray(new String[playerNames.size()]);
 
-        hostActivity.updatePlayerList(players);
         sendMessageToClients(new NEWPLAYERMessage(players));
     }
 
@@ -118,13 +113,12 @@ public class HostGameLogic implements ClientMessageHandler{
                 mostCorrectAnswer = tmp;
             }
         }
-
         for (Map.Entry<String, Answer> entry : answerCollector.getAnswers().entrySet()) {
             String address = entry.getKey();
             Answer answer = entry.getValue();
 
             if (answer.getRightAnswerValue() < 0) {
-              answer = mostCorrectAnswer;
+                answer = mostCorrectAnswer;
             }
 
             try {
@@ -134,6 +128,7 @@ public class HostGameLogic implements ClientMessageHandler{
             }
         }
 
+        gameActivity.enableShowNextQuestion(true);
         // TODO: update scores or die in hell fsdfasfkjas
     }
 }

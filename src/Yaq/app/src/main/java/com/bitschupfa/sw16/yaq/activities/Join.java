@@ -33,6 +33,8 @@ import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.communication.ConnectedHostDevice;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
 import com.bitschupfa.sw16.yaq.game.ClientGameLogic;
+import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
+import com.bitschupfa.sw16.yaq.profile.PlayerProfileStorage;
 import com.bitschupfa.sw16.yaq.ui.BluetoothDeviceList;
 import com.bitschupfa.sw16.yaq.ui.PlayerList;
 
@@ -41,7 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Join extends AppCompatActivity {
+public class Join extends AppCompatActivity implements Lobby {
     private final static String TAG = "JoinGameActivity";
     private final static int REQUEST_ENABLE_BT = 42;
     private final static int REQUEST_COARSE_LOCATION_PERMISSIONS = 43;
@@ -292,6 +294,12 @@ public class Join extends AppCompatActivity {
         });
     }
 
+    @Override
+    public PlayerProfile accessPlayerProfile() {
+        return PlayerProfileStorage.getInstance(this).getPlayerProfile();
+    }
+
+    @Override
     public void updatePlayerList(final String[] playerNames) {
         runOnUiThread(new Runnable() {
             @Override
@@ -302,6 +310,7 @@ public class Join extends AppCompatActivity {
         });
     }
 
+    @Override
     public void openGameActivity() {
         Intent intent = new Intent(Join.this, Game.class);
         startActivity(intent);
@@ -349,7 +358,8 @@ public class Join extends AppCompatActivity {
 
             ConnectedDevice server = null;
             try {
-                server = new ConnectedHostDevice(btAdapter.getAddress(), btSocket, ClientGameLogic.getInstance());
+                server = new ConnectedHostDevice(btSocket.getRemoteDevice().getAddress(),
+                        btSocket, ClientGameLogic.getInstance());
             } catch (IOException e) {
                 Log.e(TAG, "Could not create new ConnectedDevice: " + e.getMessage());
             }

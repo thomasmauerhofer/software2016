@@ -17,16 +17,25 @@ import android.widget.Toast;
 
 import com.bitschupfa.sw16.yaq.bluetooth.ConnectionListener;
 import com.bitschupfa.sw16.yaq.R;
+import com.bitschupfa.sw16.yaq.communication.ConnectedClientDevice;
+import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
+import com.bitschupfa.sw16.yaq.communication.ConnectedHostDevice;
 import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
+import com.bitschupfa.sw16.yaq.game.ClientGameLogic;
 import com.bitschupfa.sw16.yaq.game.HostGameLogic;
+import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
+import com.bitschupfa.sw16.yaq.profile.PlayerProfileStorage;
 import com.bitschupfa.sw16.yaq.ui.PlayerList;
 import com.bitschupfa.sw16.yaq.utils.Quiz;
 
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Host extends AppCompatActivity {
+public class Host extends AppCompatActivity implements Lobby {
     private static final int REQUEST_ENABLE_DISCOVERABLE_BT = 42;
 
     private final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -39,7 +48,8 @@ public class Host extends AppCompatActivity {
         setContentView(R.layout.activity_host);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        HostGameLogic.getInstance().setHostActivity(this);
+
+        ClientGameLogic.getInstance().setLobbyActivity(this);
 
         if (setupBluetooth()) {
             new Thread(btConnectionListener, "BT Connection Listener Thread").start();
@@ -48,7 +58,9 @@ public class Host extends AppCompatActivity {
                 hostnameLabel.append(btAdapter.getName());
             }
         }
+
         HostGameLogic.getInstance().setQuiz(this.buildTmpQuiz());
+        selfConnectionHack();
     }
 
     @Override
@@ -134,6 +146,7 @@ public class Host extends AppCompatActivity {
         }
     };
 
+    @Override
     public void updatePlayerList(final String[] playerNames) {
         runOnUiThread(new Runnable() {
             @Override
@@ -144,11 +157,59 @@ public class Host extends AppCompatActivity {
         });
     }
 
+    @Override
+    public PlayerProfile accessPlayerProfile() {
+        return PlayerProfileStorage.getInstance(this).getPlayerProfile();
+    }
+
+    @Override
+    public void openGameActivity() {
+        // handled by startButtonClicked()
+    }
+
+    private void selfConnectionHack() {
+        final int fakeHostPort = 7777;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ServerSocket fakeHost = new ServerSocket(fakeHostPort);
+                    Socket socket = fakeHost.accept();
+                    ConnectedDevice client = new ConnectedClientDevice(btAdapter.getAddress(),
+                            socket.getInputStream(), socket.getOutputStream(),
+                            HostGameLogic.getInstance()
+                    );
+                    HostGameLogic.getInstance().registerConnectedDevice(client);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Socket socket = new Socket("localhost", fakeHostPort);
+                    ConnectedDevice host = new ConnectedHostDevice(btAdapter.getAddress(),
+                            socket.getInputStream(), socket.getOutputStream(),
+                            ClientGameLogic.getInstance()
+                    );
+                    ClientGameLogic.getInstance().setConnectedHostDevice(host);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
     private Quiz buildTmpQuiz() {
         Quiz quiz = new Quiz();
 
         List<TextQuestion> tmp = new ArrayList<>();
-        tmp.add(new TextQuestion("A", new Answer("right", 20), new Answer("Bqweqe", 0), new Answer("Bbvnvb", 0), new Answer("Bwewqw", 0), 1, 0));
+        tmp.add(new TextQuestion("question A", new Answer("right", 20), new Answer("Bqweqe", 0), new Answer("Bbvnvb", 0), new Answer("Bwewqw", 0), 1, 0));
+        tmp.add(new TextQuestion("question B", new Answer("right", 20), new Answer("Bqweqe", 0), new Answer("Bbvnvb", 0), new Answer("Bwewqw", 0), 1, 0));
+        tmp.add(new TextQuestion("question C", new Answer("right", 20), new Answer("Bqweqe", 0), new Answer("Bbvnvb", 0), new Answer("Bwewqw", 0), 1, 0));
         quiz.addQuestions(tmp);
 
         return quiz;
