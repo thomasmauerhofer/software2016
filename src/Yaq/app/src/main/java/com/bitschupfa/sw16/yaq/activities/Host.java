@@ -20,6 +20,7 @@ import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.communication.ConnectedClientDevice;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
 import com.bitschupfa.sw16.yaq.communication.ConnectedHostDevice;
+import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
 import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.game.ClientGameLogic;
@@ -205,13 +206,8 @@ public class Host extends AppCompatActivity implements Lobby {
 
     private Quiz buildTmpQuiz() {
         Quiz quiz = new Quiz();
-
-        List<TextQuestion> tmp = new ArrayList<>();
-        tmp.add(new TextQuestion("question A", new Answer("right", 20), new Answer("Bqweqe", 0), new Answer("Bbvnvb", 0), new Answer("Bwewqw", 0), 1, 0));
-        tmp.add(new TextQuestion("question B", new Answer("right", 20), new Answer("Bqweqe", 0), new Answer("Bbvnvb", 0), new Answer("Bwewqw", 0), 1, 0));
-        tmp.add(new TextQuestion("question C", new Answer("right", 20), new Answer("Bqweqe", 0), new Answer("Bbvnvb", 0), new Answer("Bwewqw", 0), 1, 0));
-        quiz.addQuestions(tmp);
-
+        QuestionQuerier questionQuerier = new QuestionQuerier(this);
+        quiz.addQuestions(questionQuerier.getAllQuestionsFromCatalog(1));
         return quiz;
     }
 }

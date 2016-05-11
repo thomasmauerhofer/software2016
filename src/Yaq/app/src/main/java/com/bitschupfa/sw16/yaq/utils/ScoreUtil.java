@@ -1,11 +1,9 @@
 package com.bitschupfa.sw16.yaq.utils;
 
-import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class ScoreUtil {
     private Map<String, Integer> scores = new HashMap<>();
@@ -25,5 +23,9 @@ public class ScoreUtil {
 
     public int getCurrentPlayerScore(String id) {
         return scores.get(id);
+    }
+
+    public Map<String, Integer> getSortedScoreList() {
+        return MapUtil.sortByValue(scores);
     }
 }

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
@@ -17,6 +16,7 @@ import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.game.ClientGameLogic;
+import com.bitschupfa.sw16.yaq.ui.RankingItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,6 +37,7 @@ public class Game extends AppCompatActivity {
     private Answer selectedAnswer;
 
     private Map<Button, Answer> answerMapping = new HashMap<>();
+    private CountDownTimer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +60,9 @@ public class Game extends AppCompatActivity {
         );
     }
 
-    public void showStatisticActivity() {
+    public void showStatisticActivity(ArrayList<RankingItem> scoreList) {
         Intent intent = new Intent(Game.this, Statistic.class);
+        intent.putExtra("scoreList", scoreList);
         startActivity(intent);
         finish();
     }
@@ -111,6 +113,7 @@ public class Game extends AppCompatActivity {
     }
 
     public void answerButtonClicked(View view) {
+        timer.cancel();
         answerButtonPressed = (Button) view;
         answerButtonPressed.setBackgroundResource(R.drawable.button_grey);
         setAnswerButtonsClickable(false);
@@ -126,7 +129,7 @@ public class Game extends AppCompatActivity {
         countdownTimerBar.setVisibility(View.VISIBLE);
         countdownTimerText.setVisibility(View.VISIBLE);
 
-        new CountDownTimer(timeout, 100) {
+        timer = new CountDownTimer(timeout, 100) {
             @Override
             public void onTick(long millisUntilFinished) {
                 countdownTimerText.setText(String.valueOf((countdownTimerBar.getProgress() + 9)/ 10));
@@ -138,6 +141,7 @@ public class Game extends AppCompatActivity {
                 countdownTimerText.setVisibility(View.INVISIBLE);
             }
         }.start();
+
 
         ObjectAnimator progressAnimator = ObjectAnimator.ofInt(countdownTimerBar, "progress", 100, 0);
         progressAnimator.setDuration(timeout);

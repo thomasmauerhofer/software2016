@@ -6,12 +6,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.bitschupfa.sw16.yaq.R;
+import com.bitschupfa.sw16.yaq.game.ClientGameLogic;
+import com.bitschupfa.sw16.yaq.game.HostGameLogic;
 import com.bitschupfa.sw16.yaq.ui.RankingItem;
 import com.bitschupfa.sw16.yaq.ui.RankingList;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Statistic extends AppCompatActivity {
 
@@ -30,12 +34,18 @@ public class Statistic extends AppCompatActivity {
         ranking = new RankingList(this, new ArrayList<RankingItem>());
         list.setAdapter(ranking);
 
-        ranking.addItems();
+
+        if(getIntent().hasExtra("scoreList")) {
+            List<RankingItem> items = (List<RankingItem>) getIntent().getExtras().get("scoreList");
+            ranking.addItems(items);
+        } else {
+            Toast.makeText(this, R.string.error_cant_show_score , Toast.LENGTH_LONG).show();
+        }
     }
 
     @SuppressWarnings("UnusedParameters")
     public void playAgainButtonClicked(View view) {
-        Intent intent = new Intent(Statistic.this, Game.class);
+        Intent intent = new Intent(Statistic.this, Join.class);
         startActivity(intent);
         finish();
     }

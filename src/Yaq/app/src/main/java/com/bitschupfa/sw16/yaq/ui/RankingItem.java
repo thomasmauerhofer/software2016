@@ -1,6 +1,8 @@
 package com.bitschupfa.sw16.yaq.ui;
 
-public class RankingItem {
+import java.io.Serializable;
+
+public class RankingItem implements Serializable {
 
     private String name;
 

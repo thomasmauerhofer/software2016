@@ -1,5 +1,6 @@
 package com.bitschupfa.sw16.yaq.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -8,7 +9,9 @@ import android.widget.RelativeLayout;
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.game.ClientGameLogic;
 import com.bitschupfa.sw16.yaq.game.HostGameLogic;
+import com.bitschupfa.sw16.yaq.ui.RankingItem;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -53,5 +56,13 @@ public class GameAtHost extends Game {
                 nextQuestion.setVisibility(visible);
             }
         });
+    }
+
+    @Override
+    public void showStatisticActivity(ArrayList<RankingItem> scoreList) {
+        Intent intent = new Intent(GameAtHost.this, StatisticsAtHost.class);
+        intent.putExtra("scoreList", scoreList);
+        startActivity(intent);
+        finish();
     }
 }

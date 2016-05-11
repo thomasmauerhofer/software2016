@@ -104,8 +104,10 @@ public class Join extends AppCompatActivity implements Lobby {
 
         ClientGameLogic.getInstance().setLobbyActivity(this);
 
-        if(setupBluetooth()) {
-            findOtherBluetoothDevices();
+        if(!ClientGameLogic.getInstance().isConnected()) {
+            if (setupBluetooth()) {
+                findOtherBluetoothDevices();
+            }
         }
 
         playerList = new PlayerList(this);

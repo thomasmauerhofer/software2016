@@ -15,6 +15,7 @@ import com.bitschupfa.sw16.yaq.communication.messages.STARTGAMEMessage;
 import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
+import com.bitschupfa.sw16.yaq.ui.RankingItem;
 import com.bitschupfa.sw16.yaq.utils.AnswerCollector;
 import com.bitschupfa.sw16.yaq.utils.Quiz;
 import com.bitschupfa.sw16.yaq.utils.ScoreUtil;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 
 // TODO Handle disconnect of user(Remove from all maps, and answerCollector)
@@ -59,10 +61,11 @@ public class HostGameLogic implements ClientMessageHandler{
     public void askNextQuestion() {
         if(quiz.hasNext()) {
             currentQuestion = quiz.next();
+            currentQuestion.shuffleAnswers();
             answerCollector.init(playerProfiles.keySet());
             sendMessageToClients(new QUESTIONMessage(currentQuestion, timeout));
         } else {
-            sendMessageToClients(new ENDGAMEMessage());
+            sendMessageToClients(new ENDGAMEMessage(getSortedScoreList()));
         }
     }
 
@@ -133,5 +136,17 @@ public class HostGameLogic implements ClientMessageHandler{
             }
         }
         gameActivity.enableShowNextQuestion(true);
+    }
+
+    public ArrayList<RankingItem> getSortedScoreList() {
+        ArrayList<RankingItem> namesAndScores = new ArrayList<>();
+        for(Entry<String, Integer> entry : scoreUtil.getSortedScoreList().entrySet()) {
+            String address = entry.getKey();
+            String name = playerProfiles.get(address).getPlayerName();
+            Integer score = entry.getValue();
+
+            namesAndScores.add(new RankingItem(name, score));
+        }
+        return namesAndScores;
     }
 }

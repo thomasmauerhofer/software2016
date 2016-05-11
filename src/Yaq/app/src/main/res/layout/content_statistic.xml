@@ -20,11 +20,17 @@
         android:id="@+id/ranking"
         android:background="@drawable/boarder_table" />
 
-    <Button
-        android:text="@string/play_again"
-        android:id="@+id/play_again"
-        android:background="@drawable/button_blue"
-        style="@style/button_text"
-        android:onClick="playAgainButtonClicked" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="20dp">
+
+        <Button
+            android:text="@string/play_again"
+            android:id="@+id/play_again"
+            android:background="@drawable/button_blue"
+            style="@style/button_text"
+            android:onClick="playAgainButtonClicked" />
+    </FrameLayout>
 
 </LinearLayout>

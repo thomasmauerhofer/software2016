@@ -5,14 +5,17 @@ import android.util.Log;
 
 import com.bitschupfa.sw16.yaq.activities.Game;
 import com.bitschupfa.sw16.yaq.activities.Lobby;
+import com.bitschupfa.sw16.yaq.activities.Statistic;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
 import com.bitschupfa.sw16.yaq.communication.HostMessageHandler;
 import com.bitschupfa.sw16.yaq.communication.messages.ANSWERMessage;
 import com.bitschupfa.sw16.yaq.communication.messages.HELLOMessage;
 import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
+import com.bitschupfa.sw16.yaq.ui.RankingItem;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -20,13 +23,14 @@ import java.util.concurrent.TimeUnit;
 
 public class ClientGameLogic implements HostMessageHandler {
     private static final String TAG = "ClientGameLogic";
-    private static final Answer noAnswer = new Answer("no answer", 0);
+    private static final Answer noAnswer = new Answer("no answer", 10);
     private static final ClientGameLogic instance = new ClientGameLogic();
     private final BlockingQueue<Answer> answerQueue = new ArrayBlockingQueue<>(1);
 
     private ConnectedDevice hostDevice;
     private Lobby lobbyActivity;
     private Game gameActivity;
+    private boolean isConnected = false;
 
 
     private ClientGameLogic() {
@@ -34,6 +38,10 @@ public class ClientGameLogic implements HostMessageHandler {
 
     public static ClientGameLogic getInstance() {
         return instance;
+    }
+
+    public boolean isConnected() {
+        return isConnected;
     }
 
     public void setLobbyActivity(Lobby lobby) {
@@ -48,6 +56,7 @@ public class ClientGameLogic implements HostMessageHandler {
         hostDevice = connectedDevice;
         new Thread(hostDevice).start();
         hostDevice.sendMessage(new HELLOMessage(lobbyActivity.accessPlayerProfile()));
+        isConnected = true;
     }
 
     @Override
@@ -88,7 +97,7 @@ public class ClientGameLogic implements HostMessageHandler {
     }
 
     @Override
-    public void endGame() {
-        gameActivity.showStatisticActivity();
+    public void endGame(ArrayList<RankingItem> scoreList) {
+        gameActivity.showStatisticActivity(scoreList);
     }
 }

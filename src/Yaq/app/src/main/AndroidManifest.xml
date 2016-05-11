@@ -41,6 +41,10 @@
             android:label="@string/title_activity_statistic"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".activities.StatisticsAtHost"
+            android:label="@string/title_activity_statistic"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".activities.Profile"
             android:label="@string/title_activity_profile"
             android:theme="@style/AppTheme.NoActionBar" />

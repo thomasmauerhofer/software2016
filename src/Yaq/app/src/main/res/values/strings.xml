@@ -51,6 +51,7 @@
     <string name="title_activity_statistic">Statistic</string>
     <string name="play_again">Play Again</string>
     <string name="title_activity_profile">Profile</string>
+    <string name="error_cant_show_score">An error occurs while showing scores!</string>
 
     <!-- ProfileActivity-->
     <string name="player_name">player name</string>
