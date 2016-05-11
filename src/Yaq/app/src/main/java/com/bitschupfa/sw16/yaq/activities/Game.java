@@ -122,14 +122,14 @@ public class Game extends AppCompatActivity {
 
     private void startCountdown(final long timeout) {
         new CountDownTimer(timeout, 1000) {
+            @Override
             public void onTick(long millisUntilFinished) {
                 long time = millisUntilFinished / 1000;
                 countdownTimerText.setText(String.valueOf(time));
             }
 
+            @Override
             public void onFinish() {
-                countdownTimerText.setText(getString(R.string.time_up));
-                setAnswerButtonsClickable(false);
             }
         }.start();
 

@@ -129,6 +129,6 @@ public class HostGameLogic implements ClientMessageHandler{
         }
 
         gameActivity.enableShowNextQuestion(true);
-        // TODO: update scores or die in hell fsdfasfkjas
+        // TODO: update scores
     }
 }
