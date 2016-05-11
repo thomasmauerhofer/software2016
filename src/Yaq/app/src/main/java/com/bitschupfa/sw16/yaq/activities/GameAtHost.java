@@ -2,6 +2,7 @@ package com.bitschupfa.sw16.yaq.activities;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.bitschupfa.sw16.yaq.R;
@@ -14,6 +15,7 @@ import java.util.TimerTask;
 public class GameAtHost extends Game {
 
     private RelativeLayout askedView;
+    private Button nextQuestion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +24,7 @@ public class GameAtHost extends Game {
         ClientGameLogic.getInstance().setGameActivity(this);
 
         askedView = (RelativeLayout) findViewById(R.id.questionAskedView);
+        nextQuestion = (Button) findViewById(R.id.next_question);
         enableShowNextQuestion(false);
 
         askedView.setOnClickListener(new View.OnClickListener() {
@@ -46,6 +49,8 @@ public class GameAtHost extends Game {
             @Override
             public void run() {
                 askedView.setEnabled(active);
+                int visible = active ? View.VISIBLE : View.INVISIBLE;
+                nextQuestion.setVisibility(visible);
             }
         });
     }

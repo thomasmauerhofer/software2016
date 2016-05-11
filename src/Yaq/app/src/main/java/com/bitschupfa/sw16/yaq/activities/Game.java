@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
@@ -117,19 +118,24 @@ public class Game extends AppCompatActivity {
         selectedAnswer = answerMapping.get(answerButtonPressed);
         ClientGameLogic.getInstance().answerQuestion(selectedAnswer);
 
-        // TODO: correctly handle the progress bar
+        countdownTimerBar.setVisibility(View.INVISIBLE);
+        countdownTimerText.setVisibility(View.INVISIBLE);
     }
 
     private void startCountdown(final long timeout) {
-        new CountDownTimer(timeout, 1000) {
+        countdownTimerBar.setVisibility(View.VISIBLE);
+        countdownTimerText.setVisibility(View.VISIBLE);
+
+        new CountDownTimer(timeout, 100) {
             @Override
             public void onTick(long millisUntilFinished) {
-                long time = millisUntilFinished / 1000;
-                countdownTimerText.setText(String.valueOf(time));
+                countdownTimerText.setText(String.valueOf((countdownTimerBar.getProgress() + 9)/ 10));
             }
 
             @Override
             public void onFinish() {
+                countdownTimerBar.setVisibility(View.INVISIBLE);
+                countdownTimerText.setVisibility(View.INVISIBLE);
             }
         }.start();
 
@@ -137,6 +143,7 @@ public class Game extends AppCompatActivity {
         progressAnimator.setDuration(timeout);
         progressAnimator.setInterpolator(new LinearInterpolator());
         progressAnimator.start();
+
     }
 
     private void setAnswerButtonsClickable(boolean clickable) {

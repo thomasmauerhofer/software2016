@@ -45,6 +45,7 @@
     <!-- QuestionsAskedActivity -->
     <string name="title_activity_quesions_asked">YAQ</string>
     <string name="time_up">Time\'s up!</string>
+    <string name="next_question">Next question</string>
 
     <!-- StatisticActivity -->
     <string name="title_activity_statistic">Statistic</string>

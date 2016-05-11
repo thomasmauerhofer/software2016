@@ -17,6 +17,7 @@ import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
 import com.bitschupfa.sw16.yaq.utils.AnswerCollector;
 import com.bitschupfa.sw16.yaq.utils.Quiz;
+import com.bitschupfa.sw16.yaq.utils.ScoreUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class HostGameLogic implements ClientMessageHandler{
     private Map<String, PlayerProfile> playerProfiles = new HashMap<>();
     private int timeout = 10 * 1000;
     private AnswerCollector answerCollector = new AnswerCollector();
+    private ScoreUtil scoreUtil = new ScoreUtil();
     private TextQuestion currentQuestion;
 
     public static HostGameLogic getInstance() {
@@ -86,6 +88,7 @@ public class HostGameLogic implements ClientMessageHandler{
 
     @Override
     public void startGame() {
+        scoreUtil.init(playerDevices.keySet());
         sendMessageToClients(new STARTGAMEMessage());
     }
 
@@ -117,6 +120,8 @@ public class HostGameLogic implements ClientMessageHandler{
             String address = entry.getKey();
             Answer answer = entry.getValue();
 
+            scoreUtil.addScoreForPlayer(address, answer.getRightAnswerValue());
+
             if (answer.getRightAnswerValue() < 0) {
                 answer = mostCorrectAnswer;
             }
@@ -127,8 +132,6 @@ public class HostGameLogic implements ClientMessageHandler{
                 e.printStackTrace();
             }
         }
-
         gameActivity.enableShowNextQuestion(true);
-        // TODO: update scores
     }
 }
