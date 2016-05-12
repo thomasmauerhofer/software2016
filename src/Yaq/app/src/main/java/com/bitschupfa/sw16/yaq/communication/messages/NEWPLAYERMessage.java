@@ -15,11 +15,6 @@ public class NEWPLAYERMessage extends Message {
         players = playerNames;
     }
 
-    public NEWPLAYERMessage(@NonNull String address, @NonNull String[] playerNames) {
-        super(address);
-        players = playerNames;
-    }
-
     @Override
     public void action(HostMessageHandler handler) {
         handler.updatePlayerList(players);

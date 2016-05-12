@@ -18,11 +18,6 @@ public class HELLOMessage extends Message {
         setPlayerProfile(profile);
     }
 
-    public HELLOMessage(@NonNull String address, @NonNull PlayerProfile profile) {
-        super(address);
-        setPlayerProfile(profile);
-    }
-
     public void setPlayerProfile(PlayerProfile profile) {
         if (profile == null) {
             throw new IllegalArgumentException("PlayerProfile may not be null!");

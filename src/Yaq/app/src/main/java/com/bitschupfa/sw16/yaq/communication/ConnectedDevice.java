@@ -45,6 +45,7 @@ public abstract class ConnectedDevice implements Runnable {
         while (true) {
             try {
                 Message msg = (Message) inputStream.readObject();
+                msg.setSenderAddress(address);
                 onMessage(msg);
             } catch (ClassNotFoundException e) {
                 Log.e(TAG, "Unable to parse received object: " + e.getMessage());

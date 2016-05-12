@@ -18,11 +18,6 @@ public class ANSWERMessage extends Message {
         setAnswer(answer);
     }
 
-    public ANSWERMessage(@NonNull String address, @NonNull Answer answer) {
-        super(address);
-        setAnswer(answer);
-    }
-
     public void setAnswer(Answer answer) {
         if (answer == null) {
             throw new IllegalArgumentException("Answer may not be null!");

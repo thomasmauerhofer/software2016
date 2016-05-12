@@ -1,18 +1,15 @@
 package com.bitschupfa.sw16.yaq.communication.messages;
 
-import android.bluetooth.BluetoothAdapter;
-
 import com.bitschupfa.sw16.yaq.communication.ClientMessageHandler;
 import com.bitschupfa.sw16.yaq.communication.HostMessageHandler;
 
 import java.io.Serializable;
 
 public abstract class Message implements Serializable {
-    private final String senderAddress;
+    private String senderAddress;
 
     public Message() {
-        senderAddress = BluetoothAdapter.getDefaultAdapter() != null ?
-                BluetoothAdapter.getDefaultAdapter().getAddress() : "n/a";
+        senderAddress = null; // must be set by the receiver of the message
     }
 
     public Message(String address) {
@@ -21,6 +18,10 @@ public abstract class Message implements Serializable {
 
     public String getSenderAddress() {
         return senderAddress;
+    }
+
+    public void setSenderAddress(String address) {
+        senderAddress = address;
     }
 
     public abstract void action(HostMessageHandler handler);

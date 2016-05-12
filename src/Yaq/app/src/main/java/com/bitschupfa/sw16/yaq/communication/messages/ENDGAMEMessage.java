@@ -18,11 +18,6 @@ public class ENDGAMEMessage extends Message {
         this.scoreList = scoreList;
     }
 
-    public ENDGAMEMessage(@NonNull String address, @NonNull ArrayList<RankingItem> scoreList) {
-        super(address);
-        this.scoreList = scoreList;
-    }
-
     @Override
     public void action(HostMessageHandler handler) {
         handler.endGame(scoreList);

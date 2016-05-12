@@ -175,7 +175,7 @@ public class Host extends AppCompatActivity implements Lobby {
                 try {
                     ServerSocket fakeHost = new ServerSocket(fakeHostPort);
                     Socket socket = fakeHost.accept();
-                    ConnectedDevice client = new ConnectedClientDevice(btAdapter.getAddress(),
+                    ConnectedDevice client = new ConnectedClientDevice("localhost",
                             socket.getInputStream(), socket.getOutputStream(),
                             HostGameLogic.getInstance()
                     );
@@ -197,7 +197,7 @@ public class Host extends AppCompatActivity implements Lobby {
             public void run() {
                 try {
                     Socket socket = new Socket("localhost", fakeHostPort);
-                    ConnectedDevice host = new ConnectedHostDevice(btAdapter.getAddress(),
+                    ConnectedDevice host = new ConnectedHostDevice("localhost",
                             socket.getInputStream(), socket.getOutputStream(),
                             ClientGameLogic.getInstance()
                     );

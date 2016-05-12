@@ -18,12 +18,6 @@ public class QUESTIONMessage extends Message {
         setTimeout(timeout);
     }
 
-    public QUESTIONMessage(@NonNull String address, @NonNull TextQuestion question, int timeout) {
-        super(address);
-        setQuestion(question);
-        setTimeout(timeout);
-    }
-
     public void setQuestion(TextQuestion question) {
         this.question = question;
     }

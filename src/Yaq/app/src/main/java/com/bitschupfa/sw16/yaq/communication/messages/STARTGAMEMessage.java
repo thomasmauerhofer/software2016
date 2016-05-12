@@ -13,10 +13,6 @@ public class STARTGAMEMessage extends Message {
         super();
     }
 
-    public STARTGAMEMessage(@NonNull String address) {
-        super(address);
-    }
-
     @Override
     public void action(HostMessageHandler handler) {
         handler.startGame();
