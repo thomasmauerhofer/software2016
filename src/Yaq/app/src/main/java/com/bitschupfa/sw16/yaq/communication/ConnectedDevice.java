@@ -4,6 +4,7 @@ package com.bitschupfa.sw16.yaq.communication;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
+import com.bitschupfa.sw16.yaq.communication.messages.CLIENTQUITMessage;
 import com.bitschupfa.sw16.yaq.communication.messages.Message;
 
 import java.io.IOException;
@@ -14,12 +15,12 @@ import java.net.Socket;
 
 public abstract class ConnectedDevice implements Runnable {
     private final static String TAG = "BTConnectedDevice";
-    private final String address;
+    private final String id;
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
 
-    public ConnectedDevice(String address, BluetoothSocket s) throws IOException {
-        this.address = address;
+    public ConnectedDevice(String id, BluetoothSocket s) throws IOException {
+        this.id = id;
 
         // note: the ObjectOutputStream must be constructed first on both sides since the
         // ObjectInputStream tries to read the object stream header first and this blocks until
@@ -30,8 +31,8 @@ public abstract class ConnectedDevice implements Runnable {
         inputStream = new ObjectInputStream(s.getInputStream());
     }
 
-    public ConnectedDevice(String address, Socket socket) throws IOException {
-        this.address = address;
+    public ConnectedDevice(String id, Socket socket) throws IOException {
+        this.id = id;
         outputStream = new ObjectOutputStream(socket.getOutputStream());
         outputStream.flush();
         inputStream = new ObjectInputStream(socket.getInputStream());
@@ -44,13 +45,15 @@ public abstract class ConnectedDevice implements Runnable {
         while (true) {
             try {
                 Message msg = (Message) inputStream.readObject();
-                msg.setSenderAddress(address);
+                msg.setSenderAddress(id);
                 onMessage(msg);
             } catch (ClassNotFoundException e) {
                 Log.e(TAG, "Unable to parse received object: " + e.getMessage());
             } catch (IOException e) {
                 Log.e(TAG, "I/O Error: " + e.getMessage());
                 Log.e(TAG, "Killing Thread.");
+
+                onMessage(new CLIENTQUITMessage(id));
                 break;
             }
         }
@@ -64,6 +67,6 @@ public abstract class ConnectedDevice implements Runnable {
     protected abstract void onMessage(Message message);
 
     public String getAddress() {
-        return address;
+        return id;
     }
 }

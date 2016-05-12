@@ -94,7 +94,11 @@ public class HostGameLogic implements ClientMessageHandler {
 
     @Override
     public void quit() {
-
+        quiz = null;
+        gameActivity = null;
+        players.clear();
+        answerCollector = null;
+        currentQuestion = null;
     }
 
     private void sendMessageToClients(Message message) {

@@ -63,4 +63,8 @@ public class PlayerList {
         }
         return scoreboard;
     }
+
+    public void clear() {
+        players.clear();
+    }
 }
