@@ -3,6 +3,8 @@ package com.bitschupfa.sw16.yaq.ui;
 import android.app.Activity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -55,7 +57,11 @@ public class PlayerList {
 
     public void addAll(String[] playerNames) {
         clear();
-        for (String player : playerNames) {
+
+        List<String> players = new ArrayList<>(Arrays.asList(playerNames));
+        Collections.reverse(players);
+
+        for (String player : players) {
             addPlayer(player);
         }
     }
