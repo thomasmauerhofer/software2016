@@ -28,6 +28,10 @@ public class Answer implements Serializable{
         this.answerValue = answerValue;
     }
 
+    public boolean isCorrectAnswer() {
+        return answerValue > 0;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

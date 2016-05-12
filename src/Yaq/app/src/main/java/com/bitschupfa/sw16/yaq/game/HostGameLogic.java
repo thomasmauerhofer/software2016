@@ -125,7 +125,7 @@ public class HostGameLogic implements ClientMessageHandler{
 
             scoreUtil.addScoreForPlayer(address, answer.getRightAnswerValue());
 
-            if (answer.getRightAnswerValue() < 0) {
+            if (!answer.isCorrectAnswer()) {
                 answer = mostCorrectAnswer;
             }
 
