@@ -6,8 +6,7 @@ import android.bluetooth.BluetoothSocket;
 import com.bitschupfa.sw16.yaq.communication.messages.Message;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.net.Socket;
 
 public class ConnectedHostDevice extends ConnectedDevice {
     private final HostMessageHandler messageHandler;
@@ -17,8 +16,8 @@ public class ConnectedHostDevice extends ConnectedDevice {
         messageHandler = handler;
     }
 
-    public ConnectedHostDevice(String address, InputStream in, OutputStream out, HostMessageHandler handler) throws IOException {
-        super(address, in, out);
+    public ConnectedHostDevice(String address, Socket socket, HostMessageHandler handler) throws IOException {
+        super(address, socket);
         messageHandler = handler;
     }
 

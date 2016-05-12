@@ -173,11 +173,11 @@ public class Host extends AppCompatActivity implements Lobby {
                 try {
                     ServerSocket fakeHost = new ServerSocket(fakeHostPort);
                     Socket socket = fakeHost.accept();
-                    ConnectedDevice client = new ConnectedClientDevice("localhost",
-                            socket.getInputStream(), socket.getOutputStream(),
+                    ConnectedDevice client = new ConnectedClientDevice("localhost", socket,
                             HostGameLogic.getInstance()
                     );
                     HostGameLogic.getInstance().registerConnectedDevice(client);
+                    fakeHost.close();
                 } catch (IOException e) {
                     runOnUiThread(new Runnable() {
                         @Override
@@ -195,13 +195,18 @@ public class Host extends AppCompatActivity implements Lobby {
             public void run() {
                 try {
                     Socket socket = new Socket("localhost", fakeHostPort);
-                    ConnectedDevice host = new ConnectedHostDevice("localhost",
-                            socket.getInputStream(), socket.getOutputStream(),
+                    ConnectedDevice host = new ConnectedHostDevice("localhost", socket,
                             ClientGameLogic.getInstance()
                     );
                     ClientGameLogic.getInstance().setConnectedHostDevice(host);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(activity, R.string.error_cant_connect, Toast.LENGTH_LONG).show();
+                            activity.finish();
+                        }
+                    });
                 }
             }
         }).start();

@@ -7,10 +7,9 @@ import android.util.Log;
 import com.bitschupfa.sw16.yaq.communication.messages.Message;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
+import java.net.Socket;
 
 
 public abstract class ConnectedDevice implements Runnable {
@@ -31,11 +30,11 @@ public abstract class ConnectedDevice implements Runnable {
         inputStream = new ObjectInputStream(s.getInputStream());
     }
 
-    public ConnectedDevice(String address, InputStream in, OutputStream out) throws IOException {
+    public ConnectedDevice(String address, Socket socket) throws IOException {
         this.address = address;
-        outputStream = new ObjectOutputStream(out);
-        out.flush();
-        inputStream = new ObjectInputStream(in);
+        outputStream = new ObjectOutputStream(socket.getOutputStream());
+        outputStream.flush();
+        inputStream = new ObjectInputStream(socket.getInputStream());
     }
 
     @Override
