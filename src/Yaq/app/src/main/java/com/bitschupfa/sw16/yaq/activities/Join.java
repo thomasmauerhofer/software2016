@@ -104,6 +104,12 @@ public class Join extends AppCompatActivity implements Lobby {
 
         ClientGameLogic.getInstance().setLobbyActivity(this);
 
+        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+        filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+        registerReceiver(btBroadcastReceiver, filter);
+
         if (!ClientGameLogic.getInstance().isConnected() && setupBluetooth()) {
                findOtherBluetoothDevices();
         }
@@ -133,12 +139,6 @@ public class Join extends AppCompatActivity implements Lobby {
     }
 
     private boolean setupBluetooth() {
-        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
-        filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
-        registerReceiver(btBroadcastReceiver, filter);
-
         setBluetoothDeviceLists();
 
         if (btAdapter == null) {
