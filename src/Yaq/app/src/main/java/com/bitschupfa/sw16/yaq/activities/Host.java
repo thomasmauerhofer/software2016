@@ -69,12 +69,8 @@ public class Host extends AppCompatActivity implements Lobby {
         ClientGameLogic.getInstance().disconnectClient();
     }
 
-    @SuppressWarnings("UnusedParameters")
     public void startButtonClicked(View view) {
-        Intent intent = new Intent(Host.this, GameAtHost.class);
-        startActivity(intent);
         HostGameLogic.getInstance().startGame();
-        finish();
     }
 
     @SuppressWarnings("UnusedParameters")
@@ -163,7 +159,9 @@ public class Host extends AppCompatActivity implements Lobby {
 
     @Override
     public void openGameActivity() {
-        // handled by startButtonClicked()
+        Intent intent = new Intent(Host.this, GameAtHost.class);
+        startActivity(intent);
+        finish();
     }
 
     private void selfConnectionHack() {
