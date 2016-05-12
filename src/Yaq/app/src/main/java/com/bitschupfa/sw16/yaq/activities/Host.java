@@ -66,7 +66,6 @@ public class Host extends AppCompatActivity implements Lobby {
         super.onDestroy();
         btConnectionListener.close();
         unregisterReceiver(broadcastReceiver);
-        ClientGameLogic.getInstance().disconnectClient();
     }
 
     public void startButtonClicked(View view) {

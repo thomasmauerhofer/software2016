@@ -104,10 +104,8 @@ public class Join extends AppCompatActivity implements Lobby {
 
         ClientGameLogic.getInstance().setLobbyActivity(this);
 
-        if(!ClientGameLogic.getInstance().isConnected()) {
-            if (setupBluetooth()) {
-                findOtherBluetoothDevices();
-            }
+        if (!ClientGameLogic.getInstance().isConnected() && setupBluetooth()) {
+               findOtherBluetoothDevices();
         }
 
         playerList = new PlayerList(this);
@@ -128,7 +126,6 @@ public class Join extends AppCompatActivity implements Lobby {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(btBroadcastReceiver);
-        ClientGameLogic.getInstance().disconnectClient();
 
         if (findDeviceDialog != null && findDeviceDialog.isShowing()) {
             findDeviceDialog.cancel();

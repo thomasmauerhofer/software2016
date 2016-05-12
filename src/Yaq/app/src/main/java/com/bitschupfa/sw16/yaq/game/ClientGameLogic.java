@@ -100,7 +100,12 @@ public class ClientGameLogic implements HostMessageHandler {
         gameActivity.showStatisticActivity(scoreList);
     }
 
-    public void disconnectClient() {
+    @Override
+    public void quit() {
         isConnected = false;
+        gameActivity = null;
+        lobbyActivity = null;
+        answerQueue.clear();
+        hostDevice = null;
     }
 }

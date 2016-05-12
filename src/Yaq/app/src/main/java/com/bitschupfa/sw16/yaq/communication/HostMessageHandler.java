@@ -12,4 +12,5 @@ public interface HostMessageHandler {
     void showNextQuestion(TextQuestion question, int timeout);
     void showCorrectAnswer(Answer answer);
     void endGame(ArrayList<RankingItem> scoreList);
+    void quit();
 }

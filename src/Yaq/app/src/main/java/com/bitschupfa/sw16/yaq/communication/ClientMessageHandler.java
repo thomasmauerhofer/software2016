@@ -6,7 +6,9 @@ import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
 public interface ClientMessageHandler {
     void askNextQuestion();
     void registerConnectedDevice(ConnectedDevice client);
-    void registerClient(String address, PlayerProfile profile);
+    void registerClient(String id, PlayerProfile profile);
     void startGame();
-    void handleAnswer(String address, Answer answer);
+    void handleAnswer(String id, Answer answer);
+    void quit();
+    void clientQuits(String id);
 }

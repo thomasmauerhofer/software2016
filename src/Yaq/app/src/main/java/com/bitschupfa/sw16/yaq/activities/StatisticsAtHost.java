@@ -11,7 +11,6 @@ public class StatisticsAtHost extends Statistic {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        HostGameLogic.getInstance().resetAll();
     }
 
     @SuppressWarnings("UnusedParameters")
