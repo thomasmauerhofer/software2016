@@ -9,8 +9,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.bitschupfa.sw16.yaq.R;
-import com.bitschupfa.sw16.yaq.game.ClientGameLogic;
-import com.bitschupfa.sw16.yaq.game.HostGameLogic;
 import com.bitschupfa.sw16.yaq.ui.RankingItem;
 import com.bitschupfa.sw16.yaq.ui.RankingList;
 

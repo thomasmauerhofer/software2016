@@ -2,8 +2,9 @@ package com.bitschupfa.sw16.yaq.Database;
 
 import com.bitschupfa.sw16.yaq.database.object.Answer;
 
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 
 public class AnswerTest {

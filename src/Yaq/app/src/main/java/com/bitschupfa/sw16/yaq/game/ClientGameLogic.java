@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.bitschupfa.sw16.yaq.activities.Game;
 import com.bitschupfa.sw16.yaq.activities.Lobby;
-import com.bitschupfa.sw16.yaq.activities.Statistic;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
 import com.bitschupfa.sw16.yaq.communication.HostMessageHandler;
 import com.bitschupfa.sw16.yaq.communication.messages.ANSWERMessage;
@@ -99,5 +98,9 @@ public class ClientGameLogic implements HostMessageHandler {
     @Override
     public void endGame(ArrayList<RankingItem> scoreList) {
         gameActivity.showStatisticActivity(scoreList);
+    }
+
+    public void disconnectClient() {
+        isConnected = false;
     }
 }

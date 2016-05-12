@@ -79,11 +79,16 @@ public class Game extends AppCompatActivity {
                 questionView.setText(question.getQuestion());
 
                 List<Answer> answers = question.getShuffledAnswers();
+                answerButtons.get(0).setText(answers.get(0).getAnswerString());
+                answerButtons.get(1).setText(answers.get(1).getAnswerString());
+                answerButtons.get(2).setText(answers.get(2).getAnswerString());
+                answerButtons.get(3).setText(answers.get(3).getAnswerString());
+
                 answerMapping.clear();
-                for (int i = 0; i < 4; ++i) {
-                    answerButtons.get(i).setText(answers.get(i).getAnswerString());
-                    answerMapping.put(answerButtons.get(i), answers.get(i));
-                }
+                answerMapping.put(answerButtons.get(0), answers.get(0));
+                answerMapping.put(answerButtons.get(1), answers.get(1));
+                answerMapping.put(answerButtons.get(2), answers.get(2));
+                answerMapping.put(answerButtons.get(3), answers.get(3));
 
                 startCountdown(timeout);
             }

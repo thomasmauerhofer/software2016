@@ -149,4 +149,9 @@ public class HostGameLogic implements ClientMessageHandler{
         }
         return namesAndScores;
     }
+
+    public void resetAll(){
+        playerDevices.clear();
+        playerProfiles.clear();
+    }
 }

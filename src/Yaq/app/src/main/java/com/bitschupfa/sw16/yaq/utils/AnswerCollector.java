@@ -8,12 +8,16 @@ import java.util.Map;
 import java.util.Set;
 
 public class AnswerCollector {
-    private static final Answer noAnswer = new Answer("no answer from client, yet", 42);
+    public static final Answer noAnswer = new Answer("no answer from client, yet", 42);
     private Map<String, Answer> answers = new HashMap<>();
 
 
     public Map<String, Answer> getAnswers() {
         return answers;
+    }
+
+    public Answer getAnswerOfPlayer(String id) {
+        return answers.get(id);
     }
 
     public void init(Set<String> playerIds) {
@@ -44,7 +48,6 @@ public class AnswerCollector {
                 return false;
             }
         }
-
         return true;
     }
 }

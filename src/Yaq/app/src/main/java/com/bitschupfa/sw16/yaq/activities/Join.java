@@ -28,10 +28,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bitschupfa.sw16.yaq.bluetooth.BTService;
 import com.bitschupfa.sw16.yaq.R;
-import com.bitschupfa.sw16.yaq.communication.ConnectedHostDevice;
+import com.bitschupfa.sw16.yaq.bluetooth.BTService;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
+import com.bitschupfa.sw16.yaq.communication.ConnectedHostDevice;
 import com.bitschupfa.sw16.yaq.game.ClientGameLogic;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfileStorage;
@@ -128,6 +128,7 @@ public class Join extends AppCompatActivity implements Lobby {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(btBroadcastReceiver);
+        ClientGameLogic.getInstance().disconnectClient();
 
         if (findDeviceDialog != null && findDeviceDialog.isShowing()) {
             findDeviceDialog.cancel();

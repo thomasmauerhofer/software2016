@@ -1,7 +1,6 @@
 package com.bitschupfa.sw16.yaq.communication.messages;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.bitschupfa.sw16.yaq.communication.ClientMessageHandler;
 import com.bitschupfa.sw16.yaq.communication.HostMessageHandler;

@@ -26,6 +26,6 @@ public class ScoreUtil {
     }
 
     public Map<String, Integer> getSortedScoreList() {
-        return MapUtil.sortByValue(scores);
+        return MapUtil.sortByValueHighestFirst(scores);
     }
 }

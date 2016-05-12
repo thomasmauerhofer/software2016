@@ -1,5 +1,6 @@
 package com.bitschupfa.sw16.yaq.activities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
@@ -15,14 +16,12 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bitschupfa.sw16.yaq.bluetooth.ConnectionListener;
 import com.bitschupfa.sw16.yaq.R;
+import com.bitschupfa.sw16.yaq.bluetooth.ConnectionListener;
 import com.bitschupfa.sw16.yaq.communication.ConnectedClientDevice;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
 import com.bitschupfa.sw16.yaq.communication.ConnectedHostDevice;
 import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
-import com.bitschupfa.sw16.yaq.database.object.Answer;
-import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.game.ClientGameLogic;
 import com.bitschupfa.sw16.yaq.game.HostGameLogic;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
@@ -33,8 +32,6 @@ import com.bitschupfa.sw16.yaq.utils.Quiz;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Host extends AppCompatActivity implements Lobby {
     private static final int REQUEST_ENABLE_DISCOVERABLE_BT = 42;
@@ -69,6 +66,7 @@ public class Host extends AppCompatActivity implements Lobby {
         super.onDestroy();
         btConnectionListener.close();
         unregisterReceiver(broadcastReceiver);
+        ClientGameLogic.getInstance().disconnectClient();
     }
 
     @SuppressWarnings("UnusedParameters")
@@ -170,6 +168,7 @@ public class Host extends AppCompatActivity implements Lobby {
 
     private void selfConnectionHack() {
         final int fakeHostPort = 7777;
+        final Activity activity = this;
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -182,7 +181,13 @@ public class Host extends AppCompatActivity implements Lobby {
                     );
                     HostGameLogic.getInstance().registerConnectedDevice(client);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(activity, R.string.error_cant_connect, Toast.LENGTH_LONG).show();
+                            activity.finish();
+                        }
+                    });
                 }
             }
         }).start();
