@@ -25,11 +25,11 @@ import java.util.Map;
 // TODO Handle disconnect of user(Remove from all maps, and answerCollector)
 public class HostGameLogic implements ClientMessageHandler {
     private static final String TAG = "HostGameLogic";
-    private static HostGameLogic instance = new HostGameLogic();
+    private static final HostGameLogic instance = new HostGameLogic();
 
     private GameAtHost gameActivity;
     private Quiz quiz;
-    private PlayerList players = new PlayerList();
+    private final PlayerList players = new PlayerList();
     private int timeout = 10 * 1000;
     private AnswerCollector answerCollector = new AnswerCollector();
     private TextQuestion currentQuestion;
@@ -47,6 +47,10 @@ public class HostGameLogic implements ClientMessageHandler {
 
     public void setQuiz(Quiz quiz) {
         this.quiz = quiz;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
     }
 
     @Override

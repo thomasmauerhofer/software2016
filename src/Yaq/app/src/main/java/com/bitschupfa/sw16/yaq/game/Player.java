@@ -7,7 +7,6 @@ import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
 
 
 public class Player implements Comparable<Player>{
-
     private final ConnectedDevice device;
     private PlayerProfile profile;
     private int score;
@@ -42,7 +41,7 @@ public class Player implements Comparable<Player>{
     }
 
     @Override
-    public int compareTo(Player another) {
+    public int compareTo(@NonNull Player another) {
         return this.getScore() - another.getScore();
     }
 }

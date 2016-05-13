@@ -76,6 +76,7 @@ public class ClientGameLogic implements HostMessageHandler {
         try {
             answer = answerQueue.poll(timeout, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
+            Log.e(TAG, "interrupted while waiting for answer: " + e.getMessage());
         }
 
         try {

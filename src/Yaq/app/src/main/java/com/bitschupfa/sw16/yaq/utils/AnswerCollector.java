@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class AnswerCollector {
     public static final Answer noAnswer = new Answer("no answer from client, yet", 42);
-    private Map<String, Answer> answers = new HashMap<>();
+    private final Map<String, Answer> answers = new HashMap<>();
 
 
     public Map<String, Answer> getAnswers() {

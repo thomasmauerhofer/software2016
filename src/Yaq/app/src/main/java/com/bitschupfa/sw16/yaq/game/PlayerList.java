@@ -11,9 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class PlayerList {
-
-    private Map<String, Player> players = new HashMap<>();
+class PlayerList {
+    private final Map<String, Player> players = new HashMap<>();
 
     public PlayerList() {
     }

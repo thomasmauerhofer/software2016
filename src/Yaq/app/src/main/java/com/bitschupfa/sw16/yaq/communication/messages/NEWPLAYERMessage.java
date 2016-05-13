@@ -8,7 +8,7 @@ import com.bitschupfa.sw16.yaq.communication.HostMessageHandler;
 
 public class NEWPLAYERMessage extends Message {
     private static final String TAG = "NEWPLAYERMessage";
-    private String[] players;
+    private final String[] players;
 
     public NEWPLAYERMessage(@NonNull String[] playerNames) {
         super();

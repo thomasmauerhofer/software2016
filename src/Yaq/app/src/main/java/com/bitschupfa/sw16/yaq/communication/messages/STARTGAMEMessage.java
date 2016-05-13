@@ -1,10 +1,8 @@
 package com.bitschupfa.sw16.yaq.communication.messages;
 
-
-import android.support.annotation.NonNull;
-
 import com.bitschupfa.sw16.yaq.communication.ClientMessageHandler;
 import com.bitschupfa.sw16.yaq.communication.HostMessageHandler;
+
 
 public class STARTGAMEMessage extends Message {
     private static final String TAG = "STARTGAMEMessage";
