@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="false"
@@ -31,7 +32,7 @@
             android:label="@string/title_activity_join"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.QuestionsAsked"
+            android:name=".activities.Game"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_quesions_asked"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -40,8 +41,16 @@
             android:label="@string/title_activity_statistic"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".activities.StatisticsAtHost"
+            android:label="@string/title_activity_statistic"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".activities.Profile"
             android:label="@string/title_activity_profile"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.GameAtHost"
+            android:label="@string/title_activity_quesions_asked"
             android:theme="@style/AppTheme.NoActionBar" />
         <!--
              ATTENTION: This was auto-generated to add Google Play services to your project for

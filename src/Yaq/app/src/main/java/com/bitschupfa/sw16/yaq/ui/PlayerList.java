@@ -2,9 +2,9 @@ package com.bitschupfa.sw16.yaq.ui;
 
 import android.app.Activity;
 
-import com.bitschupfa.sw16.yaq.ui.PlayerEntry;
-
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -46,6 +46,24 @@ public class PlayerList {
             return;
         }
         removePlayer(id);
+    }
+
+    public void clear() {
+        for (PlayerEntry player : players) {
+            player.removePlayer();
+        }
+        players.clear();
+    }
+
+    public void addAll(String[] playerNames) {
+        clear();
+
+        List<String> players = new ArrayList<>(Arrays.asList(playerNames));
+        Collections.reverse(players);
+
+        for (String player : players) {
+            addPlayer(player);
+        }
     }
 
     private int getPlayerIdWithName(String name) {

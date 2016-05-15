@@ -1,60 +1,43 @@
 package com.bitschupfa.sw16.yaq.utils;
 
-import android.content.Context;
-
-import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
-
-public class Quiz implements Serializable {
-
+public class Quiz implements Iterator<TextQuestion> {
     private List<TextQuestion> questions;
-
-    private int current_question;
+    private int currentPosition;
 
     public Quiz() {
         questions = new ArrayList<>();
-        current_question = 0;
+        currentPosition = 0;
     }
 
-    public void addQuestion(TextQuestion question) {
-        questions.add(question);
-    }
-
-    public void addQuestions(List<TextQuestion> questions) {
-        this.questions.addAll(questions);
-    }
-
-    public TextQuestion getCurrentQuestion() {
-        return questions.get(current_question);
-    }
-
-    public void incrementCurrentQuestionCounter() {
-        current_question++;
-    }
-
-    public int getCurrentQuestionCounter() {
-        return current_question;
-    }
-
-    public List<TextQuestion> getQuestions() {
-        return questions;
-    }
-
-    private void shuffleQuestions() {
+    public void addQuestions(List<TextQuestion> questions_) {
+        questions = questions_;
         Collections.shuffle(questions);
     }
 
-    public Quiz createTmpQuiz(Context context) {
+    public void setCurrentPosition(int position_) {
+        currentPosition = position_;
+    }
 
-        QuestionQuerier questionQuerier = new QuestionQuerier(context);
-        questions = questionQuerier.getAllQuestionsFromCatalog(1);
-        shuffleQuestions();
-        return this;
+    @Override
+    public TextQuestion next() {
+        TextQuestion tQ = questions.get(currentPosition);
+        currentPosition++;
+        return tQ;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return currentPosition < questions.size();
+    }
+
+    @Override
+    public void remove() {
     }
 }

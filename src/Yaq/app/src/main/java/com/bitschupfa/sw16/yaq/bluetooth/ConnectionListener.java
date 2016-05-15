@@ -5,7 +5,9 @@ import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
+import com.bitschupfa.sw16.yaq.communication.ConnectedClientDevice;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
+import com.bitschupfa.sw16.yaq.game.HostGameLogic;
 
 import java.io.IOException;
 
@@ -13,14 +15,15 @@ public class ConnectionListener implements Runnable {
     private final static String TAG = "BTConnectionListener";
 
     private BluetoothServerSocket btServerSocket;
-    private volatile boolean isDiscoverable = false;
+    private boolean isDiscoverable = false;
+
 
     public ConnectionListener() {
 
     }
 
     @Override
-    public void run() {
+    public synchronized void run() {
         Log.d(TAG, "Starting thread.");
 
         BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -30,9 +33,16 @@ public class ConnectionListener implements Runnable {
         }
 
         if (!isDiscoverable) {
-            Log.d(TAG, "Device is not discoverable. Idle until status changes.");
-            //noinspection StatementWithEmptyBody
-            while (!isDiscoverable);
+            Log.d(TAG, "Device is not discoverable. Wait until status changes.");
+            while (!isDiscoverable) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    Log.e(TAG, "Interrupted while waiting for device to be discoverable. Message: "
+                            + e.getMessage());
+                    return;
+                }
+            }
             Log.d(TAG, "Device is now discoverable.");
         }
 
@@ -55,8 +65,10 @@ public class ConnectionListener implements Runnable {
 
             if (socket != null) {
                 try {
-                    ConnectedDevice client =  new ConnectedDevice(socket);
-                    registerClient(client);
+                    ConnectedDevice client =  new ConnectedClientDevice(
+                            socket.getRemoteDevice().getAddress(), socket,
+                            HostGameLogic.getInstance());
+                    HostGameLogic.getInstance().registerConnectedDevice(client);
                 } catch (IOException e) {
                     Log.e(TAG, "Could not create new ConnectedDevice: " + e.getMessage());
                 }
@@ -77,13 +89,8 @@ public class ConnectionListener implements Runnable {
         }
     }
 
-    @SuppressWarnings("WeakerAccess")
-    public void registerClient(ConnectedDevice client) {
-        new Thread(client).start();
-        // TODO: register client in the game
-    }
-
-    public void setDiscoverable() {
+    public synchronized void setDiscoverable() {
         isDiscoverable = true;
+        notify();
     }
 }

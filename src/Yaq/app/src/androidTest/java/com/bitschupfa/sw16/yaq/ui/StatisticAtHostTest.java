@@ -1,21 +1,18 @@
 package com.bitschupfa.sw16.yaq.ui;
 
-
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.activities.Host;
-import com.bitschupfa.sw16.yaq.activities.Join;
-import com.bitschupfa.sw16.yaq.activities.MainMenu;
+import com.bitschupfa.sw16.yaq.activities.StatisticsAtHost;
 import com.robotium.solo.Solo;
 
-
-public class MainMenuTests extends ActivityInstrumentationTestCase2<MainMenu> {
+public class StatisticAtHostTest extends ActivityInstrumentationTestCase2<StatisticsAtHost> {
 
     private Solo solo;
 
-    public MainMenuTests() {
-        super(MainMenu.class);
+    public StatisticAtHostTest() {
+        super(StatisticsAtHost.class);
     }
 
     @Override
@@ -24,18 +21,18 @@ public class MainMenuTests extends ActivityInstrumentationTestCase2<MainMenu> {
         solo = new Solo(getInstrumentation(), getActivity());
     }
 
+
     @Override
     public void tearDown() throws Exception {
         super.tearDown();
     }
 
-    public void testMainMenuHost() {
-        solo.clickOnButton(getActivity().getResources().getString(R.string.host));
+    public void testPlayAgainButton() {
+        solo.clickOnButton(getActivity().getResources().getString(R.string.play_again));
         assertTrue("Wrong Activity!", solo.waitForActivity(Host.class));
     }
 
-    public void testMainMenuJoin() {
-        solo.clickOnButton(getActivity().getResources().getString(R.string.join));
-        assertTrue("Wrong Activity!", solo.waitForActivity(Join.class));
+    public void testStatisticWithoutScoreList() {
+        assertTrue(solo.searchText(getActivity().getResources().getString(R.string.error_cant_show_score)));
     }
 }

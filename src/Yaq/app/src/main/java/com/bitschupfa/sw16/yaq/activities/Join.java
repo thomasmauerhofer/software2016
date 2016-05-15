@@ -4,12 +4,14 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
@@ -26,16 +28,22 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bitschupfa.sw16.yaq.bluetooth.ClientConnector;
 import com.bitschupfa.sw16.yaq.R;
+import com.bitschupfa.sw16.yaq.bluetooth.BTService;
+import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
+import com.bitschupfa.sw16.yaq.communication.ConnectedHostDevice;
+import com.bitschupfa.sw16.yaq.game.ClientGameLogic;
+import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
+import com.bitschupfa.sw16.yaq.profile.PlayerProfileStorage;
 import com.bitschupfa.sw16.yaq.ui.BluetoothDeviceList;
 import com.bitschupfa.sw16.yaq.ui.PlayerList;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Join extends AppCompatActivity {
+public class Join extends AppCompatActivity implements Lobby {
     private final static String TAG = "JoinGameActivity";
     private final static int REQUEST_ENABLE_BT = 42;
     private final static int REQUEST_COARSE_LOCATION_PERMISSIONS = 43;
@@ -94,20 +102,19 @@ public class Join extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if(setupBluetooth()) {
-            findOtherBluetoothDevices();
+        ClientGameLogic.getInstance().setLobbyActivity(this);
+
+        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+        filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+        registerReceiver(btBroadcastReceiver, filter);
+
+        if (!ClientGameLogic.getInstance().isConnected() && setupBluetooth()) {
+               findOtherBluetoothDevices();
         }
 
         playerList = new PlayerList(this);
-        playerList.addPlayer("Thomas");
-        playerList.addPlayer("Manuel");
-        playerList.addPlayer("Matthias");
-        playerList.addPlayer("Max");
-        playerList.addPlayer("Johannes");
-        playerList.addPlayer("Patrik");
-
-        playerList.removePlayerWithName("Max");
-
         pBar = (ProgressBar) findViewById(R.id.loadingBar);
         textView = (TextView) findViewById(R.id.textView);
 
@@ -126,18 +133,12 @@ public class Join extends AppCompatActivity {
         super.onDestroy();
         unregisterReceiver(btBroadcastReceiver);
 
-        if ( findDeviceDialog != null && findDeviceDialog.isShowing() ){
+        if (findDeviceDialog != null && findDeviceDialog.isShowing()) {
             findDeviceDialog.cancel();
         }
     }
 
     private boolean setupBluetooth() {
-        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
-        filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
-        registerReceiver(btBroadcastReceiver, filter);
-
         setBluetoothDeviceLists();
 
         if (btAdapter == null) {
@@ -224,7 +225,7 @@ public class Join extends AppCompatActivity {
             }
 
             public void onFinish() {
-                Intent intent = new Intent(Join.this, QuestionsAsked.class);
+                Intent intent = new Intent(Join.this, Game.class);
                 startActivity(intent);
             }
         }.start();
@@ -237,13 +238,12 @@ public class Join extends AppCompatActivity {
                 .setView(dialogView)
                 .setTitle(R.string.dialog_find_device_title)
                 .setPositiveButton(R.string.refresh, null)
-                .setNegativeButton(R.string.cancel, null)
                 .create();
         findDeviceDialog.setCanceledOnTouchOutside(false);
 
         dialogBar  = (ProgressBar) dialogView.findViewById(R.id.find_devices_bar);
         ListView pairedList = (ListView) dialogView.findViewById(R.id.paired_devices);
-        ListView unpairedList = (ListView) dialogView.findViewById(R.id.unpaired_devices);
+        ListView discoveredList = (ListView) dialogView.findViewById(R.id.unpaired_devices);
         TextView noPairedDevices = (TextView) dialogView.findViewById(R.id.no_paired_devices_found);
         TextView noUnpairedDevices = (TextView) dialogView.findViewById(R.id.no_unpaired_devices_found);
 
@@ -251,20 +251,27 @@ public class Join extends AppCompatActivity {
         discovered = new BluetoothDeviceList(this, discoveredDevices, noUnpairedDevices);
 
         pairedList.setAdapter(paired);
-        unpairedList.setAdapter(discovered);
+        discoveredList.setAdapter(discovered);
 
-        AdapterView.OnItemClickListener onDevClickListener = new AdapterView.OnItemClickListener() {
+        AdapterView.OnItemClickListener onPairedDevClickListener = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                 BluetoothDevice selectedDev = pairedDevices.get(position);
-                new ClientConnector(selectedDev);
-
-                Toast.makeText(Join.this, R.string.not_implemented, Toast.LENGTH_LONG).show();
-                // TODO: connect to selected device and register callback
+                Log.d(TAG, "Selected already paired device: " + selectedDev.getName());
+                new ClientConnector().execute(selectedDev);
             }
         };
-        pairedList.setOnItemClickListener(onDevClickListener);
-        unpairedList.setOnItemClickListener(onDevClickListener);
+        AdapterView.OnItemClickListener onDiscoveredDevClickListener = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                BluetoothDevice selectedDev = discoveredDevices.get(position);
+                Log.d(TAG, "Selected discovered device: " + selectedDev.getName());
+                new ClientConnector().execute(selectedDev);
+            }
+        };
+
+        pairedList.setOnItemClickListener(onPairedDevClickListener);
+        discoveredList.setOnItemClickListener(onDiscoveredDevClickListener);
 
         findDeviceDialog.show();
 
@@ -279,18 +286,103 @@ public class Join extends AppCompatActivity {
             }
         });
 
-        findDeviceDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Join.this.finish();
-            }
-        });
-
         findDeviceDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 Join.this.finish();
             }
         });
+    }
+
+    @Override
+    public PlayerProfile accessPlayerProfile() {
+        return PlayerProfileStorage.getInstance(this).getPlayerProfile();
+    }
+
+    @Override
+    public void updatePlayerList(final String[] playerNames) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                playerList.clear();
+                playerList.addAll(playerNames);
+            }
+        });
+    }
+
+    @Override
+    public void openGameActivity() {
+        Intent intent = new Intent(Join.this, Game.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private final class ClientConnector extends AsyncTask<BluetoothDevice, Void, ConnectedDevice> {
+        private final static String TAG = "BTClientConnector";
+
+        @Override
+        protected ConnectedDevice doInBackground(BluetoothDevice... params) {
+            if (params.length < 1) {
+                Log.e(TAG, "No Bluetooth device was submitted to the connection task.");
+                return null;
+            }
+            BluetoothDevice dev = params[0];
+
+            Log.d(TAG, "Create socket.");
+            BluetoothSocket btSocket;
+            try {
+                btSocket = dev.createRfcommSocketToServiceRecord(BTService.SERVICE_UUID);
+            } catch (IOException e) {
+                Log.e(TAG, "Could not create Bluetooth socket: " + e.getMessage());
+                return null;
+            }
+
+            Log.d(TAG, "Starting task.");
+            if (btSocket == null) {
+                Log.e(TAG, "No Bluetooth socket available. Stop task.");
+                return null;
+            }
+
+            BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+            if (btAdapter.isDiscovering()) {
+                Log.d(TAG, "Device is currently in discover mode. Cancel discovery to avoid connection issues.");
+                btAdapter.cancelDiscovery();
+            }
+
+            try {
+                btSocket.connect();
+            } catch (IOException e) {
+                Log.e(TAG, "Could not establish connection to other device: " + e.getMessage());
+                return null;
+            }
+
+            ConnectedDevice server = null;
+            try {
+                server = new ConnectedHostDevice(btSocket.getRemoteDevice().getAddress(),
+                        btSocket, ClientGameLogic.getInstance());
+            } catch (IOException e) {
+                Log.e(TAG, "Could not create new ConnectedDevice: " + e.getMessage());
+            }
+
+            return server;
+        }
+
+        @Override
+        protected void onPostExecute(ConnectedDevice connectedDevice) {
+            Log.d(TAG, "Task finished.");
+            if (connectedDevice != null) {
+                try {
+                    ClientGameLogic.getInstance().setConnectedHostDevice(connectedDevice);
+                    findDeviceDialog.dismiss();
+                } catch (IOException e) {
+                    Log.e(TAG, "Could not send HELLO message to host: " + e.getMessage());
+                    Toast.makeText(Join.this, "Unable to communicate with the other device.",
+                            Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Toast.makeText(Join.this, "Unable to connect to the other device.",
+                        Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }

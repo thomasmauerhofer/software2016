@@ -28,10 +28,6 @@
     <string name="player8">Player 8</string>
     <string name="hostname">hostname:</string>
 
-
-    <!-- Errors -->
-    <string name="not_implemented">Not implemented yet!</string>
-
     <!-- JoinActivity -->
     <string name="title_activity_join">Join Game</string>
     <string name="dialog_find_device_title">Find Device</string>
@@ -45,6 +41,7 @@
     <!-- QuestionsAskedActivity -->
     <string name="title_activity_quesions_asked">YAQ</string>
     <string name="time_up">Time\'s up!</string>
+    <string name="next_question">Next question</string>
 
     <!-- StatisticActivity -->
     <string name="title_activity_statistic">Statistic</string>
@@ -53,5 +50,10 @@
 
     <!-- ProfileActivity-->
     <string name="player_name">player name</string>
+
+    <!-- ErrorStrings -->
+    <string name="error_cant_show_score">An error occurs while showing scores!</string>
+    <string name="error_cant_connect">An error occurs while create connection!</string>
+    <string name="not_implemented">Not implemented yet!</string>
 
 </resources>
