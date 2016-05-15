@@ -42,11 +42,7 @@ public class RankingList extends ArrayAdapter<RankingItem> {
         return convertView;
     }
 
-    public void addItems() {
-        items.add(new RankingItem("Thomas", 1000));
-        items.add(new RankingItem("Patrik", 100));
-        items.add(new RankingItem("Manuel", 100));
-        items.add(new RankingItem("Johannes", 2));
-        items.add(new RankingItem("Matthias", 1));
+    public void addItems(List<RankingItem> items) {
+        this.items.addAll(items);
     }
 }

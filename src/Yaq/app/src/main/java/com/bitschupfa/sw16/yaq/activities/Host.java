@@ -1,5 +1,6 @@
 package com.bitschupfa.sw16.yaq.activities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
@@ -15,19 +16,29 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bitschupfa.sw16.yaq.bluetooth.ConnectionListener;
 import com.bitschupfa.sw16.yaq.R;
+import com.bitschupfa.sw16.yaq.bluetooth.ConnectionListener;
+import com.bitschupfa.sw16.yaq.communication.ConnectedClientDevice;
+import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
+import com.bitschupfa.sw16.yaq.communication.ConnectedHostDevice;
+import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
+import com.bitschupfa.sw16.yaq.game.ClientGameLogic;
+import com.bitschupfa.sw16.yaq.game.HostGameLogic;
+import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
+import com.bitschupfa.sw16.yaq.profile.PlayerProfileStorage;
 import com.bitschupfa.sw16.yaq.ui.PlayerList;
 import com.bitschupfa.sw16.yaq.utils.Quiz;
 
-public class Host extends AppCompatActivity {
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class Host extends AppCompatActivity implements Lobby {
     private static final int REQUEST_ENABLE_DISCOVERABLE_BT = 42;
 
     private final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
     private final ConnectionListener btConnectionListener = new ConnectionListener();
-    private PlayerList playerList;
-    private Quiz quiz;
-
+    private PlayerList playerList = new PlayerList(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +46,8 @@ public class Host extends AppCompatActivity {
         setContentView(R.layout.activity_host);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ClientGameLogic.getInstance().setLobbyActivity(this);
 
         if (setupBluetooth()) {
             new Thread(btConnectionListener, "BT Connection Listener Thread").start();
@@ -44,20 +57,8 @@ public class Host extends AppCompatActivity {
             }
         }
 
-        quiz = new Quiz();
-
-        playerList = new PlayerList(this);
-
-        playerList.addPlayer("Thomas");
-        playerList.addPlayer("Manuel");
-        playerList.addPlayer("Matthias");
-        playerList.addPlayer("Max");
-        playerList.addPlayer("Johannes");
-        playerList.addPlayer("Patrik");
-
-
-        playerList.removePlayerWithName("Max");
-        playerList.removePlayerWithName("bla");
+        HostGameLogic.getInstance().setQuiz(this.buildTmpQuiz());
+        selfConnectionHack();
     }
 
     @Override
@@ -67,12 +68,8 @@ public class Host extends AppCompatActivity {
         unregisterReceiver(broadcastReceiver);
     }
 
-    @SuppressWarnings("UnusedParameters")
     public void startButtonClicked(View view) {
-        Intent intent = new Intent(Host.this, QuestionsAsked.class);
-        intent.putExtra("questions", quiz.createTmpQuiz(this.getApplicationContext()));
-        startActivity(intent);
-        finish();
+        HostGameLogic.getInstance().startGame();
     }
 
     @SuppressWarnings("UnusedParameters")
@@ -142,4 +139,82 @@ public class Host extends AppCompatActivity {
             }
         }
     };
+
+    @Override
+    public void updatePlayerList(final String[] playerNames) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                playerList.clear();
+                playerList.addAll(playerNames);
+            }
+        });
+    }
+
+    @Override
+    public PlayerProfile accessPlayerProfile() {
+        return PlayerProfileStorage.getInstance(this).getPlayerProfile();
+    }
+
+    @Override
+    public void openGameActivity() {
+        Intent intent = new Intent(Host.this, GameAtHost.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void selfConnectionHack() {
+        final int fakeHostPort = 7777;
+        final Activity activity = this;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ServerSocket fakeHost = new ServerSocket(fakeHostPort);
+                    Socket socket = fakeHost.accept();
+                    ConnectedDevice client = new ConnectedClientDevice("localhost", socket,
+                            HostGameLogic.getInstance()
+                    );
+                    HostGameLogic.getInstance().registerConnectedDevice(client);
+                    fakeHost.close();
+                } catch (IOException e) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(activity, R.string.error_cant_connect, Toast.LENGTH_LONG).show();
+                            activity.finish();
+                        }
+                    });
+                }
+            }
+        }).start();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Socket socket = new Socket("localhost", fakeHostPort);
+                    ConnectedDevice host = new ConnectedHostDevice("localhost", socket,
+                            ClientGameLogic.getInstance()
+                    );
+                    ClientGameLogic.getInstance().setConnectedHostDevice(host);
+                } catch (IOException e) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(activity, R.string.error_cant_connect, Toast.LENGTH_LONG).show();
+                            activity.finish();
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
+
+    private Quiz buildTmpQuiz() {
+        Quiz quiz = new Quiz();
+        QuestionQuerier questionQuerier = new QuestionQuerier(this);
+        quiz.addQuestions(questionQuerier.getAllQuestionsFromCatalog(1));
+        return quiz;
+    }
 }

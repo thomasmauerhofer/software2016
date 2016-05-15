@@ -17,10 +17,10 @@ public class TextQuestion implements Serializable{
     private int questionID;
     private String question;
     private int catalogID;
-    private final Answer answer1;
-    private final Answer answer2;
-    private final Answer answer3;
-    private final Answer answer4;
+    private Answer answer1;
+    private Answer answer2;
+    private Answer answer3;
+    private Answer answer4;
 
     private int difficulty;
 
@@ -69,6 +69,19 @@ public class TextQuestion implements Serializable{
         Collections.shuffle(tmp);
 
         return tmp;
+    }
+
+    public void shuffleAnswers() {
+        List<Answer> tmp = new ArrayList<>();
+        tmp.add(answer1);
+        tmp.add(answer2);
+        tmp.add(answer3);
+        tmp.add(answer4);
+        Collections.shuffle(tmp);
+        answer1 = tmp.get(0);
+        answer2 = tmp.get(1);
+        answer3 = tmp.get(2);
+        answer4 = tmp.get(3);
     }
 
     public List<Answer> getAnswers() {

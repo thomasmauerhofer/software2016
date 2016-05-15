@@ -4,8 +4,8 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.bitschupfa.sw16.yaq.activities.Join;
 import com.bitschupfa.sw16.yaq.R;
+import com.bitschupfa.sw16.yaq.activities.Join;
 import com.robotium.solo.Solo;
 
 import java.util.Set;
@@ -14,7 +14,6 @@ import java.util.Set;
 public class JoinTests extends ActivityInstrumentationTestCase2<Join> {
 
     private Solo solo;
-
     private BluetoothAdapter mBluetoothAdapter;
 
     public JoinTests() {
@@ -23,6 +22,7 @@ public class JoinTests extends ActivityInstrumentationTestCase2<Join> {
 
     @Override
     public void setUp() throws Exception {
+        super.setUp();
         solo = new Solo(getInstrumentation(), getActivity());
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -37,10 +37,10 @@ public class JoinTests extends ActivityInstrumentationTestCase2<Join> {
 
     @Override
     public void tearDown() throws Exception {
-        solo.finishOpenedActivities();
+        super.tearDown();
     }
 
-    public void testJoin() {
+    public void testDialog() {
         Set<BluetoothDevice> devices = mBluetoothAdapter.getBondedDevices();
 
         if(devices.isEmpty()) {
