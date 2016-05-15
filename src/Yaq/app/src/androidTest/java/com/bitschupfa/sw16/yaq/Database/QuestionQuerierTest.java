@@ -1,6 +1,8 @@
 package com.bitschupfa.sw16.yaq.Database;
 
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.AndroidTestCase;
+import android.test.InstrumentationTestCase;
 import android.test.RenamingDelegatingContext;
 
 import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
@@ -11,18 +13,17 @@ import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuestionQuerierTest extends ActivityInstrumentationTestCase2<QuestionQuerier> {
+public class QuestionQuerierTest extends AndroidTestCase {
     private QuestionQuerier questionQuerier;
 
     public QuestionQuerierTest() {
-        super(QuestionQuerier.class);
+        super();
     }
-
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        RenamingDelegatingContext context = new RenamingDelegatingContext(getInstrumentation().getContext(), "test");
+        RenamingDelegatingContext context = new RenamingDelegatingContext(getContext(), "test");
         questionQuerier = new QuestionQuerier(context);
     }
 
