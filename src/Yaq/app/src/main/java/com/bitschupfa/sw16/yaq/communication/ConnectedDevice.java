@@ -19,6 +19,12 @@ public abstract class ConnectedDevice implements Runnable {
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
 
+    public ConnectedDevice(String id) {
+        this.id = id;
+        this.inputStream = null;
+        this.outputStream = null;
+    }
+
     public ConnectedDevice(String id, BluetoothSocket s) throws IOException {
         this.id = id;
 

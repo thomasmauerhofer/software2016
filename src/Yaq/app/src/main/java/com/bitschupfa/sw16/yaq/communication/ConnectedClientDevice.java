@@ -11,6 +11,11 @@ import java.net.Socket;
 public class ConnectedClientDevice extends ConnectedDevice {
     private final ClientMessageHandler messageHandler;
 
+    public ConnectedClientDevice(String id) {
+        super(id);
+        messageHandler = null;
+    }
+
     public ConnectedClientDevice(String address, BluetoothSocket socket, ClientMessageHandler handler) throws IOException {
         super(address, socket);
         messageHandler = handler;
