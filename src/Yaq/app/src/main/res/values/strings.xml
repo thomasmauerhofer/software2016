@@ -1,0 +1,59 @@
+<resources>
+    <string name="app_name">YAQ</string>
+
+    <string name="cancel">Cancel</string>
+
+    <!-- MainActivity -->
+    <string name="host">Host Game</string>
+    <string name="join">Join Game</string>
+
+    <!-- MainActivity Menu-->
+    <string name="action_settings">Settings</string>
+    <string name="manage_questions">Manage questions</string>
+    <string name="profile">Profile</string>
+
+    <!-- HostActivity -->
+    <string name="title_activity_host">Host Game</string>
+    <string name="build">Build quiz</string>
+    <string name="start_game">Start game</string>
+    <string name="advanced_settings">Advanced Settings</string>
+    <string name="player">Player</string>
+    <string name="player1">Player 1</string>
+    <string name="player2">Player 2</string>
+    <string name="player3">Player 3</string>
+    <string name="player4">Player 4</string>
+    <string name="player5">Player 5</string>
+    <string name="player6">Player 6</string>
+    <string name="player7">Player 7</string>
+    <string name="player8">Player 8</string>
+    <string name="hostname">hostname:</string>
+
+    <!-- JoinActivity -->
+    <string name="title_activity_join">Join Game</string>
+    <string name="dialog_find_device_title">Find Device</string>
+    <string name="dialog_paired_devices">Paired Devices:</string>
+    <string name="dialog_unpaired_devices">Discovered Devices:</string>
+    <string name="dialog_no_devices_found">No Devices found…</string>
+    <string name="refresh">Refresh</string>
+    <string name="time_counter">Time Counter</string>
+    <string name="waiting">Waiting for host, to start the game!</string>
+
+    <!-- QuestionsAskedActivity -->
+    <string name="title_activity_quesions_asked">YAQ</string>
+    <string name="time_up">Time\'s up!</string>
+    <string name="next_question">Next question</string>
+
+    <!-- StatisticActivity -->
+    <string name="title_activity_statistic">Statistic</string>
+    <string name="play_again">Play Again</string>
+    <string name="title_activity_profile">Profile</string>
+
+    <!-- ProfileActivity-->
+    <string name="player_name">player name</string>
+
+    <!-- ErrorStrings -->
+    <string name="error_cant_show_score">An error occurs while showing scores!</string>
+    <string name="error_cant_connect">An error occurs while create connection!</string>
+    <string name="not_implemented">Not implemented yet!</string>
+
+</resources>
