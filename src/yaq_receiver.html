@@ -73,7 +73,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script type="text/javascript">        
         window.onload = function () {
-            cast.receiver.logger.setLevelValue(0);
+            cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
             window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
             console.log('Starting Receiver Manager');
 
@@ -110,8 +110,12 @@
                 console.log('Message [' + event.senderId + ']: ' + event.data);
                 try {
                     var data = JSON.parse(event.data);
-                    if( data != null && data.type == "question" ) {
-                        displayQuestionAndAnswers(data);
+                    if (data != null) {
+                        if(data.type == "question" ) {
+                            displayQuestionAndAnswers(data);
+                        } else if (data.type == "scoreboard") {
+                            displayScoreboard(data);
+                        }
                     }
                 } catch (err) {
                     console.log(err.message);
@@ -141,7 +145,20 @@
             $("#answer_2").show(600);
             $("#answer_3").show(800);
             $("#answer_4").show(1000);
-            window.castReceiverManager.setApplicationState(data.question);
+            window.castReceiverManager.setApplicationState("Game in progress");
+        }
+        
+        function displayScoreboard(data) {
+            hideQuestionAndAnswers();
+            var rankings = document.createElement("ol");
+            data.players.forEach(function(place) {
+                console.log(place);
+                var placeItem = document.createElement("li");
+                placeItem.appendChild(document.createTextNode(place.name + "(" + place.score + ")"));
+                rankings.appendChild(placeItem);
+            });
+            $("#main").appendChild(rankings);
+            window.castReceiverManager.setApplicationState("Game Finished");
         }
         
         function hideQuestionAndAnswers() {

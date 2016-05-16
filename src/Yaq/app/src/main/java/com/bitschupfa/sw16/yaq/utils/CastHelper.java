@@ -7,7 +7,9 @@ import android.support.v7.media.MediaRouteSelector;
 import android.support.v7.media.MediaRouter;
 import android.util.Log;
 
+import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
+import com.bitschupfa.sw16.yaq.ui.RankingItem;
 import com.google.android.gms.cast.ApplicationMetadata;
 import com.google.android.gms.cast.Cast;
 import com.google.android.gms.cast.CastDevice;
@@ -18,10 +20,12 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.List;
 
 public class CastHelper {
     private final static String TAG = CastHelper.class.getCanonicalName();
@@ -40,8 +44,11 @@ public class CastHelper {
 
     public boolean mWaitingForReconnect;
     public boolean mApplicationStarted;
+
     public enum GameState {WAITING, LOBBY, GAME, END};
-    public GameState gameState;
+    private GameState gameState;
+    private TextQuestion questionToDisplay;
+    private List<RankingItem> scoreboardToDisplay;
 
     private boolean callbacksActive;
     private Context context;
@@ -51,10 +58,12 @@ public class CastHelper {
 
     private CastHelper (Context c, GameState gameState) {
         this.context = c;
+        setQuestionToDisplay(null);
+        setScoreboardToDisplay(null);
         if(gameState != null) {
-            this.gameState = gameState;
+            setGameState(gameState);
         } else {
-            this.gameState = GameState.WAITING;
+            setGameState(GameState.WAITING);
         }
         callbacksActive = false;
 
@@ -69,12 +78,17 @@ public class CastHelper {
         if (instance == null) {
             instance = new CastHelper(c, gameState);
         } else {
-            instance.gameState = gameState;
+            instance.setGameState(gameState);
         }
+
+        if (gameState == GameState.LOBBY) {
+            instance.setQuestionToDisplay(null);
+            instance.setScoreboardToDisplay(null);
+        }
+
         return instance;
     }
-
-    // TODO: cast correct data when route is selected on different screens (e.g. questions)
+    
     public class YaqMediaRouterCallback extends MediaRouter.Callback {
         @Override
         public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo info) {
@@ -167,6 +181,19 @@ public class CastHelper {
                                                 } catch (IOException e) {
                                                     Log.e(TAG, "Exception while creating channel", e);
                                                 }
+                                                if (getGameState() == GameState.WAITING) {
+                                                    sendMessage(context.getString(R.string.waiting_for_gamestart));
+                                                } else if (getGameState() == GameState.LOBBY) {
+                                                    sendMessage(context.getString(R.string.waiting_for_players));
+                                                } else if (getGameState() == GameState.GAME) {
+                                                    if (getQuestionToDisplay() != null) {
+                                                        sendTextQuestion(getQuestionToDisplay());
+                                                    }
+                                                } else if (getGameState() == GameState.END) {
+                                                    if (getScoreboardToDisplay() != null) {
+                                                        sendScoreboard(getScoreboardToDisplay());
+                                                    }
+                                                }
                                             } else {
                                                 teardown(true);
                                             }
@@ -235,6 +262,10 @@ public class CastHelper {
     }
 
     public void sendTextQuestion(TextQuestion question) {
+        if (question == null) {
+            question = getQuestionToDisplay();
+        }
+
         JSONObject json = new JSONObject();
         try {
             json.put("type", "question");
@@ -243,6 +274,28 @@ public class CastHelper {
             json.put("answer_2", question.getAnswers().get(1).getAnswerString());
             json.put("answer_3", question.getAnswers().get(2).getAnswerString());
             json.put("answer_4", question.getAnswers().get(3).getAnswerString());
+        } catch (JSONException e) {
+            Log.d(TAG, e.getMessage());
+        }
+        sendMessage(json.toString());
+    }
+
+    public void sendScoreboard(List<RankingItem> scoreboard) {
+        if (scoreboard == null) {
+            scoreboard = getScoreboardToDisplay();
+        }
+
+        JSONObject json = new JSONObject();
+        try {
+            json.put("type", "scoreboard");
+            JSONArray players = new JSONArray();
+            for(RankingItem item : scoreboard) {
+                JSONObject player = new JSONObject();
+                player.put("name", item.getName());
+                player.put("score", item.getScore());
+                players.put(player);
+            }
+            json.put("players", players);
         } catch (JSONException e) {
             Log.d(TAG, e.getMessage());
         }
@@ -281,5 +334,29 @@ public class CastHelper {
                     MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
             callbacksActive = true;
         }
+    }
+
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
+
+    public TextQuestion getQuestionToDisplay() {
+        return questionToDisplay;
+    }
+
+    public void setQuestionToDisplay(TextQuestion questionToDisplay) {
+        this.questionToDisplay = questionToDisplay;
+    }
+
+    public List<RankingItem> getScoreboardToDisplay() {
+        return scoreboardToDisplay;
+    }
+
+    public void setScoreboardToDisplay(List<RankingItem> scoreboardToDisplay) {
+        this.scoreboardToDisplay = scoreboardToDisplay;
     }
 }

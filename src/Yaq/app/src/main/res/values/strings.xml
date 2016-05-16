@@ -57,4 +57,8 @@
     <string name="error_cant_connect">An error occurs while create connection!</string>
     <string name="not_implemented">Not implemented yet!</string>
 
+    <!-- Chromecast -->
+    <string name="waiting_for_gamestart">Waiting for game to start …</string>
+    <string name="waiting_for_players">Waiting for players to join …</string>
+
 </resources>

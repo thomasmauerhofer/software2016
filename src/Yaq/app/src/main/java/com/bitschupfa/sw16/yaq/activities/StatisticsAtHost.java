@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.bitschupfa.sw16.yaq.R;
-import com.bitschupfa.sw16.yaq.game.HostGameLogic;
 import com.bitschupfa.sw16.yaq.utils.CastHelper;
 
 public class StatisticsAtHost extends Statistic {
