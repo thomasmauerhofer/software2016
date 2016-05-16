@@ -67,7 +67,7 @@ public class Host extends AppCompatActivity implements Lobby {
         HostGameLogic.getInstance().setQuiz(this.buildTmpQuiz());
         selfConnectionHack();
 
-        castHelper = CastHelper.getInstance(getApplicationContext());
+        castHelper = CastHelper.getInstance(getApplicationContext(), CastHelper.GameState.LOBBY);
     }
 
     @Override

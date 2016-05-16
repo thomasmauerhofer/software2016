@@ -7,6 +7,7 @@ import android.support.v7.media.MediaRouteSelector;
 import android.support.v7.media.MediaRouter;
 import android.util.Log;
 
+import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.google.android.gms.cast.ApplicationMetadata;
 import com.google.android.gms.cast.Cast;
 import com.google.android.gms.cast.CastDevice;
@@ -16,6 +17,9 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -36,6 +40,8 @@ public class CastHelper {
 
     public boolean mWaitingForReconnect;
     public boolean mApplicationStarted;
+    public enum GameState {WAITING, LOBBY, GAME, END};
+    public GameState gameState;
 
     private boolean callbacksActive;
     private Context context;
@@ -43,8 +49,13 @@ public class CastHelper {
 
     public final String APPLICATION_ID = "5CC4A228";
 
-    private CastHelper (Context c) {
+    private CastHelper (Context c, GameState gameState) {
         this.context = c;
+        if(gameState != null) {
+            this.gameState = gameState;
+        } else {
+            this.gameState = GameState.WAITING;
+        }
         callbacksActive = false;
 
         mMediaRouter = MediaRouter.getInstance(this.context);
@@ -54,9 +65,11 @@ public class CastHelper {
         mMediaRouterCallback = new YaqMediaRouterCallback();
     }
 
-    public static CastHelper getInstance(Context c) {
+    public static CastHelper getInstance(Context c, GameState gameState) {
         if (instance == null) {
-            instance = new CastHelper(c);
+            instance = new CastHelper(c, gameState);
+        } else {
+            instance.gameState = gameState;
         }
         return instance;
     }
@@ -219,6 +232,21 @@ public class CastHelper {
         }
         mSelectedDevice = null;
         mWaitingForReconnect = false;
+    }
+
+    public void sendTextQuestion(TextQuestion question) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("type", "question");
+            json.put("question", question.getQuestion());
+            json.put("answer_1", question.getAnswers().get(0).getAnswerString());
+            json.put("answer_2", question.getAnswers().get(1).getAnswerString());
+            json.put("answer_3", question.getAnswers().get(2).getAnswerString());
+            json.put("answer_4", question.getAnswers().get(3).getAnswerString());
+        } catch (JSONException e) {
+            Log.d(TAG, e.getMessage());
+        }
+        sendMessage(json.toString());
     }
 
     public void sendMessage(String message) {

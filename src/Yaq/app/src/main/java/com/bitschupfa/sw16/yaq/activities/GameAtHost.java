@@ -53,7 +53,7 @@ public class GameAtHost extends Game {
             }
         }, 500);
 
-        castHelper = CastHelper.getInstance(getApplicationContext());
+        castHelper = CastHelper.getInstance(getApplicationContext(), CastHelper.GameState.GAME);
     }
 
     @Override

@@ -18,7 +18,11 @@ import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
 import com.bitschupfa.sw16.yaq.utils.AnswerCollector;
+import com.bitschupfa.sw16.yaq.utils.CastHelper;
 import com.bitschupfa.sw16.yaq.utils.Quiz;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Map;
@@ -36,6 +40,8 @@ public class HostGameLogic implements ClientMessageHandler {
     private AnswerCollector answerCollector = new AnswerCollector();
     private TextQuestion currentQuestion;
 
+    private CastHelper castHelper;
+
     public static HostGameLogic getInstance() {
         return instance;
     }
@@ -45,6 +51,7 @@ public class HostGameLogic implements ClientMessageHandler {
 
     public void setGameActivity(GameAtHost gameActivity) {
         this.gameActivity = gameActivity;
+        castHelper = CastHelper.getInstance(gameActivity.getApplicationContext(), CastHelper.GameState.GAME);
     }
 
     public void setQuiz(Quiz quiz) {
@@ -62,6 +69,8 @@ public class HostGameLogic implements ClientMessageHandler {
             currentQuestion.shuffleAnswers();
             answerCollector.init(players.getPlayerIds());
             sendMessageToClients(new QUESTIONMessage(currentQuestion, timeout));
+
+            castHelper.sendTextQuestion(currentQuestion);
         } else {
             sendMessageToClients(new ENDGAMEMessage(players.getSortedScoreList()));
         }

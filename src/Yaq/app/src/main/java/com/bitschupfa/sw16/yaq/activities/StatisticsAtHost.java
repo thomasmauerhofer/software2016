@@ -19,7 +19,7 @@ public class StatisticsAtHost extends Statistic {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        castHelper = CastHelper.getInstance(getApplicationContext());
+        castHelper = CastHelper.getInstance(getApplicationContext(), CastHelper.GameState.END);
     }
 
     @Override
