@@ -36,6 +36,7 @@
         .answer {
             display: none;
             margin: 10px;
+            font-size: 28px;
         }
         
         #answers_box {
@@ -44,18 +45,42 @@
             vertical-align: middle;
         }
         
+        #scoreboard {
+            display: none;
+            font-size: 20px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        #scoreboard .row {
+            border-bottom: 1px #88bbcb dotted;
+        }
+        
+        #scoreboard .rank-1 {
+            font-size: 36px;
+        }
+        
+        #scoreboard .rank-2 {
+            font-size: 32px;
+        }
+        
+        #scoreboard .rank-3 {
+            font-size: 28px;
+        }
+        
         .col-md-5 {
-            width: 615px !important;
+            width: 48.3% !important;
         }
     </style>
     <title>YAQ - Yet Another Quizapp</title>
 </head>
 
 <body>
-    <div id="main">
-        <div id="message">Waiting for game to start ...</div>
-        <div id="question" class="alert alert-warning"></div>
-        <div id="answers_box">
+    <div id="main" class="container-fluid">
+        <div id="message" class="container-fluid">Waiting for game to start ...</div>
+        <div id="question" class="container-fluid alert alert-warning"></div>
+        <div id="answers_box" class="container-fluid">
             <div class="row">
                 <div class="answer col-md-5 btn btn-lg btn-default" id="answer_1"></div>
                 <div class="answer col-md-5 btn btn-lg btn-default" id="answer_2"></div>
@@ -65,6 +90,7 @@
                 <div class="answer col-md-5 btn btn-lg btn-default" id="answer_4"></div>
             </div>
         </div>
+        <div id="scoreboard"></div>
     </div>
     <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -132,8 +158,10 @@
         };
         
         function displayQuestionAndAnswers(data) {
+            //displayQuestionAndAnswers(JSON.parse('{"question": "What\'s >>>> the rest?", "answer_1": "2000 meters", "answer_2": "2 kilometer", "answer_3": "1 mile", "answer_4": "1 light-year"}'));
             console.log(data);
             $("#message").hide('slow');
+            $("#scoreboard").hide('slow');
             $("#question").show('slow');
             $("#answers_box").show();
             $("#question").html(data.question);
@@ -145,19 +173,28 @@
             $("#answer_2").show(600);
             $("#answer_3").show(800);
             $("#answer_4").show(1000);
+            
             window.castReceiverManager.setApplicationState("Game in progress");
         }
         
         function displayScoreboard(data) {
+            //displayScoreboard(JSON.parse('{"type":"scoreboard","players":[{"name":"Patrik Meier","score":10},{"name":"Jo","score":10},{"name":"Thomas Mauerhofer","score":10},{"name":"Matthias","score":10}]}'));
             hideQuestionAndAnswers();
-            var rankings = document.createElement("ol");
-            data.players.forEach(function(place) {
-                console.log(place);
-                var placeItem = document.createElement("li");
-                placeItem.appendChild(document.createTextNode(place.name + "(" + place.score + ")"));
-                rankings.appendChild(placeItem);
+            $("#message").hide('slow');
+            var i = 1;
+            $("#scoreboard").html('<div class="row"><div class="col-md-4">Rank</div><div class="col-md-4">Player</div><div class="col-md-4">Score</div></div>');
+            data.players.forEach(function(rank) {
+                var div = document.createElement("div");
+                div.className += " row rank-" + i;
+                $("#scoreboard").append(div);
+                $(".rank-" + i).append('<div class="col-md-4">' + i + '.</div>');
+                $(".rank-" + i).append('<div class="col-md-4">' + rank.name + '</div>');
+                $(".rank-" + i).append('<div class="col-md-4">' + rank.score + '</div>');
+                i++;
             });
-            $("#main").appendChild(rankings);
+            
+            $("#scoreboard").show('slow');
+            
             window.castReceiverManager.setApplicationState("Game Finished");
         }
         
@@ -175,6 +212,7 @@
             hideQuestionAndAnswers();
             $("#message").show('slow');
             $("#message").html(text);
+            
             window.castReceiverManager.setApplicationState(text);
         };
     </script>

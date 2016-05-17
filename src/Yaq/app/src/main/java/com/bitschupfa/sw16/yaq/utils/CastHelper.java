@@ -88,7 +88,7 @@ public class CastHelper {
 
         return instance;
     }
-    
+
     public class YaqMediaRouterCallback extends MediaRouter.Callback {
         @Override
         public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo info) {
