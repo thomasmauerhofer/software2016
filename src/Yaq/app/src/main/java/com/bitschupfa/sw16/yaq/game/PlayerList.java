@@ -12,13 +12,17 @@ import java.util.Map;
 import java.util.Set;
 
 public class PlayerList {
-    private final Map<String, Player> players = new HashMap<>();
+    private static final int MAX_PLAYER = 8;
+    private final Map<String, Player> players = new HashMap<>(MAX_PLAYER);
 
     public PlayerList() {
     }
 
-    public void addPlayer(String address, ConnectedDevice playerDevice) {
-        players.put(address, new Player(playerDevice));
+    public void addPlayer(String id, ConnectedDevice playerDevice) throws IllegalStateException {
+        if (players.size() == MAX_PLAYER) {
+            throw new IllegalStateException("Max number of players already reached.");
+        }
+        players.put(id, new Player(playerDevice));
     }
 
     public void removePlayer(String id) {
