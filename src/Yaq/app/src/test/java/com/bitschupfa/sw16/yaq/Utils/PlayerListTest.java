@@ -1,8 +1,5 @@
 package com.bitschupfa.sw16.yaq.Utils;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import com.bitschupfa.sw16.yaq.communication.ConnectedClientDevice;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
 import com.bitschupfa.sw16.yaq.game.PlayerList;
@@ -10,6 +7,9 @@ import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
 import com.bitschupfa.sw16.yaq.ui.RankingItem;
 
 import junit.framework.Assert;
+
+import org.junit.Before;
+import org.junit.Test;
 
 public class PlayerListTest {
     private PlayerList players = new PlayerList();

@@ -1,8 +1,6 @@
 package com.bitschupfa.sw16.yaq.Database;
 
-import android.test.ActivityInstrumentationTestCase2;
 import android.test.AndroidTestCase;
-import android.test.InstrumentationTestCase;
 import android.test.RenamingDelegatingContext;
 
 import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
