@@ -1,12 +1,8 @@
 package com.bitschupfa.sw16.yaq.Utils;
 
-import android.bluetooth.BluetoothClass;
-import android.support.annotation.NonNull;
-
 import com.bitschupfa.sw16.yaq.communication.ConnectedClientDevice;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
 import com.bitschupfa.sw16.yaq.game.Player;
-import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
 
 import junit.framework.Assert;
 

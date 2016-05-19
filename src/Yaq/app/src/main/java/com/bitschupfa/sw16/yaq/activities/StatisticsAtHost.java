@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.bitschupfa.sw16.yaq.game.HostGameLogic;
-
 public class StatisticsAtHost extends Statistic {
 
     @Override

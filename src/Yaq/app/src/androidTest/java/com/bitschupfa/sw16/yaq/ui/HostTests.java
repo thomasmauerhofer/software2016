@@ -128,7 +128,7 @@ public class HostTests extends ActivityInstrumentationTestCase2<Host> {
         Answer answer3 = new Answer("wrong2", 0);
         Answer answer4 = new Answer("wrong3", 0);
         List<TextQuestion> questions = new ArrayList<>();
-        questions.add(new TextQuestion("Question1", answer1, answer2, answer3, answer4, 1, 1));
+        questions.add(new TextQuestion(42, "Question1", answer1, answer2, answer3, answer4, 1, 1));
         quiz.addQuestions(questions);
         HostGameLogic.getInstance().setQuiz(quiz);
     }

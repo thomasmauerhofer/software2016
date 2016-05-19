@@ -1,14 +1,8 @@
 package com.bitschupfa.sw16.yaq.database.helper;
 
-
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.res.AssetManager;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.bitschupfa.sw16.yaq.database.dao.QuestionCatalogDAO;
 import com.bitschupfa.sw16.yaq.database.dao.TextQuestionDAO;
@@ -16,26 +10,15 @@ import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
-/**
- * Created by Patrik on 01.04.2016.
- */
 public class DBHelper extends SQLiteOpenHelper{
 
     private static String DATABASE_NAME = "yaq.db";
     private static final int DATABASE_VERSION = 1;
     private static DBHelper instance_ = null;
 
-    private SQLiteDatabase dataBase;
-    private final Context dbContext;
-
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.dbContext = context;
     }
 
     public static DBHelper instance(Context myContext) {
