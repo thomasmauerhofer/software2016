@@ -17,6 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    dexOptions {
+        // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
+        preDexLibraries = preDexEnabled && !travisBuild
+    }
 }
 
 dependencies {
@@ -30,3 +34,4 @@ dependencies {
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
 }
+

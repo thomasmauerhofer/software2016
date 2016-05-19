@@ -23,9 +23,10 @@ before_script:
   - chmod +x gradlew
 
 script:
-  - ./gradlew build assembleDebug --stacktrace
-  - ./gradlew build assembleDebugAndroidTest --stacktrace
-  - ./gradlew build assembleDebugUnitTest --stacktrace
+  - ./gradlew verification check -PdisablePreDex --continue --stacktrace
+  #- ./gradlew build assembleDebug --stacktrace
+  #- ./gradlew build assembleDebugAndroidTest --stacktrace
+  #- ./gradlew build assembleDebugUnitTest --stacktrace
   #- echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
   #- emulator -avd test -no-skin -no-audio -no-window &
   #- android-wait-for-emulator
