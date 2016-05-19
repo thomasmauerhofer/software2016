@@ -12,11 +12,15 @@ cache:
 android:
   components:
   - tools
+  - extra-android-support
   - platform-tools
   - build-tools-23.0.2
   - android-23
   - extra-android-m2repository
   - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
+
+licenses:
+    - '.+'
 
 before_script:
   - cd src/Yaq/
