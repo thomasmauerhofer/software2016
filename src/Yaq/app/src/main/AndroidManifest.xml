@@ -41,10 +41,6 @@
             android:name=".activities.BuildQuiz"
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable">
-            </meta-data>
         <activity
             android:name=".activities.Statistic"
             android:label="@string/title_activity_statistic"

@@ -10,10 +10,10 @@ import com.robotium.solo.Solo;
 /**
  * Created by manu on 09.05.16.
  */
-public class BuildQuizTests extends ActivityInstrumentationTestCase2<BuildQuiz> {
+public class BuildQuizUITests extends ActivityInstrumentationTestCase2<BuildQuiz> {
     private Solo solo;
 
-    public BuildQuizTests() {
+    public BuildQuizUITests() {
         super(BuildQuiz.class);
     }
 

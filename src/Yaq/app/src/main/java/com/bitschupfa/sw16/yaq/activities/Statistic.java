@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.ui.RankingItem;
 import com.bitschupfa.sw16.yaq.ui.RankingList;
+import com.bitschupfa.sw16.yaq.utils.QuizMonitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,21 +29,26 @@ public class Statistic extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        list = (ListView)findViewById(R.id.ranking);
+        list = (ListView) findViewById(R.id.ranking);
         ranking = new RankingList(this, new ArrayList<RankingItem>());
         list.setAdapter(ranking);
 
 
-        if(getIntent().hasExtra("scoreList")) {
+        if (getIntent().hasExtra("scoreList")) {
             List<RankingItem> items = (List<RankingItem>) getIntent().getExtras().get("scoreList");
             ranking.addItems(items);
         } else {
-            Toast.makeText(this, R.string.error_cant_show_score , Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.error_cant_show_score, Toast.LENGTH_LONG).show();
         }
     }
 
     @SuppressWarnings("UnusedParameters")
     public void playAgainButtonClicked(View view) {
+        QuizMonitor app = (QuizMonitor) getApplication();
+        if (app.getQuizClass() != null) {
+            app.getQuizClass().setCurrentPosition(0);
+        }
+
         Intent intent = new Intent(Statistic.this, Join.class);
         startActivity(intent);
         finish();

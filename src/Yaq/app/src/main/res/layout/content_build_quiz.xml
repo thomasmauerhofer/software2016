@@ -11,8 +11,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="1">
+        android:layout_height="wrap_content">
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
@@ -23,6 +22,16 @@
                 android:layout_height="wrap_content" />
         </RelativeLayout>
 
+        <EditText
+            android:id="@+id/EditTextBuildQuiz"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_search_quiz"
+            android:inputType="textVisiblePassword"
+            android:textColor="@color/colorPrimaryDark"
+            android:theme="@android:style/Theme.Holo">
+        </EditText>
+
         <ListView
             android:id="@+id/ListViewBuildQuiz"
             android:layout_width="match_parent"
@@ -31,17 +40,16 @@
             android:layout_alignParentTop="true" >
         </ListView>
 
-        <Button
-            android:id="@+id/ButtonBuildQuiz"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:text="@string/submit_quiz"
-            android:background="@drawable/button_blue"
-            style="@style/button_text">
-        </Button>
-
     </LinearLayout>
+
+    <Button
+        android:id="@+id/ButtonBuildQuiz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/submit_quiz"
+        android:background="@drawable/button_blue"
+        style="@style/button_text">
+    </Button>
 
 </RelativeLayout>

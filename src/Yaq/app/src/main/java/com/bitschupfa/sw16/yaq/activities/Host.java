@@ -28,6 +28,7 @@ import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfileStorage;
 import com.bitschupfa.sw16.yaq.ui.PlayerList;
 import com.bitschupfa.sw16.yaq.utils.Quiz;
+import com.bitschupfa.sw16.yaq.utils.QuizMonitor;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -219,9 +220,13 @@ public class Host extends AppCompatActivity implements Lobby {
     }
 
     private Quiz buildTmpQuiz() {
-        Quiz quiz = new Quiz();
+        /*Quiz quiz = new Quiz();
         QuestionQuerier questionQuerier = new QuestionQuerier(this);
         quiz.addQuestions(questionQuerier.getAllQuestionsFromCatalog(1));
-        return quiz;
+        return quiz;*/
+
+        QuizMonitor app = (QuizMonitor) getApplication();
+
+        return app.getQuizClass();
     }
 }
