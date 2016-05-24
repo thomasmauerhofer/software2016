@@ -317,6 +317,20 @@ public class Join extends AppCompatActivity implements Lobby {
         finish();
     }
 
+    @Override
+    public void handleFullGame() {
+        ClientGameLogic.getInstance().quit();
+        ClientGameLogic.getInstance().setLobbyActivity(this);
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(Join.this, "Sorry, the game is already full", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
+    }
+
     private final class ClientConnector extends AsyncTask<BluetoothDevice, Void, ConnectedDevice> {
         private final static String TAG = "BTClientConnector";
 
@@ -384,5 +398,6 @@ public class Join extends AppCompatActivity implements Lobby {
                         Toast.LENGTH_LONG).show();
             }
         }
+
     }
 }

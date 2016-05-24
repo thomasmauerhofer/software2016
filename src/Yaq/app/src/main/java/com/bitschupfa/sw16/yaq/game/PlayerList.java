@@ -1,6 +1,7 @@
 package com.bitschupfa.sw16.yaq.game;
 
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
+import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
 import com.bitschupfa.sw16.yaq.ui.RankingItem;
 import com.bitschupfa.sw16.yaq.utils.MapUtil;
 
@@ -11,18 +12,33 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+
 public class PlayerList {
     private static final int MAX_PLAYER = 8;
     private final Map<String, Player> players = new HashMap<>(MAX_PLAYER);
+    private final Map<String, ConnectedDevice> connectedDevices = new HashMap<>();
+
 
     public PlayerList() {
     }
 
-    public void addPlayer(String id, ConnectedDevice playerDevice) throws IllegalStateException {
+    public void registerConnectedDevice(String id, ConnectedDevice device) {
+        connectedDevices.put(id, device);
+    }
+
+    public ConnectedDevice unregisterConnectedDevice(String id) {
+        ConnectedDevice device = connectedDevices.get(id);
+        connectedDevices.remove(id);
+        return device;
+    }
+
+    public void addPlayer(String id, PlayerProfile profile) throws IllegalStateException {
         if (players.size() == MAX_PLAYER) {
             throw new IllegalStateException("Max number of players already reached.");
         }
-        players.put(id, new Player(playerDevice));
+
+        ConnectedDevice device = unregisterConnectedDevice(id);
+        players.put(id, new Player(device, profile));
     }
 
     public void removePlayer(String id) {
