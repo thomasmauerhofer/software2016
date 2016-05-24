@@ -38,6 +38,10 @@ public class PlayerList {
         }
 
         ConnectedDevice device = unregisterConnectedDevice(id);
+        if (device == null) {
+            throw new IllegalStateException("No device for player available.");
+        }
+
         players.put(id, new Player(device, profile));
     }
 

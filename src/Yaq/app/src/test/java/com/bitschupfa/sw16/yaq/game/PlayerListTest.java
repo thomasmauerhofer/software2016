@@ -25,18 +25,17 @@ public class PlayerListTest {
 
     @Before
     public void setUp() throws Exception{
-        ConnectedDevice device = new ConnectedClientDevice("Tom");
-        players.addPlayer("Tom", device);
-        players.addPlayer("Matthias", device);
-        players.addPlayer("Manuel", device);
-        players.addPlayer("Patrice", device);
-        players.addPlayer("Johannes", device);
+        players.registerConnectedDevice("Tom", new ConnectedClientDevice("Tom"));
+        players.registerConnectedDevice("Matthias", new ConnectedClientDevice("Matthias"));
+        players.registerConnectedDevice("Manuel", new ConnectedClientDevice("Manuel"));
+        players.registerConnectedDevice("Patrice", new ConnectedClientDevice("Patrice"));
+        players.registerConnectedDevice("Johannes", new ConnectedClientDevice("Johannes"));
 
-        players.getPlayer("Tom").setProfile(new PlayerProfile("Tom", ""));
-        players.getPlayer("Matthias").setProfile(new PlayerProfile("Matthias", ""));
-        players.getPlayer("Manuel").setProfile(new PlayerProfile("Manuel", ""));
-        players.getPlayer("Patrice").setProfile(new PlayerProfile("Patrice", ""));
-        players.getPlayer("Johannes").setProfile(new PlayerProfile("Johannes", ""));
+        players.addPlayer("Tom", new PlayerProfile("Tom", ""));
+        players.addPlayer("Matthias", new PlayerProfile("Matthias", ""));
+        players.addPlayer("Manuel", new PlayerProfile("Manuel", ""));
+        players.addPlayer("Patrice", new PlayerProfile("Patrice", ""));
+        players.addPlayer("Johannes", new PlayerProfile("Johannes", ""));
 
         players.getPlayer("Tom").addScore(10);
         players.getPlayer("Matthias").addScore(-10);
@@ -81,7 +80,8 @@ public class PlayerListTest {
         String playerId = "1";
         ConnectedDevice dummyDevice = new ConnectedClientDevice(playerId);
 
-        players.addPlayer(playerId, dummyDevice);
+        players.registerConnectedDevice(playerId, dummyDevice);
+        players.addPlayer(playerId, new PlayerProfile("One", ""));
 
         Player player = players.getPlayer(playerId);
         assertNotNull(player);
@@ -96,7 +96,8 @@ public class PlayerListTest {
         String playerId = "1";
         ConnectedDevice dummyDevice = new ConnectedClientDevice(playerId);
 
-        players.addPlayer(playerId, dummyDevice);
+        players.registerConnectedDevice(playerId, dummyDevice);
+        players.addPlayer(playerId, new PlayerProfile("One", ""));
         assertEquals(1, players.getNumberOfPlayers());
 
         players.removePlayer(playerId);
@@ -109,7 +110,8 @@ public class PlayerListTest {
         PlayerList players = new PlayerList();
 
         for (int i = 1; i <= numberOfPlayers; i++) {
-            players.addPlayer(Integer.toString(i), new ConnectedClientDevice(Integer.toString(i)));
+            players.registerConnectedDevice(Integer.toString(i), new ConnectedClientDevice(Integer.toString(i)));
+            players.addPlayer(Integer.toString(i), new PlayerProfile("Name " + Integer.toString(i), ""));
             assertEquals(i, players.getNumberOfPlayers());
         }
 
@@ -128,7 +130,8 @@ public class PlayerListTest {
         PlayerList players = new PlayerList();
 
         for (int i = 1; i <= numberOfPlayers; i++) {
-            players.addPlayer(Integer.toString(i), new ConnectedClientDevice(Integer.toString(i)));
+            players.registerConnectedDevice(Integer.toString(i), new ConnectedClientDevice(Integer.toString(i)));
+            players.addPlayer(Integer.toString(i), new PlayerProfile("Name " + Integer.toString(i), ""));
             assertEquals(i, players.getNumberOfPlayers());
         }
     }
