@@ -3,7 +3,6 @@ package com.bitschupfa.sw16.yaq.database.object;
 import java.io.Serializable;
 import java.util.List;
 
-
 public class QuestionCatalog implements Serializable{
     private int catalogID;
     private String name;

@@ -32,6 +32,43 @@
             android:theme="@android:style/Theme.Holo">
         </EditText>
 
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:theme="@android:style/Theme.Holo">
+
+                <CheckBox
+                    android:id="@+id/checkEasy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/checkEasy"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:checked="true" />
+
+                <CheckBox
+                    android:id="@+id/checkMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/checkMedium"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:checked="true" />
+
+                <CheckBox
+                    android:id="@+id/checkHard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/checkHard"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:checked="true" />
+
+            </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="5dip"
+            android:background="@color/colorPrimaryDark" />
+
         <ListView
             android:id="@+id/ListViewBuildQuiz"
             android:layout_width="match_parent"

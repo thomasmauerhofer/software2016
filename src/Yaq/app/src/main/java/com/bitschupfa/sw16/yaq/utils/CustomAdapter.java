@@ -26,15 +26,22 @@ public class CustomAdapter extends ArrayAdapter<QuestionCatalogueItem> implement
     private ArrayList<QuestionCatalogueItem> filteredData;
     private ItemFilter mFilter = new ItemFilter();
     private Context context;
+    Integer checkBoxEasy;
+    Integer checkBoxMedium;
+    Integer checkBoxHard;
 
     public CustomAdapter(Context context, int textViewResourceId,
-                         ArrayList<QuestionCatalogueItem> questionCatalogueList) {
+                         ArrayList<QuestionCatalogueItem> questionCatalogueList, Integer checkBoxEasy,
+                         Integer checkBoxMedium, Integer checkBoxHard) {
         super(context, textViewResourceId, questionCatalogueList);
         this.questionCatalagoueItem = new ArrayList<>();
         this.questionCatalagoueItem.addAll(questionCatalogueList);
         this.filteredData = new ArrayList<>();
         this.filteredData.addAll(questionCatalogueList);
         this.context = context;
+        this.checkBoxEasy = checkBoxEasy;
+        this.checkBoxMedium = checkBoxMedium;
+        this.checkBoxHard = checkBoxHard;
     }
 
     private class ViewHolder {

@@ -7,9 +7,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -25,9 +25,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by manu on 30.04.16.
- */
+import static com.bitschupfa.sw16.yaq.activities.BuildQuiz.CheckBoxValue.*;
+
 public class BuildQuiz extends AppCompatActivity {
 
     private ListView listView;
@@ -39,6 +38,13 @@ public class BuildQuiz extends AppCompatActivity {
     private ArrayList<QuestionCatalogueItem> qCList = new ArrayList<>();
     private CustomAdapter dataAdapter = null;
     private EditText searchText;
+    private CheckBox checkEasy;
+    private CheckBox checkMedium;
+    private CheckBox checkHard;
+
+    public enum CheckBoxValue {
+        UNCHECKED, EASY, MEDIUM, HARD
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +53,14 @@ public class BuildQuiz extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        initSearchView();
+        initFilterView();
         displayListView();
         checkButtonClick();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        final MenuInflater inflater = getMenuInflater();
-
         return true;
     }
 
@@ -66,15 +72,19 @@ public class BuildQuiz extends AppCompatActivity {
 
         for (QuestionCatalog catalog : questionCatalogList) {
             questionCatalogMap.put(catalog.getName(), catalog.getCatalogID());
-            qCatalogueItem = new QuestionCatalogueItem(catalog.getName(), catalog.getCatalogID(), false,
+            // TODO catalog.getCatalogDifficulty
+            qCatalogueItem = new QuestionCatalogueItem(catalog.getName(), catalog.getCatalogID(), 1, false,
                     questionQuerier.getAllQuestionsFromCatalog(catalog.getCatalogID()).size());
             qCList.add(qCatalogueItem);
         }
 
-        dataAdapter = new CustomAdapter(this, R.layout.list_build_quiz, qCList);
+        dataAdapter = new CustomAdapter(this, R.layout.list_build_quiz, qCList, getCheckedEasyValue(),
+                getCheckedMediumValue(), getCheckedHardValue());
         listView = (ListView) findViewById(R.id.ListViewBuildQuiz);
         listView.setAdapter(dataAdapter);
+    }
 
+    private void initSearchView() {
         searchText = (EditText) findViewById(R.id.EditTextBuildQuiz);
 
         searchText.addTextChangedListener(new TextWatcher() {
@@ -95,6 +105,12 @@ public class BuildQuiz extends AppCompatActivity {
                 // TODO Auto-generated method stub
             }
         });
+    }
+
+    private void initFilterView() {
+        checkEasy = (CheckBox) findViewById(R.id.checkEasy);
+        checkMedium = (CheckBox) findViewById(R.id.checkMedium);
+        checkHard = (CheckBox) findViewById(R.id.checkHard);
     }
 
     private void checkButtonClick() {
@@ -127,21 +143,53 @@ public class BuildQuiz extends AppCompatActivity {
         });
     }
 
+    public Integer getCheckedEasyValue() {
+        if (checkEasy.isChecked()) {
+            return EASY.ordinal();
+        }
+        return UNCHECKED.ordinal();
+    }
+
+    public Integer getCheckedMediumValue() {
+        if (checkMedium.isChecked()) {
+            return MEDIUM.ordinal();
+        }
+        return UNCHECKED.ordinal();
+    }
+
+    public Integer getCheckedHardValue() {
+        if (checkHard.isChecked()) {
+            return HARD.ordinal();
+        }
+        return UNCHECKED.ordinal();
+    }
+
     public static class QuestionCatalogueItem {
         String name;
         Integer id;
+        Integer difficulty;
         Boolean checked;
         Integer questionsCounter;
 
-        public QuestionCatalogueItem(String name_, Integer id_, Boolean checked_, Integer questionsCounter_) {
+        public QuestionCatalogueItem(String name_, Integer id_, Integer difficulty_,
+                                     Boolean checked_, Integer questionsCounter_) {
             name = name_;
             id = id_;
+            difficulty = difficulty_;
             checked = checked_;
             questionsCounter = questionsCounter_;
         }
 
         public Integer getId() {
             return id;
+        }
+
+        public void setDifficulty(Integer difficulty) {
+            this.difficulty = difficulty;
+        }
+
+        public Integer getDifficulty() {
+            return difficulty;
         }
 
         public void setId(Integer id) {
