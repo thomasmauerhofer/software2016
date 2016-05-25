@@ -28,6 +28,9 @@ before_script:
   - cd src/Yaq/
   - chmod +x gradlew
 
+install:
+  - ./gradlew assemble
+
 script:
   - ./gradlew verification check -PdisablePreDex --continue --stacktrace
   #- ./gradlew build assembleDebug --stacktrace
