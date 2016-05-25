@@ -1,12 +1,5 @@
 package com.bitschupfa.sw16.yaq.database.object;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-
-import com.bitschupfa.sw16.yaq.database.helper.DBHelper;
-import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;

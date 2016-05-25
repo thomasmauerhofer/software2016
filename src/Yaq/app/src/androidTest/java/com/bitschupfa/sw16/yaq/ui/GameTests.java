@@ -2,7 +2,9 @@ package com.bitschupfa.sw16.yaq.ui;
 
 import android.bluetooth.BluetoothAdapter;
 import android.test.ActivityInstrumentationTestCase2;
+import android.widget.Toast;
 
+import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.activities.GameAtHost;
 import com.bitschupfa.sw16.yaq.activities.Host;
 import com.bitschupfa.sw16.yaq.communication.ConnectedClientDevice;
@@ -58,10 +60,8 @@ public class GameTests extends ActivityInstrumentationTestCase2<GameAtHost> {
                 try {
                     ServerSocket fakeHost = new ServerSocket(fakeHostPort);
                     Socket socket = fakeHost.accept();
-                    ConnectedDevice client = new ConnectedClientDevice(btAdapter.getAddress(),
-                            socket.getInputStream(), socket.getOutputStream(),
-                            HostGameLogic.getInstance()
-                    );
+                    ConnectedDevice client = new ConnectedClientDevice("localhost", socket,
+                            HostGameLogic.getInstance());
                     HostGameLogic.getInstance().registerConnectedDevice(client);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -74,10 +74,8 @@ public class GameTests extends ActivityInstrumentationTestCase2<GameAtHost> {
             public void run() {
                 try {
                     Socket socket = new Socket("localhost", fakeHostPort);
-                    ConnectedDevice host = new ConnectedHostDevice(btAdapter.getAddress(),
-                            socket.getInputStream(), socket.getOutputStream(),
-                            ClientGameLogic.getInstance()
-                    );
+                    ConnectedDevice host = new ConnectedHostDevice("localhost", socket,
+                            ClientGameLogic.getInstance());
                     ClientGameLogic.getInstance().setConnectedHostDevice(host);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -93,7 +91,7 @@ public class GameTests extends ActivityInstrumentationTestCase2<GameAtHost> {
         Answer answer3 = new Answer("wrong2", 0);
         Answer answer4 = new Answer("wrong3", 0);
         List<TextQuestion> questions = new ArrayList<>();
-        questions.add(new TextQuestion("Question1", answer1, answer2, answer3, answer4, 1, 1));
+        questions.add(new TextQuestion(42, "Question1", answer1, answer2, answer3, answer4, 1, 1));
         quiz.addQuestions(questions);
         HostGameLogic.getInstance().setQuiz(quiz);
     }
