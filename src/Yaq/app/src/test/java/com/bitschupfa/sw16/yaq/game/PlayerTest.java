@@ -1,11 +1,7 @@
-package com.bitschupfa.sw16.yaq.Utils;
-
-import android.bluetooth.BluetoothClass;
-import android.support.annotation.NonNull;
+package com.bitschupfa.sw16.yaq.game;
 
 import com.bitschupfa.sw16.yaq.communication.ConnectedClientDevice;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
-import com.bitschupfa.sw16.yaq.game.Player;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
 
 import junit.framework.Assert;
@@ -21,7 +17,7 @@ public class PlayerTest {
     @Before
     public void setUp() throws Exception{
         device = new ConnectedClientDevice("Tom");
-        player = new Player(device);
+        player = new Player(device, new PlayerProfile("Tom", ""));
         Assert.assertEquals(player.getScore(), 0);
     }
 
@@ -35,7 +31,7 @@ public class PlayerTest {
 
     @Test
     public void compareToTest() {
-        Player anotherPlayer = new Player(device);
+        Player anotherPlayer = new Player(device, new PlayerProfile("Another", ""));
         Assert.assertEquals(player.compareTo(anotherPlayer), 0);
 
         anotherPlayer.addScore(10);

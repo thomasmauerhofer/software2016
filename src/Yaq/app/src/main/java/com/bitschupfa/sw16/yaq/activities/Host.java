@@ -163,6 +163,11 @@ public class Host extends AppCompatActivity implements Lobby {
         finish();
     }
 
+    @Override
+    public void handleFullGame() {
+        // the host is always part of the game
+    }
+
     private void selfConnectionHack() {
         final int fakeHostPort = 7777;
         final Activity activity = this;
