@@ -6,6 +6,7 @@ import android.util.Log;
 import com.bitschupfa.sw16.yaq.activities.Game;
 import com.bitschupfa.sw16.yaq.activities.Lobby;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
+import com.bitschupfa.sw16.yaq.communication.Errors;
 import com.bitschupfa.sw16.yaq.communication.HostMessageHandler;
 import com.bitschupfa.sw16.yaq.communication.messages.ANSWERMessage;
 import com.bitschupfa.sw16.yaq.communication.messages.HELLOMessage;
@@ -108,5 +109,12 @@ public class ClientGameLogic implements HostMessageHandler {
         lobbyActivity = null;
         answerQueue.clear();
         hostDevice = null;
+    }
+
+    @Override
+    public void handleError(Errors error, String message) {
+        if (error == Errors.GAME_FULL) {
+            lobbyActivity.handleFullGame();
+        }
     }
 }

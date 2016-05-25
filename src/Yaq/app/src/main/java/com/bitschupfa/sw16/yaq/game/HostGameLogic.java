@@ -6,8 +6,10 @@ import android.util.Log;
 import com.bitschupfa.sw16.yaq.activities.GameAtHost;
 import com.bitschupfa.sw16.yaq.communication.ClientMessageHandler;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
+import com.bitschupfa.sw16.yaq.communication.Errors;
 import com.bitschupfa.sw16.yaq.communication.messages.ANSWERMessage;
 import com.bitschupfa.sw16.yaq.communication.messages.ENDGAMEMessage;
+import com.bitschupfa.sw16.yaq.communication.messages.ERRORMessage;
 import com.bitschupfa.sw16.yaq.communication.messages.Message;
 import com.bitschupfa.sw16.yaq.communication.messages.NEWPLAYERMessage;
 import com.bitschupfa.sw16.yaq.communication.messages.QUESTIONMessage;
@@ -69,14 +71,23 @@ public class HostGameLogic implements ClientMessageHandler {
     public void registerConnectedDevice(ConnectedDevice client) {
         Log.d(TAG, "added new connected client device: " + client.getAddress());
         new Thread(client).start();
-        players.addPlayer(client.getAddress(), client);
+        players.registerConnectedDevice(client.getAddress(), client);
     }
 
     @Override
     public void registerClient(String id, PlayerProfile profile) {
-        players.getPlayer(id).setProfile(profile);
-        String[] playersNames = players.getPlayerNames().toArray(new String[players.getNumberOfPlayers()]);
-        sendMessageToClients(new NEWPLAYERMessage(playersNames));
+        try {
+            players.addPlayer(id, profile);
+            String[] playersNames = players.getPlayerNames().toArray(new String[players.getNumberOfPlayers()]);
+            sendMessageToClients(new NEWPLAYERMessage(playersNames));
+        } catch (IllegalStateException e) {
+            try {
+                ConnectedDevice device = players.unregisterConnectedDevice(id);
+                device.sendMessage(new ERRORMessage(Errors.GAME_FULL, e.getMessage()));
+            } catch (IOException ioe) {
+                Log.e(TAG, ioe.getMessage());
+            }
+        }
     }
 
     @Override
@@ -94,6 +105,11 @@ public class HostGameLogic implements ClientMessageHandler {
     public void clientQuits(String id) {
         players.removePlayer(id);
         answerCollector.removePlayer(id);
+    }
+
+    @Override
+    public void handleError(Errors error, String message) {
+        Log.e(TAG, "received error message from client: " + message);
     }
 
     @Override

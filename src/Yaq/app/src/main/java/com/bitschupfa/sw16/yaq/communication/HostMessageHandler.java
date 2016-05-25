@@ -13,4 +13,5 @@ public interface HostMessageHandler {
     void showCorrectAnswer(Answer answer);
     void endGame(ArrayList<RankingItem> scoreList);
     void quit();
+    void handleError(Errors error, String message);
 }

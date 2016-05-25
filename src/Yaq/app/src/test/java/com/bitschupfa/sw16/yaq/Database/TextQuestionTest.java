@@ -27,7 +27,7 @@ public class TextQuestionTest {
         Answer answer4 = new Answer(question, answerValue[3]);
         int difficulty = 1;
         int catalogID = 1;
-        TextQuestion textQuestion = new TextQuestion(42, question, answer1, answer2, answer3, answer4, difficulty, catalogID);
+        TextQuestion textQuestion = new TextQuestion(1, question, answer1, answer2, answer3, answer4, difficulty, catalogID);
 
         List<Answer> answerList = textQuestion.getAnswers();
         int i = 0;
