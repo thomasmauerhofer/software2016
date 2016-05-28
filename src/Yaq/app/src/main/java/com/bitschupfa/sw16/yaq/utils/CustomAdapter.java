@@ -12,12 +12,14 @@ import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.activities.BuildQuiz.QuestionCatalogueItem;
+import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 
 import java.util.ArrayList;
 
-/**
- * Created by manu on 20.05.16.
- */
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 public class CustomAdapter extends ArrayAdapter<QuestionCatalogueItem> implements Filterable {
 
@@ -26,13 +28,14 @@ public class CustomAdapter extends ArrayAdapter<QuestionCatalogueItem> implement
     private ArrayList<QuestionCatalogueItem> filteredData;
     private ItemFilter mFilter = new ItemFilter();
     private Context context;
-    private int checkBoxEasy;
-    private int checkBoxMedium;
-    private int checkBoxHard;
+    private boolean checkBoxEasy;
+    private boolean checkBoxMedium;
+    private boolean checkBoxHard;
+    private HashMap<Integer, List<TextQuestion>> checkedQuestions = new HashMap<>();
 
     public CustomAdapter(Context context, int textViewResourceId,
-                         ArrayList<QuestionCatalogueItem> questionCatalogueList, int checkBoxEasy,
-                         int checkBoxMedium, int checkBoxHard) {
+                         ArrayList<QuestionCatalogueItem> questionCatalogueList, boolean checkBoxEasy,
+                         boolean checkBoxMedium, boolean checkBoxHard) {
         super(context, textViewResourceId, questionCatalogueList);
         this.questionCatalagoueItem = new ArrayList<>();
         this.questionCatalagoueItem.addAll(questionCatalogueList);
@@ -61,6 +64,10 @@ public class CustomAdapter extends ArrayAdapter<QuestionCatalogueItem> implement
         return position;
     }
 
+    public Collection<List<TextQuestion>> getCheckedQuestions() {
+        return checkedQuestions.values();
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
@@ -86,22 +93,25 @@ public class CustomAdapter extends ArrayAdapter<QuestionCatalogueItem> implement
         }
 
         QuestionCatalogueItem item = getItem(position);
-        holder.name.setText(item.getName() + " (" + item.getQuestionsCounter().toString() + " questions)");
+        String diff = item.hasEasyQuestions() ? "E" : "";
+        diff += item.hasMediumQuestions() ? "M" : "";
+        diff += item.hasHardQuestions() ? "H" : "";
+        holder.name.setText(item.getName() + " (" + String.valueOf(item.getQuestionsCounter()) + " questions)" + " - " + diff);
         holder.checkBox.setChecked(item.isChecked());
         holder.checkBox.setTag(item);
 
         return convertView;
     }
 
-    public void setCheckBoxEasy(int value) {
+    public void setCheckBoxEasy(boolean value) {
         checkBoxEasy = value;
     }
 
-    public void setCheckBoxMedium(int value) {
+    public void setCheckBoxMedium(boolean value) {
         checkBoxMedium = value;
     }
 
-    public void setCheckBoxHard(int value) {
+    public void setCheckBoxHard(boolean value) {
         checkBoxHard = value;
     }
 
@@ -126,11 +136,12 @@ public class CustomAdapter extends ArrayAdapter<QuestionCatalogueItem> implement
             for (int i = 0; i < count; i++) {
                 filterableString = list.get(i);
                 if (filterableString.getName().toLowerCase(Locale.getDefault()).contains(filterString)) {
-                    // TODO filter difficulty
-                    if ((filterableString.getDifficulty() == checkBoxEasy)
-                            || (filterableString.getDifficulty() == checkBoxMedium)
-                            || (filterableString.getDifficulty() == checkBoxHard)) {
+                    if ((filterableString.hasEasyQuestions() == checkBoxEasy)
+                            || (filterableString.hasMediumQuestions() == checkBoxMedium)
+                            || (filterableString.hasHardQuestions() == checkBoxHard)) {
                         filterList.add(filterableString);
+
+                        checkedQuestions.put(filterableString.getId(), filterableString.getAllQuestionsByDiff(filterableString.getId(), filterableString.getDifficulty()));
                     }
                 }
             }
