@@ -44,7 +44,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/checkEasy"
                     android:textColor="@color/colorPrimaryDark"
-                    android:checked="true" />
+                    android:checked="true"
+                    android:onClick="onCheckboxClicked"/>
 
                 <CheckBox
                     android:id="@+id/checkMedium"
@@ -52,7 +53,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/checkMedium"
                     android:textColor="@color/colorPrimaryDark"
-                    android:checked="true" />
+                    android:checked="true"
+                    android:onClick="onCheckboxClicked"/>
 
                 <CheckBox
                     android:id="@+id/checkHard"
@@ -60,7 +62,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/checkHard"
                     android:textColor="@color/colorPrimaryDark"
-                    android:checked="true" />
+                    android:checked="true"
+                    android:onClick="onCheckboxClicked"/>
 
             </LinearLayout>
 

@@ -26,13 +26,13 @@ public class CustomAdapter extends ArrayAdapter<QuestionCatalogueItem> implement
     private ArrayList<QuestionCatalogueItem> filteredData;
     private ItemFilter mFilter = new ItemFilter();
     private Context context;
-    Integer checkBoxEasy;
-    Integer checkBoxMedium;
-    Integer checkBoxHard;
+    private int checkBoxEasy;
+    private int checkBoxMedium;
+    private int checkBoxHard;
 
     public CustomAdapter(Context context, int textViewResourceId,
-                         ArrayList<QuestionCatalogueItem> questionCatalogueList, Integer checkBoxEasy,
-                         Integer checkBoxMedium, Integer checkBoxHard) {
+                         ArrayList<QuestionCatalogueItem> questionCatalogueList, int checkBoxEasy,
+                         int checkBoxMedium, int checkBoxHard) {
         super(context, textViewResourceId, questionCatalogueList);
         this.questionCatalagoueItem = new ArrayList<>();
         this.questionCatalagoueItem.addAll(questionCatalogueList);
@@ -93,6 +93,18 @@ public class CustomAdapter extends ArrayAdapter<QuestionCatalogueItem> implement
         return convertView;
     }
 
+    public void setCheckBoxEasy(int value) {
+        checkBoxEasy = value;
+    }
+
+    public void setCheckBoxMedium(int value) {
+        checkBoxMedium = value;
+    }
+
+    public void setCheckBoxHard(int value) {
+        checkBoxHard = value;
+    }
+
     public Filter getFilter() {
         return mFilter;
     }
@@ -113,8 +125,13 @@ public class CustomAdapter extends ArrayAdapter<QuestionCatalogueItem> implement
 
             for (int i = 0; i < count; i++) {
                 filterableString = list.get(i);
-                if (filterableString.getName().toLowerCase().contains(filterString)) {
-                    nlist.add(filterableString);
+                if (filterableString.getName().toLowerCase(Locale.getDefault()).contains(filterString)) {
+                    // TODO filter difficulty
+                    if ((filterableString.getDifficulty() == checkBoxEasy)
+                            || (filterableString.getDifficulty() == checkBoxMedium)
+                            || (filterableString.getDifficulty() == checkBoxHard)) {
+                        filterList.add(filterableString);
+                    }
                 }
             }
 

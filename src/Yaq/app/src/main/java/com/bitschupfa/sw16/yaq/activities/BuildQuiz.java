@@ -38,9 +38,13 @@ public class BuildQuiz extends AppCompatActivity {
     private ArrayList<QuestionCatalogueItem> qCList = new ArrayList<>();
     private CustomAdapter dataAdapter = null;
     private EditText searchText;
-    private CheckBox checkEasy;
+    /*private CheckBox checkEasy;
     private CheckBox checkMedium;
     private CheckBox checkHard;
+
+    private boolean isCheckedEasy = true;
+    private boolean isCheckedMedium = true;
+    private boolean isCheckedHard = true;*/
 
     public enum CheckBoxValue {
         UNCHECKED, EASY, MEDIUM, HARD
@@ -54,7 +58,7 @@ public class BuildQuiz extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         initSearchView();
-        initFilterView();
+        //initFilterView();
         displayListView();
         checkButtonClick();
     }
@@ -78,8 +82,8 @@ public class BuildQuiz extends AppCompatActivity {
             qCList.add(qCatalogueItem);
         }
 
-        dataAdapter = new CustomAdapter(this, R.layout.list_build_quiz, qCList, getCheckedEasyValue(),
-                getCheckedMediumValue(), getCheckedHardValue());
+        dataAdapter = new CustomAdapter(this, R.layout.list_build_quiz, qCList, EASY.ordinal(),
+                MEDIUM.ordinal(), HARD.ordinal());
         listView = (ListView) findViewById(R.id.ListViewBuildQuiz);
         listView.setAdapter(dataAdapter);
     }
@@ -107,10 +111,28 @@ public class BuildQuiz extends AppCompatActivity {
         });
     }
 
-    private void initFilterView() {
+    /*private void initFilterView() {
         checkEasy = (CheckBox) findViewById(R.id.checkEasy);
         checkMedium = (CheckBox) findViewById(R.id.checkMedium);
         checkHard = (CheckBox) findViewById(R.id.checkHard);
+    }*/
+
+    public void onCheckboxClicked(View view) {
+        boolean checked = ((CheckBox) view).isChecked();
+
+        switch(view.getId()) {
+            case R.id.checkEasy:
+                setCheckedEasy(checked);
+                break;
+            case R.id.checkMedium:
+                setCheckedMedium(checked);
+                break;
+            case R.id.checkHard:
+                setCheckedHard(checked);
+                break;
+            default:
+                break;
+        }
     }
 
     private void checkButtonClick() {
@@ -143,25 +165,84 @@ public class BuildQuiz extends AppCompatActivity {
         });
     }
 
-    public Integer getCheckedEasyValue() {
-        if (checkEasy.isChecked()) {
-            return EASY.ordinal();
+    /*public Integer getCheckedEasyValue() {
+        Integer value;
+        if(isCheckedEasy) {
+            value = EASY.ordinal();
         }
-        return UNCHECKED.ordinal();
+        else {
+            value = UNCHECKED.ordinal();
+        }
+        if(dataAdapter != null) {
+            dataAdapter.setCheckBoxEasy(value);
+        }
+        return value;
     }
 
     public Integer getCheckedMediumValue() {
-        if (checkMedium.isChecked()) {
-            return MEDIUM.ordinal();
+        Integer value;
+        if(isCheckedMedium) {
+            value = MEDIUM.ordinal();
         }
-        return UNCHECKED.ordinal();
+        else {
+            value = UNCHECKED.ordinal();
+        }
+        if(dataAdapter != null) {
+            dataAdapter.setCheckBoxMedium(value);
+        }
+        return value;
     }
 
     public Integer getCheckedHardValue() {
-        if (checkHard.isChecked()) {
-            return HARD.ordinal();
+        Integer value;
+        if(isCheckedHard) {
+            value = HARD.ordinal();
         }
-        return UNCHECKED.ordinal();
+        else {
+            value = UNCHECKED.ordinal();
+        }
+        if(dataAdapter != null) {
+            dataAdapter.setCheckBoxHard(value);
+        }
+        return value;
+    }*/
+
+    public void setCheckedEasy(boolean checked) {
+        int value;
+        if (checked) {
+            value = EASY.ordinal();
+        } else {
+            value = UNCHECKED.ordinal();
+        }
+        if (dataAdapter != null) {
+            dataAdapter.setCheckBoxEasy(value);
+        }
+    }
+
+    public void setCheckedMedium(boolean checked) {
+        int value;
+        if(checked) {
+            value = MEDIUM.ordinal();
+        }
+        else {
+            value = UNCHECKED.ordinal();
+        }
+        if(dataAdapter != null) {
+            dataAdapter.setCheckBoxMedium(value);
+        }
+    }
+
+    public void setCheckedHard(boolean checked) {
+        int value;
+        if(checked) {
+            value = HARD.ordinal();
+        }
+        else {
+            value = UNCHECKED.ordinal();
+        }
+        if(dataAdapter != null) {
+            dataAdapter.setCheckBoxHard(value);
+        }
     }
 
     public static class QuestionCatalogueItem {
