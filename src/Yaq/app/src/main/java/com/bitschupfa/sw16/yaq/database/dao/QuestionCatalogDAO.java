@@ -20,8 +20,11 @@ public class QuestionCatalogDAO extends DatabaseObject {
     }
 
     @Override
-    protected void fillDatabaseContentValues() {
-        contentValues.put(QUESTIONCATALOG_ID, questionCatalog.getCatalogID());
+    protected void fillDatabaseContentValues(boolean initial) {
+        if(initial){
+            contentValues.put(QUESTIONCATALOG_ID, questionCatalog.getCatalogID());
+        }
+
         contentValues.put(QUESTIONCATALOG_DESCRIPTION, questionCatalog.getName());
     }
 }

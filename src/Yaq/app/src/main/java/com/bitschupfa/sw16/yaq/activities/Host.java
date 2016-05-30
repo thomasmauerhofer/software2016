@@ -219,7 +219,7 @@ public class Host extends AppCompatActivity implements Lobby {
     private Quiz buildTmpQuiz() {
         Quiz quiz = new Quiz();
         QuestionQuerier questionQuerier = new QuestionQuerier(this);
-        quiz.addQuestions(questionQuerier.getAllQuestionsFromCatalog(1));
+        quiz.addQuestions(questionQuerier.getAllQuestionsFromCatalog(3));
         return quiz;
     }
 }

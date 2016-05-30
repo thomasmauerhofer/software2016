@@ -3,6 +3,7 @@ package com.bitschupfa.sw16.yaq.database.helper;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.bitschupfa.sw16.yaq.database.dao.QuestionCatalogDAO;
 import com.bitschupfa.sw16.yaq.database.dao.TextQuestionDAO;

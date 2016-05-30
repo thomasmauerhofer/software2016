@@ -14,7 +14,7 @@ import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 public class DBHelper extends SQLiteOpenHelper{
 
     private static String DATABASE_NAME = "yaq.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 11;
     private static DBHelper instance_ = null;
 
     public DBHelper(Context context) {
@@ -40,24 +40,24 @@ public class DBHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_QUESTIONCATALOG_TABLE = "CREATE TABLE QuestionCatalog ( "+
-        "`qcid`             BIGINT UNSIGNED PRIMARY KEY NOT NULL,"+
-        "`description` 	    VARCHAR(250) NOT NULL);";
+                "`qcid`             BIGINT UNSIGNED PRIMARY KEY NOT NULL,"+
+                "`description` 	    VARCHAR(250) NOT NULL);";
 
         String CREATE_QUESTION_TABLE = "CREATE TABLE Question ( "+
-        "`qid`   			BIGINT UNSIGNED PRIMARY KEY NOT NULL,"+
-        "`qcid`  			BIGINT UNSIGNED NOT NULL,"+
-        "`difficulty`   	INTEGER NOT NULL,"+
-        "`question`  		VARCHAR(250) NOT NULL,"+
-        "`answer1`  		VARCHAR(100) NOT NULL,"+
-        "`answer2`  		VARCHAR(100) NOT NULL,"+
-        "`answer3`  		VARCHAR(100) NOT NULL,"+
-        "`answer4`  		VARCHAR(100) NOT NULL,"+
-        "`rightanswer1`	    INTEGER CHECK (rightanswer1 IN (0,20)),"+
-        "`rightanswer2`	    INTEGER CHECK (rightanswer2 IN (0,20)),"+
-        "`rightanswer3`	    INTEGER CHECK (rightanswer3 IN (0,20)),"+
-        "`rightanswer4`	    INTEGER CHECK (rightanswer4 IN (0,20)),"+
-        "FOREIGN KEY (`qcid`) REFERENCES QuestionCatalog(`qcid`)"+
-        ");";
+                "`qid`   			BIGINT UNSIGNED PRIMARY KEY NOT NULL,"+
+                "`qcid`  			BIGINT UNSIGNED NOT NULL,"+
+                "`difficulty`   	INTEGER NOT NULL,"+
+                "`question`  		VARCHAR(250) NOT NULL,"+
+                "`answer1`  		VARCHAR(100) NOT NULL,"+
+                "`answer2`  		VARCHAR(100) NOT NULL,"+
+                "`answer3`  		VARCHAR(100) NOT NULL,"+
+                "`answer4`  		VARCHAR(100) NOT NULL,"+
+                "`rightanswer1`	    INTEGER CHECK (rightanswer1 >= 0 and rightanswer1 <= 20),"+
+                "`rightanswer2`	    INTEGER CHECK (rightanswer2 >= 0 and rightanswer2 <= 20),"+
+                "`rightanswer3`	    INTEGER CHECK (rightanswer3 >= 0 and rightanswer3 <= 20),"+
+                "`rightanswer4`	    INTEGER CHECK (rightanswer4 >= 0 and rightanswer4 <= 20),"+
+                "FOREIGN KEY (`qcid`) REFERENCES QuestionCatalog(`qcid`)"+
+                ");";
 
         db.execSQL("DROP TABLE IF EXISTS " + "QuestionCatalog");
         db.execSQL("DROP TABLE IF EXISTS " + "Question");
@@ -70,13 +70,17 @@ public class DBHelper extends SQLiteOpenHelper{
 
     private void insertInitialData(SQLiteDatabase dataBase){
         QuestionCatalog questionCatalog1 = new QuestionCatalog(1, "Time", null);
-        QuestionCatalog questionCatalog2 = new QuestionCatalog(2,"General", null);
+        QuestionCatalog questionCatalog2 = new QuestionCatalog(2, "General", null);
+        QuestionCatalog questionCatalog3 = new QuestionCatalog(3, "TV/Movie", null);
 
         QuestionCatalogDAO questionCatalogDAO1 = new QuestionCatalogDAO(questionCatalog1);
         questionCatalogDAO1.insertThisAsInitialBaselineIntoDatabase(dataBase);
 
         QuestionCatalogDAO questionCatalogDAO2 = new QuestionCatalogDAO(questionCatalog2);
         questionCatalogDAO2.insertThisAsInitialBaselineIntoDatabase(dataBase);
+
+        QuestionCatalogDAO questionCatalogDAO3 = new QuestionCatalogDAO(questionCatalog3);
+        questionCatalogDAO3.insertThisAsInitialBaselineIntoDatabase(dataBase);
 
         Answer answer1;
         Answer answer2;
@@ -118,7 +122,63 @@ public class DBHelper extends SQLiteOpenHelper{
         answer2 = new Answer("1967", 20);
         answer3 = new Answer("1968", 0);
         answer4 = new Answer("1969", 0);
-        TextQuestion textQuestion6 = new TextQuestion(6,"In what year was Prince Andrew born?", answer1, answer2, answer3, answer4, 3, 1);
+        TextQuestion textQuestion6 = new TextQuestion(6,"In which year did Foinavon win the Grand National?", answer1, answer2, answer3, answer4, 3, 1);
+
+        answer1 = new Answer("1", 0);
+        answer2 = new Answer("5", 10);
+        answer3 = new Answer("10", 10);
+        answer4 = new Answer("11", 20);
+        TextQuestion textQuestion7 = new TextQuestion(7,"How many oscars did the Titanic movie got?", answer1, answer2, answer3, answer4, 2, 3);
+
+        answer1 = new Answer("1", 10);
+        answer2 = new Answer("2", 20);
+        answer3 = new Answer("3", 10);
+        answer4 = new Answer("4", 10);
+        TextQuestion textQuestion8 = new TextQuestion(8,"How many Tomb Raider movies were made?", answer1, answer2, answer3, answer4, 2, 3);
+
+        answer1 = new Answer("Bastille", 10);
+        answer2 = new Answer("Alcatraz", 20);
+        answer3 = new Answer("Newgate", 10);
+        answer4 = new Answer("Tower of London", 0);
+        TextQuestion textQuestion9 = new TextQuestion(9,"What is the name of the prison in the film The Rock?", answer1, answer2, answer3, answer4, 2, 3);
+
+        answer1 = new Answer("Mushu", 20);
+        answer2 = new Answer("Mishu", 10);
+        answer3 = new Answer("Masha", 10);
+        answer4 = new Answer("Sasha", 0);
+        TextQuestion textQuestion10 = new TextQuestion(10,"What is the name of the little dragon in the animated movie Mulan?", answer1, answer2, answer3, answer4, 2, 3);
+
+        answer1 = new Answer("Rob Bowman", 20);
+        answer2 = new Answer("Arnold Schwarzenegger", 0);
+        answer3 = new Answer("Sergio Leone", 10);
+        answer4 = new Answer("Antonio Salieri", 10);
+        TextQuestion textQuestion11 = new TextQuestion(11,"Who is the director of the X-files?", answer1, answer2, answer3, answer4, 2, 3);
+
+        answer1 = new Answer("Seaman,", 20);
+        answer2 = new Answer("Engineer", 0);
+        answer3 = new Answer("Farmer", 10);
+        answer4 = new Answer("Electrician", 0);
+        TextQuestion textQuestion12 = new TextQuestion(12,"What is the profession of Popeye?", answer1, answer2, answer3, answer4, 2, 3);
+
+        answer1 = new Answer("0815", 0);
+        answer2 = new Answer("742", 20);
+        answer3 = new Answer("1001", 15);
+        answer4 = new Answer("5", 0);
+        TextQuestion textQuestion13 = new TextQuestion(13,"What is the house number of the Simpsons?", answer1, answer2, answer3, answer4, 2, 3);
+
+        answer1 = new Answer("Captain Picard", 0);
+        answer2 = new Answer("Antonio Salieri", 20);
+        answer3 = new Answer("Robert Redford", 15);
+        answer4 = new Answer("Colin Farell", 0);
+        TextQuestion textQuestion14 = new TextQuestion(14,"Who was Mozart s great rival in Amadeus movie?", answer1, answer2, answer3, answer4, 2, 3);
+
+
+        answer1 = new Answer("Robin Williams", 20);
+        answer2 = new Answer("Robert Redford", 10);
+        answer3 = new Answer("Rob Bowman", 10);
+        answer4 = new Answer("Woody Allen", 10);
+        TextQuestion textQuestion15 = new TextQuestion(15,"Who did play the role of Peter Pan in the Peter Pan movie?", answer1, answer2, answer3, answer4, 2, 3);
+
 
         TextQuestionDAO textQuestionDAO1 = new TextQuestionDAO(textQuestion1);
         textQuestionDAO1.insertThisAsInitialBaselineIntoDatabase(dataBase);
@@ -137,6 +197,33 @@ public class DBHelper extends SQLiteOpenHelper{
 
         TextQuestionDAO textQuestionDAO6 = new TextQuestionDAO(textQuestion6);
         textQuestionDAO6.insertThisAsInitialBaselineIntoDatabase(dataBase);
+
+        TextQuestionDAO textQuestionDAO7 = new TextQuestionDAO(textQuestion7);
+        textQuestionDAO7.insertThisAsInitialBaselineIntoDatabase(dataBase);
+
+        TextQuestionDAO textQuestionDAO8 = new TextQuestionDAO(textQuestion8);
+        textQuestionDAO8.insertThisAsInitialBaselineIntoDatabase(dataBase);
+
+        TextQuestionDAO textQuestionDAO9 = new TextQuestionDAO(textQuestion9);
+        textQuestionDAO9.insertThisAsInitialBaselineIntoDatabase(dataBase);
+
+        TextQuestionDAO textQuestionDAO10 = new TextQuestionDAO(textQuestion10);
+        textQuestionDAO10.insertThisAsInitialBaselineIntoDatabase(dataBase);
+
+        TextQuestionDAO textQuestionDAO11 = new TextQuestionDAO(textQuestion11);
+        textQuestionDAO11.insertThisAsInitialBaselineIntoDatabase(dataBase);
+
+        TextQuestionDAO textQuestionDAO12 = new TextQuestionDAO(textQuestion12);
+        textQuestionDAO12.insertThisAsInitialBaselineIntoDatabase(dataBase);
+
+        TextQuestionDAO textQuestionDAO13 = new TextQuestionDAO(textQuestion13);
+        textQuestionDAO13.insertThisAsInitialBaselineIntoDatabase(dataBase);
+
+        TextQuestionDAO textQuestionDAO14 = new TextQuestionDAO(textQuestion14);
+        textQuestionDAO14.insertThisAsInitialBaselineIntoDatabase(dataBase);
+
+        TextQuestionDAO textQuestionDAO15 = new TextQuestionDAO(textQuestion15);
+        textQuestionDAO15.insertThisAsInitialBaselineIntoDatabase(dataBase);
     }
 
 
