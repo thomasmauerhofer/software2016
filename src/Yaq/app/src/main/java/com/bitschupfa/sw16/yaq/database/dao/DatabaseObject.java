@@ -7,9 +7,6 @@ import android.util.Log;
 
 import com.bitschupfa.sw16.yaq.database.helper.DBHelper;
 
-/**
- * Created by Patrik on 05.05.2016.
- */
 public abstract class DatabaseObject {
     ContentValues contentValues;
     protected String tableName;
@@ -18,10 +15,10 @@ public abstract class DatabaseObject {
         contentValues = new ContentValues();
     }
 
-    protected abstract void fillDatabaseContentValues();
+    protected abstract void fillDatabaseContentValues(boolean initial);
 
-    private void insertIntoDatabase(SQLiteDatabase database) {
-        fillDatabaseContentValues();
+    private void insertIntoDatabase(SQLiteDatabase database, boolean initial){
+        fillDatabaseContentValues(initial);
 
         Log.e("Database", "Table Name: " + tableName);
         database.insert(tableName, null, contentValues);
@@ -29,11 +26,11 @@ public abstract class DatabaseObject {
 
     public void insertIntoDatabase(Context context) {
         SQLiteDatabase database = DBHelper.instance(context).getInsertionDatabase();
-        insertIntoDatabase(database);
+        insertIntoDatabase(database, false);
         database.close();
     }
 
-    public void insertThisAsInitialBaselineIntoDatabase(SQLiteDatabase database) {
-        insertIntoDatabase(database);
+    public void insertThisAsInitialBaselineIntoDatabase(SQLiteDatabase database){
+        insertIntoDatabase(database, true);
     }
 }
