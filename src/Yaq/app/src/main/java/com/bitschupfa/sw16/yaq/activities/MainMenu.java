@@ -89,8 +89,9 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
         super.handleTheme();
 
         ImageView logoImageView = (ImageView) findViewById(R.id.logoImageView);
-        if (logoImageView != null)
+        if (logoImageView != null) {
             logoImageView.setBackground(getDrawableByName(themeChooser.getThemeStorage().getLogoImageName()));
+        }
 
         navigationDrawerHeader.setBackground(getDrawableByName(themeChooser.getThemeStorage().getNavigationDrawerImageName()));
         drawerBackgroundAnimation = (AnimationDrawable) navigationDrawerHeader.getBackground();

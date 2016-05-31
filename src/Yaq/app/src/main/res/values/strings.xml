@@ -91,6 +91,7 @@
     <string name="error_cant_connect">An error occurs while create connection!</string>
     <string name="not_implemented">Not implemented yet!</string>
     <string name="noQuestionsSelected">No questions selected!</string>
+    <string name="title_activity_quiz_maker">QuizMaker</string>
 
     <!-- Chromecast -->
     <string name="waiting_for_gamestart">Waiting for game to start …</string>
