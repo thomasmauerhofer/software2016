@@ -43,7 +43,8 @@ public class MainMenu extends AppCompatActivity {
             startActivity(intent);
             return true;
         } else if (id == R.id.menu_manage) {
-            Toast.makeText(this, R.string.not_implemented, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainMenu.this, QuizMaker.class);
+            startActivity(intent);
             return true;
         }
 
