@@ -93,9 +93,23 @@ public class CustomAdapter extends ArrayAdapter<QuestionCatalogueItem> implement
         }
 
         QuestionCatalogueItem item = getItem(position);
-        String diff = item.hasEasyQuestions() ? "E" : "";
-        diff += item.hasMediumQuestions() ? "M" : "";
-        diff += item.hasHardQuestions() ? "H" : "";
+
+        String diff = "";
+
+        switch (item.getDifficulty()) {
+            case 1:
+                diff = "EASY";
+                break;
+            case 2:
+                diff = "MEDIUM";
+                break;
+            case 3:
+                diff = "HARD";
+                break;
+            default:
+                diff = "NO DIFFICULTY";
+                break;
+        }
         holder.name.setText(item.getName() + " (" + String.valueOf(item.getQuestionsCounter()) + " questions)" + " - " + diff);
         holder.checkBox.setChecked(item.isChecked());
         holder.checkBox.setTag(item);
@@ -136,12 +150,11 @@ public class CustomAdapter extends ArrayAdapter<QuestionCatalogueItem> implement
             for (int i = 0; i < count; i++) {
                 filterableString = list.get(i);
                 if (filterableString.getName().toLowerCase(Locale.getDefault()).contains(filterString)) {
-                    if ((filterableString.hasEasyQuestions() == checkBoxEasy)
-                            || (filterableString.hasMediumQuestions() == checkBoxMedium)
-                            || (filterableString.hasHardQuestions() == checkBoxHard)) {
-                        filterList.add(filterableString);
+                    if (checkBoxEasy == true && filterableString.getDifficulty() == 1
+                            || checkBoxMedium == true && filterableString.getDifficulty() == 2
+                            || checkBoxHard == true && filterableString.getDifficulty() == 3) {
 
-                        checkedQuestions.put(filterableString.getId(), filterableString.getAllQuestionsByDiff(filterableString.getId(), filterableString.getDifficulty()));
+                        filterList.add(filterableString);
                     }
                 }
             }

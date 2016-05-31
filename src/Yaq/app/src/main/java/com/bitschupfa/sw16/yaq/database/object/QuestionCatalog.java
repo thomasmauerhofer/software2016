@@ -3,14 +3,16 @@ package com.bitschupfa.sw16.yaq.database.object;
 import java.io.Serializable;
 import java.util.List;
 
-public class QuestionCatalog implements Serializable{
+public class QuestionCatalog implements Serializable {
     private int catalogID;
+    private int difficulty;
     private String name;
     private List<TextQuestion> textQuestionList = null;
     private int counter;
 
-    public QuestionCatalog(int catalogID, String name, List<TextQuestion> textQuestionList) {
+    public QuestionCatalog(int catalogID, int difficulty, String name, List<TextQuestion> textQuestionList) {
         this.catalogID = catalogID;
+        this.difficulty = difficulty;
         this.name = name;
         this.textQuestionList = textQuestionList;
         this.counter = 0;
@@ -46,5 +48,13 @@ public class QuestionCatalog implements Serializable{
 
     public int getCounter() {
         return counter;
+    }
+
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public int getDifficulty() {
+        return difficulty;
     }
 }
