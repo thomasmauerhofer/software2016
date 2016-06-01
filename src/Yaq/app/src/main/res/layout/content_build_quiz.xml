@@ -67,6 +67,58 @@
 
             </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:theme="@android:style/Theme.Holo"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/nPB1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/minus"
+                android:background="@drawable/button_blue"
+                style="@style/button_text">
+            </Button>
+
+            <TextView
+                android:id="@+id/numberPicker"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/nPB1"
+                android:text="10"
+                android:background="@drawable/button_blue"
+                style="@style/button_text"/>
+
+            <Button
+                android:id="@+id/nPB2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/plus"
+                android:background="@drawable/button_blue"
+                style="@style/button_text">
+            </Button>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:theme="@android:style/Theme.Holo">
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/numberOfQuestions"
+                android:gravity="center"
+                android:textColor="@color/colorPrimaryDark"/>
+
+        </LinearLayout>
+
         <View
             android:layout_width="fill_parent"
             android:layout_height="5dip"

@@ -1,6 +1,8 @@
 package com.bitschupfa.sw16.yaq.ui;
 
 import android.test.ActivityInstrumentationTestCase2;
+import android.view.View;
+import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.activities.BuildQuiz;
@@ -29,7 +31,22 @@ public class BuildQuizUITests extends ActivityInstrumentationTestCase2<BuildQuiz
 
     public void testBuildQuizFinished() {
         solo.clickOnButton(getActivity().getResources().getString(R.string.submit_quiz));
-        solo.sleep(500);
-        assertTrue(solo.getCurrentActivity().isFinishing());
+        assertTrue("Wrong Activity!", solo.waitForActivity(BuildQuiz.class));
+    }
+
+    public void testNumberOfQuestions() {
+        solo.clickOnButton(getActivity().getResources().getString(R.string.plus));
+        solo.clickOnButton(getActivity().getResources().getString(R.string.plus));
+        solo.clickOnButton(getActivity().getResources().getString(R.string.plus));
+        solo.clickOnButton(getActivity().getResources().getString(R.string.minus));
+
+        solo.sleep(100);
+
+        TextView textView = (TextView) solo.getView(R.id.numberPicker);
+
+        String text = textView.getText().toString();
+        assertNotNull(text);
+
+        assertEquals("12", text);
     }
 }

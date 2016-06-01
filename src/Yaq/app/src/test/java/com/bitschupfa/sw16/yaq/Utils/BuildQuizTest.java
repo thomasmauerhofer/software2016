@@ -5,6 +5,7 @@ import android.test.InstrumentationTestCase;
 import android.test.mock.MockContext;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
@@ -18,24 +19,24 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-/**
- * Created by manu on 20.05.16.
- */
 public class BuildQuizTest extends InstrumentationTestCase{
+
     private CustomAdapter mAdapter;
     private QuestionCatalogueItem item1;
     private QuestionCatalogueItem item2;
+    private ListView listView;
 
     @Before
     public void setUp() throws Exception {
-        ArrayList<QuestionCatalogueItem> data = new ArrayList<QuestionCatalogueItem>();
+        ArrayList<QuestionCatalogueItem> data = new ArrayList<>();
 
-        item1 = new QuestionCatalogueItem("question1", 0, true, 2);
-        item2 = new QuestionCatalogueItem("question2", 1, false, 3);
+        Context context = new MockContext();
+
+        item1 = new QuestionCatalogueItem("question1", 0, 1, true, 2, context);
+        item2 = new QuestionCatalogueItem("question2", 1, 2, false, 3, context);
         data.add(item1);
         data.add(item2);
-        Context context = new MockContext();
-        mAdapter = new CustomAdapter(context, 0, data);
+        mAdapter = new CustomAdapter(context, 0, data, true, true, true);
     }
 
     @Test
@@ -68,5 +69,36 @@ public class BuildQuizTest extends InstrumentationTestCase{
 
         Assert.assertEquals("Names doesn't match.", item2.getName(), name.getText());
         Assert.assertEquals("Checkbox value doesn't match.", item2.isChecked(), checkBox.isChecked());
+    }
+
+    @Test
+    public void testSearch() {
+
+        View view = mAdapter.getView(0, null, null);
+
+        listView = (ListView) view.findViewById(R.id.ListViewBuildQuiz);
+        Assert.assertNotNull("The list was not loaded", listView);
+
+        mAdapter.getFilter().filter(item1.getName());
+
+        CustomAdapter newAdapter = (CustomAdapter) listView.getAdapter();
+
+        Assert.assertEquals("Names doesn't match.", item1.getName(), newAdapter.getItem(0).getName());
+    }
+
+    @Test
+    public void testFilter() {
+
+        View view = mAdapter.getView(0, null, null);
+
+        listView = (ListView) view.findViewById(R.id.ListViewBuildQuiz);
+        Assert.assertNotNull("The list was not loaded", listView);
+
+        CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkMedium);
+        checkBox.setChecked(true);
+
+        CustomAdapter newAdapter = (CustomAdapter) listView.getAdapter();
+
+        Assert.assertEquals("Names doesn't match.", item2.getName(), newAdapter.getItem(0).getName());
     }
 }

@@ -31,7 +31,6 @@ public class CustomAdapter extends ArrayAdapter<QuestionCatalogueItem> implement
     private boolean checkBoxEasy;
     private boolean checkBoxMedium;
     private boolean checkBoxHard;
-    private HashMap<Integer, List<TextQuestion>> checkedQuestions = new HashMap<>();
 
     public CustomAdapter(Context context, int textViewResourceId,
                          ArrayList<QuestionCatalogueItem> questionCatalogueList, boolean checkBoxEasy,
@@ -62,10 +61,6 @@ public class CustomAdapter extends ArrayAdapter<QuestionCatalogueItem> implement
 
     public long getItemId(int position) {
         return position;
-    }
-
-    public Collection<List<TextQuestion>> getCheckedQuestions() {
-        return checkedQuestions.values();
     }
 
     @Override

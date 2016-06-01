@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bitschupfa.sw16.yaq.R;
@@ -22,6 +23,7 @@ import com.bitschupfa.sw16.yaq.utils.CustomAdapter;
 import com.bitschupfa.sw16.yaq.utils.QuizMonitor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,10 +34,17 @@ public class BuildQuiz extends AppCompatActivity {
     private Button btnBuildQuiz;
     private HashMap<String, Integer> questionCatalogMap = new HashMap<>();
     private List<QuestionCatalog> questionCatalogList;
-    private ArrayList<TextQuestion> questions = new ArrayList<TextQuestion>();
+    private ArrayList<TextQuestion> questions = new ArrayList<>();
     private ArrayList<QuestionCatalogueItem> qCList = new ArrayList<>();
     private CustomAdapter dataAdapter = null;
     private EditText searchText;
+    private TextView numberPicker;
+    private Button numberPickerButton1;
+    private Button numberPickerButton2;
+    private int numberOfQuestions = 0;
+    private int minQNumber = 1;
+    private int maxQNumber = 100;
+    private int fillQuestionsCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +54,7 @@ public class BuildQuiz extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         initSearchView();
+        initNumberPicker();
         displayListView();
         checkButtonClick();
     }
@@ -74,7 +84,7 @@ public class BuildQuiz extends AppCompatActivity {
         listView.setAdapter(dataAdapter);
     }
 
-    private void initSearchView() {
+    public void initSearchView() {
         searchText = (EditText) findViewById(R.id.EditTextBuildQuiz);
 
         searchText.addTextChangedListener(new TextWatcher() {
@@ -91,6 +101,34 @@ public class BuildQuiz extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable arg0) {
+            }
+        });
+    }
+
+    public void initNumberPicker() {
+        numberPicker = (TextView) findViewById(R.id.numberPicker);
+        numberPickerButton1 = (Button) findViewById(R.id.nPB1);
+        numberPickerButton2 = (Button) findViewById(R.id.nPB2);
+
+        numberPickerButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                numberOfQuestions = Integer.parseInt(numberPicker.getText().toString()) - 1;
+
+                if (numberOfQuestions >= minQNumber) {
+                    numberPicker.setText(String.valueOf(numberOfQuestions));
+                }
+            }
+        });
+
+        numberPickerButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                numberOfQuestions = Integer.parseInt(numberPicker.getText().toString()) + 1;
+
+                if (numberOfQuestions <= maxQNumber) {
+                    numberPicker.setText(String.valueOf(numberOfQuestions));
+                }
             }
         });
     }
@@ -124,11 +162,25 @@ public class BuildQuiz extends AppCompatActivity {
                 responseText.append("The following were selected...\n");
 
                 ArrayList<QuestionCatalogueItem> questionCatalogueList = dataAdapter.questionCatalagoueItem;
+                ArrayList<TextQuestion> questionsToAdded = new ArrayList<>();
+
+                int checkedItemCount = getNumberOfCheckedItems(questionCatalogueList);
+                int questionsPerCatalogue = 0;
+
+                if (checkedItemCount > 0) {
+                    questionsPerCatalogue = numberOfQuestions / checkedItemCount;
+                }
+
                 for (int i = 0; i < questionCatalogueList.size(); i++) {
                     QuestionCatalogueItem item = questionCatalogueList.get(i);
                     if (item.isChecked()) {
                         responseText.append("\n- " + item.getName());
-                        questions.addAll(questionQuerier.getAllQuestionsFromCatalog(item.getId()));
+
+                        questionsToAdded.addAll(questionQuerier.getAllQuestionsFromCatalog(item.getId()));
+
+                        questions.addAll(buildQuestions(questionsToAdded, questionsPerCatalogue));
+
+                        questionsToAdded.clear();
                     }
                 }
 
@@ -143,6 +195,35 @@ public class BuildQuiz extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    public ArrayList<TextQuestion> buildQuestions(ArrayList<TextQuestion> questionsToAdded, int questionsPerCatalogue) {
+        Collections.shuffle(questionsToAdded);
+
+        questionsPerCatalogue += fillQuestionsCounter;
+
+        while (questionsToAdded.size() > questionsPerCatalogue) {
+            questionsToAdded.remove(0);
+        }
+
+        if(questionsToAdded.size() == questionsPerCatalogue) {
+            fillQuestionsCounter = 0;
+        }
+        else {
+            fillQuestionsCounter = (questionsPerCatalogue - questionsToAdded.size());
+        }
+        return questionsToAdded;
+    }
+
+    public int getNumberOfCheckedItems(ArrayList<QuestionCatalogueItem> questionCatalogueList) {
+        int numberOfCheckedItems = 0;
+        for (int i = 0; i < questionCatalogueList.size(); i++) {
+            QuestionCatalogueItem item = questionCatalogueList.get(i);
+            if (item.isChecked()) {
+                numberOfCheckedItems++;
+            }
+        }
+        return numberOfCheckedItems;
     }
 
     public void setCheckedEasy(boolean checked) {

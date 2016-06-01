@@ -6,6 +6,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 
 import com.bitschupfa.sw16.yaq.R;
+import com.bitschupfa.sw16.yaq.activities.BuildQuiz;
 import com.bitschupfa.sw16.yaq.activities.GameAtHost;
 import com.bitschupfa.sw16.yaq.activities.Host;
 import com.bitschupfa.sw16.yaq.activities.StatisticsAtHost;
@@ -61,13 +62,14 @@ public class HostTests extends ActivityInstrumentationTestCase2<Host> {
     }
 
     public void testAdvancedSettingsButton() {
-        solo.clickOnButton(getActivity().getResources().getString(R.string.build));
+        solo.clickOnButton(getActivity().getResources().getString(R.string.advanced_settings));
         solo.searchText(getActivity().getResources().getString(R.string.not_implemented));
     }
 
     public void testBuildQuizButton() {
-        solo.clickOnButton(getActivity().getResources().getString(R.string.advanced_settings));
-        solo.searchText(getActivity().getResources().getString(R.string.not_implemented));
+        solo.clickOnButton(getActivity().getResources().getString(R.string.build));
+        assertTrue("Wrong Activity!", solo.waitForActivity(BuildQuiz.class));
+        solo.goBack();
     }
 
     public void testSinglePlayerCorrectAnswer() {
@@ -128,7 +130,7 @@ public class HostTests extends ActivityInstrumentationTestCase2<Host> {
         Answer answer3 = new Answer("wrong2", 0);
         Answer answer4 = new Answer("wrong3", 0);
         List<TextQuestion> questions = new ArrayList<>();
-        questions.add(new TextQuestion(42, "Question1", answer1, answer2, answer3, answer4, 1, 1));
+        questions.add(new TextQuestion(42, "Question1", answer1, answer2, answer3, answer4, 1));
         quiz.addQuestions(questions);
         HostGameLogic.getInstance().setQuiz(quiz);
     }
@@ -136,5 +138,6 @@ public class HostTests extends ActivityInstrumentationTestCase2<Host> {
     private void checkStatistics() {
         solo.clickOnButton(getActivity().getResources().getString(R.string.next_question));
         assertTrue("Wrong Activity!", solo.waitForActivity(StatisticsAtHost.class));
+        solo.goBack();
     }
 }

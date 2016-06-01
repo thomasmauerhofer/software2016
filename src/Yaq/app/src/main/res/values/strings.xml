@@ -57,6 +57,10 @@
     <string name="checkEasy">easy</string>
     <string name="checkMedium">medium</string>
     <string name="checkHard">hard</string>
+    <string name="numberOfQuestions">number of questions</string>
+    <string name="plus">+</string>
+    <string name="minus">-</string>
+
 
     <!-- ErrorStrings -->
     <string name="error_cant_show_score">An error occurs while showing scores!</string>
