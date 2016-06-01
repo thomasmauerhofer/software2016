@@ -110,6 +110,8 @@ public class BuildQuiz extends AppCompatActivity {
         numberPickerButton1 = (Button) findViewById(R.id.nPB1);
         numberPickerButton2 = (Button) findViewById(R.id.nPB2);
 
+        numberOfQuestions = Integer.parseInt(numberPicker.getText().toString());
+
         numberPickerButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -206,10 +208,9 @@ public class BuildQuiz extends AppCompatActivity {
             questionsToAdded.remove(0);
         }
 
-        if(questionsToAdded.size() == questionsPerCatalogue) {
+        if (questionsToAdded.size() == questionsPerCatalogue) {
             fillQuestionsCounter = 0;
-        }
-        else {
+        } else {
             fillQuestionsCounter = (questionsPerCatalogue - questionsToAdded.size());
         }
         return questionsToAdded;

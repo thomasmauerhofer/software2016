@@ -40,29 +40,4 @@ public class Quiz implements Iterator<TextQuestion> {
     @Override
     public void remove() {
     }
-
-    public void setQuiz(List<TextQuestion> questions_) {
-        questions = questions_;
-        Collections.shuffle(questions);
-    }
-
-    public void setCurrentPosition(int position_) {
-        currentPosition = position_;
-    }
-
-    @Override
-    public TextQuestion next() {
-        TextQuestion tQ = questions.get(currentPosition);
-        currentPosition++;
-        return tQ;
-    }
-
-    @Override
-    public boolean hasNext() {
-        return currentPosition < questions.size();
-    }
-
-    @Override
-    public void remove() {
-    }
 }

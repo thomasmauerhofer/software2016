@@ -15,7 +15,6 @@ import com.bitschupfa.sw16.yaq.activities.BuildQuiz.QuestionCatalogueItem;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 
 import java.util.ArrayList;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -132,13 +131,13 @@ public class CustomAdapter extends ArrayAdapter<QuestionCatalogueItem> implement
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
 
-            String filterString = constraint.toString().toLowerCase();
+            String filterString = constraint.toString().toLowerCase(Locale.getDefault());
             FilterResults results = new FilterResults();
 
             final ArrayList<QuestionCatalogueItem> list = questionCatalagoueItem;
 
             int count = list.size();
-            final ArrayList<QuestionCatalogueItem> nlist = new ArrayList<>(count);
+            final ArrayList<QuestionCatalogueItem> filterList = new ArrayList<>(count);
 
             QuestionCatalogueItem filterableString;
 
@@ -153,9 +152,8 @@ public class CustomAdapter extends ArrayAdapter<QuestionCatalogueItem> implement
                     }
                 }
             }
-
-            results.values = nlist;
-            results.count = nlist.size();
+            results.values = filterList;
+            results.count = filterList.size();
 
             return results;
         }
