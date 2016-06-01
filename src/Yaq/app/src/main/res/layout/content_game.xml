@@ -59,12 +59,14 @@
                 android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:id="@+id/question"
+                android:background="@drawable/question_border"
+                android:layout_margin="@dimen/fab_margin"
                 android:gravity="center"
                 android:layout_weight="8"/>
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="@string/next_question"
                 android:id="@+id/next_question"
                 android:layout_centerVertical="true"

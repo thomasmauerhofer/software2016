@@ -11,13 +11,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfileStorage;
 
 public class MainMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
     public ImageView profilePicture;
+    public TextView profileName;
+    public LinearLayout navigationDrawerHealerLL;
+    public PlayerProfileStorage profileStorage;
+
+    public static final int NAVIGATION_VIEW_HEADER_INDEX = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,19 +37,31 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        PlayerProfileStorage profileStorage = PlayerProfileStorage.getInstance(this);
+        profileStorage = PlayerProfileStorage.getInstance(this);
+        profilePicture = (ImageView) navigationView.getHeaderView(NAVIGATION_VIEW_HEADER_INDEX).findViewById(R.id.profileImageView);
+        navigationDrawerHealerLL = (LinearLayout) navigationView.getHeaderView(NAVIGATION_VIEW_HEADER_INDEX).findViewById(R.id.navigation_drawer_header_ll);
+        profileName = (TextView) navigationView.getHeaderView(NAVIGATION_VIEW_HEADER_INDEX).findViewById(R.id.profileNameTextView);
 
-        profilePicture = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.profileImageView);
-        profilePicture.setImageBitmap(profileStorage.getPlayerAvatar());
-        //TextView tv = (TextView) navigationView.getHeaderView(0).findViewById(R.id.profileNameTextView);
+        navigationDrawerHealerLL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                profileAreaClicked(v);
+            }
+        });
+
+        refreshProfileInNavigationHeader();
     }
 
+    public void refreshProfileInNavigationHeader(){
+        profilePicture.setImageBitmap(profileStorage.getPlayerAvatar());
+        profileName.setText(profileStorage.getPlayerName());
+    }
     @SuppressWarnings("UnusedParameters")
     public void hostButtonClicked(View view) {
         Intent intent = new Intent(MainMenu.this, Host.class);
@@ -82,5 +101,11 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshProfileInNavigationHeader();
     }
 }

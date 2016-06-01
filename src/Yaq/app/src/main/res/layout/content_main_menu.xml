@@ -18,10 +18,11 @@
             android:layout_height="wrap_content"
             android:id="@+id/imageView"
             android:src="@mipmap/yak"
-            android:minHeight="380dp"
-            android:minWidth="300dp"
+            android:minHeight="200dp"
+            android:minWidth="250dp"
+
             android:paddingBottom="20dp"
-            android:paddingTop="10dp"
+            android:paddingTop="20dp"
             android:layout_gravity="center"
             android:contentDescription="@string/player"/>
 
@@ -34,6 +35,8 @@
 
             <Button
                 android:id="@+id/host_btn"
+                android:layout_margin="@dimen/button_margin"
+                android:background="@drawable/button_style"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/host"
@@ -42,10 +45,12 @@
 
             <Button
                 android:id="@+id/join_btn"
+                android:layout_margin="@dimen/button_margin"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/join"
                 android:theme="@style/defaultButton"
+                android:background="@drawable/button_style"
                 android:onClick="joinButtonClicked"/>
 
         </LinearLayout>
