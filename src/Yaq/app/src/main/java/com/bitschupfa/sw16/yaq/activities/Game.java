@@ -1,9 +1,12 @@
 package com.bitschupfa.sw16.yaq.activities;
 
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -68,12 +71,14 @@ public class Game extends AppCompatActivity {
     }
 
     public void showQuestion(final TextQuestion question, final int timeout) {
+        final Activity activity = this;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 setAnswerButtonsClickable(true);
                 for (Button answerButton : answerButtons) {
-                    answerButton.setBackgroundResource(R.drawable.button_blue);
+                    answerButton.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.colorPrimary),
+                            PorterDuff.Mode.MULTIPLY);
                 }
 
                 questionView.setText(question.getQuestion());
@@ -96,16 +101,19 @@ public class Game extends AppCompatActivity {
     }
 
     public void showAnswer(final Answer correctAnswer) {
+        final Activity activity = this;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (answerButtonPressed != null && selectedAnswer != null && !selectedAnswer.equals(correctAnswer)) {
-                    answerButtonPressed.setBackgroundResource(R.drawable.button_red);
+                    answerButtonPressed.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.red500),
+                            PorterDuff.Mode.MULTIPLY);
                 }
 
                 for (Map.Entry<Button, Answer> entry : answerMapping.entrySet()) {
                     if (entry.getValue().equals(correctAnswer)) {
-                        entry.getKey().setBackgroundResource(R.drawable.button_green);
+                        entry.getKey().getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.green500),
+                                PorterDuff.Mode.MULTIPLY);
                         break;
                     }
                 }
@@ -120,7 +128,8 @@ public class Game extends AppCompatActivity {
     public void answerButtonClicked(View view) {
         timer.cancel();
         answerButtonPressed = (Button) view;
-        answerButtonPressed.setBackgroundResource(R.drawable.button_grey);
+        answerButtonPressed.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.grey500),
+                PorterDuff.Mode.MULTIPLY);
         setAnswerButtonsClickable(false);
 
         selectedAnswer = answerMapping.get(answerButtonPressed);

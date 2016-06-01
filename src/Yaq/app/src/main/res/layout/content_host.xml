@@ -29,9 +29,10 @@
         <Button
             android:text="@string/build"
             android:id="@+id/select"
-            android:background="@drawable/button_blue"
-            style="@style/button_text"
-            android:onClick="buildQuizButtonClicked"/>
+            android:theme="@style/defaultButton"
+            android:onClick="buildQuizButtonClicked"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent" />
 
         <TableLayout
             android:layout_width="match_parent"
@@ -55,7 +56,7 @@
                     android:paddingEnd="0dp"
                     android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/player_table_inactive"
+                    android:textColor="@color/grey500"
                     android:drawableLeft="@mipmap/icon_player_black"
                     android:drawableStart="@mipmap/icon_player_black"
                     android:drawablePadding="5dp"/>
@@ -72,7 +73,7 @@
                     android:paddingEnd="0dp"
                     android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/player_table_inactive"
+                    android:textColor="@color/grey500"
                     android:drawableLeft="@mipmap/icon_player_black"
                     android:drawableStart="@mipmap/icon_player_black"
                     android:drawablePadding="5dp"/>
@@ -95,7 +96,7 @@
                     android:paddingEnd="0dp"
                     android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/player_table_inactive"
+                    android:textColor="@color/grey500"
                     android:drawableLeft="@mipmap/icon_player_black"
                     android:drawableStart="@mipmap/icon_player_black"
                     android:drawablePadding="5dp"/>
@@ -112,7 +113,7 @@
                     android:paddingEnd="0dp"
                     android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/player_table_inactive"
+                    android:textColor="@color/grey500"
                     android:drawableLeft="@mipmap/icon_player_black"
                     android:drawableStart="@mipmap/icon_player_black"
                     android:drawablePadding="5dp"/>
@@ -135,7 +136,7 @@
                     android:paddingEnd="0dp"
                     android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/player_table_inactive"
+                    android:textColor="@color/grey500"
                     android:drawableLeft="@mipmap/icon_player_black"
                     android:drawableStart="@mipmap/icon_player_black"
                     android:drawablePadding="5dp"/>
@@ -152,7 +153,7 @@
                     android:paddingEnd="0dp"
                     android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/player_table_inactive"
+                    android:textColor="@color/grey500"
                     android:drawableLeft="@mipmap/icon_player_black"
                     android:drawableStart="@mipmap/icon_player_black"
                     android:drawablePadding="5dp"/>
@@ -175,7 +176,7 @@
                     android:paddingEnd="0dp"
                     android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/player_table_inactive"
+                    android:textColor="@color/grey500"
                     android:drawableLeft="@mipmap/icon_player_black"
                     android:drawableStart="@mipmap/icon_player_black"
                     android:drawablePadding="5dp"/>
@@ -192,7 +193,7 @@
                     android:paddingEnd="0dp"
                     android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/player_table_inactive"
+                    android:textColor="@color/grey500"
                     android:drawableLeft="@mipmap/icon_player_black"
                     android:drawableStart="@mipmap/icon_player_black"
                     android:drawablePadding="5dp"/>
@@ -208,16 +209,18 @@
             <Button
                 android:id="@+id/start_btn"
                 android:text="@string/start_game"
-                android:background="@drawable/button_blue"
-                style="@style/button_text"
-                android:onClick="startButtonClicked"/>
+                android:theme="@style/defaultButton"
+                android:onClick="startButtonClicked"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
             <Button
                 android:id="@+id/advanced_btn"
                 android:text="@string/advanced_settings"
-                android:background="@drawable/button_blue"
-                style="@style/button_text"
-                android:onClick="advancedSettingsButtonClicked"/>
+                android:theme="@style/defaultButton"
+                android:onClick="advancedSettingsButtonClicked"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 

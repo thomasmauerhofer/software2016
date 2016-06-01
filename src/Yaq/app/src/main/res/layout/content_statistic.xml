@@ -28,9 +28,10 @@
         <Button
             android:text="@string/play_again"
             android:id="@+id/play_again"
-            android:background="@drawable/button_blue"
-            style="@style/button_text"
-            android:onClick="playAgainButtonClicked" />
+            android:theme="@style/defaultButton"
+            android:onClick="playAgainButtonClicked"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent" />
     </FrameLayout>
 
 </LinearLayout>

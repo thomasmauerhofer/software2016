@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.bitschupfa.sw16.yaq.R;
@@ -17,7 +18,7 @@ import java.util.TimerTask;
 
 public class GameAtHost extends Game {
 
-    private RelativeLayout askedView;
+    private LinearLayout askedView;
     private Button nextQuestion;
 
     @Override
@@ -26,7 +27,7 @@ public class GameAtHost extends Game {
         HostGameLogic.getInstance().setGameActivity(this);
         ClientGameLogic.getInstance().setGameActivity(this);
 
-        askedView = (RelativeLayout) findViewById(R.id.questionAskedView);
+        askedView = (LinearLayout) findViewById(R.id.questionAskedView);
         nextQuestion = (Button) findViewById(R.id.next_question);
         enableShowNextQuestion(false);
 

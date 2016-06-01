@@ -29,7 +29,7 @@ class PlayerEntry {
         playerEntry.setText(R.string.player);
         String text = playerEntry.getText().toString()+ " " + String.valueOf(id);
         playerEntry.setText(text);
-        playerEntry.setTextColor(ContextCompat.getColor(playerEntry.getContext(), R.color.player_table_inactive));
+        playerEntry.setTextColor(ContextCompat.getColor(playerEntry.getContext(), R.color.grey500));
         playerEntry.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.icon_player_black, 0, 0, 0);
     }
 
