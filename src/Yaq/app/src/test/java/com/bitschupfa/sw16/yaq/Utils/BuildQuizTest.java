@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.activities.BuildQuiz.QuestionCatalogueItem;
-import com.bitschupfa.sw16.yaq.utils.CustomAdapter;
+import com.bitschupfa.sw16.yaq.ui.BuildQuizAdapter;
 
 import junit.framework.Assert;
 
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class BuildQuizTest extends InstrumentationTestCase{
 
-    private CustomAdapter mAdapter;
+    private BuildQuizAdapter mAdapter;
     private QuestionCatalogueItem item1;
     private QuestionCatalogueItem item2;
     private ListView listView;
@@ -36,7 +36,7 @@ public class BuildQuizTest extends InstrumentationTestCase{
         item2 = new QuestionCatalogueItem("question2", 1, 2, false, 3, context);
         data.add(item1);
         data.add(item2);
-        mAdapter = new CustomAdapter(context, 0, data, true, true, true);
+        mAdapter = new BuildQuizAdapter(context, 0, data, true, true, true);
     }
 
     @Test
@@ -81,7 +81,7 @@ public class BuildQuizTest extends InstrumentationTestCase{
 
         mAdapter.getFilter().filter(item1.getName());
 
-        CustomAdapter newAdapter = (CustomAdapter) listView.getAdapter();
+        BuildQuizAdapter newAdapter = (BuildQuizAdapter) listView.getAdapter();
 
         Assert.assertEquals("Names doesn't match.", item1.getName(), newAdapter.getItem(0).getName());
     }
@@ -97,7 +97,7 @@ public class BuildQuizTest extends InstrumentationTestCase{
         CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkMedium);
         checkBox.setChecked(true);
 
-        CustomAdapter newAdapter = (CustomAdapter) listView.getAdapter();
+        BuildQuizAdapter newAdapter = (BuildQuizAdapter) listView.getAdapter();
 
         Assert.assertEquals("Names doesn't match.", item2.getName(), newAdapter.getItem(0).getName());
     }

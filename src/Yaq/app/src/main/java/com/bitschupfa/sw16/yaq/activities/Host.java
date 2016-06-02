@@ -21,7 +21,6 @@ import com.bitschupfa.sw16.yaq.bluetooth.ConnectionListener;
 import com.bitschupfa.sw16.yaq.communication.ConnectedClientDevice;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
 import com.bitschupfa.sw16.yaq.communication.ConnectedHostDevice;
-import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
 import com.bitschupfa.sw16.yaq.game.ClientGameLogic;
 import com.bitschupfa.sw16.yaq.game.HostGameLogic;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
@@ -36,11 +35,11 @@ import java.net.Socket;
 
 public class Host extends AppCompatActivity implements Lobby {
     private static final int REQUEST_ENABLE_DISCOVERABLE_BT = 42;
+    private static final int BUILD_QUIZ = 1;
 
     private final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
     private final ConnectionListener btConnectionListener = new ConnectionListener();
     private PlayerList playerList = new PlayerList(this);
-    private Quiz quiz;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +47,9 @@ public class Host extends AppCompatActivity implements Lobby {
         setContentView(R.layout.activity_host);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        TextView numberOfQuestions = (TextView) findViewById(R.id.numberOfQuestions);
+        numberOfQuestions.setText(getResources().getString(R.string.numberQuestionsText) + " " + 0);
 
         ClientGameLogic.getInstance().setLobbyActivity(this);
 
@@ -59,7 +61,7 @@ public class Host extends AppCompatActivity implements Lobby {
             }
         }
 
-        HostGameLogic.getInstance().setQuiz(this.buildTmpQuiz());
+        HostGameLogic.getInstance().setQuiz(getQuiz());
         selfConnectionHack();
     }
 
@@ -71,13 +73,17 @@ public class Host extends AppCompatActivity implements Lobby {
     }
 
     public void startButtonClicked(View view) {
+        if(getQuiz().getNumberOfQuestions() == 0) {
+            Toast.makeText(this, R.string.noQuestionsSelected, Toast.LENGTH_LONG).show();
+            return;
+        }
         HostGameLogic.getInstance().startGame();
     }
 
     @SuppressWarnings("UnusedParameters")
     public void buildQuizButtonClicked(View view) {
         Intent intent = new Intent(Host.this, BuildQuiz.class);
-        startActivity(intent);
+        startActivityForResult(intent, BUILD_QUIZ);
     }
 
     @SuppressWarnings("UnusedParameters")
@@ -124,6 +130,10 @@ public class Host extends AppCompatActivity implements Lobby {
                     Log.d("BT", "Could not enable discoverability.");
                     finish();
                 }
+                break;
+            case BUILD_QUIZ:
+                TextView numberOfQuestions = (TextView) findViewById(R.id.numberOfQuestions);
+                numberOfQuestions.setText(getResources().getString(R.string.numberQuestionsText) + " " + getQuiz().getNumberOfQuestions());
                 break;
             default:
                 Log.d("Host:onActivityResult", "unknown requestCode: " + resultCode);
@@ -219,14 +229,8 @@ public class Host extends AppCompatActivity implements Lobby {
         }).start();
     }
 
-    private Quiz buildTmpQuiz() {
-        /*Quiz quiz = new Quiz();
-        QuestionQuerier questionQuerier = new QuestionQuerier(this);
-        quiz.addQuestions(questionQuerier.getAllQuestionsFromCatalog(1));
-        return quiz;*/
-
+    private Quiz getQuiz() {
         QuizMonitor app = (QuizMonitor) getApplication();
-
         return app.getQuizClass();
     }
 }

@@ -21,6 +21,10 @@ public class Quiz implements Iterator<TextQuestion> {
         Collections.shuffle(questions);
     }
 
+    public int getNumberOfQuestions() {
+        return questions.size();
+    }
+
     public void setCurrentPosition(int position_) {
         currentPosition = position_;
     }

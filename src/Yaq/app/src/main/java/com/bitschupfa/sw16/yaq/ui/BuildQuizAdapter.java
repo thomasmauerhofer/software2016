@@ -1,4 +1,4 @@
-package com.bitschupfa.sw16.yaq.utils;
+package com.bitschupfa.sw16.yaq.ui;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class CustomAdapter extends ArrayAdapter<QuestionCatalogueItem> implements Filterable {
+public class BuildQuizAdapter extends ArrayAdapter<QuestionCatalogueItem> implements Filterable {
 
     public ArrayList<QuestionCatalogueItem> questionCatalagoueItem;
 
@@ -31,9 +31,9 @@ public class CustomAdapter extends ArrayAdapter<QuestionCatalogueItem> implement
     private boolean checkBoxMedium;
     private boolean checkBoxHard;
 
-    public CustomAdapter(Context context, int textViewResourceId,
-                         ArrayList<QuestionCatalogueItem> questionCatalogueList, boolean checkBoxEasy,
-                         boolean checkBoxMedium, boolean checkBoxHard) {
+    public BuildQuizAdapter(Context context, int textViewResourceId,
+                            ArrayList<QuestionCatalogueItem> questionCatalogueList, boolean checkBoxEasy,
+                            boolean checkBoxMedium, boolean checkBoxHard) {
         super(context, textViewResourceId, questionCatalogueList);
         this.questionCatalagoueItem = new ArrayList<>();
         this.questionCatalagoueItem.addAll(questionCatalogueList);
@@ -47,6 +47,8 @@ public class CustomAdapter extends ArrayAdapter<QuestionCatalogueItem> implement
 
     private class ViewHolder {
         TextView name;
+        TextView numberOfQuestions;
+        TextView diffucultly;
         CheckBox checkBox;
     }
 
@@ -72,6 +74,8 @@ public class CustomAdapter extends ArrayAdapter<QuestionCatalogueItem> implement
 
             holder = new ViewHolder();
             holder.name = (TextView) convertView.findViewById(R.id.name);
+            holder.numberOfQuestions = (TextView) convertView.findViewById(R.id.numberQuestions);
+            holder.diffucultly = (TextView) convertView.findViewById(R.id.difficulty);
             holder.checkBox = (CheckBox) convertView.findViewById(R.id.checkbox);
             convertView.setTag(holder);
 
@@ -88,23 +92,25 @@ public class CustomAdapter extends ArrayAdapter<QuestionCatalogueItem> implement
 
         QuestionCatalogueItem item = getItem(position);
 
-        String diff = "";
+        String diff;
 
         switch (item.getDifficulty()) {
             case 1:
-                diff = "EASY";
+                diff = getContext().getString(R.string.easy);
                 break;
             case 2:
-                diff = "MEDIUM";
+                diff = getContext().getString(R.string.medium);
                 break;
             case 3:
-                diff = "HARD";
+                diff = getContext().getString(R.string.hard);
                 break;
             default:
-                diff = "NO DIFFICULTY";
+                diff = getContext().getString(R.string.noDifficulty);
                 break;
         }
-        holder.name.setText(item.getName() + " (" + String.valueOf(item.getQuestionsCounter()) + " questions)" + " - " + diff);
+        holder.name.setText(item.getName());
+        holder.numberOfQuestions.setText(String.valueOf(item.getQuestionsCounter()) + " " + getContext().getString(R.string.questions));
+        holder.diffucultly.setText(diff);
         holder.checkBox.setChecked(item.isChecked());
         holder.checkBox.setTag(item);
 

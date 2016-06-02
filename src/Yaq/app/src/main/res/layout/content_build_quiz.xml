@@ -1,78 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activities.BuildQuiz"
-    tools:showIn="@layout/activity_build_quiz">
+    tools:showIn="@layout/activity_build_quiz"
+    android:orientation="vertical"
+    android:weightSum="20">
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-            <TextView
-                android:id="@+id/item"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
-
-        <EditText
-            android:id="@+id/EditTextBuildQuiz"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_search_quiz"
-            android:inputType="textVisiblePassword"
-            android:textColor="@color/colorPrimaryDark"
-            android:theme="@android:style/Theme.Holo">
-        </EditText>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:theme="@android:style/Theme.Holo">
-
-                <CheckBox
-                    android:id="@+id/checkEasy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/checkEasy"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:checked="true"
-                    android:onClick="onCheckboxClicked"/>
-
-                <CheckBox
-                    android:id="@+id/checkMedium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/checkMedium"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:checked="true"
-                    android:onClick="onCheckboxClicked"/>
-
-                <CheckBox
-                    android:id="@+id/checkHard"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/checkHard"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:checked="true"
-                    android:onClick="onCheckboxClicked"/>
-
-            </LinearLayout>
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="3">
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:theme="@android:style/Theme.Holo"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="15dp">
 
             <Button
                 android:id="@+id/nPB1"
@@ -119,6 +69,52 @@
 
         </LinearLayout>
 
+        <EditText
+            android:id="@+id/EditTextBuildQuiz"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_search_quiz"
+            android:inputType="textVisiblePassword"
+            android:textColor="@color/colorPrimaryDark"
+            android:theme="@android:style/Theme.Holo"
+            android:paddingTop="15dp">
+        </EditText>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:theme="@android:style/Theme.Holo">
+
+                <CheckBox
+                    android:id="@+id/checkEasy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/checkEasy"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:checked="true"
+                    android:onClick="onCheckboxClicked"/>
+
+                <CheckBox
+                    android:id="@+id/checkMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/checkMedium"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:checked="true"
+                    android:onClick="onCheckboxClicked"/>
+
+                <CheckBox
+                    android:id="@+id/checkHard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/checkHard"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:checked="true"
+                    android:onClick="onCheckboxClicked"/>
+
+            </LinearLayout>
+
         <View
             android:layout_width="fill_parent"
             android:layout_height="5dip"
@@ -134,14 +130,23 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/ButtonBuildQuiz"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="@string/submit_quiz"
-        android:background="@drawable/button_blue"
-        style="@style/button_text">
-    </Button>
+        android:layout_height="match_parent"
+        android:layout_weight="17"
+        android:gravity="center_vertical">
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/ButtonBuildQuiz"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            android:text="@string/submit_quiz"
+            android:background="@drawable/button_blue"
+            style="@style/button_text"
+            android:gravity="center_horizontal">
+        </Button>
+    </LinearLayout>
+
+</LinearLayout>

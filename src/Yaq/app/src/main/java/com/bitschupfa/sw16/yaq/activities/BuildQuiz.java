@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -19,7 +22,7 @@ import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
 import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
-import com.bitschupfa.sw16.yaq.utils.CustomAdapter;
+import com.bitschupfa.sw16.yaq.ui.BuildQuizAdapter;
 import com.bitschupfa.sw16.yaq.utils.QuizMonitor;
 
 import java.util.ArrayList;
@@ -36,7 +39,7 @@ public class BuildQuiz extends AppCompatActivity {
     private List<QuestionCatalog> questionCatalogList;
     private ArrayList<TextQuestion> questions = new ArrayList<>();
     private ArrayList<QuestionCatalogueItem> qCList = new ArrayList<>();
-    private CustomAdapter dataAdapter = null;
+    private BuildQuizAdapter dataAdapter = null;
     private EditText searchText;
     private TextView numberPicker;
     private Button numberPickerButton1;
@@ -79,7 +82,7 @@ public class BuildQuiz extends AppCompatActivity {
             qCList.add(qCatalogueItem);
         }
 
-        dataAdapter = new CustomAdapter(this, R.layout.list_build_quiz, qCList, true, true, true);
+        dataAdapter = new BuildQuizAdapter(this, R.layout.list_build_quiz, qCList, true, true, true);
         listView = (ListView) findViewById(R.id.ListViewBuildQuiz);
         listView.setAdapter(dataAdapter);
     }
@@ -187,7 +190,7 @@ public class BuildQuiz extends AppCompatActivity {
                 }
 
                 responseText.append("\n\nquestions: " + questions.size());
-                Toast.makeText(getApplicationContext(), responseText, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), responseText, Toast.LENGTH_LONG).show();
 
                 QuizMonitor app = (QuizMonitor) getApplication();
                 if (app.getQuizClass() != null) {
