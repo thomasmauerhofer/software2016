@@ -169,11 +169,16 @@ public class BuildQuiz extends AppCompatActivity {
                 ArrayList<QuestionCatalogueItem> questionCatalogueList = dataAdapter.questionCatalagoueItem;
                 ArrayList<TextQuestion> questionsToAdded = new ArrayList<>();
 
-                int checkedItemCount = getNumberOfCheckedItems(questionCatalogueList);
-                int questionsPerCatalogue = 0;
+                double checkedItemCount = getNumberOfCheckedItems(questionCatalogueList);
+                double questionsPerCatalogue = 0;
+                boolean hasDecimal = false;
 
                 if (checkedItemCount > 0) {
-                    questionsPerCatalogue = numberOfQuestions / checkedItemCount;
+                    questionsPerCatalogue = (numberOfQuestions / checkedItemCount);
+                    if(questionsPerCatalogue % 1 != 0) {
+                        questionsPerCatalogue += 0.5;
+                        hasDecimal = true;
+                    }
                 }
 
                 for (int i = 0; i < questionCatalogueList.size(); i++) {
@@ -183,10 +188,14 @@ public class BuildQuiz extends AppCompatActivity {
 
                         questionsToAdded.addAll(questionQuerier.getAllQuestionsFromCatalog(item.getId()));
 
-                        questions.addAll(buildQuestions(questionsToAdded, questionsPerCatalogue));
+                        questions.addAll(buildQuestions(questionsToAdded, (int) questionsPerCatalogue));
 
                         questionsToAdded.clear();
                     }
+                }
+
+                while (questions.size() != numberOfQuestions && hasDecimal) {
+                    questions.remove(0);
                 }
 
                 responseText.append("\n\nquestions: " + questions.size());
