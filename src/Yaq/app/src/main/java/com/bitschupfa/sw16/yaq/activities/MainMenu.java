@@ -58,12 +58,15 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
 
         refreshProfileInNavigationHeader();
 
+        AnimationDrawable drawerBackgroundAnimation = (AnimationDrawable) navigationView.getBackground();
+        drawerBackgroundAnimation.start();
     }
 
-    public void refreshProfileInNavigationHeader(){
+    public void refreshProfileInNavigationHeader() {
         profilePicture.setImageBitmap(profileStorage.getPlayerAvatar());
         profileName.setText(profileStorage.getPlayerName());
     }
+
     @SuppressWarnings("UnusedParameters")
     public void hostButtonClicked(View view) {
         Intent intent = new Intent(MainMenu.this, Host.class);
