@@ -52,17 +52,19 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/question_border"
+            android:layout_margin="@dimen/question_border_margin"
+
+        >
 
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:id="@+id/question"
-                android:background="@drawable/question_border"
                 android:layout_margin="@dimen/fab_margin"
-                android:gravity="center"
-                android:layout_weight="8"/>
+                android:gravity="center" />
 
             <Button
                 android:layout_width="match_parent"

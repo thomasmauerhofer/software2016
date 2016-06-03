@@ -2,9 +2,22 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="nav_header_offset">40dp</dimen>
-    <dimen name="nav_header_height">160dp</dimen>
+
+    <!-- other dimens -->
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="question_border_margin">3dp</dimen>
     <dimen name="button_margin">5dp</dimen>
-    <dimen name="navigation_header_name_margin">15dp</dimen>
+
+    <!-- navigation header dimens -->
+    <dimen name="navigation_header_offset_top">38dp</dimen>
+    <dimen name="navigation_header_offset_left">16dp</dimen>
+    <dimen name="navigation_header_margin_top_subtext">5dp</dimen>
+    <dimen name="navigation_header_text_size">14sp</dimen>
+    <dimen name="navigation_header_height">178dp</dimen>
+    <dimen name="navigation_header_text_area">56dp</dimen>
+
+    <!-- theme chooser dimens -->
+    <dimen name="theme_chooser_list_view_entry_text_size">18sp</dimen>
+    <dimen name="theme_chooser_list_view_entry_padding">10dp</dimen>
+
 </resources>
