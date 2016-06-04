@@ -69,4 +69,5 @@
     <string name="error_cant_show_score">An error occurs while showing scores!</string>
     <string name="error_cant_connect">An error occurs while create connection!</string>
     <string name="not_implemented">Not implemented yet!</string>
+    <string name="chromecast">Cast</string>
 </resources>

@@ -14,15 +14,15 @@
         android:icon="@drawable/ic_settings_black_24dp"
         app:showAsAction="never" />
     <item
-        android:id="@+id/menu_help"
-        android:orderInCategory="100"
-        android:title="@string/action_help"
-        android:icon="@drawable/ic_help_black_24dp"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/menu_themes"
         android:orderInCategory="100"
         android:title="@string/action_themes"
         android:icon="@drawable/ic_brightness_6_black_24dp"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_help"
+        android:orderInCategory="100"
+        android:title="@string/action_help"
+        android:icon="@drawable/ic_help_black_24dp"
         app:showAsAction="never" />
 </menu>
