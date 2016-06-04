@@ -7,8 +7,6 @@ import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
 
-
-
 class PlayerEntry {
 
     private TextView playerEntry = null;

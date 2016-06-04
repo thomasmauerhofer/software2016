@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -20,7 +19,7 @@ import com.soundcloud.android.crop.Crop;
 import java.io.File;
 import java.io.IOException;
 
-public class Profile extends AppCompatActivity {
+public class Profile extends YaqActivity {
     private final static String TAG = "ProfileActivity";
 
     private PlayerProfileStorage profile;
@@ -45,6 +44,12 @@ public class Profile extends AppCompatActivity {
                 Crop.pickImage(Profile.this);
             }
         });
+        handleTheme();
+    }
+
+    @Override
+    protected void handleTheme() {
+        setBackgroundImage();
     }
 
     @Override

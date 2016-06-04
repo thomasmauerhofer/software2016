@@ -9,6 +9,42 @@
         <item name="android:windowBackground">@color/background</item>
     </style>
 
+    <style name="AppTheme.Blue" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/blue500</item>
+        <item name="colorPrimaryDark">@color/blue900</item>
+        <item name="colorAccent">@color/blue500</item>
+        <item name="android:windowBackground">@color/background</item>
+    </style>
+
+    <style name="AppTheme.Green" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/greenlight500</item>
+        <item name="colorPrimaryDark">@color/greenlight900</item>
+        <item name="colorAccent">@color/greenlight500</item>
+        <item name="android:windowBackground">@color/background</item>
+    </style>
+
+    <style name="AppTheme.Teal" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/teal500</item>
+        <item name="colorPrimaryDark">@color/teal900</item>
+        <item name="colorAccent">@color/teal500</item>
+        <item name="android:windowBackground">@color/background</item>
+    </style>
+
+    <style name="AppTheme.Pink" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/pink500</item>
+        <item name="colorPrimaryDark">@color/pink900</item>
+        <item name="colorAccent">@color/pink500</item>
+        <item name="android:windowBackground">@color/background</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -21,6 +57,10 @@
     <style name="defaultButton" parent="Widget.AppCompat.Button.Colored">
         <item name="colorButtonNormal">@color/colorPrimary</item>
         <item name="android:textColorPrimary">#fff</item>
+    </style>
+
+    <style name="text_button" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textColor">#fff</item>
     </style>
 
     <style name="table_text_gray">

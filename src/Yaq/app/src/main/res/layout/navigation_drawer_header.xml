@@ -3,7 +3,7 @@
     android:id="@+id/navigation_drawer_header"
     android:layout_width="match_parent"
     android:layout_height="@dimen/navigation_header_height"
-    android:background="@drawable/sidebar_animation"
+    android:background="@drawable/sidebar_animation_pink"
     android:orientation="vertical"
     android:weightSum="1">
 

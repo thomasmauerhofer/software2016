@@ -1,13 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="background">#cae2ff</color>
-    <color name="colorPrimary">#f48fb1</color>
-    <color name="colorPrimaryDark">#880e4f</color>
+    <color name="colorPrimary">#2196f3</color>
+    <color name="colorPrimary600">#1e88e5</color>
+    <color name="colorPrimaryDark">#0d47a1</color>
+
     <color name="whiteBackground">#F1F3FF</color>
     <color name="white">#FFFFFF</color>
-    <color name="teal500">#f48fb1</color>
-    <color name="teal600">#f48fb1</color>
+
     <color name="grey500">#9E9E9E</color>
-    <color name="green500">#4CAF50</color>
+    <color name="green500">#4caf50</color>
     <color name="red500">#F44336</color>
+
+    <color name="blue500">#2196f3</color>
+    <color name="blue600">#1e88e5</color>
+    <color name="blue900">#0d47a1</color>
+
+    <color name="teal500">#009688</color>
+    <color name="teal600">#00897b</color>
+    <color name="teal900">#004d40</color>
+
+    <color name="greenlight500">#8bc34a</color>
+    <color name="greenlight600">#7cb342</color>
+    <color name="greenlight900">#33691e</color>
+
+    <color name="pink500">#f8bbd0</color>
+    <color name="pink600">#d81b60</color>
+    <color name="pink900">#880e4f</color>
+
+
+
+
 </resources>

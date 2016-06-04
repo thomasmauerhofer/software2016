@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,7 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Join extends AppCompatActivity implements Lobby {
+public class Join extends YaqActivity implements Lobby {
     private final static String TAG = "JoinGameActivity";
     private final static int REQUEST_ENABLE_BT = 42;
     private final static int REQUEST_COARSE_LOCATION_PERMISSIONS = 43;
@@ -126,6 +125,12 @@ public class Join extends AppCompatActivity implements Lobby {
                 startTimer();
             }
         });
+        handleTheme();
+    }
+
+    @Override
+    protected void handleTheme() {
+        setBackgroundImage();
     }
 
     @Override

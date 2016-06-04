@@ -28,9 +28,8 @@
 
         <Button
             android:text="@string/build"
-            android:id="@+id/select"
+            android:id="@+id/host_select_button"
             android:layout_margin="@dimen/button_margin"
-            android:background="@drawable/button_style"
             android:theme="@style/defaultButton"
             android:onClick="buildQuizButtonClicked"
             android:layout_height="match_parent"
@@ -209,21 +208,17 @@
             android:gravity="center_horizontal">
 
             <Button
-                android:id="@+id/start_btn"
+                android:id="@+id/host_start_button"
                 android:text="@string/start_game"
                 android:layout_margin="@dimen/button_margin"
-                android:background="@drawable/button_style"
-                android:theme="@style/defaultButton"
                 android:onClick="startButtonClicked"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
             <Button
-                android:id="@+id/advanced_btn"
+                android:id="@+id/host_advanced_button"
                 android:text="@string/advanced_settings"
                 android:layout_margin="@dimen/button_margin"
-                android:background="@drawable/button_style"
-                android:theme="@style/defaultButton"
                 android:onClick="advancedSettingsButtonClicked"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

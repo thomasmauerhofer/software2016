@@ -9,10 +9,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,8 +32,10 @@ import com.bitschupfa.sw16.yaq.utils.Quiz;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Host extends AppCompatActivity implements Lobby {
+public class Host extends YaqActivity implements Lobby {
     private static final int REQUEST_ENABLE_DISCOVERABLE_BT = 42;
 
     private final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -59,6 +61,17 @@ public class Host extends AppCompatActivity implements Lobby {
 
         HostGameLogic.getInstance().setQuiz(this.buildTmpQuiz());
         selfConnectionHack();
+        handleTheme();
+    }
+
+    @Override
+    protected void handleTheme() {
+        List<Button> buttons = new ArrayList<>();
+        buttons.add((Button) findViewById(R.id.host_select_button));
+        buttons.add((Button) findViewById(R.id.host_advanced_button));
+        buttons.add((Button) findViewById(R.id.host_start_button));
+        styleButtons(buttons);
+        setBackgroundImage();
     }
 
     @Override

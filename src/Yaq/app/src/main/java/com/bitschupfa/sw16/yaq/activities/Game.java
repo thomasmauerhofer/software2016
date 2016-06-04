@@ -7,7 +7,6 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -27,14 +26,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-public class Game extends AppCompatActivity {
+public class Game extends YaqActivity {
     private static final String TAG = "GameActivity";
 
     private ProgressBar countdownTimerBar;
     private TextView countdownTimerText;
     private TextView questionView;
     private List<Button> answerButtons;
+    private List<Button> buttons;
 
     private Button answerButtonPressed;
     private Answer selectedAnswer;
@@ -61,6 +60,16 @@ public class Game extends AppCompatActivity {
                         (Button) findViewById(R.id.answer3), (Button) findViewById(R.id.answer4)
                 )
         );
+        handleTheme();
+    }
+
+    @Override
+    protected void handleTheme() {
+        buttons = new ArrayList<>();
+        buttons.addAll(answerButtons);
+        buttons.add((Button) findViewById(R.id.next_question));
+        styleButtons(buttons);
+        setBackgroundImage();
     }
 
     public void showStatisticActivity(ArrayList<RankingItem> scoreList) {
@@ -77,7 +86,7 @@ public class Game extends AppCompatActivity {
             public void run() {
                 setAnswerButtonsClickable(true);
                 for (Button answerButton : answerButtons) {
-                    answerButton.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.colorPrimary),
+                    answerButton.getBackground().setColorFilter(themeChooser.getThemeStorage().getPrimaryColor(),
                             PorterDuff.Mode.MULTIPLY);
                 }
 

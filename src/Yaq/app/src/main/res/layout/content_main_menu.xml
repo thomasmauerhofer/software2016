@@ -18,10 +18,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView"
-            android:src="@drawable/background_pink"
-
-
+            android:id="@+id/logoImageView"
             android:layout_gravity="center"
             android:contentDescription="@string/player"/>
         <TextView
@@ -40,7 +37,6 @@
             <Button
                 android:id="@+id/host_btn"
                 android:layout_margin="@dimen/button_margin"
-                android:background="@drawable/button_style"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/host"
@@ -54,7 +50,6 @@
                 android:layout_height="match_parent"
                 android:text="@string/join"
                 android:theme="@style/defaultButton"
-                android:background="@drawable/button_style"
                 android:onClick="joinButtonClicked"/>
 
         </LinearLayout>

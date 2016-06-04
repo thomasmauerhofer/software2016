@@ -7,10 +7,10 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,7 +18,10 @@ import android.widget.TextView;
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfileStorage;
 
-public class MainMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainMenu extends YaqActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public ImageView profilePicture;
     public TextView profileName;
@@ -28,14 +31,16 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
     public AnimationDrawable drawerBackgroundAnimation;
 
     public static final int NAVIGATION_VIEW_HEADER_INDEX = 0;
+    public static final int RESULT_FINISH = 99;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_menu);
 
+        setContentView(R.layout.activity_main_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         profileStorage = PlayerProfileStorage.getInstance(this);
         profilePicture = (ImageView) navigationView.getHeaderView(NAVIGATION_VIEW_HEADER_INDEX).findViewById(R.id.profileImageView);
@@ -44,6 +49,7 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
         drawerBackgroundAnimation = (AnimationDrawable) navigationDrawerHeader.getBackground();
 
         setSupportActionBar(toolbar);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
             @Override
@@ -55,14 +61,14 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
+                drawerBackgroundAnimation.stop();
+
             }
         };
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
-
-
 
         navigationDrawerHeader.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +78,25 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
         });
 
         refreshProfileInNavigationHeader();
+        handleTheme();
+    }
+
+    @Override
+    protected void handleTheme() {
+        List<Button> buttons = new ArrayList<>();
+
+        buttons.add((Button) findViewById(R.id.host_btn));
+        buttons.add((Button) findViewById(R.id.join_btn));
+
+        styleButtons(buttons);
+
+        ImageView logoImageView = (ImageView) findViewById(R.id.logoImageView);
+        logoImageView.setBackground(getDrawableByName(themeChooser.getThemeStorage().getLogoImageName())) ;
+
+        setBackgroundImage();
+        navigationDrawerHeader.setBackground(getDrawableByName(themeChooser.getThemeStorage().getNavigationDrawerImageName()));
+        drawerBackgroundAnimation = (AnimationDrawable) navigationDrawerHeader.getBackground();
+
     }
 
     public void refreshProfileInNavigationHeader() {
@@ -114,7 +139,7 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
         if (id == R.id.menu_settings) {
         } else if (id == R.id.menu_themes) {
             Intent intent = new Intent(MainMenu.this, Themes.class);
-            startActivity(intent);
+            startActivityForResult(intent, RESULT_FINISH); ;
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -125,5 +150,11 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
     protected void onResume() {
         super.onResume();
         refreshProfileInNavigationHeader();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        finish();
     }
 }
