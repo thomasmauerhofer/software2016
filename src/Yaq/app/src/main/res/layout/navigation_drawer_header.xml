@@ -37,6 +37,7 @@
             android:textSize="@dimen/navigation_header_text_size"
             android:textStyle="normal"
             />
+
     </LinearLayout>
 
     <de.hdodenhof.circleimageview.CircleImageView

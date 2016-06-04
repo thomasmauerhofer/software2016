@@ -9,62 +9,75 @@ import com.bitschupfa.sw16.yaq.R;
  */
 public class ThemeChooser {
 
-    public final static int THEMEBLUE = 0;
-    public final static int THEMEGREEN = 1;
-    public final static int THEMEHELLOKITTY = 2;
-    public final static int THEMETEAL = 3;
+    public final static int THEME_BLUE = 0;
+    public final static int THEME_GREEN = 1;
+    public final static int THEME_HELLOKITTY = 2;
+    public final static int THEME_TEAL = 3;
 
-    private Activity activity;
+    public final static String BACKGROUND_GREEN = "background_green_grass";
+    public final static String LOGO_GREEN = "background_green";
+    public final static String SIDEBAR_BACKGROUND_GREEN = "sidebar_animation_green";
+
+    public final static String BACKGROUND_BLUE = "background_blue_grass";
+    public final static String LOGO_BLUE = "background_blue";
+    public final static String SIDEBAR_BACKGROUND_BLUE = "sidebar_animation_blue";
+
+    public final static String BACKGROUND_PINK = "background_pink_grass";
+    public final static String LOGO_PINK = "background_pink";
+    public final static String SIDEBAR_BACKGROUND_PINK = "sidebar_animation_pink";
+
+    public final static String BACKGROUND_TEAL = "background_teal_grass";
+    public final static String LOGO_TEAL = "background_teal";
+    public final static String SIDEBAR_BACKGROUND_TEAL = "sidebar_animation_teal";
+
     public ThemeStorage themeStorage;
     public Theme theme;
 
-
     public ThemeChooser(Activity activity){
-        this.activity = activity;
         themeStorage = ThemeStorage.getInstance(activity);
     }
 
     public void setTheme(int themeID){
         switch (themeID){
-            case THEMEBLUE:
-                theme = new Theme(THEMEBLUE,
+            case THEME_BLUE:
+                theme = new Theme(THEME_BLUE,
                         R.color.blue500,
                         R.color.blue900,
                         R.color.blue600,
-                        "background_blue_grass",
-                        "background_blue",
-                        "background_blue_blue");
+                        BACKGROUND_BLUE,
+                        LOGO_BLUE,
+                        SIDEBAR_BACKGROUND_BLUE);
                 setTheme(theme);
 
                 break;
-            case THEMEGREEN:
-                theme = new Theme(THEMEGREEN,
+            case THEME_GREEN:
+                theme = new Theme(THEME_GREEN,
                         R.color.greenlight500,
                         R.color.greenlight900,
                         R.color.greenlight600,
-                        "background_green_grass",
-                        "background_green",
-                        "sidebar_animation_green");
+                        BACKGROUND_GREEN,
+                        LOGO_GREEN,
+                        SIDEBAR_BACKGROUND_GREEN);
                 setTheme(theme);
                 break;
-            case THEMEHELLOKITTY:
-                theme = new Theme(THEMEHELLOKITTY,
+            case THEME_HELLOKITTY:
+                theme = new Theme(THEME_HELLOKITTY,
                         R.color.pink500,
                         R.color.pink900,
                         R.color.pink600,
-                        "background_pink_grass",
-                        "background_pink",
-                        "sidebar_animation_pink" );
+                        BACKGROUND_PINK,
+                        LOGO_PINK,
+                        SIDEBAR_BACKGROUND_PINK);
                 setTheme(theme);
                 break;
-            case THEMETEAL:
-                theme = new Theme(THEMETEAL,
+            case THEME_TEAL:
+                theme = new Theme(THEME_TEAL,
                         R.color.teal500,
                         R.color.teal900,
                         R.color.teal600,
-                        "background_teal_grass",
-                        "background_teal",
-                        "sidebar_animation_teal");
+                        BACKGROUND_TEAL,
+                        LOGO_TEAL,
+                        SIDEBAR_BACKGROUND_TEAL);
                 setTheme(theme);
                 break;
         }

@@ -24,6 +24,7 @@ public class ThemeListAdapter extends ArrayAdapter<String> {
     private final Themes themeActivity;
     private final ThemeChooser themeChooser;
     private final List<String> names;
+    public ViewHolder holder;
 
     static class ViewHolder {
         public TextView themeNameTextView;
@@ -51,7 +52,7 @@ public class ThemeListAdapter extends ArrayAdapter<String> {
             rowView.setTag(viewHolder);
         }
 
-        ViewHolder holder = (ViewHolder) rowView.getTag();
+        holder = (ViewHolder) rowView.getTag();
         String themeName = names.get(position);
         holder.themeNameTextView.setText(themeName);
 
@@ -65,24 +66,25 @@ public class ThemeListAdapter extends ArrayAdapter<String> {
                 holder.themeImageImageView.setImageResource(R.drawable.defaultpreview);
             }
         }
-
         holder.themePreviewLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (position) {
-                    case ThemeChooser.THEMEBLUE:
-                        themeChooser.setTheme(ThemeChooser.THEMEBLUE);
+                    case ThemeChooser.THEME_BLUE:
+                        themeChooser.setTheme(ThemeChooser.THEME_BLUE);
+                        holder.themePreviewLayout.setAlpha(0.5f);
                         break;
-                    case ThemeChooser.THEMEGREEN:
-                        themeChooser.setTheme(ThemeChooser.THEMEGREEN);
+                    case ThemeChooser.THEME_GREEN:
+                        themeChooser.setTheme(ThemeChooser.THEME_GREEN);
                         break;
-                    case ThemeChooser.THEMEHELLOKITTY:
-                        themeChooser.setTheme(ThemeChooser.THEMEHELLOKITTY);
+                    case ThemeChooser.THEME_HELLOKITTY:
+                        themeChooser.setTheme(ThemeChooser.THEME_HELLOKITTY);
                         break;
-                    case ThemeChooser.THEMETEAL:
-                        themeChooser.setTheme(ThemeChooser.THEMETEAL);
+                    case ThemeChooser.THEME_TEAL:
+                        themeChooser.setTheme(ThemeChooser.THEME_TEAL);
                         break;
                 }
+                holder.themePreviewLayout.setAlpha(0.5f);
                 themeActivity.finishActivity(MainMenu.RESULT_FINISH);
                 themeActivity.finish();
                 Intent intent = new Intent(themeActivity, MainMenu.class);

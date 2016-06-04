@@ -28,13 +28,13 @@ public class ThemeStorage {
         preferences = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         this.context = context;
 
-        setThemeId(ThemeChooser.THEMEBLUE);
+        setThemeId(ThemeChooser.THEME_BLUE);
         setPrimaryColor(ContextCompat.getColor(context, R.color.colorPrimary));
         setPrimaryColorDark(ContextCompat.getColor(context,R.color.colorPrimaryDark));
         setPrimaryColor600(ContextCompat.getColor(context,R.color.colorPrimary600));
-        setBackgroundImageName("background_blue_grass");
-        setLogoImageName("background_blue");
-        setNavigationDrawerImageName("sidebar_animation_blue");
+        setBackgroundImageName(ThemeChooser.BACKGROUND_BLUE);
+        setLogoImageName(ThemeChooser.LOGO_BLUE);
+        setNavigationDrawerImageName(ThemeChooser.SIDEBAR_BACKGROUND_BLUE);
     }
 
     public static ThemeStorage getInstance(Context context) {

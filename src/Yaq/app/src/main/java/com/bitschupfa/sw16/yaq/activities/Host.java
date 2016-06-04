@@ -48,6 +48,7 @@ public class Host extends YaqActivity implements Lobby {
         setContentView(R.layout.activity_host);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ClientGameLogic.getInstance().setLobbyActivity(this);
 

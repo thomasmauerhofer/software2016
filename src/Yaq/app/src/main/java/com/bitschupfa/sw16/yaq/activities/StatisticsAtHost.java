@@ -9,6 +9,7 @@ public class StatisticsAtHost extends Statistic {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @SuppressWarnings("UnusedParameters")

@@ -23,16 +23,16 @@ public abstract class YaqActivity extends AppCompatActivity {
         themeChooser = new ThemeChooser(this);
         currentTheme = themeChooser.getThemeStorage().getThemeId();
         switch(currentTheme){
-            case ThemeChooser.THEMEBLUE:
+            case ThemeChooser.THEME_BLUE:
                 setTheme(R.style.AppTheme_Blue);
                 break;
-            case ThemeChooser.THEMEGREEN:
+            case ThemeChooser.THEME_GREEN:
                 setTheme(R.style.AppTheme_Green);
                 break;
-            case ThemeChooser.THEMEHELLOKITTY:
+            case ThemeChooser.THEME_HELLOKITTY:
                 setTheme(R.style.AppTheme_Pink);
                 break;
-            case ThemeChooser.THEMETEAL:
+            case ThemeChooser.THEME_TEAL:
                 setTheme(R.style.AppTheme_Teal);
                 break;
         }
@@ -42,16 +42,16 @@ public abstract class YaqActivity extends AppCompatActivity {
 
     protected void styleButtons(List<Button> buttons){
         switch(currentTheme){
-            case ThemeChooser.THEMEBLUE:
+            case ThemeChooser.THEME_BLUE:
                 styleButtonLogic(buttons,R.drawable.button_blue);
                 break;
-            case ThemeChooser.THEMEGREEN:
+            case ThemeChooser.THEME_GREEN:
                 styleButtonLogic(buttons,R.drawable.button_green);
                 break;
-            case ThemeChooser.THEMEHELLOKITTY:
+            case ThemeChooser.THEME_HELLOKITTY:
                 styleButtonLogic(buttons,R.drawable.button_pink);
                 break;
-            case ThemeChooser.THEMETEAL:
+            case ThemeChooser.THEME_TEAL:
                 styleButtonLogic(buttons,R.drawable.button_teal);
                 break;
         }

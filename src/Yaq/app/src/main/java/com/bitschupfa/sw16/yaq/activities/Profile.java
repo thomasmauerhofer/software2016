@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -30,6 +31,11 @@ public class Profile extends YaqActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         FloatingActionButton actionButton = (FloatingActionButton) findViewById(R.id.fab);
         nameTextBox = (EditText) findViewById(R.id.txt_playerName);

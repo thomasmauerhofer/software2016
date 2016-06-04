@@ -26,6 +26,7 @@ public class Statistic extends YaqActivity {
         setContentView(R.layout.activity_statistic);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         list = (ListView)findViewById(R.id.ranking);
         ranking = new RankingList(this, new ArrayList<RankingItem>());

@@ -101,6 +101,8 @@ public class Join extends YaqActivity implements Lobby {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         ClientGameLogic.getInstance().setLobbyActivity(this);
 
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);

@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -32,6 +33,7 @@ public class Game extends YaqActivity {
     private ProgressBar countdownTimerBar;
     private TextView countdownTimerText;
     private TextView questionView;
+    protected LinearLayout questionViewLL;
     private List<Button> answerButtons;
     private List<Button> buttons;
 
@@ -53,6 +55,7 @@ public class Game extends YaqActivity {
         countdownTimerBar = (ProgressBar) findViewById(R.id.barTimer);
         countdownTimerText = (TextView) findViewById(R.id.time);
         questionView = (TextView) findViewById(R.id.question);
+        questionViewLL = (LinearLayout) findViewById(R.id.questionOverlay);
 
         answerButtons = new ArrayList<>(
                 Arrays.asList(
@@ -89,7 +92,6 @@ public class Game extends YaqActivity {
                     answerButton.getBackground().setColorFilter(themeChooser.getThemeStorage().getPrimaryColor(),
                             PorterDuff.Mode.MULTIPLY);
                 }
-
                 questionView.setText(question.getQuestion());
 
                 List<Answer> answers = question.getShuffledAnswers();

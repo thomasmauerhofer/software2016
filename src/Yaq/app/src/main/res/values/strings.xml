@@ -60,6 +60,10 @@
 
     <!-- ThemesActivity -->
     <string name="title_activity_themes">Themes</string>
+    <string name="theme1">Blue</string>
+    <string name="theme2">Green</string>
+    <string name="theme3">Hello Kitty Special</string>
+    <string name="theme4">Teal</string>
 
     <!-- ErrorStrings -->
     <string name="error_cant_show_score">An error occurs while showing scores!</string>

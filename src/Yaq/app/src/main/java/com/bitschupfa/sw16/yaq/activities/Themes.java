@@ -21,6 +21,7 @@ public class Themes extends YaqActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ListView themesListView = (ListView) findViewById(R.id.themesListView);
 
@@ -39,18 +40,14 @@ public class Themes extends YaqActivity {
 
     private void initThemes(){
         themes = new ArrayList<>();
-        themes.add("Blue");
-        themes.add("Green");
-        themes.add("Hello Kitty Special");
-        themes.add("Teal");
+        themes.add(getString(R.string.theme1));
+        themes.add(getString(R.string.theme2));
+        themes.add(getString(R.string.theme3));
+        themes.add(getString(R.string.theme4));
     }
 
     public List<String> getThemeList(){
         return themes;
-    }
-
-    public String getThemeNameLC(int index){
-        return themes.get(index).toLowerCase().replace(" ","");
     }
 
 }
