@@ -27,14 +27,19 @@ public class ThemeStorage {
     private ThemeStorage(Context context) {
         preferences = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         this.context = context;
+        initDefaultValues();
+    }
 
-        setThemeId(ThemeChooser.THEME_BLUE);
-        setPrimaryColor(ContextCompat.getColor(context, R.color.colorPrimary));
-        setPrimaryColorDark(ContextCompat.getColor(context,R.color.colorPrimaryDark));
-        setPrimaryColor600(ContextCompat.getColor(context,R.color.colorPrimary600));
-        setBackgroundImageName(ThemeChooser.BACKGROUND_BLUE);
-        setLogoImageName(ThemeChooser.LOGO_BLUE);
-        setNavigationDrawerImageName(ThemeChooser.SIDEBAR_BACKGROUND_BLUE);
+    private void initDefaultValues(){
+        if(getThemeId() == -1) {
+            setThemeId(ThemeChooser.THEME_BLUE);
+            setPrimaryColor(ContextCompat.getColor(context, R.color.colorPrimary));
+            setPrimaryColorDark(ContextCompat.getColor(context, R.color.colorPrimaryDark));
+            setPrimaryColor600(ContextCompat.getColor(context, R.color.colorPrimary600));
+            setBackgroundImageName(ThemeChooser.BACKGROUND_BLUE);
+            setLogoImageName(ThemeChooser.LOGO_BLUE);
+            setNavigationDrawerImageName(ThemeChooser.SIDEBAR_BACKGROUND_BLUE);
+        }
     }
 
     public static ThemeStorage getInstance(Context context) {
@@ -61,7 +66,7 @@ public class ThemeStorage {
     }
 
     public int getPrimaryColor() {
-        int color = preferences.getInt(PREF_PRIMARY_COLOR_KEY, 0);
+        int color = preferences.getInt(PREF_PRIMARY_COLOR_KEY, -1);
         return color;
     }
 
@@ -72,7 +77,7 @@ public class ThemeStorage {
     }
 
     public int getPrimaryColorDark() {
-        int color = preferences.getInt(PREF_PRIMARY_COLOR_DARK_KEY, 0);
+        int color = preferences.getInt(PREF_PRIMARY_COLOR_DARK_KEY, -1);
         return color;
     }
 
@@ -83,7 +88,7 @@ public class ThemeStorage {
     }
 
     public int getPrimaryColor600() {
-        int color = preferences.getInt(PREF_PRIMARY_COLOR_600_KEY, 0);
+        int color = preferences.getInt(PREF_PRIMARY_COLOR_600_KEY, -1);
         return color;
     }
 
