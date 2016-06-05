@@ -33,6 +33,7 @@ import com.bitschupfa.sw16.yaq.profile.PlayerProfileStorage;
 import com.bitschupfa.sw16.yaq.ui.PlayerList;
 import com.bitschupfa.sw16.yaq.utils.CastHelper;
 import com.bitschupfa.sw16.yaq.utils.Quiz;
+import com.bitschupfa.sw16.yaq.utils.QuizMonitor;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -44,6 +45,7 @@ public class Host extends AppCompatActivity implements Lobby {
     private final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
     private final ConnectionListener btConnectionListener = new ConnectionListener();
     private PlayerList playerList = new PlayerList(this);
+    private Quiz quiz;
 
     private CastHelper castHelper;
 
@@ -102,7 +104,8 @@ public class Host extends AppCompatActivity implements Lobby {
 
     @SuppressWarnings("UnusedParameters")
     public void buildQuizButtonClicked(View view) {
-        Toast.makeText(this, R.string.not_implemented, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(Host.this, BuildQuiz.class);
+        startActivity(intent);
     }
 
     @SuppressWarnings("UnusedParameters")
@@ -245,9 +248,13 @@ public class Host extends AppCompatActivity implements Lobby {
     }
 
     private Quiz buildTmpQuiz() {
-        Quiz quiz = new Quiz();
+        /*Quiz quiz = new Quiz();
         QuestionQuerier questionQuerier = new QuestionQuerier(this);
         quiz.addQuestions(questionQuerier.getAllQuestionsFromCatalog(1));
-        return quiz;
+        return quiz;*/
+
+        QuizMonitor app = (QuizMonitor) getApplication();
+
+        return app.getQuizClass();
     }
 }

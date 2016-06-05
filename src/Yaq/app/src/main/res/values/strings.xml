@@ -52,6 +52,17 @@
     <!-- ProfileActivity-->
     <string name="player_name">player name</string>
 
+    <!-- BuildQuizActivity-->
+    <string name="submit_quiz">submit</string>
+    <string name="hint_search_quiz">Search for question catalogues..</string>
+    <string name="checkEasy">easy</string>
+    <string name="checkMedium">medium</string>
+    <string name="checkHard">hard</string>
+    <string name="numberOfQuestions">number of questions</string>
+    <string name="plus">+</string>
+    <string name="minus">-</string>
+
+
     <!-- ErrorStrings -->
     <string name="error_cant_show_score">An error occurs while showing scores!</string>
     <string name="error_cant_connect">An error occurs while create connection!</string>

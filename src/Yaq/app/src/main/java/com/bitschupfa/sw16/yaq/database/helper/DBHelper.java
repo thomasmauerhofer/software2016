@@ -39,25 +39,25 @@ public class DBHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_QUESTIONCATALOG_TABLE = "CREATE TABLE QuestionCatalog ( "+
-        "`qcid`             BIGINT UNSIGNED PRIMARY KEY NOT NULL,"+
-        "`description` 	    VARCHAR(250) NOT NULL);";
+        String CREATE_QUESTIONCATALOG_TABLE = "CREATE TABLE QuestionCatalog ( " +
+                "`qcid`             BIGINT UNSIGNED PRIMARY KEY NOT NULL," +
+                "`qcdiff`           INTEGER NOT NULL," +
+                "`description` 	    VARCHAR(250) NOT NULL);";
 
-        String CREATE_QUESTION_TABLE = "CREATE TABLE Question ( "+
-        "`qid`   			BIGINT UNSIGNED PRIMARY KEY NOT NULL,"+
-        "`qcid`  			BIGINT UNSIGNED NOT NULL,"+
-        "`difficulty`   	INTEGER NOT NULL,"+
-        "`question`  		VARCHAR(250) NOT NULL,"+
-        "`answer1`  		VARCHAR(100) NOT NULL,"+
-        "`answer2`  		VARCHAR(100) NOT NULL,"+
-        "`answer3`  		VARCHAR(100) NOT NULL,"+
-        "`answer4`  		VARCHAR(100) NOT NULL,"+
-        "`rightanswer1`	    INTEGER CHECK (rightanswer1 IN (0,20)),"+
-        "`rightanswer2`	    INTEGER CHECK (rightanswer2 IN (0,20)),"+
-        "`rightanswer3`	    INTEGER CHECK (rightanswer3 IN (0,20)),"+
-        "`rightanswer4`	    INTEGER CHECK (rightanswer4 IN (0,20)),"+
-        "FOREIGN KEY (`qcid`) REFERENCES QuestionCatalog(`qcid`)"+
-        ");";
+        String CREATE_QUESTION_TABLE = "CREATE TABLE Question ( " +
+                "`qid`   			BIGINT UNSIGNED PRIMARY KEY NOT NULL," +
+                "`qcid`  			BIGINT UNSIGNED NOT NULL," +
+                "`question`  		VARCHAR(250) NOT NULL," +
+                "`answer1`  		VARCHAR(100) NOT NULL," +
+                "`answer2`  		VARCHAR(100) NOT NULL," +
+                "`answer3`  		VARCHAR(100) NOT NULL," +
+                "`answer4`  		VARCHAR(100) NOT NULL," +
+                "`rightanswer1`	    INTEGER CHECK (rightanswer1 IN (0,20))," +
+                "`rightanswer2`	    INTEGER CHECK (rightanswer2 IN (0,20))," +
+                "`rightanswer3`	    INTEGER CHECK (rightanswer3 IN (0,20))," +
+                "`rightanswer4`	    INTEGER CHECK (rightanswer4 IN (0,20))," +
+                "FOREIGN KEY (`qcid`) REFERENCES QuestionCatalog(`qcid`)" +
+                ");";
 
         db.execSQL("DROP TABLE IF EXISTS " + "QuestionCatalog");
         db.execSQL("DROP TABLE IF EXISTS " + "Question");
@@ -69,8 +69,8 @@ public class DBHelper extends SQLiteOpenHelper{
     }
 
     private void insertInitialData(SQLiteDatabase dataBase){
-        QuestionCatalog questionCatalog1 = new QuestionCatalog(1, "Time", null);
-        QuestionCatalog questionCatalog2 = new QuestionCatalog(2,"General", null);
+        QuestionCatalog questionCatalog1 = new QuestionCatalog(1, 1, "Time", null);
+        QuestionCatalog questionCatalog2 = new QuestionCatalog(2, 2, "General", null);
 
         QuestionCatalogDAO questionCatalogDAO1 = new QuestionCatalogDAO(questionCatalog1);
         questionCatalogDAO1.insertThisAsInitialBaselineIntoDatabase(dataBase);
@@ -87,38 +87,38 @@ public class DBHelper extends SQLiteOpenHelper{
         answer2 = new Answer("Michael Jackson", 0);
         answer3 = new Answer("Michael Jackson", 0);
         answer4 = new Answer("Michael Jackson", 0);
-        TextQuestion textQuestion1 = new TextQuestion(1,"Which singer joined Mel Gibson in the movie Mad Max: Beyond The Thunderdome?", answer1, answer2, answer3, answer4, 1, 2);
+        TextQuestion textQuestion1 = new TextQuestion(1,"Which singer joined Mel Gibson in the movie Mad Max: Beyond The Thunderdome?", answer1, answer2, answer3, answer4, 2);
 
         answer1 = new Answer("Pina Colada", 0);
         answer2 = new Answer("Zombie", 0);
         answer3 = new Answer("Manhatten", 0);
         answer4 = new Answer("Harvey Wallbanger", 20);
-        TextQuestion textQuestion2 = new TextQuestion(2,"Vodka, Galliano and orange juice are used to make which classic cocktail?", answer1, answer2, answer3, answer4, 2, 2);
+        TextQuestion textQuestion2 = new TextQuestion(2,"Vodka, Galliano and orange juice are used to make which classic cocktail?", answer1, answer2, answer3, answer4, 2);
 
 
         answer1 = new Answer("1966", 0);
         answer2 = new Answer("1967", 20);
         answer3 = new Answer("1968", 0);
         answer4 = new Answer("1969", 0);
-        TextQuestion textQuestion3 = new TextQuestion(3,"In which year did Foinavon win the Grand National?", answer1, answer2, answer3, answer4, 3, 2);
+        TextQuestion textQuestion3 = new TextQuestion(3,"In which year did Foinavon win the Grand National?", answer1, answer2, answer3, answer4, 2);
 
         answer1 = new Answer("Peter Tosh", 0);
         answer2 = new Answer("Lee Perry", 0);
         answer3 = new Answer("Bob Marley", 20);
         answer4 = new Answer("Shaggy", 0);
-        TextQuestion textQuestion4 = new TextQuestion(4,"Which reggae singing star died 11th May 1981?", answer1, answer2, answer3, answer4, 1, 1);
+        TextQuestion textQuestion4 = new TextQuestion(4,"Which reggae singing star died 11th May 1981?", answer1, answer2, answer3, answer4, 1);
 
         answer1 = new Answer("1960", 20);
         answer2 = new Answer("1969", 0);
         answer3 = new Answer("1971", 0);
         answer4 = new Answer("1988", 0);
-        TextQuestion textQuestion5 = new TextQuestion(5,"In what year was Prince Andrew born?", answer1, answer2, answer3, answer4, 2, 1);
+        TextQuestion textQuestion5 = new TextQuestion(5,"In what year was Prince Andrew born?", answer1, answer2, answer3, answer4, 1);
 
         answer1 = new Answer("1966", 0);
         answer2 = new Answer("1967", 20);
         answer3 = new Answer("1968", 0);
         answer4 = new Answer("1969", 0);
-        TextQuestion textQuestion6 = new TextQuestion(6,"In what year was Prince Andrew born?", answer1, answer2, answer3, answer4, 3, 1);
+        TextQuestion textQuestion6 = new TextQuestion(6,"In what year was Prince Andrew born?", answer1, answer2, answer3, answer4, 1);
 
         TextQuestionDAO textQuestionDAO1 = new TextQuestionDAO(textQuestion1);
         textQuestionDAO1.insertThisAsInitialBaselineIntoDatabase(dataBase);
