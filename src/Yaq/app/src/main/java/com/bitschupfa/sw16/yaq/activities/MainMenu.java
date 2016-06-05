@@ -7,6 +7,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -149,7 +150,12 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        if (id == R.id.menu_settings) {
+        if (id == R.id.menu_about) {
+            new AlertDialog.Builder(this)
+                    .setTitle(getResources().getString(R.string.about_dialog_title) + " V" + getResources().getString(R.string.versionName))
+                    .setMessage(R.string.about_dialog_message)
+                    .setIcon(R.drawable.ic_help_black_24dp)
+                    .show();
         } else if (id == R.id.menu_themes) {
             Intent intent = new Intent(MainMenu.this, Themes.class);
             startActivityForResult(intent, RESULT_FINISH); ;

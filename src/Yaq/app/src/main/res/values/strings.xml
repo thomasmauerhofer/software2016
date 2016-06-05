@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">YAQ</string>
-    <string name="app_version">v0.31</string>
-
     <string name="cancel">Cancel</string>
 
     <!-- MainActivity -->
@@ -14,10 +12,16 @@
 
     <!-- MainActivity Menu-->
     <string name="action_settings">Game Settings</string>
-    <string name="action_help">Help</string>
+    <string name="action_about">About YAQ</string>
     <string name="action_themes">Themes</string>
     <string name="manage_questions">Manage questions</string>
     <string name="profile">Profile</string>
+    <string name="about_dialog_message">
+        <b>&#169; by Team Bitschupfa</b> \n
+        Cat images designed by <a href="http://www.freepik.com/free-vector/minimal-cat-portrait_719781.htm">Freepik</a> \n
+        Yak horns designed by <a href="http://www.vectorportal.com">Vectorportal</a></string>
+    <string name="about_dialog_title">About YAQ</string>
+
 
     <!-- HostActivity -->
     <string name="title_activity_host">Host Game</string>

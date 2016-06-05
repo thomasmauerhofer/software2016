@@ -80,7 +80,6 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
-        <activity android:name=".activities.YaqActivity"></activity>
     </application>
 
 </manifest>

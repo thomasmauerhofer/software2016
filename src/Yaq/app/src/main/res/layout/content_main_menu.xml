@@ -22,7 +22,7 @@
             android:layout_gravity="center"
             android:contentDescription="@string/player"/>
         <TextView
-            android:text="@string/app_version"
+            android:text="@string/versionName"
             android:layout_gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

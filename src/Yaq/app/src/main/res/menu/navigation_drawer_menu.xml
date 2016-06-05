@@ -20,9 +20,9 @@
         android:icon="@drawable/ic_brightness_6_black_24dp"
         app:showAsAction="never" />
     <item
-        android:id="@+id/menu_help"
+        android:id="@+id/menu_about"
         android:orderInCategory="100"
-        android:title="@string/action_help"
+        android:title="@string/action_about"
         android:icon="@drawable/ic_help_black_24dp"
         app:showAsAction="never" />
 </menu>
