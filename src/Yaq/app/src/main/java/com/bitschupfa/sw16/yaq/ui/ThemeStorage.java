@@ -20,6 +20,9 @@ public class ThemeStorage {
     public static final String PREF_LOGO_IMAGE_KEY = "com.bitschupfa.sw16.yaq.PRIMARY_LOGO_IMAGE_PREF";
     public static final String PREF_NAVIGATION_DRAWER_IMG_KEY = "com.bitschupfa.sw16.yaq.NAVIGATION_DRAWER_IMG_1_PREF";
 
+    public static final int IS_EMPTY = -1;
+
+
     private static ThemeStorage instance;
     private Context context;
 
@@ -66,7 +69,7 @@ public class ThemeStorage {
     }
 
     public int getPrimaryColor() {
-        int color = preferences.getInt(PREF_PRIMARY_COLOR_KEY, -1);
+        int color = preferences.getInt(PREF_PRIMARY_COLOR_KEY, IS_EMPTY);
         return color;
     }
 
@@ -77,7 +80,7 @@ public class ThemeStorage {
     }
 
     public int getPrimaryColorDark() {
-        int color = preferences.getInt(PREF_PRIMARY_COLOR_DARK_KEY, -1);
+        int color = preferences.getInt(PREF_PRIMARY_COLOR_DARK_KEY, IS_EMPTY);
         return color;
     }
 
@@ -88,7 +91,7 @@ public class ThemeStorage {
     }
 
     public int getPrimaryColor600() {
-        int color = preferences.getInt(PREF_PRIMARY_COLOR_600_KEY, -1);
+        int color = preferences.getInt(PREF_PRIMARY_COLOR_600_KEY, IS_EMPTY);
         return color;
     }
 
@@ -132,7 +135,7 @@ public class ThemeStorage {
     }
 
     public int getThemeId() {
-        int id = preferences.getInt(PREF_THEME_KEY, 0);
+        int id = preferences.getInt(PREF_THEME_KEY, IS_EMPTY);
         return id;
     }
 }
