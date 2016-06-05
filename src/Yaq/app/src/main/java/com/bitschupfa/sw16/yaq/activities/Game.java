@@ -34,6 +34,7 @@ public class Game extends YaqActivity {
     private TextView countdownTimerText;
     private TextView questionView;
     protected LinearLayout questionViewLL;
+    protected LinearLayout questionAskLL;
     private List<Button> answerButtons;
     private List<Button> buttons;
 
@@ -56,6 +57,7 @@ public class Game extends YaqActivity {
         countdownTimerText = (TextView) findViewById(R.id.time);
         questionView = (TextView) findViewById(R.id.question);
         questionViewLL = (LinearLayout) findViewById(R.id.questionOverlay);
+        questionAskLL = (LinearLayout) findViewById(R.id.questionAskedView);
 
         answerButtons = new ArrayList<>(
                 Arrays.asList(
@@ -118,13 +120,13 @@ public class Game extends YaqActivity {
             public void run() {
                 if (answerButtonPressed != null && selectedAnswer != null && !selectedAnswer.equals(correctAnswer)) {
                     answerButtonPressed.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.red500),
-                            PorterDuff.Mode.MULTIPLY);
+                            PorterDuff.Mode.SRC);
                 }
 
                 for (Map.Entry<Button, Answer> entry : answerMapping.entrySet()) {
                     if (entry.getValue().equals(correctAnswer)) {
                         entry.getKey().getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.green500),
-                                PorterDuff.Mode.MULTIPLY);
+                                PorterDuff.Mode.SRC);
                         break;
                     }
                 }
@@ -138,8 +140,9 @@ public class Game extends YaqActivity {
     }
 
     private void invalidateAnswerButtons(){
-        for(int i = 0; i < answerButtons.size(); i++)
-            answerButtons.get(i).invalidate();
+        for (Button answerButton : answerButtons) {
+            answerButton.invalidate();
+        }
     }
 
     public void answerButtonClicked(View view) {

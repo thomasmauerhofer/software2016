@@ -31,7 +31,7 @@ public class GameAtHost extends Game {
         nextQuestion = (Button) findViewById(R.id.next_question);
         enableShowNextQuestion(false);
 
-        askedView.setOnClickListener(new View.OnClickListener() {
+        nextQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 HostGameLogic.getInstance().askNextQuestion();
@@ -55,6 +55,11 @@ public class GameAtHost extends Game {
                 askedView.setEnabled(active);
                 int visible = active ? View.VISIBLE : View.INVISIBLE;
                 nextQuestion.setVisibility(visible);
+                if(active)
+                    questionAskLL.setAlpha(0.5f);
+                else{
+                    questionAskLL.setAlpha(1.0f);
+                }
             }
         });
     }
