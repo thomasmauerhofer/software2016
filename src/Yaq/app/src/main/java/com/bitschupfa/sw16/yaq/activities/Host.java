@@ -9,9 +9,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.MediaRouteActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +31,7 @@ import com.bitschupfa.sw16.yaq.game.HostGameLogic;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfileStorage;
 import com.bitschupfa.sw16.yaq.ui.PlayerList;
+import com.bitschupfa.sw16.yaq.utils.CastHelper;
 import com.bitschupfa.sw16.yaq.utils.Quiz;
 
 import java.io.IOException;
@@ -39,6 +44,8 @@ public class Host extends AppCompatActivity implements Lobby {
     private final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
     private final ConnectionListener btConnectionListener = new ConnectionListener();
     private PlayerList playerList = new PlayerList(this);
+
+    private CastHelper castHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +66,27 @@ public class Host extends AppCompatActivity implements Lobby {
 
         HostGameLogic.getInstance().setQuiz(this.buildTmpQuiz());
         selfConnectionHack();
+
+        castHelper = CastHelper.getInstance(getApplicationContext(), CastHelper.GameState.LOBBY);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main_menu, menu);
+        menu.findItem(R.id.menu_manage).setVisible(false);
+        menu.findItem(R.id.menu_settings).setVisible(false);
+        menu.findItem(R.id.menu_profile).setVisible(false);
+        MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
+        MediaRouteActionProvider mediaRouteActionProvider =
+                (MediaRouteActionProvider) MenuItemCompat.getActionProvider(mediaRouteMenuItem);
+        mediaRouteActionProvider.setRouteSelector(castHelper.mMediaRouteSelector);
+        return true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        castHelper.addCallbacks();
     }
 
     @Override

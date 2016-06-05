@@ -11,6 +11,7 @@
     <string name="action_settings">Settings</string>
     <string name="manage_questions">Manage questions</string>
     <string name="profile">Profile</string>
+    <string name="chromecast">Cast</string>
 
     <!-- HostActivity -->
     <string name="title_activity_host">Host Game</string>
@@ -55,5 +56,9 @@
     <string name="error_cant_show_score">An error occurs while showing scores!</string>
     <string name="error_cant_connect">An error occurs while create connection!</string>
     <string name="not_implemented">Not implemented yet!</string>
+
+    <!-- Chromecast -->
+    <string name="waiting_for_gamestart">Waiting for game to start …</string>
+    <string name="waiting_for_players">Waiting for players to join …</string>
 
 </resources>
