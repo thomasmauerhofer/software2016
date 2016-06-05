@@ -1,5 +1,6 @@
 package com.bitschupfa.sw16.yaq.activities;
 
+import android.content.pm.ActivityInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ public abstract class YaqActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         themeChooser = new ThemeChooser(this);
         currentTheme = themeChooser.getThemeStorage().getThemeId();
         switch(currentTheme){

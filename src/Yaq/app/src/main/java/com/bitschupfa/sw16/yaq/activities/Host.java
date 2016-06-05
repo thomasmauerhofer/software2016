@@ -56,7 +56,7 @@ public class Host extends YaqActivity implements Lobby {
             new Thread(btConnectionListener, "BT Connection Listener Thread").start();
             TextView hostnameLabel = (TextView) findViewById(R.id.lbl_hostname);
             if (hostnameLabel != null) {
-                hostnameLabel.append(btAdapter.getName());
+                hostnameLabel.append(" " + btAdapter.getName());
             }
         }
 

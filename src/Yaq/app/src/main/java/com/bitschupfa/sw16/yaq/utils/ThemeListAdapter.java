@@ -72,7 +72,6 @@ public class ThemeListAdapter extends ArrayAdapter<String> {
                 switch (position) {
                     case ThemeChooser.THEME_BLUE:
                         themeChooser.setTheme(ThemeChooser.THEME_BLUE);
-                        holder.themePreviewLayout.setAlpha(0.5f);
                         break;
                     case ThemeChooser.THEME_GREEN:
                         themeChooser.setTheme(ThemeChooser.THEME_GREEN);
