@@ -90,7 +90,7 @@ public class Game extends YaqActivity {
                 setAnswerButtonsClickable(true);
                 for (Button answerButton : answerButtons) {
                     answerButton.getBackground().setColorFilter(themeChooser.getThemeStorage().getPrimaryColor(),
-                            PorterDuff.Mode.MULTIPLY);
+                            PorterDuff.Mode.SRC);
                 }
                 questionView.setText(question.getQuestion());
 
@@ -128,12 +128,18 @@ public class Game extends YaqActivity {
                         break;
                     }
                 }
+                invalidateAnswerButtons();
 
                 answerButtonPressed = null;
                 selectedAnswer = null;
             }
         });
 
+    }
+
+    private void invalidateAnswerButtons(){
+        for(int i = 0; i < answerButtons.size(); i++)
+            answerButtons.get(i).invalidate();
     }
 
     public void answerButtonClicked(View view) {
