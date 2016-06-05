@@ -21,7 +21,7 @@
         Cat images designed by <a href="http://www.freepik.com/free-vector/minimal-cat-portrait_719781.htm">Freepik</a> \n
         Yak horns designed by <a href="http://www.vectorportal.com">Vectorportal</a></string>
     <string name="about_dialog_title">About YAQ</string>
-
+    <string name="chromecast">Cast</string>
 
     <!-- HostActivity -->
     <string name="title_activity_host">Host Game</string>
@@ -73,5 +73,10 @@
     <string name="error_cant_show_score">An error occurs while showing scores!</string>
     <string name="error_cant_connect">An error occurs while create connection!</string>
     <string name="not_implemented">Not implemented yet!</string>
-    <string name="chromecast">Cast</string>
+
+    <!-- Chromecast -->
+    <string name="waiting_for_gamestart">Waiting for game to start …</string>
+    <string name="waiting_for_players">Waiting for players to join …</string>
+
+>>>>>>> refs/remotes/origin/develop
 </resources>

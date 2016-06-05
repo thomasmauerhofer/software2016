@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    
+    <style type="text/css">
+        body {
+            overflow: hidden;
+        }
+        
+        div#main {
+            height: 720PX;
+            width: 1280PX;
+            text-align: center;
+            border: 0px solid silver;
+            display: table-cell;
+            vertical-align: middle;
+            color: #FFFFFF;
+            background-color: #79a6b4;
+            font-weight: bold;
+            font-family: Verdana, Geneva, sans-serif;
+            font-size: 40px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        #question {
+            display: none;
+            margin: 20px;
+        }
+        
+        .answer {
+            display: none;
+            margin: 10px;
+            font-size: 28px;
+        }
+        
+        #answers_box {
+            display: none;
+            margin: 20px;
+            vertical-align: middle;
+        }
+        
+        #scoreboard {
+            display: none;
+            font-size: 20px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        #scoreboard .row {
+            border-bottom: 1px #88bbcb dotted;
+        }
+        
+        #scoreboard .rank-1 {
+            font-size: 36px;
+        }
+        
+        #scoreboard .rank-2 {
+            font-size: 32px;
+        }
+        
+        #scoreboard .rank-3 {
+            font-size: 28px;
+        }
+        
+        .col-md-5 {
+            width: 48.3% !important;
+        }
+    </style>
+    <title>YAQ - Yet Another Quizapp</title>
+</head>
+
+<body>
+    <div id="main" class="container-fluid">
+        <div id="message" class="container-fluid">Waiting for game to start ...</div>
+        <div id="question" class="container-fluid alert alert-warning"></div>
+        <div id="answers_box" class="container-fluid">
+            <div class="row">
+                <div class="answer col-md-5 btn btn-lg btn-default" id="answer_1"></div>
+                <div class="answer col-md-5 btn btn-lg btn-default" id="answer_2"></div>
+            </div>
+            <div class="row">
+                <div class="answer col-md-5 btn btn-lg btn-default" id="answer_3"></div>
+                <div class="answer col-md-5 btn btn-lg btn-default" id="answer_4"></div>
+            </div>
+        </div>
+        <div id="scoreboard"></div>
+    </div>
+    <script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script type="text/javascript">        
+        window.onload = function () {
+            cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
+            window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
+            console.log('Starting Receiver Manager');
+
+            castReceiverManager.onReady = function (event) {
+                console.log('Received Ready event: ' + JSON.stringify(event.data));
+                window.castReceiverManager.setApplicationState("Application status is ready...");
+            };
+
+            castReceiverManager.onSenderConnected = function (event) {
+                console.log('Received Sender Connected event: ' + event.data);
+                console.log(window.castReceiverManager.getSender(event.data).userAgent);
+            };
+
+            castReceiverManager.onSenderDisconnected = function (event) {
+                console.log('Received Sender Disconnected event: ' + event.data);
+                hideQuestionAndAnswers();
+                if (window.castReceiverManager.getSenders().length == 0) {
+                    window.close();
+                } else {
+                    console.log('There are still ' + window.castReceiverManager.getSenders().length + ' senders connected.');
+                }
+            };
+
+            castReceiverManager.onSystemVolumeChanged = function (event) {
+                console.log('Received System Volume Changed event: ' + event.data['level'] + ' ' +
+                    event.data['muted']);
+            };
+
+            window.messageBus =
+                window.castReceiverManager.getCastMessageBus(
+                    'urn:x-cast:com.bitschupfa.sw16.yaq');
+
+            window.messageBus.onMessage = function (event) {
+                console.log('Message [' + event.senderId + ']: ' + event.data);
+                try {
+                    var data = JSON.parse(event.data);
+                    if (data != null) {
+                        if(data.type == "question" ) {
+                            displayQuestionAndAnswers(data);
+                        } else if (data.type == "scoreboard") {
+                            displayScoreboard(data);
+                        }
+                    }
+                } catch (err) {
+                    console.log(err.message);
+                    displayText(event.data);
+                }
+
+                window.messageBus.send(event.senderId, event.data);
+            }
+
+            window.castReceiverManager.start({
+                statusText: "Application is starting"
+            });
+            console.log('Receiver Manager started');
+        };
+        
+        function displayQuestionAndAnswers(data) {
+            //displayQuestionAndAnswers(JSON.parse('{"question": "What\'s >>>> the rest?", "answer_1": "2000 meters", "answer_2": "2 kilometer", "answer_3": "1 mile", "answer_4": "1 light-year"}'));
+            console.log(data);
+            $("#message").hide('slow');
+            $("#scoreboard").hide('slow');
+            $("#question").show('slow');
+            $("#answers_box").show();
+            $("#question").html(data.question);
+            $("#answer_1").html(data.answer_1);
+            $("#answer_2").html(data.answer_2);
+            $("#answer_3").html(data.answer_3);
+            $("#answer_4").html(data.answer_4);
+            $("#answer_1").show(400);
+            $("#answer_2").show(600);
+            $("#answer_3").show(800);
+            $("#answer_4").show(1000);
+            
+            window.castReceiverManager.setApplicationState("Game in progress");
+        }
+        
+        function displayScoreboard(data) {
+            //displayScoreboard(JSON.parse('{"type":"scoreboard","players":[{"name":"Patrik Meier","score":10},{"name":"Jo","score":10},{"name":"Thomas Mauerhofer","score":10},{"name":"Matthias","score":10}]}'));
+            hideQuestionAndAnswers();
+            $("#message").hide('slow');
+            var i = 1;
+            $("#scoreboard").html('<div class="row"><div class="col-md-4">Rank</div><div class="col-md-4">Player</div><div class="col-md-4">Score</div></div>');
+            data.players.forEach(function(rank) {
+                var div = document.createElement("div");
+                div.className += " row rank-" + i;
+                $("#scoreboard").append(div);
+                $(".rank-" + i).append('<div class="col-md-4">' + i + '.</div>');
+                $(".rank-" + i).append('<div class="col-md-4">' + rank.name + '</div>');
+                $(".rank-" + i).append('<div class="col-md-4">' + rank.score + '</div>');
+                i++;
+            });
+            
+            $("#scoreboard").show('slow');
+            
+            window.castReceiverManager.setApplicationState("Game Finished");
+        }
+        
+        function hideQuestionAndAnswers() {
+            $("#question").hide('slow');
+            $("#answers_box").hide('slow');
+            $("#answer_1").hide('slow');
+            $("#answer_2").hide('slow');
+            $("#answer_3").hide('slow');
+            $("#answer_4").hide('slow');
+        }
+
+        function displayText(text) {
+            console.log(text);
+            hideQuestionAndAnswers();
+            $("#message").show('slow');
+            $("#message").html(text);
+            
+            window.castReceiverManager.setApplicationState(text);
+        };
+    </script>
+</body>
+
+</html>
