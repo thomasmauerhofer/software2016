@@ -24,7 +24,8 @@
             android:inputType="textVisiblePassword"
             android:textColor="@color/colorPrimaryDark"
             android:theme="@android:style/Theme.Holo"
-            android:paddingTop="15dp">
+            android:paddingTop="15dp"
+            android:drawableLeft="@drawable/abc_ic_search_api_mtrl_alpha">
         </EditText>
 
         <LinearLayout
