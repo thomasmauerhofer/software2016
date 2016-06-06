@@ -31,7 +31,7 @@ import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfileStorage;
 import com.bitschupfa.sw16.yaq.ui.PlayerList;
 import com.bitschupfa.sw16.yaq.utils.CastHelper;
-import com.bitschupfa.sw16.yaq.utils.QuizBuilder;
+import com.bitschupfa.sw16.yaq.utils.QuizFactory;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -55,7 +55,7 @@ public class Host extends AppCompatActivity implements Lobby {
         setSupportActionBar(toolbar);
 
         TextView numberOfQuestions = (TextView) findViewById(R.id.numberOfQuestions);
-        numberOfQuestions.setText(getResources().getString(R.string.numberQuestionsText) + " " + QuizBuilder.instance().getSmallestNumberOfQuestions());
+        numberOfQuestions.setText(getResources().getString(R.string.numberQuestionsText) + " " + QuizFactory.instance().getSmallestNumberOfQuestions());
 
         ClientGameLogic.getInstance().setLobbyActivity(this);
 
@@ -98,11 +98,11 @@ public class Host extends AppCompatActivity implements Lobby {
     }
 
     public void startButtonClicked(View view) {
-        if(QuizBuilder.instance().getSmallestNumberOfQuestions() == 0) {
+        if(QuizFactory.instance().getSmallestNumberOfQuestions() == 0) {
             Toast.makeText(this, R.string.noQuestionsSelected, Toast.LENGTH_LONG).show();
             return;
         }
-        HostGameLogic.getInstance().setQuiz(QuizBuilder.instance().createNewQuiz());
+        HostGameLogic.getInstance().setQuiz(QuizFactory.instance().createNewQuiz());
         HostGameLogic.getInstance().startGame();
     }
 
@@ -159,7 +159,7 @@ public class Host extends AppCompatActivity implements Lobby {
                 break;
             case BUILD_QUIZ:
                 TextView numberOfQuestions = (TextView) findViewById(R.id.numberOfQuestions);
-                numberOfQuestions.setText(getResources().getString(R.string.numberQuestionsText) + " " + QuizBuilder.instance().getSmallestNumberOfQuestions());
+                numberOfQuestions.setText(getResources().getString(R.string.numberQuestionsText) + " " + QuizFactory.instance().getSmallestNumberOfQuestions());
                 break;
             default:
                 Log.d("Host:onActivityResult", "unknown requestCode: " + resultCode);
@@ -258,7 +258,7 @@ public class Host extends AppCompatActivity implements Lobby {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        QuizBuilder.instance().clearQuiz();
-        QuizBuilder.instance().setNumberOfQuestions(10);
+        QuizFactory.instance().clearQuiz();
+        QuizFactory.instance().setNumberOfQuestions(10);
     }
 }

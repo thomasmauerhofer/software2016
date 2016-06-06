@@ -6,19 +6,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class QuizBuilder {
+public class QuizFactory {
     private int numberOfQuestions;
     private List<String> usedCatalogs = new ArrayList<>();
     private List<TextQuestion> allQuestions = new ArrayList<>();
-    private static QuizBuilder instance = null;
+    private static QuizFactory instance = null;
 
-    private QuizBuilder() {
+    private QuizFactory() {
         numberOfQuestions = 10;
     }
 
-    public static QuizBuilder instance() {
+    public static QuizFactory instance() {
         if(instance == null) {
-            instance = new QuizBuilder();
+            instance = new QuizFactory();
         }
         return instance;
     }

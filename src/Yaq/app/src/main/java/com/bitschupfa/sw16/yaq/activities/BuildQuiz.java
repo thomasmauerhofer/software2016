@@ -18,7 +18,7 @@ import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
 import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
 import com.bitschupfa.sw16.yaq.ui.BuildQuizAdapter;
 import com.bitschupfa.sw16.yaq.ui.QuestionCatalogItem;
-import com.bitschupfa.sw16.yaq.utils.QuizBuilder;
+import com.bitschupfa.sw16.yaq.utils.QuizFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,28 +94,28 @@ public class BuildQuiz extends AppCompatActivity {
 
     public void initNumberPicker() {
         TextView numberPicker = (TextView) findViewById(R.id.numberPicker);
-        numberPicker.setText(String.valueOf(QuizBuilder.instance().getNumberOfQuestions()));
+        numberPicker.setText(String.valueOf(QuizFactory.instance().getNumberOfQuestions()));
     }
 
     @SuppressWarnings("UnusedParameters")
     public void numberPickerMinusClicked(View view) {
         TextView numberPicker = (TextView) findViewById(R.id.numberPicker);
-        int numberOfQuestions = QuizBuilder.instance().getNumberOfQuestions() - 1;
+        int numberOfQuestions = QuizFactory.instance().getNumberOfQuestions() - 1;
 
         if (numberOfQuestions >= MIN_NUMBER_OF_QUESTIONS) {
             numberPicker.setText(String.valueOf(numberOfQuestions));
-            QuizBuilder.instance().setNumberOfQuestions(numberOfQuestions);
+            QuizFactory.instance().setNumberOfQuestions(numberOfQuestions);
         }
     }
 
     @SuppressWarnings("UnusedParameters")
     public void numberPickerPlusClicked(View view) {
         TextView numberPicker = (TextView) findViewById(R.id.numberPicker);
-        int numberOfQuestions = QuizBuilder.instance().getNumberOfQuestions() + 1;
+        int numberOfQuestions = QuizFactory.instance().getNumberOfQuestions() + 1;
 
         if (numberOfQuestions <= MAX_NUMBER_OF_QUESTIONS) {
             numberPicker.setText(String.valueOf(numberOfQuestions));
-            QuizBuilder.instance().setNumberOfQuestions(numberOfQuestions);
+            QuizFactory.instance().setNumberOfQuestions(numberOfQuestions);
         }
     }
 
@@ -141,11 +141,11 @@ public class BuildQuiz extends AppCompatActivity {
 
     @SuppressWarnings("UnusedParameters")
     public void submitButtonClick(View view) {
-        QuizBuilder.instance().clearQuiz();
+        QuizFactory.instance().clearQuiz();
 
         for (QuestionCatalogItem catalog : dataAdapter.getCatalogItems()) {
             if (catalog.isChecked()) {
-                QuizBuilder.instance().addQuestions(catalog.getCatalog().getName(), catalog.getCatalog().getTextQuestionList());
+                QuizFactory.instance().addQuestions(catalog.getCatalog().getName(), catalog.getCatalog().getTextQuestionList());
             }
         }
         finish();

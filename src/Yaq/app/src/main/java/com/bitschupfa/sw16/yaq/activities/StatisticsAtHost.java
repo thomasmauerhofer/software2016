@@ -10,7 +10,7 @@ import android.view.View;
 
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.utils.CastHelper;
-import com.bitschupfa.sw16.yaq.utils.QuizBuilder;
+import com.bitschupfa.sw16.yaq.utils.QuizFactory;
 
 public class StatisticsAtHost extends Statistic {
 
@@ -52,7 +52,7 @@ public class StatisticsAtHost extends Statistic {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        QuizBuilder.instance().clearQuiz();
-        QuizBuilder.instance().setNumberOfQuestions(10);
+        QuizFactory.instance().clearQuiz();
+        QuizFactory.instance().setNumberOfQuestions(10);
     }
 }

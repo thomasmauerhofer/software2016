@@ -12,7 +12,7 @@ import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.game.ClientGameLogic;
 import com.bitschupfa.sw16.yaq.game.HostGameLogic;
-import com.bitschupfa.sw16.yaq.utils.QuizBuilder;
+import com.bitschupfa.sw16.yaq.utils.QuizFactory;
 import com.robotium.solo.Solo;
 
 import java.io.IOException;
@@ -89,7 +89,7 @@ public class GameTests extends ActivityInstrumentationTestCase2<GameAtHost> {
         Answer answer4 = new Answer("wrong3", 0);
         List<TextQuestion> questions = new ArrayList<>();
         questions.add(new TextQuestion(42, "Question1", answer1, answer2, answer3, answer4, 1));
-        QuizBuilder.instance().addQuestions("text", questions);
-        HostGameLogic.getInstance().setQuiz(QuizBuilder.instance().createNewQuiz());
+        QuizFactory.instance().addQuestions("text", questions);
+        HostGameLogic.getInstance().setQuiz(QuizFactory.instance().createNewQuiz());
     }
 }

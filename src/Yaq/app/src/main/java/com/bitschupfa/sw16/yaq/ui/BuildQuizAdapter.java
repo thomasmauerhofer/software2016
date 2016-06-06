@@ -11,7 +11,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
-import com.bitschupfa.sw16.yaq.utils.QuizBuilder;
+import com.bitschupfa.sw16.yaq.utils.QuizFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,8 +97,8 @@ public class BuildQuizAdapter extends ArrayAdapter<QuestionCatalogItem> implemen
         numberOfQuestions.setText(String.valueOf(item.getCatalog().getTextQuestionList().size()) + " " + getContext().getString(R.string.questions));
         difficulty.setText(diff);
 
-        checkBox.setChecked(QuizBuilder.instance().isCatalogUsed(item.getCatalog().getName()));
-        item.setChecked(QuizBuilder.instance().isCatalogUsed(item.getCatalog().getName()));
+        checkBox.setChecked(QuizFactory.instance().isCatalogUsed(item.getCatalog().getName()));
+        item.setChecked(QuizFactory.instance().isCatalogUsed(item.getCatalog().getName()));
 
         return convertView;
     }
