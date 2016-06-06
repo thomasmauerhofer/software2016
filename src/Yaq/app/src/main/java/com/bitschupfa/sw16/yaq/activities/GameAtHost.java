@@ -99,5 +99,6 @@ public class GameAtHost extends Game {
     public void onBackPressed() {
         super.onBackPressed();
         QuizBuilder.instance().clearQuiz();
+        QuizBuilder.instance().setNumberOfQuestions(10);
     }
 }

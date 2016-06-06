@@ -53,5 +53,6 @@ public class StatisticsAtHost extends Statistic {
     public void onBackPressed() {
         super.onBackPressed();
         QuizBuilder.instance().clearQuiz();
+        QuizBuilder.instance().setNumberOfQuestions(10);
     }
 }

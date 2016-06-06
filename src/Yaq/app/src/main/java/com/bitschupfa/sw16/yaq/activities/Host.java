@@ -259,5 +259,6 @@ public class Host extends AppCompatActivity implements Lobby {
     public void onBackPressed() {
         super.onBackPressed();
         QuizBuilder.instance().clearQuiz();
+        QuizBuilder.instance().setNumberOfQuestions(10);
     }
 }

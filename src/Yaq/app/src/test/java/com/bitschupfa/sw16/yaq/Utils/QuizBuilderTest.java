@@ -29,6 +29,7 @@ public class QuizBuilderTest {
     @After
     public void tearDown() throws Exception {
         QuizBuilder.instance().clearQuiz();
+        QuizBuilder.instance().setNumberOfQuestions(10);
     }
 
     @Test

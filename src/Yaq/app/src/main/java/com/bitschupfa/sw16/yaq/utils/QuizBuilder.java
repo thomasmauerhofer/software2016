@@ -48,7 +48,6 @@ public class QuizBuilder {
     public void clearQuiz() {
         allQuestions.clear();
         usedCatalogs.clear();
-        numberOfQuestions = 10;
     }
 
     public Quiz createNewQuiz() {
