@@ -13,7 +13,7 @@ import com.bitschupfa.sw16.yaq.activities.StatisticsAtHost;
 import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.game.HostGameLogic;
-import com.bitschupfa.sw16.yaq.utils.Quiz;
+import com.bitschupfa.sw16.yaq.utils.QuizBuilder;
 import com.robotium.solo.Solo;
 
 import java.util.ArrayList;
@@ -124,15 +124,14 @@ public class HostTests extends ActivityInstrumentationTestCase2<Host> {
     }
 
     private void initHostGameLogic() {
-        Quiz quiz = new Quiz();
         Answer answer1 = new Answer("correct", 10);
         Answer answer2 = new Answer("wrong1", 0);
         Answer answer3 = new Answer("wrong2", 0);
         Answer answer4 = new Answer("wrong3", 0);
         List<TextQuestion> questions = new ArrayList<>();
         questions.add(new TextQuestion(42, "Question1", answer1, answer2, answer3, answer4, 1));
-        quiz.addQuestions(questions);
-        HostGameLogic.getInstance().setQuiz(quiz);
+        QuizBuilder.instance().addQuestions("test", questions);
+        HostGameLogic.getInstance().setQuiz(QuizBuilder.instance().createNewQuiz());
     }
 
     private void checkStatistics() {

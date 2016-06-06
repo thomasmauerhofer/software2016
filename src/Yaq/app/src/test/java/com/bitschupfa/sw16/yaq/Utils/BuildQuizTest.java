@@ -9,8 +9,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
-import com.bitschupfa.sw16.yaq.activities.BuildQuiz.QuestionCatalogueItem;
+import com.bitschupfa.sw16.yaq.database.object.Answer;
+import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
+import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.ui.BuildQuizAdapter;
+import com.bitschupfa.sw16.yaq.ui.QuestionCatalogItem;
 
 import junit.framework.Assert;
 
@@ -18,22 +21,31 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BuildQuizTest extends InstrumentationTestCase{
 
     private BuildQuizAdapter mAdapter;
-    private QuestionCatalogueItem item1;
-    private QuestionCatalogueItem item2;
+    private QuestionCatalogItem item1;
+    private QuestionCatalogItem item2;
     private ListView listView;
 
     @Before
     public void setUp() throws Exception {
-        ArrayList<QuestionCatalogueItem> data = new ArrayList<>();
+        ArrayList<QuestionCatalogItem> data = new ArrayList<>();
+
+        Answer answer = new Answer("aaa", 0);
+        List<TextQuestion> questions = new ArrayList<>();
+        questions.add(new TextQuestion(42, "question", answer, answer, answer, answer, 0));
+        questions.add(new TextQuestion(42, "question", answer, answer, answer, answer, 0));
+        questions.add(new TextQuestion(42, "question", answer, answer, answer, answer, 0));
 
         Context context = new MockContext();
+        QuestionCatalog catalog1 = new QuestionCatalog(42, 0, "question1", questions);
+        QuestionCatalog catalog2 = new QuestionCatalog(42, 0, "question1", questions);
 
-        item1 = new QuestionCatalogueItem("question1", 0, 1, true, 2, context);
-        item2 = new QuestionCatalogueItem("question2", 1, 2, false, 3, context);
+        item1 = new QuestionCatalogItem(catalog1, true, context);
+        item2 = new QuestionCatalogItem(catalog2, false, context);
         data.add(item1);
         data.add(item2);
         mAdapter = new BuildQuizAdapter(context, 0, data, true, true, true);
@@ -41,7 +53,7 @@ public class BuildQuizTest extends InstrumentationTestCase{
 
     @Test
     public void testGetItem() {
-        Assert.assertEquals("question1 was expected.", item1.getName(), (mAdapter.getItem(0)).getName());
+        Assert.assertEquals("question1 was expected.", item1.getCatalog().getName(), (mAdapter.getItem(0)).getCatalog().getName());
     }
 
     @Test
@@ -67,7 +79,7 @@ public class BuildQuizTest extends InstrumentationTestCase{
         Assert.assertNotNull("TextView is null. ", name);
         Assert.assertNotNull("CheckBox is null. ", checkBox);
 
-        Assert.assertEquals("Names doesn't match.", item2.getName(), name.getText());
+        Assert.assertEquals("Names doesn't match.", item2.getCatalog().getName(), name.getText());
         Assert.assertEquals("Checkbox value doesn't match.", item2.isChecked(), checkBox.isChecked());
     }
 
@@ -79,11 +91,11 @@ public class BuildQuizTest extends InstrumentationTestCase{
         listView = (ListView) view.findViewById(R.id.ListViewBuildQuiz);
         Assert.assertNotNull("The list was not loaded", listView);
 
-        mAdapter.getFilter().filter(item1.getName());
+        mAdapter.getFilter().filter(item1.getCatalog().getName());
 
         BuildQuizAdapter newAdapter = (BuildQuizAdapter) listView.getAdapter();
 
-        Assert.assertEquals("Names doesn't match.", item1.getName(), newAdapter.getItem(0).getName());
+        Assert.assertEquals("Names doesn't match.", item1.getCatalog().getName(), newAdapter.getItem(0).getCatalog().getName());
     }
 
     @Test
@@ -99,6 +111,6 @@ public class BuildQuizTest extends InstrumentationTestCase{
 
         BuildQuizAdapter newAdapter = (BuildQuizAdapter) listView.getAdapter();
 
-        Assert.assertEquals("Names doesn't match.", item2.getName(), newAdapter.getItem(0).getName());
+        Assert.assertEquals("Names doesn't match.", item2.getCatalog().getName(), newAdapter.getItem(0).getCatalog().getName());
     }
 }

@@ -3,30 +3,20 @@ package com.bitschupfa.sw16.yaq.utils;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 public class Quiz implements Iterator<TextQuestion> {
-    private List<TextQuestion> questions;
+    private List<TextQuestion> questions = new ArrayList<>();
     private int currentPosition;
 
-    public Quiz() {
-        questions = new ArrayList<>();
+    public Quiz(List<TextQuestion> questions) {
+        this.questions.addAll(questions);
         currentPosition = 0;
-    }
-
-    public void addQuestions(List<TextQuestion> questions_) {
-        questions = questions_;
-        Collections.shuffle(questions);
     }
 
     public int getNumberOfQuestions() {
         return questions.size();
-    }
-
-    public void setCurrentPosition(int position_) {
-        currentPosition = position_;
     }
 
     @Override
@@ -43,5 +33,14 @@ public class Quiz implements Iterator<TextQuestion> {
 
     @Override
     public void remove() {
+    }
+
+    public void resetQuiz() {
+        currentPosition = 0;
+    }
+
+    public void clearQuiz() {
+        questions.clear();
+        currentPosition = 0;
     }
 }

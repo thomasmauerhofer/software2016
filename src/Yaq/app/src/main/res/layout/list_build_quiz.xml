@@ -44,6 +44,7 @@
         android:buttonTint="@color/colorPrimaryDark"
         android:layout_alignParentEnd="true"
         android:layout_weight="2"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:paddingRight="20dp" />
 
 </LinearLayout>

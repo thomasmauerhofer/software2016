@@ -11,7 +11,6 @@ import android.widget.Toast;
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.ui.RankingItem;
 import com.bitschupfa.sw16.yaq.ui.RankingList;
-import com.bitschupfa.sw16.yaq.utils.QuizMonitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,11 +43,6 @@ public class Statistic extends AppCompatActivity {
 
     @SuppressWarnings("UnusedParameters")
     public void playAgainButtonClicked(View view) {
-        QuizMonitor app = (QuizMonitor) getApplication();
-        if (app.getQuizClass() != null) {
-            app.getQuizClass().setCurrentPosition(0);
-        }
-
         Intent intent = new Intent(Statistic.this, Join.class);
         startActivity(intent);
         finish();

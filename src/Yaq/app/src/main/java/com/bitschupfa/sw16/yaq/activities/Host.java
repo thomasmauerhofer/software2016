@@ -31,8 +31,7 @@ import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfileStorage;
 import com.bitschupfa.sw16.yaq.ui.PlayerList;
 import com.bitschupfa.sw16.yaq.utils.CastHelper;
-import com.bitschupfa.sw16.yaq.utils.Quiz;
-import com.bitschupfa.sw16.yaq.utils.QuizMonitor;
+import com.bitschupfa.sw16.yaq.utils.QuizBuilder;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -56,7 +55,7 @@ public class Host extends AppCompatActivity implements Lobby {
         setSupportActionBar(toolbar);
 
         TextView numberOfQuestions = (TextView) findViewById(R.id.numberOfQuestions);
-        numberOfQuestions.setText(getResources().getString(R.string.numberQuestionsText) + " " + 0);
+        numberOfQuestions.setText(getResources().getString(R.string.numberQuestionsText) + " " + QuizBuilder.instance().getSmallestNumberOfQuestions());
 
         ClientGameLogic.getInstance().setLobbyActivity(this);
 
@@ -67,8 +66,6 @@ public class Host extends AppCompatActivity implements Lobby {
                 hostnameLabel.append(btAdapter.getName());
             }
         }
-
-        HostGameLogic.getInstance().setQuiz(getQuiz());
         selfConnectionHack();
 
         castHelper = CastHelper.getInstance(getApplicationContext(), CastHelper.GameState.LOBBY);
@@ -101,10 +98,11 @@ public class Host extends AppCompatActivity implements Lobby {
     }
 
     public void startButtonClicked(View view) {
-        if(getQuiz().getNumberOfQuestions() == 0) {
+        if(QuizBuilder.instance().getSmallestNumberOfQuestions() == 0) {
             Toast.makeText(this, R.string.noQuestionsSelected, Toast.LENGTH_LONG).show();
             return;
         }
+        HostGameLogic.getInstance().setQuiz(QuizBuilder.instance().createNewQuiz());
         HostGameLogic.getInstance().startGame();
     }
 
@@ -161,7 +159,7 @@ public class Host extends AppCompatActivity implements Lobby {
                 break;
             case BUILD_QUIZ:
                 TextView numberOfQuestions = (TextView) findViewById(R.id.numberOfQuestions);
-                numberOfQuestions.setText(getResources().getString(R.string.numberQuestionsText) + " " + getQuiz().getNumberOfQuestions());
+                numberOfQuestions.setText(getResources().getString(R.string.numberQuestionsText) + " " + QuizBuilder.instance().getSmallestNumberOfQuestions());
                 break;
             default:
                 Log.d("Host:onActivityResult", "unknown requestCode: " + resultCode);
@@ -257,8 +255,9 @@ public class Host extends AppCompatActivity implements Lobby {
         }).start();
     }
 
-    private Quiz getQuiz() {
-        QuizMonitor app = (QuizMonitor) getApplication();
-        return app.getQuizClass();
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        QuizBuilder.instance().clearQuiz();
     }
 }

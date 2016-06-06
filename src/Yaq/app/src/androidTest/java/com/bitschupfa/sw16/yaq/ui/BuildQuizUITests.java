@@ -1,17 +1,12 @@
 package com.bitschupfa.sw16.yaq.ui;
 
 import android.test.ActivityInstrumentationTestCase2;
-import android.view.View;
 import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.activities.BuildQuiz;
-import com.bitschupfa.sw16.yaq.activities.Host;
 import com.robotium.solo.Solo;
 
-/**
- * Created by manu on 09.05.16.
- */
 public class BuildQuizUITests extends ActivityInstrumentationTestCase2<BuildQuiz> {
     private Solo solo;
 

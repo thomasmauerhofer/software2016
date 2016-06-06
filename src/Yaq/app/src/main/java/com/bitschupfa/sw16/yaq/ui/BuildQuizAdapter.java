@@ -11,20 +11,17 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
-import com.bitschupfa.sw16.yaq.activities.BuildQuiz.QuestionCatalogueItem;
-import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
+import com.bitschupfa.sw16.yaq.utils.QuizBuilder;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class BuildQuizAdapter extends ArrayAdapter<QuestionCatalogueItem> implements Filterable {
+public class BuildQuizAdapter extends ArrayAdapter<QuestionCatalogItem> implements Filterable {
 
-    public ArrayList<QuestionCatalogueItem> questionCatalagoueItem;
+    private ArrayList<QuestionCatalogItem> questionCatalogItems = new ArrayList<>();
+    private ArrayList<QuestionCatalogItem> filteredData = new ArrayList<>();
 
-    private ArrayList<QuestionCatalogueItem> filteredData;
     private ItemFilter mFilter = new ItemFilter();
     private Context context;
     private boolean checkBoxEasy;
@@ -32,11 +29,10 @@ public class BuildQuizAdapter extends ArrayAdapter<QuestionCatalogueItem> implem
     private boolean checkBoxHard;
 
     public BuildQuizAdapter(Context context, int textViewResourceId,
-                            ArrayList<QuestionCatalogueItem> questionCatalogueList, boolean checkBoxEasy,
+                            ArrayList<QuestionCatalogItem> questionCatalogueList, boolean checkBoxEasy,
                             boolean checkBoxMedium, boolean checkBoxHard) {
         super(context, textViewResourceId, questionCatalogueList);
-        this.questionCatalagoueItem = new ArrayList<>();
-        this.questionCatalagoueItem.addAll(questionCatalogueList);
+        this.questionCatalogItems.addAll(questionCatalogueList);
         this.filteredData = new ArrayList<>();
         this.filteredData.addAll(questionCatalogueList);
         this.context = context;
@@ -45,18 +41,15 @@ public class BuildQuizAdapter extends ArrayAdapter<QuestionCatalogueItem> implem
         this.checkBoxHard = checkBoxHard;
     }
 
-    private class ViewHolder {
-        TextView name;
-        TextView numberOfQuestions;
-        TextView diffucultly;
-        CheckBox checkBox;
+    public List<QuestionCatalogItem> getCatalogItems() {
+        return questionCatalogItems;
     }
 
     public int getCount() {
         return filteredData.size();
     }
 
-    public QuestionCatalogueItem getItem(int position) {
+    public QuestionCatalogItem getItem(int position) {
         return filteredData.get(position);
     }
 
@@ -66,35 +59,27 @@ public class BuildQuizAdapter extends ArrayAdapter<QuestionCatalogueItem> implem
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        convertView = layoutInflater.inflate(R.layout.list_build_quiz, parent, false);
 
-        if (convertView == null) {
-            LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = layoutInflater.inflate(R.layout.list_build_quiz, null);
+        TextView name = (TextView) convertView.findViewById(R.id.name);
+        TextView numberOfQuestions = (TextView) convertView.findViewById(R.id.numberQuestions);
+        TextView difficulty = (TextView) convertView.findViewById(R.id.difficulty);
+        CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.checkbox);
 
-            holder = new ViewHolder();
-            holder.name = (TextView) convertView.findViewById(R.id.name);
-            holder.numberOfQuestions = (TextView) convertView.findViewById(R.id.numberQuestions);
-            holder.diffucultly = (TextView) convertView.findViewById(R.id.difficulty);
-            holder.checkBox = (CheckBox) convertView.findViewById(R.id.checkbox);
-            convertView.setTag(holder);
+        final int pos = position;
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                CheckBox cb = (CheckBox) v;
+                QuestionCatalogItem item = getItem(pos);
+                item.setChecked(cb.isChecked());
+            }
+        });
 
-            holder.checkBox.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    CheckBox cb = (CheckBox) v;
-                    QuestionCatalogueItem item = (QuestionCatalogueItem) cb.getTag();
-                    item.setChecked(cb.isChecked());
-                }
-            });
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
-
-        QuestionCatalogueItem item = getItem(position);
-
+        QuestionCatalogItem item = getItem(position);
         String diff;
 
-        switch (item.getDifficulty()) {
+        switch (item.getCatalog().getDifficulty()) {
             case 1:
                 diff = getContext().getString(R.string.easy);
                 break;
@@ -108,11 +93,12 @@ public class BuildQuizAdapter extends ArrayAdapter<QuestionCatalogueItem> implem
                 diff = getContext().getString(R.string.noDifficulty);
                 break;
         }
-        holder.name.setText(item.getName());
-        holder.numberOfQuestions.setText(String.valueOf(item.getQuestionsCounter()) + " " + getContext().getString(R.string.questions));
-        holder.diffucultly.setText(diff);
-        holder.checkBox.setChecked(item.isChecked());
-        holder.checkBox.setTag(item);
+        name.setText(item.getCatalog().getName());
+        numberOfQuestions.setText(String.valueOf(item.getCatalog().getTextQuestionList().size()) + " " + getContext().getString(R.string.questions));
+        difficulty.setText(diff);
+
+        checkBox.setChecked(QuizBuilder.instance().isCatalogUsed(item.getCatalog().getName()));
+        item.setChecked(QuizBuilder.instance().isCatalogUsed(item.getCatalog().getName()));
 
         return convertView;
     }
@@ -140,19 +126,13 @@ public class BuildQuizAdapter extends ArrayAdapter<QuestionCatalogueItem> implem
             String filterString = constraint.toString().toLowerCase(Locale.getDefault());
             FilterResults results = new FilterResults();
 
-            final ArrayList<QuestionCatalogueItem> list = questionCatalagoueItem;
+            final ArrayList<QuestionCatalogItem> filterList = new ArrayList<>();
 
-            int count = list.size();
-            final ArrayList<QuestionCatalogueItem> filterList = new ArrayList<>(count);
-
-            QuestionCatalogueItem filterableString;
-
-            for (int i = 0; i < count; i++) {
-                filterableString = list.get(i);
-                if (filterableString.getName().toLowerCase(Locale.getDefault()).contains(filterString)) {
-                    if (checkBoxEasy == true && filterableString.getDifficulty() == 1
-                            || checkBoxMedium == true && filterableString.getDifficulty() == 2
-                            || checkBoxHard == true && filterableString.getDifficulty() == 3) {
+            for (QuestionCatalogItem filterableString : questionCatalogItems) {
+                if (filterableString.getCatalog().getName().toLowerCase(Locale.getDefault()).contains(filterString)) {
+                    if (checkBoxEasy == true && filterableString.getCatalog().getDifficulty() == 1
+                            || checkBoxMedium == true && filterableString.getCatalog().getDifficulty() == 2
+                            || checkBoxHard == true && filterableString.getCatalog().getDifficulty() == 3) {
 
                         filterList.add(filterableString);
                     }
@@ -166,7 +146,7 @@ public class BuildQuizAdapter extends ArrayAdapter<QuestionCatalogueItem> implem
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            filteredData = (ArrayList<QuestionCatalogueItem>) results.values;
+            filteredData = (ArrayList<QuestionCatalogItem>) results.values;
             notifyDataSetChanged();
         }
     }
