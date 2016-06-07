@@ -28,16 +28,16 @@ public class Statistic extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        list = (ListView)findViewById(R.id.ranking);
+        list = (ListView) findViewById(R.id.ranking);
         ranking = new RankingList(this, new ArrayList<RankingItem>());
         list.setAdapter(ranking);
 
 
-        if(getIntent().hasExtra("scoreList")) {
+        if (getIntent().hasExtra("scoreList")) {
             List<RankingItem> items = (List<RankingItem>) getIntent().getExtras().get("scoreList");
             ranking.addItems(items);
         } else {
-            Toast.makeText(this, R.string.error_cant_show_score , Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.error_cant_show_score, Toast.LENGTH_LONG).show();
         }
     }
 

@@ -15,6 +15,7 @@ import com.bitschupfa.sw16.yaq.game.ClientGameLogic;
 import com.bitschupfa.sw16.yaq.game.HostGameLogic;
 import com.bitschupfa.sw16.yaq.ui.RankingItem;
 import com.bitschupfa.sw16.yaq.utils.CastHelper;
+import com.bitschupfa.sw16.yaq.utils.QuizFactory;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -92,5 +93,12 @@ public class GameAtHost extends Game {
         intent.putExtra("scoreList", scoreList);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        QuizFactory.instance().clearQuiz();
+        QuizFactory.instance().setNumberOfQuestions(10);
     }
 }

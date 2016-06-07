@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.utils.CastHelper;
+import com.bitschupfa.sw16.yaq.utils.QuizFactory;
 
 public class StatisticsAtHost extends Statistic {
 
@@ -46,5 +47,12 @@ public class StatisticsAtHost extends Statistic {
         Intent intent = new Intent(StatisticsAtHost.this, Host.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        QuizFactory.instance().clearQuiz();
+        QuizFactory.instance().setNumberOfQuestions(10);
     }
 }

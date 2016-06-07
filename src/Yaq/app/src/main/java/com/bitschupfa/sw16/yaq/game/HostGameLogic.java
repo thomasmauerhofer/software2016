@@ -55,6 +55,11 @@ public class HostGameLogic implements ClientMessageHandler {
 
     public void setQuiz(Quiz quiz) {
         this.quiz = quiz;
+        this.quiz.resetQuiz();
+    }
+
+    public Quiz getQuiz() {
+        return quiz;
     }
 
     public void setTimeout(int timeout) {

@@ -27,14 +27,14 @@ public class QuestionQuerier {
     private QuestionCatalog queryQuestionCatalogTable(Cursor cursor){
         int catalogID = cursor.getInt(cursor.getColumnIndex(QuestionCatalogDAO.QUESTIONCATALOG_ID));
         String catalogName = cursor.getString(cursor.getColumnIndex(QuestionCatalogDAO.QUESTIONCATALOG_DESCRIPTION));
+        int catalogDifficulty = cursor.getInt(cursor.getColumnIndex(QuestionCatalogDAO.QUESTIONCATALOG_DIFFICULTY));
 
-        return new QuestionCatalog(catalogID, catalogName, null);
+        return new QuestionCatalog(catalogID, catalogDifficulty, catalogName, null);
     }
 
     private TextQuestion queryTextQuestionTableValues(Cursor cursor){
         int questionID = cursor.getInt(cursor.getColumnIndex(TextQuestionDAO.QUESTION_ID));
         int catalogID = cursor.getInt(cursor.getColumnIndex(QuestionCatalogDAO.QUESTIONCATALOG_ID));
-        int difficulty = cursor.getInt(cursor.getColumnIndex(TextQuestionDAO.QUESTION_DIFFICULTY));
         String question = cursor.getString(cursor.getColumnIndex(TextQuestionDAO.QUESTION_TEXT));
         String answer1String = cursor.getString(cursor.getColumnIndex(TextQuestionDAO.QUESTION_ANSWER_1));
         String answer2String = cursor.getString(cursor.getColumnIndex(TextQuestionDAO.QUESTION_ANSWER_2));
@@ -50,11 +50,11 @@ public class QuestionQuerier {
         Answer answer3 = new Answer(answer3String, rightAnswer3);
         Answer answer4 = new Answer(answer4String, rightAnswer4);
 
-        return new TextQuestion(questionID, question,answer1,answer2,answer3,answer4, difficulty, catalogID);
+        return new TextQuestion(questionID, question, answer1, answer2, answer3, answer4, catalogID);
     }
 
-    public List<TextQuestion> getAllQuestionsFromCatalogByDifficulty(int catalogID, int difficulty){
-        String catalogIDString = "" + catalogID;
+     /*public List<TextQuestion> getAllQuestionsFromCatalogByDifficulty(int catalogID, int difficulty){
+       String catalogIDString = "" + catalogID;
         String difficultyString = "" + difficulty;
         Cursor cursor = database.query(TextQuestionDAO.TABLE_NAME, TextQuestionDAO.QUESTION_ALL_COLUMN_NAMES,
                 QuestionCatalogDAO.QUESTIONCATALOG_ID+"=? and "+TextQuestionDAO.QUESTION_DIFFICULTY+"=?",
@@ -67,7 +67,7 @@ public class QuestionQuerier {
             cursor.moveToNext();
         }
         return textQuestionList;
-    }
+    }*/
 
     public List<TextQuestion> getAllQuestionsFromCatalog(int catalogID){
         String catalogIDString = "" + catalogID;
@@ -119,7 +119,7 @@ public class QuestionQuerier {
 
     public QuestionCatalog getQuestionCatalogByIdAndDifficulty(int catalogId, int difficulty){
         QuestionCatalog questionCatalog = getQuestionCatalogById(catalogId);
-        List<TextQuestion> textQuestionList = getAllQuestionsFromCatalogByDifficulty(questionCatalog.getCatalogID(), difficulty);
+        List<TextQuestion> textQuestionList = getAllQuestionsFromCatalog(catalogId);
         questionCatalog.setTextQuestionList(textQuestionList);
         return questionCatalog;
     }
