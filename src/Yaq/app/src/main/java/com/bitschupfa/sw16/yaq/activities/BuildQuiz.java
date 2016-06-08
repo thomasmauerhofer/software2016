@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class BuildQuiz extends AppCompatActivity {
+public class BuildQuiz extends YaqActivity {
 
     private static final int MIN_NUMBER_OF_QUESTIONS = 1;
     private static final int MAX_NUMBER_OF_QUESTIONS = 100;
@@ -49,6 +49,12 @@ public class BuildQuiz extends AppCompatActivity {
         initSearchView();
         initNumberPicker();
         displayListView();
+        handleTheme();
+    }
+
+    @Override
+    protected void handleTheme() {
+        setBackgroundImage();
     }
 
     @Override
