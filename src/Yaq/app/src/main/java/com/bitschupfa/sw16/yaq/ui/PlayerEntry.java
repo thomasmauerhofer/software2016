@@ -25,7 +25,7 @@ class PlayerEntry {
 
     public void removePlayer() {
         playerEntry.setText(R.string.player);
-        String text = playerEntry.getText().toString()+ " " + String.valueOf(id);
+        String text = playerEntry.getText().toString() + " " + String.valueOf(id);
         playerEntry.setText(text);
         playerEntry.setTextColor(ContextCompat.getColor(playerEntry.getContext(), R.color.grey500));
         playerEntry.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.icon_player_black, 0, 0, 0);
@@ -42,7 +42,7 @@ class PlayerEntry {
     public void setId(Activity activity, int id) {
 
         String name = null;
-        if(this.id != 0) {
+        if (this.id != 0) {
             name = getName();
             removePlayer();
         }
@@ -74,7 +74,7 @@ class PlayerEntry {
                 break;
         }
 
-        if(id != 0) {
+        if (id != 0) {
             setPlayer(name);
         }
     }

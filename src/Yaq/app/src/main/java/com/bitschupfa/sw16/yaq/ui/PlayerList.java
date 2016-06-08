@@ -27,14 +27,14 @@ public class PlayerList {
 
     private void removePlayer(int id) {
 
-        if(id == players.size()) {
+        if (id == players.size()) {
             players.get(id - 1).removePlayer();
             return;
         } else {
             players.remove(id - 1);
         }
 
-        for(int i = id - 1; i < players.size(); i++) {
+        for (int i = id - 1; i < players.size(); i++) {
             PlayerEntry entry = players.get(i);
             entry.setId(activity, entry.getId() - 1);
         }
@@ -42,7 +42,7 @@ public class PlayerList {
 
     public void removePlayerWithName(String name) {
         int id = getPlayerIdWithName(name);
-        if(id == 0) {
+        if (id == 0) {
             return;
         }
         removePlayer(id);
@@ -67,8 +67,8 @@ public class PlayerList {
     }
 
     private int getPlayerIdWithName(String name) {
-        for(PlayerEntry entry : players) {
-            if(entry.getName().equals(name)) {
+        for (PlayerEntry entry : players) {
+            if (entry.getName().equals(name)) {
                 return entry.getId();
             }
         }

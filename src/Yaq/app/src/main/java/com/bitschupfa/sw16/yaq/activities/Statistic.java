@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -40,14 +39,6 @@ public class Statistic extends YaqActivity {
             Toast.makeText(this, R.string.error_cant_show_score, Toast.LENGTH_LONG).show();
         }
         handleTheme();
-    }
-
-    @Override
-    protected void handleTheme() {
-        List<Button> buttons = new ArrayList<>();
-        buttons.add((Button) findViewById(R.id.playAgainButton));
-        styleButtons(buttons);
-        setBackgroundImage();
     }
 
     @SuppressWarnings("UnusedParameters")

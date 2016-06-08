@@ -6,7 +6,7 @@ import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
 
 
-public class Player implements Comparable<Player>{
+public class Player implements Comparable<Player> {
     private final ConnectedDevice device;
     private final PlayerProfile profile;
     private int score;

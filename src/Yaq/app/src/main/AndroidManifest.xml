@@ -47,6 +47,7 @@
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/title_activity_build_quiz"
+            android:parentActivityName=".activities.Host"
             android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".activities.Statistic"

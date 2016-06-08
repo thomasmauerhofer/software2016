@@ -14,7 +14,7 @@ public class Theme {
     private int primaryColorDarkId;
     private int primaryColor600Id;
 
-    public Theme (int id, int primaryColorId, int primaryColorDarkId, int primaryColor600Id, String backgroundImageName, String logoImageName, String navigationDrawerImage){
+    public Theme(int id, int primaryColorId, int primaryColorDarkId, int primaryColor600Id, String backgroundImageName, String logoImageName, String navigationDrawerImage) {
         this.setId(id);
         this.setBackgroundImageName(backgroundImageName);
         this.setLogoImageName(logoImageName);

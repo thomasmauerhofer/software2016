@@ -16,7 +16,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,8 +35,6 @@ import com.bitschupfa.sw16.yaq.utils.QuizFactory;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Host extends YaqActivity implements Lobby {
     private static final int REQUEST_ENABLE_DISCOVERABLE_BT = 42;
@@ -75,16 +72,6 @@ public class Host extends YaqActivity implements Lobby {
     }
 
     @Override
-    protected void handleTheme() {
-        List<Button> buttons = new ArrayList<>();
-        buttons.add((Button) findViewById(R.id.host_select_button));
-        buttons.add((Button) findViewById(R.id.host_advanced_button));
-        buttons.add((Button) findViewById(R.id.host_start_button));
-        styleButtons(buttons);
-        setBackgroundImage();
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main_menu, menu);
         MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
@@ -108,7 +95,7 @@ public class Host extends YaqActivity implements Lobby {
     }
 
     public void startButtonClicked(View view) {
-        if(QuizFactory.instance().getSmallestNumberOfQuestions() == 0) {
+        if (QuizFactory.instance().getSmallestNumberOfQuestions() == 0) {
             Toast.makeText(this, R.string.noQuestionsSelected, Toast.LENGTH_LONG).show();
             return;
         }

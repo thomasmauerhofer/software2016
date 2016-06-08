@@ -45,7 +45,9 @@ public class CastHelper {
     public boolean mWaitingForReconnect;
     public boolean mApplicationStarted;
 
-    public enum GameState {WAITING, LOBBY, GAME, END};
+    public enum GameState {WAITING, LOBBY, GAME, END}
+
+    ;
     private GameState gameState;
     private TextQuestion questionToDisplay;
     private List<RankingItem> scoreboardToDisplay;
@@ -56,11 +58,11 @@ public class CastHelper {
 
     public final String APPLICATION_ID = "5CC4A228";
 
-    private CastHelper (Context c, GameState gameState) {
+    private CastHelper(Context c, GameState gameState) {
         this.context = c;
         setQuestionToDisplay(null);
         setScoreboardToDisplay(null);
-        if(gameState != null) {
+        if (gameState != null) {
             setGameState(gameState);
         } else {
             setGameState(GameState.WAITING);
@@ -289,7 +291,7 @@ public class CastHelper {
         try {
             json.put("type", "scoreboard");
             JSONArray players = new JSONArray();
-            for(RankingItem item : scoreboard) {
+            for (RankingItem item : scoreboard) {
                 JSONObject player = new JSONObject();
                 player.put("name", item.getName());
                 player.put("score", item.getScore());
@@ -322,14 +324,14 @@ public class CastHelper {
     }
 
     public void removeCallbacks() {
-        if(callbacksActive) {
+        if (callbacksActive) {
             mMediaRouter.removeCallback(mMediaRouterCallback);
             callbacksActive = false;
         }
     }
 
     public void addCallbacks() {
-        if(!callbacksActive) {
+        if (!callbacksActive) {
             mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
                     MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
             callbacksActive = true;

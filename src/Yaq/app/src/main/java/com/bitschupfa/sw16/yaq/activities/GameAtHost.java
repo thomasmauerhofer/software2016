@@ -80,9 +80,9 @@ public class GameAtHost extends Game {
                 askedView.setEnabled(active);
                 int visible = active ? View.VISIBLE : View.INVISIBLE;
                 nextQuestion.setVisibility(visible);
-                if(active)
-                    questionAskLL.setAlpha(0.5f);
-                else{
+                if (active)
+                    questionAskLL.setAlpha(0.7f);
+                else {
                     questionAskLL.setAlpha(1.0f);
                 }
             }

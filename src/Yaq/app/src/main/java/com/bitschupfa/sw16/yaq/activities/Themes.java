@@ -5,7 +5,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.ListView;
 
 import com.bitschupfa.sw16.yaq.R;
-import com.bitschupfa.sw16.yaq.utils.ThemeListAdapter;
+import com.bitschupfa.sw16.yaq.ui.ThemeListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,19 +26,15 @@ public class Themes extends YaqActivity {
         ListView themesListView = (ListView) findViewById(R.id.themesListView);
 
         initThemes();
-        ThemeListAdapter themeListAdapter = new ThemeListAdapter(this,getThemeList());
+        ThemeListAdapter themeListAdapter = new ThemeListAdapter(this, getThemeList());
 
         assert themesListView != null;
         themesListView.setAdapter(themeListAdapter);
+
         handleTheme();
     }
 
-    @Override
-    protected void handleTheme() {
-        setBackgroundImage();
-    }
-
-    private void initThemes(){
+    private void initThemes() {
         themes = new ArrayList<>();
         themes.add(getString(R.string.theme1));
         themes.add(getString(R.string.theme2));
@@ -46,7 +42,7 @@ public class Themes extends YaqActivity {
         themes.add(getString(R.string.theme4));
     }
 
-    public List<String> getThemeList(){
+    public List<String> getThemeList() {
         return themes;
     }
 

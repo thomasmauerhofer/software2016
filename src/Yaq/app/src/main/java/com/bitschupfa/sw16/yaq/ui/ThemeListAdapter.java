@@ -1,4 +1,4 @@
-package com.bitschupfa.sw16.yaq.utils;
+package com.bitschupfa.sw16.yaq.ui;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.activities.MainMenu;
 import com.bitschupfa.sw16.yaq.activities.Themes;
-import com.bitschupfa.sw16.yaq.ui.ThemeChooser;
 
 import java.util.List;
 

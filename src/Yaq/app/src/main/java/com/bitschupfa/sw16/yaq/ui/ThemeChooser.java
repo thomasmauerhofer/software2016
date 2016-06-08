@@ -33,12 +33,12 @@ public class ThemeChooser {
     public ThemeStorage themeStorage;
     public Theme theme;
 
-    public ThemeChooser(Activity activity){
+    public ThemeChooser(Activity activity) {
         themeStorage = ThemeStorage.getInstance(activity);
     }
 
-    public void setTheme(int themeID){
-        switch (themeID){
+    public void setTheme(int themeID) {
+        switch (themeID) {
             case THEME_BLUE:
                 theme = new Theme(THEME_BLUE,
                         R.color.blue500,
@@ -83,15 +83,15 @@ public class ThemeChooser {
         }
     }
 
-    private void setTheme(Theme theme){
+    private void setTheme(Theme theme) {
         themeStorage.setTheme(theme);
     }
 
-    public Theme getTheme(){
+    public Theme getTheme() {
         return theme;
     }
 
-    public ThemeStorage getThemeStorage(){
+    public ThemeStorage getThemeStorage() {
         return themeStorage;
     }
 }

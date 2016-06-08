@@ -11,7 +11,7 @@ import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 
 
-public class DBHelper extends SQLiteOpenHelper{
+public class DBHelper extends SQLiteOpenHelper {
 
     private static String DATABASE_NAME = "yaq.db";
     private static final int DATABASE_VERSION = 1;
@@ -23,17 +23,17 @@ public class DBHelper extends SQLiteOpenHelper{
 
     public static DBHelper instance(Context myContext) {
 
-        if(instance_ == null) {
+        if (instance_ == null) {
             instance_ = new DBHelper(myContext);
         }
         return instance_;
     }
 
-    public SQLiteDatabase getDatabase(){
+    public SQLiteDatabase getDatabase() {
         return this.getReadableDatabase();
     }
 
-    public SQLiteDatabase getInsertionDatabase(){
+    public SQLiteDatabase getInsertionDatabase() {
         return this.getWritableDatabase();
     }
 
@@ -68,7 +68,7 @@ public class DBHelper extends SQLiteOpenHelper{
         insertInitialData(db);
     }
 
-    private void insertInitialData(SQLiteDatabase dataBase){
+    private void insertInitialData(SQLiteDatabase dataBase) {
         QuestionCatalog questionCatalog1 = new QuestionCatalog(1, 1, "Time", null);
         QuestionCatalog questionCatalog2 = new QuestionCatalog(2, 2, "General", null);
 
@@ -87,38 +87,38 @@ public class DBHelper extends SQLiteOpenHelper{
         answer2 = new Answer("Michael Jackson", 0);
         answer3 = new Answer("Michael Jackson", 0);
         answer4 = new Answer("Michael Jackson", 0);
-        TextQuestion textQuestion1 = new TextQuestion(1,"Which singer joined Mel Gibson in the movie Mad Max: Beyond The Thunderdome?", answer1, answer2, answer3, answer4, 2);
+        TextQuestion textQuestion1 = new TextQuestion(1, "Which singer joined Mel Gibson in the movie Mad Max: Beyond The Thunderdome?", answer1, answer2, answer3, answer4, 2);
 
         answer1 = new Answer("Pina Colada", 0);
         answer2 = new Answer("Zombie", 0);
         answer3 = new Answer("Manhatten", 0);
         answer4 = new Answer("Harvey Wallbanger", 20);
-        TextQuestion textQuestion2 = new TextQuestion(2,"Vodka, Galliano and orange juice are used to make which classic cocktail?", answer1, answer2, answer3, answer4, 2);
+        TextQuestion textQuestion2 = new TextQuestion(2, "Vodka, Galliano and orange juice are used to make which classic cocktail?", answer1, answer2, answer3, answer4, 2);
 
 
         answer1 = new Answer("1966", 0);
         answer2 = new Answer("1967", 20);
         answer3 = new Answer("1968", 0);
         answer4 = new Answer("1969", 0);
-        TextQuestion textQuestion3 = new TextQuestion(3,"In which year did Foinavon win the Grand National?", answer1, answer2, answer3, answer4, 2);
+        TextQuestion textQuestion3 = new TextQuestion(3, "In which year did Foinavon win the Grand National?", answer1, answer2, answer3, answer4, 2);
 
         answer1 = new Answer("Peter Tosh", 0);
         answer2 = new Answer("Lee Perry", 0);
         answer3 = new Answer("Bob Marley", 20);
         answer4 = new Answer("Shaggy", 0);
-        TextQuestion textQuestion4 = new TextQuestion(4,"Which reggae singing star died 11th May 1981?", answer1, answer2, answer3, answer4, 1);
+        TextQuestion textQuestion4 = new TextQuestion(4, "Which reggae singing star died 11th May 1981?", answer1, answer2, answer3, answer4, 1);
 
         answer1 = new Answer("1960", 20);
         answer2 = new Answer("1969", 0);
         answer3 = new Answer("1971", 0);
         answer4 = new Answer("1988", 0);
-        TextQuestion textQuestion5 = new TextQuestion(5,"In what year was Prince Andrew born?", answer1, answer2, answer3, answer4, 1);
+        TextQuestion textQuestion5 = new TextQuestion(5, "In what year was Prince Andrew born?", answer1, answer2, answer3, answer4, 1);
 
         answer1 = new Answer("1966", 0);
         answer2 = new Answer("1967", 20);
         answer3 = new Answer("1968", 0);
         answer4 = new Answer("1969", 0);
-        TextQuestion textQuestion6 = new TextQuestion(6,"In what year was Prince Andrew born?", answer1, answer2, answer3, answer4, 1);
+        TextQuestion textQuestion6 = new TextQuestion(6, "In what year was Prince Andrew born?", answer1, answer2, answer3, answer4, 1);
 
         TextQuestionDAO textQuestionDAO1 = new TextQuestionDAO(textQuestion1);
         textQuestionDAO1.insertThisAsInitialBaselineIntoDatabase(dataBase);

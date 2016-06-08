@@ -70,7 +70,7 @@ public class PlayerList {
     }
 
     public void resetScores() {
-        for(Player player : players.values()) {
+        for (Player player : players.values()) {
             player.resetScore();
         }
     }
@@ -81,7 +81,7 @@ public class PlayerList {
 
     public ArrayList<RankingItem> getSortedScoreList() {
         ArrayList<RankingItem> scoreboard = new ArrayList<>();
-        for(Player player : MapUtil.sortByValueHighestFirst(players).values()) {
+        for (Player player : MapUtil.sortByValueHighestFirst(players).values()) {
             scoreboard.add(new RankingItem(player.getProfile().getPlayerName(), player.getScore()));
         }
         return scoreboard;

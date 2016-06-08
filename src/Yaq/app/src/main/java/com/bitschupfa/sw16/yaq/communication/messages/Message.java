@@ -25,5 +25,6 @@ public abstract class Message implements Serializable {
     }
 
     public abstract void action(HostMessageHandler handler);
+
     public abstract void action(ClientMessageHandler handler);
 }

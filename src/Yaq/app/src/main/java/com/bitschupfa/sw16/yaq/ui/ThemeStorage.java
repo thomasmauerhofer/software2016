@@ -33,8 +33,8 @@ public class ThemeStorage {
         initDefaultValues();
     }
 
-    private void initDefaultValues(){
-        if(getThemeId() == -1) {
+    private void initDefaultValues() {
+        if (getThemeId() == -1) {
             setThemeId(ThemeChooser.THEME_BLUE);
             setPrimaryColor(ContextCompat.getColor(context, R.color.colorPrimary));
             setPrimaryColorDark(ContextCompat.getColor(context, R.color.colorPrimaryDark));
@@ -52,11 +52,11 @@ public class ThemeStorage {
         return instance;
     }
 
-    public void setTheme(Theme theme){
+    public void setTheme(Theme theme) {
         setThemeId(theme.getId());
-        setPrimaryColor(ContextCompat.getColor(context,theme.getPrimaryColorId()));
-        setPrimaryColorDark(ContextCompat.getColor(context,theme.getPrimaryColorDarkId()));
-        setPrimaryColor600(ContextCompat.getColor(context,theme.getPrimaryColor600Id()));
+        setPrimaryColor(ContextCompat.getColor(context, theme.getPrimaryColorId()));
+        setPrimaryColorDark(ContextCompat.getColor(context, theme.getPrimaryColorDarkId()));
+        setPrimaryColor600(ContextCompat.getColor(context, theme.getPrimaryColor600Id()));
         setBackgroundImageName(theme.getBackgroundImageName());
         setLogoImageName(theme.getLogoImageName());
         setNavigationDrawerImageName(theme.getNavigationDrawerImage1());

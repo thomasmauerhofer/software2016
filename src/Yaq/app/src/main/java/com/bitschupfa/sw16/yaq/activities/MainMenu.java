@@ -12,16 +12,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfileStorage;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainMenu extends YaqActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -53,7 +49,7 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
         setSupportActionBar(toolbar);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -67,6 +63,7 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
 
             }
         };
+        assert drawer != null;
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -85,20 +82,14 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
 
     @Override
     protected void handleTheme() {
-        List<Button> buttons = new ArrayList<>();
-
-        buttons.add((Button) findViewById(R.id.host_btn));
-        buttons.add((Button) findViewById(R.id.join_btn));
-
-        styleButtons(buttons);
+        super.handleTheme();
 
         ImageView logoImageView = (ImageView) findViewById(R.id.logoImageView);
-        logoImageView.setBackground(getDrawableByName(themeChooser.getThemeStorage().getLogoImageName())) ;
+        if (logoImageView != null)
+            logoImageView.setBackground(getDrawableByName(themeChooser.getThemeStorage().getLogoImageName()));
 
-        setBackgroundImage();
         navigationDrawerHeader.setBackground(getDrawableByName(themeChooser.getThemeStorage().getNavigationDrawerImageName()));
         drawerBackgroundAnimation = (AnimationDrawable) navigationDrawerHeader.getBackground();
-
     }
 
     public void refreshProfileInNavigationHeader() {
@@ -135,7 +126,6 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main_menu, menu);
         return true;
     }
@@ -148,7 +138,6 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.menu_about) {
             new AlertDialog.Builder(this)
@@ -158,9 +147,10 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
                     .show();
         } else if (id == R.id.menu_themes) {
             Intent intent = new Intent(MainMenu.this, Themes.class);
-            startActivityForResult(intent, RESULT_FINISH); ;
+            startActivityForResult(intent, RESULT_FINISH);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        assert drawer != null;
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

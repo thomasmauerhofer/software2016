@@ -25,7 +25,7 @@
             android:text="@string/hostname"
             android:id="@+id/lbl_hostname"
             android:paddingBottom="5dp"
-            android:textColor="@color/colorPrimary" />
+             />
 
         <TextView
             android:layout_width="match_parent"
@@ -34,7 +34,7 @@
             android:text="@string/numberQuestionsText"
             android:id="@+id/numberOfQuestions"
             android:paddingBottom="15dp"
-            android:textColor="@color/colorPrimary" />
+             />
 
         <Button
             android:text="@string/build"
@@ -230,6 +230,7 @@
                 android:text="@string/advanced_settings"
                 android:layout_margin="@dimen/button_margin"
                 android:onClick="advancedSettingsButtonClicked"
+                android:theme="@style/defaultButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

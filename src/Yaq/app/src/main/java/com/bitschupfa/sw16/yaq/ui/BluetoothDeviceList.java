@@ -32,7 +32,7 @@ public class BluetoothDeviceList extends ArrayAdapter<BluetoothDevice> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        if(convertView == null) {
+        if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             if ((listText.getVisibility() == View.VISIBLE) && !devices.isEmpty()) {

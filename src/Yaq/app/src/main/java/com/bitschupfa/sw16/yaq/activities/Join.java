@@ -112,7 +112,7 @@ public class Join extends YaqActivity implements Lobby {
         registerReceiver(btBroadcastReceiver, filter);
 
         if (!ClientGameLogic.getInstance().isConnected() && setupBluetooth()) {
-               findOtherBluetoothDevices();
+            findOtherBluetoothDevices();
         }
 
         playerList = new PlayerList(this);
@@ -127,12 +127,8 @@ public class Join extends YaqActivity implements Lobby {
                 startTimer();
             }
         });
-        handleTheme();
-    }
 
-    @Override
-    protected void handleTheme() {
-        setBackgroundImage();
+        handleTheme();
     }
 
     @Override
@@ -160,7 +156,7 @@ public class Join extends YaqActivity implements Lobby {
                         }
                     })
                     .show();
-             return false;
+            return false;
         }
 
         if (!btAdapter.isEnabled()) {
@@ -179,7 +175,7 @@ public class Join extends YaqActivity implements Lobby {
         if (hasPermission != PackageManager.PERMISSION_GRANTED) {
             Log.d(TAG, "Ask user for permission to discover nearby devices.");
             ActivityCompat.requestPermissions(Join.this,
-                    new String[] { android.Manifest.permission.ACCESS_COARSE_LOCATION },
+                    new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
                     REQUEST_COARSE_LOCATION_PERMISSIONS);
             return;
         }
@@ -248,13 +244,13 @@ public class Join extends YaqActivity implements Lobby {
                 .create();
         findDeviceDialog.setCanceledOnTouchOutside(false);
 
-        dialogBar  = (ProgressBar) dialogView.findViewById(R.id.find_devices_bar);
+        dialogBar = (ProgressBar) dialogView.findViewById(R.id.find_devices_bar);
         ListView pairedList = (ListView) dialogView.findViewById(R.id.paired_devices);
         ListView discoveredList = (ListView) dialogView.findViewById(R.id.unpaired_devices);
         TextView noPairedDevices = (TextView) dialogView.findViewById(R.id.no_paired_devices_found);
         TextView noUnpairedDevices = (TextView) dialogView.findViewById(R.id.no_unpaired_devices_found);
 
-        paired = new BluetoothDeviceList(this,  pairedDevices, noPairedDevices);
+        paired = new BluetoothDeviceList(this, pairedDevices, noPairedDevices);
         discovered = new BluetoothDeviceList(this, discoveredDevices, noUnpairedDevices);
 
         pairedList.setAdapter(paired);

@@ -68,7 +68,7 @@ public class HostGameLogic implements ClientMessageHandler {
 
     @Override
     public void askNextQuestion() {
-        if(quiz.hasNext()) {
+        if (quiz.hasNext()) {
             currentQuestion = quiz.next();
             currentQuestion.shuffleAnswers();
             answerCollector.init(players.getPlayerIds());
@@ -138,7 +138,7 @@ public class HostGameLogic implements ClientMessageHandler {
     }
 
     private void sendMessageToClients(Message message) {
-        for(Player player : players.getPlayers()) {
+        for (Player player : players.getPlayers()) {
             try {
                 player.getDevice().sendMessage(message);
             } catch (IOException e) {

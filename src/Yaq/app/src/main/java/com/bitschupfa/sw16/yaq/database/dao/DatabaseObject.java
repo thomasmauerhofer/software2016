@@ -14,26 +14,26 @@ public abstract class DatabaseObject {
     ContentValues contentValues;
     protected String tableName;
 
-    public DatabaseObject(){
+    public DatabaseObject() {
         contentValues = new ContentValues();
     }
 
     protected abstract void fillDatabaseContentValues();
 
-    private void insertIntoDatabase(SQLiteDatabase database){
+    private void insertIntoDatabase(SQLiteDatabase database) {
         fillDatabaseContentValues();
 
         Log.e("Database", "Table Name: " + tableName);
         database.insert(tableName, null, contentValues);
     }
 
-    public void insertIntoDatabase(Context context){
+    public void insertIntoDatabase(Context context) {
         SQLiteDatabase database = DBHelper.instance(context).getInsertionDatabase();
         insertIntoDatabase(database);
         database.close();
     }
 
-    public void insertThisAsInitialBaselineIntoDatabase(SQLiteDatabase database){
+    public void insertThisAsInitialBaselineIntoDatabase(SQLiteDatabase database) {
         insertIntoDatabase(database);
     }
 }

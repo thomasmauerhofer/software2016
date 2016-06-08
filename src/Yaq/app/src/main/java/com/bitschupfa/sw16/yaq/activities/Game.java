@@ -36,7 +36,6 @@ public class Game extends YaqActivity {
     protected LinearLayout questionViewLL;
     protected LinearLayout questionAskLL;
     private List<Button> answerButtons;
-    private List<Button> buttons;
 
     private Button answerButtonPressed;
     private Answer selectedAnswer;
@@ -65,16 +64,8 @@ public class Game extends YaqActivity {
                         (Button) findViewById(R.id.answer3), (Button) findViewById(R.id.answer4)
                 )
         );
-        handleTheme();
-    }
 
-    @Override
-    protected void handleTheme() {
-        buttons = new ArrayList<>();
-        buttons.addAll(answerButtons);
-        buttons.add((Button) findViewById(R.id.next_question));
-        styleButtons(buttons);
-        setBackgroundImage();
+        handleTheme();
     }
 
     public void showStatisticActivity(ArrayList<RankingItem> scoreList) {
@@ -139,7 +130,7 @@ public class Game extends YaqActivity {
 
     }
 
-    private void invalidateAnswerButtons(){
+    private void invalidateAnswerButtons() {
         for (Button answerButton : answerButtons) {
             answerButton.invalidate();
         }
@@ -166,7 +157,7 @@ public class Game extends YaqActivity {
         timer = new CountDownTimer(timeout, 100) {
             @Override
             public void onTick(long millisUntilFinished) {
-                countdownTimerText.setText(String.valueOf((countdownTimerBar.getProgress() + 9)/ 10));
+                countdownTimerText.setText(String.valueOf((countdownTimerBar.getProgress() + 9) / 10));
             }
 
             @Override

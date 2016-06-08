@@ -17,13 +17,13 @@ public class QuizFactory {
     }
 
     public static QuizFactory instance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new QuizFactory();
         }
         return instance;
     }
 
-    public void addQuestions(String catalogName, List< TextQuestion > questions) {
+    public void addQuestions(String catalogName, List<TextQuestion> questions) {
         usedCatalogs.add(catalogName);
         allQuestions.addAll(questions);
         Collections.shuffle(allQuestions);

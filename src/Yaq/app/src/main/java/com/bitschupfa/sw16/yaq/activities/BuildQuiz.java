@@ -1,13 +1,11 @@
 package com.bitschupfa.sw16.yaq.activities;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -31,7 +29,6 @@ public class BuildQuiz extends YaqActivity {
 
     private ListView listView;
     private QuestionQuerier questionQuerier;
-    private Button btnBuildQuiz;
     private HashMap<String, Integer> questionCatalogMap = new HashMap<>();
     private List<QuestionCatalog> questionCatalogList;
     private ArrayList<QuestionCatalogItem> catalogs = new ArrayList<>();
@@ -42,19 +39,16 @@ public class BuildQuiz extends YaqActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_build_quiz);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        btnBuildQuiz = (Button) findViewById(R.id.ButtonBuildQuiz);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         initSearchView();
         initNumberPicker();
         displayListView();
         handleTheme();
-    }
-
-    @Override
-    protected void handleTheme() {
-        setBackgroundImage();
     }
 
     @Override
@@ -65,7 +59,6 @@ public class BuildQuiz extends YaqActivity {
     public void displayListView() {
         questionQuerier = new QuestionQuerier(this);
         questionCatalogList = questionQuerier.getAllQuestionCatalogs();
-
 
         for (QuestionCatalog catalog : questionCatalogList) {
             questionCatalogMap.put(catalog.getName(), catalog.getCatalogID());

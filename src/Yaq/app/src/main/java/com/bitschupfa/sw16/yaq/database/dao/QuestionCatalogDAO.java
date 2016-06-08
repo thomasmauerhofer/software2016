@@ -14,7 +14,7 @@ public class QuestionCatalogDAO extends DatabaseObject {
 
     QuestionCatalog questionCatalog;
 
-    public QuestionCatalogDAO(QuestionCatalog questionCatalog){
+    public QuestionCatalogDAO(QuestionCatalog questionCatalog) {
         super();
         this.questionCatalog = questionCatalog;
         tableName = TABLE_NAME;

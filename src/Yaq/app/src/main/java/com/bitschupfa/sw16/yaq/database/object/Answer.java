@@ -3,7 +3,7 @@ package com.bitschupfa.sw16.yaq.database.object;
 import java.io.Serializable;
 
 
-public class Answer implements Serializable{
+public class Answer implements Serializable {
     private String answer;
     private int answerValue;
     public static final int MIN_VAL_HACK = -10;
