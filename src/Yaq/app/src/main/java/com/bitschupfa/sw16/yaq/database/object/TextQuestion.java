@@ -17,14 +17,13 @@ public class TextQuestion implements Serializable{
 
     private int difficulty;
 
-    public TextQuestion(int questionID, String question, Answer answer1, Answer answer2, Answer answer3, Answer answer4, int difficulty, int catalogID) {
+    public TextQuestion(int questionID, String question, Answer answer1, Answer answer2, Answer answer3, Answer answer4, int catalogID) {
         this.questionID = questionID;
         this.question = question;
         this.answer1 = answer1;
         this.answer2 = answer2;
         this.answer3 = answer3;
         this.answer4 = answer4;
-        this.difficulty = difficulty;
         this.catalogID = catalogID;
     }
 
@@ -34,14 +33,6 @@ public class TextQuestion implements Serializable{
 
     public void setQuestion(String question) {
         this.question = question;
-    }
-
-    public int getDifficulty() {
-        return difficulty;
-    }
-
-    public void setDifficulty(int difficulty) {
-        this.difficulty = difficulty;
     }
 
     public int getQuestionID() {

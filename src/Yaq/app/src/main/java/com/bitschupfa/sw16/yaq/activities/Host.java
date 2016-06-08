@@ -25,14 +25,13 @@ import com.bitschupfa.sw16.yaq.bluetooth.ConnectionListener;
 import com.bitschupfa.sw16.yaq.communication.ConnectedClientDevice;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
 import com.bitschupfa.sw16.yaq.communication.ConnectedHostDevice;
-import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
 import com.bitschupfa.sw16.yaq.game.ClientGameLogic;
 import com.bitschupfa.sw16.yaq.game.HostGameLogic;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfileStorage;
 import com.bitschupfa.sw16.yaq.ui.PlayerList;
 import com.bitschupfa.sw16.yaq.utils.CastHelper;
-import com.bitschupfa.sw16.yaq.utils.Quiz;
+import com.bitschupfa.sw16.yaq.utils.QuizFactory;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -42,6 +41,7 @@ import java.util.List;
 
 public class Host extends YaqActivity implements Lobby {
     private static final int REQUEST_ENABLE_DISCOVERABLE_BT = 42;
+    private static final int BUILD_QUIZ = 1;
 
     private final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
     private final ConnectionListener btConnectionListener = new ConnectionListener();
@@ -57,6 +57,9 @@ public class Host extends YaqActivity implements Lobby {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        TextView numberOfQuestions = (TextView) findViewById(R.id.numberOfQuestions);
+        numberOfQuestions.setText(getResources().getString(R.string.numberQuestionsText) + " " + QuizFactory.instance().getSmallestNumberOfQuestions());
+
         ClientGameLogic.getInstance().setLobbyActivity(this);
 
         if (setupBluetooth()) {
@@ -66,8 +69,6 @@ public class Host extends YaqActivity implements Lobby {
                 hostnameLabel.append(" " + btAdapter.getName());
             }
         }
-
-        HostGameLogic.getInstance().setQuiz(this.buildTmpQuiz());
         selfConnectionHack();
         castHelper = CastHelper.getInstance(getApplicationContext(), CastHelper.GameState.LOBBY);
         handleTheme();
@@ -107,12 +108,18 @@ public class Host extends YaqActivity implements Lobby {
     }
 
     public void startButtonClicked(View view) {
+        if(QuizFactory.instance().getSmallestNumberOfQuestions() == 0) {
+            Toast.makeText(this, R.string.noQuestionsSelected, Toast.LENGTH_LONG).show();
+            return;
+        }
+        HostGameLogic.getInstance().setQuiz(QuizFactory.instance().createNewQuiz());
         HostGameLogic.getInstance().startGame();
     }
 
     @SuppressWarnings("UnusedParameters")
     public void buildQuizButtonClicked(View view) {
-        Toast.makeText(this, R.string.not_implemented, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(Host.this, BuildQuiz.class);
+        startActivityForResult(intent, BUILD_QUIZ);
     }
 
     @SuppressWarnings("UnusedParameters")
@@ -159,6 +166,10 @@ public class Host extends YaqActivity implements Lobby {
                     Log.d("BT", "Could not enable discoverability.");
                     finish();
                 }
+                break;
+            case BUILD_QUIZ:
+                TextView numberOfQuestions = (TextView) findViewById(R.id.numberOfQuestions);
+                numberOfQuestions.setText(getResources().getString(R.string.numberQuestionsText) + " " + QuizFactory.instance().getSmallestNumberOfQuestions());
                 break;
             default:
                 Log.d("Host:onActivityResult", "unknown requestCode: " + resultCode);
@@ -254,10 +265,10 @@ public class Host extends YaqActivity implements Lobby {
         }).start();
     }
 
-    private Quiz buildTmpQuiz() {
-        Quiz quiz = new Quiz();
-        QuestionQuerier questionQuerier = new QuestionQuerier(this);
-        quiz.addQuestions(questionQuerier.getAllQuestionsFromCatalog(1));
-        return quiz;
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        QuizFactory.instance().clearQuiz();
+        QuizFactory.instance().setNumberOfQuestions(10);
     }
 }

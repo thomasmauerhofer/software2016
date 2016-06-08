@@ -43,6 +43,12 @@
             android:theme="@style/AppTheme.NoActionBar"
             />
         <activity
+            android:name=".activities.BuildQuiz"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/title_activity_build_quiz"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
             android:name=".activities.Statistic"
             android:label="@string/title_activity_statistic"
             android:theme="@style/AppTheme.NoActionBar"
@@ -75,6 +81,7 @@
              ATTENTION: This was auto-generated to add Google Play services to your project for
              App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
         -->
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

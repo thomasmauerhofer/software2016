@@ -19,12 +19,22 @@
         android:weightSum="1">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/hostname"
             android:id="@+id/lbl_hostname"
-            android:layout_marginBottom="15dp" />
+            android:paddingBottom="5dp"
+            android:textColor="@color/colorPrimary" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/numberQuestionsText"
+            android:id="@+id/numberOfQuestions"
+            android:paddingBottom="15dp"
+            android:textColor="@color/colorPrimary" />
 
         <Button
             android:text="@string/build"
