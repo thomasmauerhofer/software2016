@@ -15,6 +15,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class FileChooser {
@@ -34,7 +36,7 @@ public class FileChooser {
 
     // file selection event handling
     public interface FileSelectedListener {
-        void fileSelected(File file);
+        void fileSelected(File file) throws IOException;
     }
     public FileChooser setFileListener(FileSelectedListener fileListener) {
         this.fileListener = fileListener;
@@ -54,7 +56,11 @@ public class FileChooser {
                     refresh(chosenFile);
                 } else {
                     if (fileListener != null) {
-                        fileListener.fileSelected(chosenFile);
+                        try {
+                            fileListener.fileSelected(chosenFile);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                     dialog.dismiss();
                 }
