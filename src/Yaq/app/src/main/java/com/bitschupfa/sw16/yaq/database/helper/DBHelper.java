@@ -14,7 +14,7 @@ import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static String DATABASE_NAME = "yaq.db";
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 12;
     private static DBHelper instance_ = null;
 
     public DBHelper(Context context) {
@@ -68,10 +68,11 @@ public class DBHelper extends SQLiteOpenHelper {
         insertInitialData(db);
     }
 
-    private void insertInitialData(SQLiteDatabase dataBase){
+    private void insertInitialData(SQLiteDatabase dataBase) {
         QuestionCatalog questionCatalog1 = new QuestionCatalog(1, 1, "Time", null);
         QuestionCatalog questionCatalog2 = new QuestionCatalog(2, 2, "General", null);
         QuestionCatalog questionCatalog3 = new QuestionCatalog(3, 3, "TV/Movie", null);
+
 
         QuestionCatalogDAO questionCatalogDAO1 = new QuestionCatalogDAO(questionCatalog1);
         questionCatalogDAO1.insertThisAsInitialBaselineIntoDatabase(dataBase);
@@ -99,12 +100,11 @@ public class DBHelper extends SQLiteOpenHelper {
         answer4 = new Answer("Harvey Wallbanger", 10);
         TextQuestion textQuestion2 = new TextQuestion(2, "Vodka, Galliano and orange juice are used to make which classic cocktail?", answer1, answer2, answer3, answer4, 2);
 
-
         answer1 = new Answer("1966", 0);
         answer2 = new Answer("1967", 10);
         answer3 = new Answer("1968", 0);
         answer4 = new Answer("1969", 0);
-        TextQuestion textQuestion3 = new TextQuestion(3, "In which year did Foinavon win the Grand National?", answer1, answer2, answer3, answer4, 2);
+        TextQuestion textQuestion3 = new TextQuestion(3, "In which year did Foinavon win the Grand National?", answer1, answer2, answer3, answer4, 1);
 
         answer1 = new Answer("Peter Tosh", 0);
         answer2 = new Answer("Lee Perry", 0);
