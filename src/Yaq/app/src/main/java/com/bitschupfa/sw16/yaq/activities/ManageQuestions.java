@@ -1,16 +1,16 @@
 package com.bitschupfa.sw16.yaq.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -18,10 +18,8 @@ import android.widget.ListView;
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
 import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
-import com.bitschupfa.sw16.yaq.ui.BuildQuizAdapter;
 import com.bitschupfa.sw16.yaq.ui.ManageQuestionsAdapter;
 import com.bitschupfa.sw16.yaq.ui.QuestionCatalogItem;
-import com.bitschupfa.sw16.yaq.utils.QuizFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,11 +50,30 @@ public class ManageQuestions extends YaqActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(ManageQuestions.this);
+                builder.setTitle("Add Catalog");
+                LayoutInflater li = LayoutInflater.from(ManageQuestions.this);
+                View dialogView = li.inflate(R.layout.dialog_manage_questions, null);
+                final EditText input = (EditText) dialogView.findViewById(R.id.editText);
+                builder.setView(dialogView);
+
+                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //TODO add catalog into db
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
         });
-
     }
 
     public void displayListView() {
