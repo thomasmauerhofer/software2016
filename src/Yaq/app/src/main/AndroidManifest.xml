@@ -86,7 +86,7 @@
             android:name=".activities.QuizMaker"
             android:label="@string/title_activity_quiz_maker" />
         <activity
-            android:name=".activities.ShowCatalogs"
+            android:name=".activities.ManageQuestions"
             android:label="@string/title_activity_show_cataloges"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
