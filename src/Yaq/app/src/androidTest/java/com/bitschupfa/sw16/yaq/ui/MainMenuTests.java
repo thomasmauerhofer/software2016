@@ -2,14 +2,9 @@ package com.bitschupfa.sw16.yaq.ui;
 
 
 import android.annotation.TargetApi;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.PaintDrawable;
 import android.os.Build;
 import android.test.ActivityInstrumentationTestCase2;
-import android.util.Log;
-import android.widget.Button;
-import android.widget.ImageView;
 
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.activities.Host;
@@ -97,5 +92,12 @@ public class MainMenuTests extends ActivityInstrumentationTestCase2<MainMenu> {
         solo.waitForActivity(MainMenu.class);
         int currentColor = getActivity().themeChooser.getThemeStorage().getPrimaryColor();
         assertEquals(expectedColor, currentColor);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public void testGetDrawableByName() {
+        Drawable drawable1 = getActivity().getResources().getDrawable(R.drawable.background_teal, getActivity().getTheme());
+        Drawable drawable2 = getActivity().getDrawableByName("background_teal");
+        assertEquals(drawable1.getConstantState(), drawable2.getConstantState());
     }
 }

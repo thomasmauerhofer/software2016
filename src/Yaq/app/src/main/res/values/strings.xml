@@ -86,7 +86,6 @@
     <string name="theme3">Cat Special</string>
     <string name="theme4">Teal</string>
 
-
     <!-- ErrorStrings -->
     <string name="error_cant_show_score">An error occurs while showing scores!</string>
     <string name="error_cant_connect">An error occurs while create connection!</string>

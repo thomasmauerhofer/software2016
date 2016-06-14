@@ -41,7 +41,7 @@ public abstract class YaqActivity extends AppCompatActivity {
         setBackgroundImage();
     }
 
-    protected Drawable getDrawableByName(String name) {
+    public Drawable getDrawableByName(String name) {
         int logoImageId = getResources().getIdentifier(name, "drawable",
                 getPackageName());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
