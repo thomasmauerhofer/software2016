@@ -101,4 +101,5 @@
     <!-- ManageQuestions -->
     <string name="title_activity_show_cataloges">ShowCataloges</string>
     <string name="title_activity_show_questions">ShowQuestions</string>
+    <string name="title_activity_edit_questions">EditQuestions</string>
 </resources>

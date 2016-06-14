@@ -1,34 +1,27 @@
 package com.bitschupfa.sw16.yaq.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
-import com.bitschupfa.sw16.yaq.database.dao.TextQuestionDAO;
-import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
 import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.ui.QuestionCatalogItem;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import com.bitschupfa.sw16.yaq.ui.ShowQuestionsAdapter;
 
 public class ShowQuestions extends YaqActivity {
 
     private ListView listView;
-    private QuestionQuerier questionQuerier;
-    private HashMap<String, Integer> questionCatalogMap = new HashMap<>();
-    private List<QuestionCatalog> questionCatalogList;
-    private ArrayList<String> questionsList = new ArrayList<>();
     private ArrayAdapter dataAdapter = null;
+    private TextView textCatalogue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,38 +47,25 @@ public class ShowQuestions extends YaqActivity {
 
         QuestionCatalog catalog = (QuestionCatalog) getIntent().getSerializableExtra("QuestionCatalogue");
 
-        for (TextQuestion question : catalog.getTextQuestionList()) {
-            questionCatalogMap.put(catalog.getName(), catalog.getCatalogID());
-            questionsList.add(question.getQuestion());
-        }
+        textCatalogue = (TextView) findViewById(R.id.textCatalogue);
+        textCatalogue.setText(catalog.getName());
 
-        dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, questionsList);
-        listView = (ListView) findViewById(R.id.ListViewShowQuestions);
-        listView.setAdapter(dataAdapter);
-        /*questionQuerier = new QuestionQuerier(this);
-        questionCatalogList = questionQuerier.getAllQuestionCatalogs();
-
-        QuestionCatalog catalog = new QuestionCatalog()
-        for (QuestionCatalog catalog : questionCatalogList) {
-            questionCatalogMap.put(catalog.getName(), catalog.getCatalogID());
-            catalogs.add(new QuestionCatalogItem(catalog, false, this));
-        }
-
-        dataAdapter = new ArrayAdapter<>(this, R.layout.list_show_questions, catalogs);
+        dataAdapter = new ShowQuestionsAdapter(this, R.layout.list_show_questions, catalog.getTextQuestionList());
         listView = (ListView) findViewById(R.id.ListViewShowQuestions);
         listView.setAdapter(dataAdapter);
 
-        /*listView.setClickable(true);
+        listView.setClickable(true);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 
-                QuestionCatalogItem item = (QuestionCatalogItem) listView.getItemAtPosition(position);
+                TextQuestion item = (TextQuestion) listView.getItemAtPosition(position);
 
-                Intent intent = new Intent(ManageQuestions.this, ShowQuestions.class);
+                Intent intent = new Intent(ShowQuestions.this, EditQuestions.class);
+                intent.putExtra("Question", item);
                 startActivity(intent);
             }
-        });*/
+        });
     }
 
     @Override

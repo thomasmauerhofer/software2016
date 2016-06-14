@@ -94,6 +94,11 @@
             android:name=".activities.ShowQuestions"
             android:label="@string/title_activity_show_questions"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity
+            android:name=".activities.EditQuestions"
+            android:label="@string/title_activity_edit_questions"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
