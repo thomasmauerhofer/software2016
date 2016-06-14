@@ -1,12 +1,15 @@
 package com.bitschupfa.sw16.yaq.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -69,6 +72,19 @@ public class ManageQuestions extends YaqActivity {
         dataAdapter = new ManageQuestionsAdapter(this, R.layout.list_manage_questions, catalogs, true, true, true);
         listView = (ListView) findViewById(R.id.ListViewManageQuestions);
         listView.setAdapter(dataAdapter);
+
+        listView.setClickable(true);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+
+                QuestionCatalogItem item = (QuestionCatalogItem) listView.getItemAtPosition(position);
+
+                Intent intent = new Intent(ManageQuestions.this, ShowQuestions.class);
+                intent.putExtra("QuestionCatalogue", item.getCatalog());
+                startActivity(intent);
+            }
+        });
     }
 
     public void initSearchView() {

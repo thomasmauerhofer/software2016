@@ -1,6 +1,7 @@
 package com.bitschupfa.sw16.yaq.ui;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,14 +64,6 @@ public class ManageQuestionsAdapter extends ArrayAdapter<QuestionCatalogItem> im
         TextView name = (TextView) convertView.findViewById(R.id.name);
         TextView numberOfQuestions = (TextView) convertView.findViewById(R.id.numberQuestions);
         TextView difficulty = (TextView) convertView.findViewById(R.id.difficulty);
-
-       /* final int pos = position;
-        name.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                TextView cb = (TextView) v;
-                QuestionCatalogItem item = getItem(pos);
-            }
-        });*/
 
         QuestionCatalogItem item = getItem(position);
         String diff;

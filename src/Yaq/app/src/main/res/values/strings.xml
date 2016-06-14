@@ -95,11 +95,10 @@
     <!-- Chromecast -->
     <string name="waiting_for_gamestart">Waiting for game to start …</string>
     <string name="waiting_for_players">Waiting for players to join …</string>
-<<<<<<< 0075a100f64d44f2db1ddbb6b8a7e4feefcc5551
 
     <string name="title_activity_quiz_maker">Quiz Maker</string>
-</resources>
-=======
+
+    <!-- ManageQuestions -->
     <string name="title_activity_show_cataloges">ShowCataloges</string>
+    <string name="title_activity_show_questions">ShowQuestions</string>
 </resources>
->>>>>>> [TM, PM] Added new Activity

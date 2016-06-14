@@ -89,6 +89,11 @@
             android:name=".activities.ManageQuestions"
             android:label="@string/title_activity_show_cataloges"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity
+            android:name=".activities.ShowQuestions"
+            android:label="@string/title_activity_show_questions"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
