@@ -173,5 +173,7 @@ public class HostGameLogic implements ClientMessageHandler {
             }
         }
         gameActivity.enableShowNextQuestion(true);
+
+        castHelper.sendShowCorrectAnswers();
     }
 }
