@@ -6,12 +6,12 @@
 
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-    
+
     <style type="text/css">
         body {
             overflow: hidden;
         }
-        
+
         div#main {
             height: 720PX;
             width: 1280PX;
@@ -27,24 +27,24 @@
             margin-left: auto;
             margin-right: auto;
         }
-        
+
         #question {
             display: none;
             margin: 20px;
         }
-        
+
         .answer {
             display: none;
             margin: 10px;
             font-size: 28px;
         }
-        
+
         #answers_box {
             display: none;
             margin: 20px;
             vertical-align: middle;
         }
-        
+
         #scoreboard {
             display: none;
             font-size: 20px;
@@ -52,23 +52,23 @@
             margin-left: auto;
             margin-right: auto;
         }
-        
+
         #scoreboard .row {
             border-bottom: 1px #88bbcb dotted;
         }
-        
+
         #scoreboard .rank-1 {
             font-size: 36px;
         }
-        
+
         #scoreboard .rank-2 {
             font-size: 32px;
         }
-        
+
         #scoreboard .rank-3 {
             font-size: 28px;
         }
-        
+
         .col-md-5 {
             width: 48.3% !important;
         }
@@ -97,7 +97,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-    <script type="text/javascript">        
+    <script type="text/javascript">
         window.onload = function () {
             cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
             window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
@@ -156,10 +156,12 @@
             });
             console.log('Receiver Manager started');
         };
-        
+
         function displayQuestionAndAnswers(data) {
             //displayQuestionAndAnswers(JSON.parse('{"question": "What\'s >>>> the rest?", "answer_1": "2000 meters", "answer_2": "2 kilometer", "answer_3": "1 mile", "answer_4": "1 light-year"}'));
             console.log(data);
+            $("#question").hide();
+            $("#answers_box").hide();
             $("#message").hide('slow');
             $("#scoreboard").hide('slow');
             $("#question").show('slow');
@@ -173,10 +175,10 @@
             $("#answer_2").show(600);
             $("#answer_3").show(800);
             $("#answer_4").show(1000);
-            
+
             window.castReceiverManager.setApplicationState("Game in progress");
         }
-        
+
         function displayScoreboard(data) {
             //displayScoreboard(JSON.parse('{"type":"scoreboard","players":[{"name":"Patrik Meier","score":10},{"name":"Jo","score":10},{"name":"Thomas Mauerhofer","score":10},{"name":"Matthias","score":10}]}'));
             hideQuestionAndAnswers();
@@ -192,12 +194,12 @@
                 $(".rank-" + i).append('<div class="col-md-4">' + rank.score + '</div>');
                 i++;
             });
-            
+
             $("#scoreboard").show('slow');
-            
+
             window.castReceiverManager.setApplicationState("Game Finished");
         }
-        
+
         function hideQuestionAndAnswers() {
             $("#question").hide('slow');
             $("#answers_box").hide('slow');
@@ -212,7 +214,7 @@
             hideQuestionAndAnswers();
             $("#message").show('slow');
             $("#message").html(text);
-            
+
             window.castReceiverManager.setApplicationState(text);
         };
     </script>
