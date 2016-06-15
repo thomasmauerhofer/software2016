@@ -34,7 +34,6 @@
         }
 
         .answer {
-            display: none;
             margin: 10px;
             font-size: 28px;
         }
@@ -164,17 +163,13 @@
             $("#answers_box").hide();
             $("#message").hide('slow');
             $("#scoreboard").hide('slow');
-            $("#question").show('slow');
-            $("#answers_box").show();
             $("#question").html(data.question);
+            $("#question").show('slow');
             $("#answer_1").html(data.answer_1);
             $("#answer_2").html(data.answer_2);
             $("#answer_3").html(data.answer_3);
             $("#answer_4").html(data.answer_4);
-            $("#answer_1").show(400);
-            $("#answer_2").show(600);
-            $("#answer_3").show(800);
-            $("#answer_4").show(1000);
+            $("#answers_box").show('slow');
 
             window.castReceiverManager.setApplicationState("Game in progress");
         }
@@ -203,10 +198,6 @@
         function hideQuestionAndAnswers() {
             $("#question").hide('slow');
             $("#answers_box").hide('slow');
-            $("#answer_1").hide('slow');
-            $("#answer_2").hide('slow');
-            $("#answer_3").hide('slow');
-            $("#answer_4").hide('slow');
         }
 
         function displayText(text) {
