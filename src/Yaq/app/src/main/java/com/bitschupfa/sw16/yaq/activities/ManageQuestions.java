@@ -8,7 +8,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
@@ -76,10 +79,17 @@ public class ManageQuestions extends YaqActivity {
         });
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, view, menuInfo);
+        this.getMenuInflater().inflate(R.menu.menu_manage_questions, menu);
+        menu.findItem(R.id.edit).setVisible(true);
+        menu.findItem(R.id.delete).setVisible(true);
+    }
+
     public void displayListView() {
         questionQuerier = new QuestionQuerier(this);
         questionCatalogList = questionQuerier.getAllQuestionCatalogs();
-
 
         for (QuestionCatalog catalog : questionCatalogList) {
             questionCatalogMap.put(catalog.getName(), catalog.getCatalogID());
@@ -89,6 +99,8 @@ public class ManageQuestions extends YaqActivity {
         dataAdapter = new ManageQuestionsAdapter(this, R.layout.list_manage_questions, catalogs, true, true, true);
         listView = (ListView) findViewById(R.id.ListViewManageQuestions);
         listView.setAdapter(dataAdapter);
+
+        this.registerForContextMenu(listView);
 
         listView.setClickable(true);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -102,6 +114,31 @@ public class ManageQuestions extends YaqActivity {
                 startActivity(intent);
             }
         });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                QuestionCatalogItem item = (QuestionCatalogItem) listView.getItemAtPosition(pos);
+                Log.d("blah","long click: " + item.getCatalog().getName());
+                openContextMenu(listView);
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.edit:
+                // TODO edit cataloge
+                return true;
+            case R.id.delete:
+                // TODO delete cataloge
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 
     public void initSearchView() {

@@ -37,15 +37,18 @@ public class EditQuestions extends YaqActivity {
         textAnswer3 = (EditText) findViewById(R.id.answer3);
         textAnswer4 = (EditText) findViewById(R.id.answer4);
 
-        textQuestions.setText(textQuestion.getQuestion());
-        textAnswer1.setText(textQuestion.getAnswers().get(0).getAnswerString());
-        textAnswer2.setText(textQuestion.getAnswers().get(1).getAnswerString());
-        textAnswer3.setText(textQuestion.getAnswers().get(2).getAnswerString());
-        textAnswer4.setText(textQuestion.getAnswers().get(3).getAnswerString());
+        if(textQuestion != null) {
+            textQuestions.setText(textQuestion.getQuestion());
+            textAnswer1.setText(textQuestion.getAnswers().get(0).getAnswerString());
+            textAnswer2.setText(textQuestion.getAnswers().get(1).getAnswerString());
+            textAnswer3.setText(textQuestion.getAnswers().get(2).getAnswerString());
+            textAnswer4.setText(textQuestion.getAnswers().get(3).getAnswerString());
+        }
     }
 
     @SuppressWarnings("UnusedParameters")
     public void submitEditButtonClick(View view) {
+        // TODO add or edit questions
         finish();
     }
 

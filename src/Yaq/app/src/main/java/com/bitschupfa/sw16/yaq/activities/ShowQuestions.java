@@ -3,8 +3,10 @@ package com.bitschupfa.sw16.yaq.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,7 +16,6 @@ import android.widget.TextView;
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
-import com.bitschupfa.sw16.yaq.ui.QuestionCatalogItem;
 import com.bitschupfa.sw16.yaq.ui.ShowQuestionsAdapter;
 
 public class ShowQuestions extends YaqActivity {
@@ -37,10 +38,33 @@ public class ShowQuestions extends YaqActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(ShowQuestions.this, EditQuestions.class);
+                startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, view, menuInfo);
+        this.getMenuInflater().inflate(R.menu.menu_manage_questions, menu);
+        menu.findItem(R.id.edit).setVisible(true);
+        menu.findItem(R.id.delete).setVisible(true);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.edit:
+                // TODO edit question
+                return true;
+            case R.id.delete:
+                // TODO delete question
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 
     public void displayListView() {
@@ -54,6 +78,8 @@ public class ShowQuestions extends YaqActivity {
         listView = (ListView) findViewById(R.id.ListViewShowQuestions);
         listView.setAdapter(dataAdapter);
 
+        this.registerForContextMenu(listView);
+
         listView.setClickable(true);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -64,6 +90,16 @@ public class ShowQuestions extends YaqActivity {
                 Intent intent = new Intent(ShowQuestions.this, EditQuestions.class);
                 intent.putExtra("Question", item);
                 startActivity(intent);
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                TextQuestion item = (TextQuestion) listView.getItemAtPosition(pos);
+                Log.d("blah", "long click: " + item.getQuestion());
+                openContextMenu(listView);
+                return true;
             }
         });
     }
