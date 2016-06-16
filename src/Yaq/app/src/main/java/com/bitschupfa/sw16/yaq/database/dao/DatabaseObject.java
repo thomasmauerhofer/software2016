@@ -21,6 +21,18 @@ public abstract class DatabaseObject {
     }
 
     protected abstract void fillDatabaseContentValues(boolean initial);
+    
+    protected void editEntry(Context context, String idRowName, int id){
+        fillDatabaseContentValues(false);
+        SQLiteDatabase database = DBHelper.instance(context).getInsertionDatabase();
+        database.update(tableName, contentValues, idRowName + " = ?", new String[] {""+id});
+        database.close();
+    }
+
+    protected void deleteEntry(Context context, String idRowName, int id){
+        SQLiteDatabase database = DBHelper.instance(context).getInsertionDatabase();
+        database.delete(tableName, idRowName + " = ?", new String[]{"" + id});
+    }
 
     private void insertIntoDatabase(SQLiteDatabase database, boolean initial){
         fillDatabaseContentValues(initial);
