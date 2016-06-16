@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
 
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
@@ -37,6 +38,7 @@ public class ManageQuestions extends YaqActivity {
     private ArrayList<QuestionCatalogItem> catalogs = new ArrayList<>();
     private ManageQuestionsAdapter dataAdapter = null;
     private EditText searchText;
+    private QuestionCatalog actualQuestionCatalog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,28 +55,7 @@ public class ManageQuestions extends YaqActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ManageQuestions.this);
-                builder.setTitle("Add Catalog");
-                LayoutInflater li = LayoutInflater.from(ManageQuestions.this);
-                View dialogView = li.inflate(R.layout.dialog_manage_questions, null);
-                final EditText input = (EditText) dialogView.findViewById(R.id.editText);
-                builder.setView(dialogView);
-
-                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //TODO add catalog into db
-                        dialog.dismiss();
-                    }
-                });
-                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                builder.show();
+                showEditDialog();
             }
         });
     }
@@ -120,18 +101,63 @@ public class ManageQuestions extends YaqActivity {
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
                 QuestionCatalogItem item = (QuestionCatalogItem) listView.getItemAtPosition(pos);
                 Log.d("blah","long click: " + item.getCatalog().getName());
+                actualQuestionCatalog = item.getCatalog();
                 openContextMenu(listView);
                 return true;
             }
         });
     }
 
+    public void showEditDialog()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ManageQuestions.this);
+        LayoutInflater li = LayoutInflater.from(ManageQuestions.this);
+        View dialogView = li.inflate(R.layout.dialog_manage_questions, null);
+        EditText input = (EditText) dialogView.findViewById(R.id.editText);
+        RadioButton checkEasy = (RadioButton) dialogView.findViewById(R.id.checkEasyDialog);
+        RadioButton checkMedium = (RadioButton) dialogView.findViewById(R.id.checkMediumDialog);
+        RadioButton checkHard = (RadioButton) dialogView.findViewById(R.id.checkHardDialog);
+
+        if(actualQuestionCatalog != null) {
+            builder.setTitle("Edit Catalog");
+            input.setText(actualQuestionCatalog.getName());
+            checkEasy.setChecked(actualQuestionCatalog.getDifficulty() == 1);
+            checkMedium.setChecked(actualQuestionCatalog.getDifficulty() == 2);
+            checkHard.setChecked(actualQuestionCatalog.getDifficulty() == 3);
+        }
+        else {
+            builder.setTitle("Add Catalog");
+        }
+
+        builder.setView(dialogView);
+
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(actualQuestionCatalog != null) {
+                    //TODO edit catalog in db
+                    actualQuestionCatalog = null;
+                } else {
+                    //TODO add catalog in db
+                }
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
             case R.id.edit:
-                // TODO edit cataloge
+                showEditDialog();
                 return true;
             case R.id.delete:
                 // TODO delete cataloge

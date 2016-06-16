@@ -23,6 +23,7 @@ public class ShowQuestions extends YaqActivity {
     private ListView listView;
     private ArrayAdapter dataAdapter = null;
     private TextView textCatalogue;
+    private TextQuestion actualTextQuestion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,9 @@ public class ShowQuestions extends YaqActivity {
         switch (item.getItemId()) {
             case R.id.edit:
                 // TODO edit question
+                Intent intent = new Intent(ShowQuestions.this, EditQuestions.class);
+                intent.putExtra("Question", actualTextQuestion);
+                startActivity(intent);
                 return true;
             case R.id.delete:
                 // TODO delete question
@@ -98,6 +102,7 @@ public class ShowQuestions extends YaqActivity {
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
                 TextQuestion item = (TextQuestion) listView.getItemAtPosition(pos);
                 Log.d("blah", "long click: " + item.getQuestion());
+                actualTextQuestion = item;
                 openContextMenu(listView);
                 return true;
             }
