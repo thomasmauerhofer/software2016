@@ -1,9 +1,9 @@
 package com.bitschupfa.sw16.yaq.ui;
 
+import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
-import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.test.ActivityInstrumentationTestCase2;
-import android.widget.Button;
 
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.activities.BuildQuiz;
@@ -14,23 +14,19 @@ import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.game.HostGameLogic;
 import com.bitschupfa.sw16.yaq.utils.QuizFactory;
-import com.robotium.solo.Solo;
+import com.bitschupfa.sw16.yaq.utils.SoloWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class HostTests extends ActivityInstrumentationTestCase2<Host> {
+    private static final String CORRECT_TEXT = "correct";
+    private static final String WRONG1_TEXT = "wrong1";
+    private static final String WRONG2_TEXT = "wrong2";
+    private static final String WRONG3_TEXT = "wrong3";
 
-    private Solo solo;
-    private Button correctAnswer;
-    private Button wrongAnswer1;
-    private Button wrongAnswer2;
-    private Button wrongAnswer3;
-    private Drawable.ConstantState wrongConstant1;
-    private Drawable.ConstantState wrongConstant2;
-    private Drawable.ConstantState wrongConstant3;
-    private Drawable.ConstantState correctConstant;
+    private SoloWrapper solo;
 
     public HostTests() {
         super(Host.class);
@@ -39,7 +35,7 @@ public class HostTests extends ActivityInstrumentationTestCase2<Host> {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        solo = new Solo(getInstrumentation(), getActivity());
+        solo = new SoloWrapper(getInstrumentation(), getActivity());
 
         BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {
@@ -53,11 +49,18 @@ public class HostTests extends ActivityInstrumentationTestCase2<Host> {
 
     @Override
     public void tearDown() throws Exception {
+        solo.finishOpenedActivities();
         super.tearDown();
     }
 
-    public void testStartGameButton() {
+    public void testStartGameButtonNoQuestions() {
         solo.clickOnButton(getActivity().getResources().getString(R.string.start_game));
+        solo.sleep(500);
+        assertTrue("Wrong Activity!", solo.waitForActivity(Host.class));
+    }
+
+    public void testStartGameButtonWithQuestions() {
+        initHostForGame(true);
         assertTrue("Wrong Activity!", solo.waitForActivity(GameAtHost.class));
     }
 
@@ -72,62 +75,54 @@ public class HostTests extends ActivityInstrumentationTestCase2<Host> {
         solo.goBack();
     }
 
-    public void testSinglePlayerCorrectAnswer() {
-        initHostForGame();
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public void testSinglePlayerCorrectAnswer() throws Exception{
+        initHostForGame(true);
 
-        solo.clickOnButton(correctAnswer.getText().toString());
+        solo.clickOnButton(CORRECT_TEXT);
         solo.sleep(100);
 
-        Drawable greenBackground = correctAnswer.getBackground();
-
-        assertTrue(!correctConstant.equals(greenBackground.getConstantState()));
-        assertTrue(wrongConstant1.equals(wrongAnswer1.getBackground().getConstantState()));
-        assertTrue(wrongConstant2.equals(wrongAnswer2.getBackground().getConstantState()));
-        assertTrue(wrongConstant3.equals(wrongAnswer3.getBackground().getConstantState()));
+        assertTrue(solo.getButtonWrapper(CORRECT_TEXT).wasClicked());
+        assertFalse(solo.getButtonWrapper(WRONG1_TEXT).wasClicked());
+        assertFalse(solo.getButtonWrapper(WRONG2_TEXT).wasClicked());
+        assertFalse(solo.getButtonWrapper(WRONG3_TEXT).wasClicked());
 
         checkStatistics();
     }
 
-    public void testSinglePlayerWrongAnswer() {
-        initHostForGame();
-
-        solo.clickOnButton(wrongAnswer1.getText().toString());
+    public void testSinglePlayerWrongAnswer() throws Exception{
+        initHostForGame(true);
+        solo.clickOnButton(WRONG1_TEXT);
         solo.sleep(100);
 
-        Drawable.ConstantState greenBackground = correctAnswer.getBackground().getConstantState();
-        Drawable.ConstantState redBackground = wrongAnswer1.getBackground().getConstantState();
-
-        assertTrue(!correctConstant.equals(greenBackground));
-        assertTrue(!wrongConstant2.equals(redBackground));
-        assertTrue(wrongConstant2.equals(wrongAnswer2.getBackground().getConstantState()));
-        assertTrue(wrongConstant3.equals(wrongAnswer3.getBackground().getConstantState()));
+        assertTrue(solo.getButtonWrapper(WRONG1_TEXT).wasClicked());
+        assertFalse(solo.getButtonWrapper(CORRECT_TEXT).wasClicked());
+        assertFalse(solo.getButtonWrapper(WRONG2_TEXT).wasClicked());
+        assertFalse(solo.getButtonWrapper(WRONG3_TEXT).wasClicked());
 
         checkStatistics();
     }
 
-    private void initHostForGame() {
-        solo.clickOnButton(getActivity().getResources().getString(R.string.start_game));
+    private void initHostForGame(boolean startGame) {
+        if(startGame) {
+            solo.clickOnButton(getActivity().getResources().getString(R.string.start_game));
+        }
 
         initHostGameLogic();
         assertTrue("Wrong Activity!", solo.waitForActivity(GameAtHost.class));
 
         solo.sleep(500);
-        correctAnswer = solo.getButton("correct");
-        wrongAnswer1 = solo.getButton("wrong1");
-        wrongAnswer2 = solo.getButton("wrong2");
-        wrongAnswer3 = solo.getButton("wrong3");
-
-        wrongConstant1 = wrongAnswer1.getBackground().getConstantState();
-        wrongConstant2 = wrongAnswer2.getBackground().getConstantState();
-        wrongConstant3 = wrongAnswer3.getBackground().getConstantState();
-        correctConstant = correctAnswer.getBackground().getConstantState();
+        solo.addButton(solo.getButton("correct"));
+        solo.addButton(solo.getButton("wrong1"));
+        solo.addButton(solo.getButton("wrong2"));
+        solo.addButton(solo.getButton("wrong3"));
     }
 
     private void initHostGameLogic() {
-        Answer answer1 = new Answer("correct", 10);
-        Answer answer2 = new Answer("wrong1", 0);
-        Answer answer3 = new Answer("wrong2", 0);
-        Answer answer4 = new Answer("wrong3", 0);
+        Answer answer1 = new Answer(CORRECT_TEXT, 10);
+        Answer answer2 = new Answer(WRONG1_TEXT, 0);
+        Answer answer3 = new Answer(WRONG2_TEXT, 0);
+        Answer answer4 = new Answer(WRONG3_TEXT, 0);
         List<TextQuestion> questions = new ArrayList<>();
         questions.add(new TextQuestion(42, "Question1", answer1, answer2, answer3, answer4, 1));
         QuizFactory.instance().addQuestions("test", questions);

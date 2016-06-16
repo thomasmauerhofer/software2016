@@ -37,6 +37,7 @@ public class JoinTests extends ActivityInstrumentationTestCase2<Join> {
 
     @Override
     public void tearDown() throws Exception {
+        solo.finishOpenedActivities();
         super.tearDown();
     }
 

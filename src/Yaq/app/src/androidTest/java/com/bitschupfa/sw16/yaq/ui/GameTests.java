@@ -42,7 +42,9 @@ public class GameTests extends ActivityInstrumentationTestCase2<GameAtHost> {
 
     @Override
     public void tearDown() throws Exception {
+        solo.finishOpenedActivities();
         super.tearDown();
+
     }
 
 

@@ -22,6 +22,7 @@ public class BuildQuizUITests extends ActivityInstrumentationTestCase2<BuildQuiz
     @Override
     public void tearDown() throws Exception {
         solo.finishOpenedActivities();
+        super.tearDown();
     }
 
     public void testBuildQuizFinished() {

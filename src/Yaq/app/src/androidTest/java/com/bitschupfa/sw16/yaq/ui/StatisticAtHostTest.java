@@ -24,6 +24,7 @@ public class StatisticAtHostTest extends ActivityInstrumentationTestCase2<Statis
 
     @Override
     public void tearDown() throws Exception {
+        solo.finishOpenedActivities();
         super.tearDown();
     }
 
