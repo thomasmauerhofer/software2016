@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="false"
@@ -20,44 +20,64 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".activities.Host"
             android:label="@string/title_activity_host"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".activities.MainMenu"
+            />
         <activity
             android:name=".activities.Join"
             android:label="@string/title_activity_join"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".activities.MainMenu"
+            />
         <activity
             android:name=".activities.Game"
             android:configChanges="orientation|screenSize"
-            android:label="@string/title_activity_quesions_asked"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_questions_asked"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <activity
             android:name=".activities.BuildQuiz"
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/title_activity_build_quiz"
+            android:parentActivityName=".activities.Host"
             android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".activities.Statistic"
             android:label="@string/title_activity_statistic"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".activities.MainMenu"
+            />
         <activity
             android:name=".activities.StatisticsAtHost"
             android:label="@string/title_activity_statistic"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".activities.MainMenu"
+            />
         <activity
             android:name=".activities.Profile"
             android:label="@string/title_activity_profile"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".activities.MainMenu"
+            />
         <activity
             android:name=".activities.GameAtHost"
-            android:label="@string/title_activity_quesions_asked"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_questions_asked"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity
+            android:name=".activities.Themes"
+            android:label="@string/title_activity_themes"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".activities.MainMenu"
+            />
         <!--
              ATTENTION: This was auto-generated to add Google Play services to your project for
              App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.

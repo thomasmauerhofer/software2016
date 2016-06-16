@@ -1,13 +1,11 @@
 package com.bitschupfa.sw16.yaq.activities;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -24,14 +22,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class BuildQuiz extends AppCompatActivity {
+public class BuildQuiz extends YaqActivity {
 
     private static final int MIN_NUMBER_OF_QUESTIONS = 1;
     private static final int MAX_NUMBER_OF_QUESTIONS = 100;
 
     private ListView listView;
     private QuestionQuerier questionQuerier;
-    private Button btnBuildQuiz;
     private HashMap<String, Integer> questionCatalogMap = new HashMap<>();
     private List<QuestionCatalog> questionCatalogList;
     private ArrayList<QuestionCatalogItem> catalogs = new ArrayList<>();
@@ -42,13 +39,16 @@ public class BuildQuiz extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_build_quiz);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        btnBuildQuiz = (Button) findViewById(R.id.ButtonBuildQuiz);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         initSearchView();
         initNumberPicker();
         displayListView();
+        handleTheme();
     }
 
     @Override
@@ -59,7 +59,6 @@ public class BuildQuiz extends AppCompatActivity {
     public void displayListView() {
         questionQuerier = new QuestionQuerier(this);
         questionCatalogList = questionQuerier.getAllQuestionCatalogs();
-
 
         for (QuestionCatalog catalog : questionCatalogList) {
             questionCatalogMap.put(catalog.getName(), catalog.getCatalogID());

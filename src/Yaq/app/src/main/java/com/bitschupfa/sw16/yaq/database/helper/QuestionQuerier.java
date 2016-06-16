@@ -19,12 +19,12 @@ public class QuestionQuerier {
     private final SQLiteDatabase database;
 
 
-    public QuestionQuerier(Context context){
+    public QuestionQuerier(Context context) {
         this.context = context;
         database = DBHelper.instance(context).getDatabase();
     }
 
-    private QuestionCatalog queryQuestionCatalogTable(Cursor cursor){
+    private QuestionCatalog queryQuestionCatalogTable(Cursor cursor) {
         int catalogID = cursor.getInt(cursor.getColumnIndex(QuestionCatalogDAO.QUESTIONCATALOG_ID));
         String catalogName = cursor.getString(cursor.getColumnIndex(QuestionCatalogDAO.QUESTIONCATALOG_DESCRIPTION));
         int catalogDifficulty = cursor.getInt(cursor.getColumnIndex(QuestionCatalogDAO.QUESTIONCATALOG_DIFFICULTY));
@@ -32,7 +32,7 @@ public class QuestionQuerier {
         return new QuestionCatalog(catalogID, catalogDifficulty, catalogName, null);
     }
 
-    private TextQuestion queryTextQuestionTableValues(Cursor cursor){
+    private TextQuestion queryTextQuestionTableValues(Cursor cursor) {
         int questionID = cursor.getInt(cursor.getColumnIndex(TextQuestionDAO.QUESTION_ID));
         int catalogID = cursor.getInt(cursor.getColumnIndex(QuestionCatalogDAO.QUESTIONCATALOG_ID));
         String question = cursor.getString(cursor.getColumnIndex(TextQuestionDAO.QUESTION_TEXT));
@@ -69,10 +69,10 @@ public class QuestionQuerier {
         return textQuestionList;
     }*/
 
-    public List<TextQuestion> getAllQuestionsFromCatalog(int catalogID){
+    public List<TextQuestion> getAllQuestionsFromCatalog(int catalogID) {
         String catalogIDString = "" + catalogID;
         Cursor cursor = database.query(TextQuestionDAO.TABLE_NAME, TextQuestionDAO.QUESTION_ALL_COLUMN_NAMES,
-                QuestionCatalogDAO.QUESTIONCATALOG_ID+"=?",
+                QuestionCatalogDAO.QUESTIONCATALOG_ID + "=?",
                 new String[]{catalogIDString}, null, null, null);
         cursor.moveToFirst();
 
@@ -85,7 +85,7 @@ public class QuestionQuerier {
         return textQuestionList;
     }
 
-    public List<QuestionCatalog> getAllQuestionCatalogsOnlyIdAndName(){
+    public List<QuestionCatalog> getAllQuestionCatalogsOnlyIdAndName() {
         Cursor cursor = database.query(QuestionCatalogDAO.TABLE_NAME, QuestionCatalogDAO.QUESTIONCATALOG_ALL_COLUMN_NAMES,
                 null, null, null, null, null);
         cursor.moveToFirst();
@@ -102,10 +102,10 @@ public class QuestionQuerier {
     }
 
 
-    public QuestionCatalog getQuestionCatalogById(int catalogId){
+    public QuestionCatalog getQuestionCatalogById(int catalogId) {
         String catalogIDString = "" + catalogId;
         Cursor cursor = database.query(QuestionCatalogDAO.TABLE_NAME, QuestionCatalogDAO.QUESTIONCATALOG_ALL_COLUMN_NAMES,
-                QuestionCatalogDAO.QUESTIONCATALOG_ID+"=?", new String[]{catalogIDString}, null, null, null);
+                QuestionCatalogDAO.QUESTIONCATALOG_ID + "=?", new String[]{catalogIDString}, null, null, null);
         cursor.moveToFirst();
         cursor.moveToFirst();
 
@@ -117,14 +117,14 @@ public class QuestionQuerier {
         return questionCatalog;
     }
 
-    public QuestionCatalog getQuestionCatalogByIdAndDifficulty(int catalogId, int difficulty){
+    public QuestionCatalog getQuestionCatalogByIdAndDifficulty(int catalogId, int difficulty) {
         QuestionCatalog questionCatalog = getQuestionCatalogById(catalogId);
         List<TextQuestion> textQuestionList = getAllQuestionsFromCatalog(catalogId);
         questionCatalog.setTextQuestionList(textQuestionList);
         return questionCatalog;
     }
 
-    public List<QuestionCatalog> getAllQuestionCatalogs(){
+    public List<QuestionCatalog> getAllQuestionCatalogs() {
         Cursor cursor = database.query(QuestionCatalogDAO.TABLE_NAME, QuestionCatalogDAO.QUESTIONCATALOG_ALL_COLUMN_NAMES,
                 null, null, null, null, null);
         cursor.moveToFirst();

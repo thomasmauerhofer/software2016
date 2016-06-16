@@ -19,15 +19,13 @@ public class StatisticsAtHost extends Statistic {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         castHelper = CastHelper.getInstance(getApplicationContext(), CastHelper.GameState.END);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main_menu, menu);
-        menu.findItem(R.id.menu_manage).setVisible(false);
-        menu.findItem(R.id.menu_settings).setVisible(false);
-        menu.findItem(R.id.menu_profile).setVisible(false);
         MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
         MediaRouteActionProvider mediaRouteActionProvider =
                 (MediaRouteActionProvider) MenuItemCompat.getActionProvider(mediaRouteMenuItem);

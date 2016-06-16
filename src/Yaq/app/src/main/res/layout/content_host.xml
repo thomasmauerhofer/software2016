@@ -25,7 +25,7 @@
             android:text="@string/hostname"
             android:id="@+id/lbl_hostname"
             android:paddingBottom="5dp"
-            android:textColor="@color/colorPrimary" />
+             />
 
         <TextView
             android:layout_width="match_parent"
@@ -34,14 +34,16 @@
             android:text="@string/numberQuestionsText"
             android:id="@+id/numberOfQuestions"
             android:paddingBottom="15dp"
-            android:textColor="@color/colorPrimary" />
+             />
 
         <Button
             android:text="@string/build"
-            android:id="@+id/select"
-            android:background="@drawable/button_blue"
-            style="@style/button_text"
-            android:onClick="buildQuizButtonClicked"/>
+            android:id="@+id/host_select_button"
+            android:layout_margin="@dimen/button_margin"
+            android:theme="@style/defaultButton"
+            android:onClick="buildQuizButtonClicked"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent" />
 
         <TableLayout
             android:layout_width="match_parent"
@@ -65,7 +67,7 @@
                     android:paddingEnd="0dp"
                     android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/player_table_inactive"
+                    android:textColor="@color/grey500"
                     android:drawableLeft="@mipmap/icon_player_black"
                     android:drawableStart="@mipmap/icon_player_black"
                     android:drawablePadding="5dp"/>
@@ -82,7 +84,7 @@
                     android:paddingEnd="0dp"
                     android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/player_table_inactive"
+                    android:textColor="@color/grey500"
                     android:drawableLeft="@mipmap/icon_player_black"
                     android:drawableStart="@mipmap/icon_player_black"
                     android:drawablePadding="5dp"/>
@@ -105,7 +107,7 @@
                     android:paddingEnd="0dp"
                     android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/player_table_inactive"
+                    android:textColor="@color/grey500"
                     android:drawableLeft="@mipmap/icon_player_black"
                     android:drawableStart="@mipmap/icon_player_black"
                     android:drawablePadding="5dp"/>
@@ -122,7 +124,7 @@
                     android:paddingEnd="0dp"
                     android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/player_table_inactive"
+                    android:textColor="@color/grey500"
                     android:drawableLeft="@mipmap/icon_player_black"
                     android:drawableStart="@mipmap/icon_player_black"
                     android:drawablePadding="5dp"/>
@@ -145,7 +147,7 @@
                     android:paddingEnd="0dp"
                     android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/player_table_inactive"
+                    android:textColor="@color/grey500"
                     android:drawableLeft="@mipmap/icon_player_black"
                     android:drawableStart="@mipmap/icon_player_black"
                     android:drawablePadding="5dp"/>
@@ -162,7 +164,7 @@
                     android:paddingEnd="0dp"
                     android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/player_table_inactive"
+                    android:textColor="@color/grey500"
                     android:drawableLeft="@mipmap/icon_player_black"
                     android:drawableStart="@mipmap/icon_player_black"
                     android:drawablePadding="5dp"/>
@@ -185,7 +187,7 @@
                     android:paddingEnd="0dp"
                     android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/player_table_inactive"
+                    android:textColor="@color/grey500"
                     android:drawableLeft="@mipmap/icon_player_black"
                     android:drawableStart="@mipmap/icon_player_black"
                     android:drawablePadding="5dp"/>
@@ -202,7 +204,7 @@
                     android:paddingEnd="0dp"
                     android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/player_table_inactive"
+                    android:textColor="@color/grey500"
                     android:drawableLeft="@mipmap/icon_player_black"
                     android:drawableStart="@mipmap/icon_player_black"
                     android:drawablePadding="5dp"/>
@@ -216,18 +218,21 @@
             android:gravity="center_horizontal">
 
             <Button
-                android:id="@+id/start_btn"
+                android:id="@+id/host_start_button"
                 android:text="@string/start_game"
-                android:background="@drawable/button_blue"
-                style="@style/button_text"
-                android:onClick="startButtonClicked"/>
+                android:layout_margin="@dimen/button_margin"
+                android:onClick="startButtonClicked"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
             <Button
-                android:id="@+id/advanced_btn"
+                android:id="@+id/host_advanced_button"
                 android:text="@string/advanced_settings"
-                android:background="@drawable/button_blue"
-                style="@style/button_text"
-                android:onClick="advancedSettingsButtonClicked"/>
+                android:layout_margin="@dimen/button_margin"
+                android:onClick="advancedSettingsButtonClicked"
+                android:theme="@style/defaultButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 

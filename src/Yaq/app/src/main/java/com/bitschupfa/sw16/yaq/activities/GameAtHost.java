@@ -8,7 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.game.ClientGameLogic;
@@ -23,7 +23,7 @@ import java.util.TimerTask;
 
 public class GameAtHost extends Game {
 
-    private RelativeLayout askedView;
+    private LinearLayout askedView;
     private Button nextQuestion;
 
     private CastHelper castHelper;
@@ -34,11 +34,11 @@ public class GameAtHost extends Game {
         HostGameLogic.getInstance().setGameActivity(this);
         ClientGameLogic.getInstance().setGameActivity(this);
 
-        askedView = (RelativeLayout) findViewById(R.id.questionAskedView);
+        askedView = (LinearLayout) findViewById(R.id.questionAskedView);
         nextQuestion = (Button) findViewById(R.id.next_question);
         enableShowNextQuestion(false);
 
-        askedView.setOnClickListener(new View.OnClickListener() {
+        nextQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 HostGameLogic.getInstance().askNextQuestion();
@@ -60,9 +60,6 @@ public class GameAtHost extends Game {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main_menu, menu);
-        menu.findItem(R.id.menu_manage).setVisible(false);
-        menu.findItem(R.id.menu_settings).setVisible(false);
-        menu.findItem(R.id.menu_profile).setVisible(false);
         MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
         MediaRouteActionProvider mediaRouteActionProvider =
                 (MediaRouteActionProvider) MenuItemCompat.getActionProvider(mediaRouteMenuItem);
@@ -83,6 +80,11 @@ public class GameAtHost extends Game {
                 askedView.setEnabled(active);
                 int visible = active ? View.VISIBLE : View.INVISIBLE;
                 nextQuestion.setVisibility(visible);
+                if (active)
+                    questionAskLL.setAlpha(0.7f);
+                else {
+                    questionAskLL.setAlpha(1.0f);
+                }
             }
         });
     }

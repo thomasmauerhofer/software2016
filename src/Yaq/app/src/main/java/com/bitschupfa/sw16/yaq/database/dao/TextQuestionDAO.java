@@ -26,7 +26,7 @@ public class TextQuestionDAO extends DatabaseObject {
 
     private TextQuestion textQuestion;
 
-    public TextQuestionDAO(TextQuestion textQuestion){
+    public TextQuestionDAO(TextQuestion textQuestion) {
         super();
         this.textQuestion = textQuestion;
         tableName = TABLE_NAME;

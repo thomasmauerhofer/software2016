@@ -2,7 +2,6 @@ package com.bitschupfa.sw16.yaq.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
@@ -15,10 +14,9 @@ import com.bitschupfa.sw16.yaq.ui.RankingList;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Statistic extends AppCompatActivity {
+public class Statistic extends YaqActivity {
 
     private ListView list;
-
     private RankingList ranking;
 
     @Override
@@ -27,6 +25,7 @@ public class Statistic extends AppCompatActivity {
         setContentView(R.layout.activity_statistic);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         list = (ListView) findViewById(R.id.ranking);
         ranking = new RankingList(this, new ArrayList<RankingItem>());
@@ -39,6 +38,7 @@ public class Statistic extends AppCompatActivity {
         } else {
             Toast.makeText(this, R.string.error_cant_show_score, Toast.LENGTH_LONG).show();
         }
+        handleTheme();
     }
 
     @SuppressWarnings("UnusedParameters")

@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.MediaRouteActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -37,7 +36,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Host extends AppCompatActivity implements Lobby {
+public class Host extends YaqActivity implements Lobby {
     private static final int REQUEST_ENABLE_DISCOVERABLE_BT = 42;
     private static final int BUILD_QUIZ = 1;
 
@@ -53,6 +52,7 @@ public class Host extends AppCompatActivity implements Lobby {
         setContentView(R.layout.activity_host);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         TextView numberOfQuestions = (TextView) findViewById(R.id.numberOfQuestions);
         numberOfQuestions.setText(getResources().getString(R.string.numberQuestionsText) + " " + QuizFactory.instance().getSmallestNumberOfQuestions());
@@ -63,20 +63,17 @@ public class Host extends AppCompatActivity implements Lobby {
             new Thread(btConnectionListener, "BT Connection Listener Thread").start();
             TextView hostnameLabel = (TextView) findViewById(R.id.lbl_hostname);
             if (hostnameLabel != null) {
-                hostnameLabel.append(btAdapter.getName());
+                hostnameLabel.append(" " + btAdapter.getName());
             }
         }
         selfConnectionHack();
-
         castHelper = CastHelper.getInstance(getApplicationContext(), CastHelper.GameState.LOBBY);
+        handleTheme();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main_menu, menu);
-        menu.findItem(R.id.menu_manage).setVisible(false);
-        menu.findItem(R.id.menu_settings).setVisible(false);
-        menu.findItem(R.id.menu_profile).setVisible(false);
         MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
         MediaRouteActionProvider mediaRouteActionProvider =
                 (MediaRouteActionProvider) MenuItemCompat.getActionProvider(mediaRouteMenuItem);
@@ -98,7 +95,7 @@ public class Host extends AppCompatActivity implements Lobby {
     }
 
     public void startButtonClicked(View view) {
-        if(QuizFactory.instance().getSmallestNumberOfQuestions() == 0) {
+        if (QuizFactory.instance().getSmallestNumberOfQuestions() == 0) {
             Toast.makeText(this, R.string.noQuestionsSelected, Toast.LENGTH_LONG).show();
             return;
         }

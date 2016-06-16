@@ -1,14 +1,17 @@
 package com.bitschupfa.sw16.yaq.activities;
 
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -24,13 +27,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-public class Game extends AppCompatActivity {
+public class Game extends YaqActivity {
     private static final String TAG = "GameActivity";
 
     private ProgressBar countdownTimerBar;
     private TextView countdownTimerText;
     private TextView questionView;
+    protected LinearLayout questionViewLL;
+    protected LinearLayout questionAskLL;
     private List<Button> answerButtons;
 
     private Button answerButtonPressed;
@@ -51,6 +55,8 @@ public class Game extends AppCompatActivity {
         countdownTimerBar = (ProgressBar) findViewById(R.id.barTimer);
         countdownTimerText = (TextView) findViewById(R.id.time);
         questionView = (TextView) findViewById(R.id.question);
+        questionViewLL = (LinearLayout) findViewById(R.id.questionOverlay);
+        questionAskLL = (LinearLayout) findViewById(R.id.questionAskedView);
 
         answerButtons = new ArrayList<>(
                 Arrays.asList(
@@ -58,6 +64,8 @@ public class Game extends AppCompatActivity {
                         (Button) findViewById(R.id.answer3), (Button) findViewById(R.id.answer4)
                 )
         );
+
+        handleTheme();
     }
 
     public void showStatisticActivity(ArrayList<RankingItem> scoreList) {
@@ -68,14 +76,15 @@ public class Game extends AppCompatActivity {
     }
 
     public void showQuestion(final TextQuestion question, final int timeout) {
+        final Activity activity = this;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 setAnswerButtonsClickable(true);
                 for (Button answerButton : answerButtons) {
-                    answerButton.setBackgroundResource(R.drawable.button_blue);
+                    answerButton.getBackground().setColorFilter(themeChooser.getThemeStorage().getPrimaryColor(),
+                            PorterDuff.Mode.SRC);
                 }
-
                 questionView.setText(question.getQuestion());
 
                 List<Answer> answers = question.getShuffledAnswers();
@@ -96,19 +105,23 @@ public class Game extends AppCompatActivity {
     }
 
     public void showAnswer(final Answer correctAnswer) {
+        final Activity activity = this;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (answerButtonPressed != null && selectedAnswer != null && !selectedAnswer.equals(correctAnswer)) {
-                    answerButtonPressed.setBackgroundResource(R.drawable.button_red);
+                    answerButtonPressed.getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.red500),
+                            PorterDuff.Mode.SRC);
                 }
 
                 for (Map.Entry<Button, Answer> entry : answerMapping.entrySet()) {
                     if (entry.getValue().equals(correctAnswer)) {
-                        entry.getKey().setBackgroundResource(R.drawable.button_green);
+                        entry.getKey().getBackground().setColorFilter(ContextCompat.getColor(activity, R.color.green500),
+                                PorterDuff.Mode.SRC);
                         break;
                     }
                 }
+                invalidateAnswerButtons();
 
                 answerButtonPressed = null;
                 selectedAnswer = null;
@@ -117,10 +130,17 @@ public class Game extends AppCompatActivity {
 
     }
 
+    private void invalidateAnswerButtons() {
+        for (Button answerButton : answerButtons) {
+            answerButton.invalidate();
+        }
+    }
+
     public void answerButtonClicked(View view) {
         timer.cancel();
         answerButtonPressed = (Button) view;
-        answerButtonPressed.setBackgroundResource(R.drawable.button_grey);
+        answerButtonPressed.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.grey500),
+                PorterDuff.Mode.MULTIPLY);
         setAnswerButtonsClickable(false);
 
         selectedAnswer = answerMapping.get(answerButtonPressed);
@@ -137,7 +157,7 @@ public class Game extends AppCompatActivity {
         timer = new CountDownTimer(timeout, 100) {
             @Override
             public void onTick(long millisUntilFinished) {
-                countdownTimerText.setText(String.valueOf((countdownTimerBar.getProgress() + 9)/ 10));
+                countdownTimerText.setText(String.valueOf((countdownTimerBar.getProgress() + 9) / 10));
             }
 
             @Override
