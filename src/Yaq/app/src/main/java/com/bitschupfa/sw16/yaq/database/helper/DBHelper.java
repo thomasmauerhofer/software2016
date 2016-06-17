@@ -68,12 +68,10 @@ public class DBHelper extends SQLiteOpenHelper {
         insertInitialData(db);
     }
 
-
     private void insertInitialData(SQLiteDatabase dataBase) {
         QuestionCatalog questionCatalog1 = new QuestionCatalog(1, 1, "Time", null);
             QuestionCatalog questionCatalog3 = new QuestionCatalog(3, 3, "TV/Movie", null);
         QuestionCatalog questionCatalog2 = new QuestionCatalog(2, 2, "General", null);
-
 
         QuestionCatalogDAO questionCatalogDAO1 = new QuestionCatalogDAO(questionCatalog1);
         questionCatalogDAO1.insertThisAsInitialBaselineIntoDatabase(dataBase);
@@ -138,6 +136,7 @@ public class DBHelper extends SQLiteOpenHelper {
         answer4 = new Answer("4", 10);
         TextQuestion textQuestion8 = new TextQuestion(8,"How many Tomb Raider movies were made?", answer1, answer2, answer3, answer4, 2);
 
+
         answer1 = new Answer("Bastille", 10);
         answer2 = new Answer("Alcatraz", 20);
         answer3 = new Answer("Newgate", 10);
@@ -150,17 +149,20 @@ public class DBHelper extends SQLiteOpenHelper {
         answer4 = new Answer("Sasha", 0);
         TextQuestion textQuestion10 = new TextQuestion(10,"What is the name of the little dragon in the animated movie Mulan?", answer1, answer2, answer3, answer4, 2);
 
+
         answer1 = new Answer("Rob Bowman", 20);
         answer2 = new Answer("Arnold Schwarzenegger", 0);
         answer3 = new Answer("Sergio Leone", 10);
         answer4 = new Answer("Antonio Salieri", 10);
         TextQuestion textQuestion11 = new TextQuestion(11,"Who is the director of the X-files?", answer1, answer2, answer3, answer4, 2);
 
+
         answer1 = new Answer("Seaman,", 20);
         answer2 = new Answer("Engineer", 0);
         answer3 = new Answer("Farmer", 10);
         answer4 = new Answer("Electrician", 0);
         TextQuestion textQuestion12 = new TextQuestion(12,"What is the profession of Popeye?", answer1, answer2, answer3, answer4, 2);
+
 
         answer1 = new Answer("0815", 0);
         answer2 = new Answer("742", 20);
@@ -175,11 +177,13 @@ public class DBHelper extends SQLiteOpenHelper {
         TextQuestion textQuestion14 = new TextQuestion(14,"Who was Mozart s great rival in Amadeus movie?", answer1, answer2, answer3, answer4, 2);
 
 
+
         answer1 = new Answer("Robin Williams", 20);
         answer2 = new Answer("Robert Redford", 10);
         answer3 = new Answer("Rob Bowman", 10);
         answer4 = new Answer("Woody Allen", 10);
         TextQuestion textQuestion15 = new TextQuestion(15,"Who did play the role of Peter Pan in the Peter Pan movie?", answer1, answer2, answer3, answer4, 2);
+
 
         TextQuestionDAO textQuestionDAO1 = new TextQuestionDAO(textQuestion1);
         textQuestionDAO1.insertThisAsInitialBaselineIntoDatabase(dataBase);
