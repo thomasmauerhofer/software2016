@@ -16,7 +16,7 @@ public class ButtonWrapper {
     }
 
     public void click() {
-        clicked ++;
+        clicked++;
     }
 
     public Button getButton() {

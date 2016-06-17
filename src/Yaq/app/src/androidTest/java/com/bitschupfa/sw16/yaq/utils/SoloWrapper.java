@@ -22,8 +22,8 @@ public class SoloWrapper extends Solo {
     }
 
     public ButtonWrapper getButtonWrapper(String buttonText) throws Exception {
-        for(ButtonWrapper button : buttonsOfActivity) {
-            if(button.getButton().getText().equals(buttonText)) {
+        for (ButtonWrapper button : buttonsOfActivity) {
+            if (button.getButton().getText().equals(buttonText)) {
                 return button;
             }
         }

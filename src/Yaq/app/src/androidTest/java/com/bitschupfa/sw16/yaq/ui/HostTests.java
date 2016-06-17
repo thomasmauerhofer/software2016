@@ -76,7 +76,7 @@ public class HostTests extends ActivityInstrumentationTestCase2<Host> {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public void testSinglePlayerCorrectAnswer() throws Exception{
+    public void testSinglePlayerCorrectAnswer() throws Exception {
         initHostForGame(true);
 
         solo.clickOnButton(CORRECT_TEXT);
@@ -90,7 +90,7 @@ public class HostTests extends ActivityInstrumentationTestCase2<Host> {
         checkStatistics();
     }
 
-    public void testSinglePlayerWrongAnswer() throws Exception{
+    public void testSinglePlayerWrongAnswer() throws Exception {
         initHostForGame(true);
         solo.clickOnButton(WRONG1_TEXT);
         solo.sleep(100);
@@ -104,7 +104,7 @@ public class HostTests extends ActivityInstrumentationTestCase2<Host> {
     }
 
     private void initHostForGame(boolean startGame) {
-        if(startGame) {
+        if (startGame) {
             solo.clickOnButton(getActivity().getResources().getString(R.string.start_game));
         }
 
