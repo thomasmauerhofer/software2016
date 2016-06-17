@@ -1,5 +1,6 @@
 package com.bitschupfa.sw16.yaq.activities;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.MediaRouteActionProvider;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
@@ -184,5 +186,28 @@ public class BuildQuiz extends YaqActivity {
         if (dataAdapter != null) {
             dataAdapter.setCheckBoxHard(checked);
         }
+    }
+
+    @SuppressWarnings("UnusedParameters")
+    public void showNumberPickerDialog(View view) {
+        final TextView numberPickerLabel = (TextView) findViewById(R.id.numberPicker);
+
+        Dialog numberQuestionsDialog = new Dialog(this);
+        numberQuestionsDialog.setContentView(R.layout.dialog_number_picker);
+
+        NumberPicker picker = (NumberPicker) numberQuestionsDialog.findViewById(R.id.np_dialog);
+        picker.setMinValue(MIN_NUMBER_OF_QUESTIONS);
+        picker.setMaxValue(MAX_NUMBER_OF_QUESTIONS);
+        picker.setValue(QuizFactory.instance().getNumberOfQuestions());
+
+        picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                numberPickerLabel.setText(String.valueOf(newVal));
+                QuizFactory.instance().setNumberOfQuestions(newVal);
+            }
+        });
+
+        numberQuestionsDialog.show();
     }
 }
