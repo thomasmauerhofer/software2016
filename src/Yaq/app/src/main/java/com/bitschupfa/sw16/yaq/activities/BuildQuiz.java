@@ -1,10 +1,13 @@
 package com.bitschupfa.sw16.yaq.activities;
 
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.MediaRouteActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -16,6 +19,7 @@ import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
 import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
 import com.bitschupfa.sw16.yaq.ui.BuildQuizAdapter;
 import com.bitschupfa.sw16.yaq.ui.QuestionCatalogItem;
+import com.bitschupfa.sw16.yaq.utils.CastHelper;
 import com.bitschupfa.sw16.yaq.utils.QuizFactory;
 
 import java.util.ArrayList;
@@ -34,6 +38,7 @@ public class BuildQuiz extends YaqActivity {
     private ArrayList<QuestionCatalogItem> catalogs = new ArrayList<>();
     private BuildQuizAdapter dataAdapter = null;
     private EditText searchText;
+    private CastHelper castHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +54,23 @@ public class BuildQuiz extends YaqActivity {
         initNumberPicker();
         displayListView();
         handleTheme();
+
+        castHelper = CastHelper.getInstance(getApplicationContext(), CastHelper.GameState.LOBBY);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        castHelper.addCallbacks();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main_menu, menu);
+        MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
+        MediaRouteActionProvider mediaRouteActionProvider =
+                (MediaRouteActionProvider) MenuItemCompat.getActionProvider(mediaRouteMenuItem);
+        mediaRouteActionProvider.setRouteSelector(castHelper.mMediaRouteSelector);
         return true;
     }
 
