@@ -81,11 +81,22 @@ public class Join extends YaqActivity implements Lobby {
                     break;
                 case BluetoothDevice.ACTION_FOUND:
                     BluetoothDevice dev = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                    if (!discoveredDevices.contains(dev)) {
-                        discoveredDevices.add(dev);
-                        discovered.notifyDataSetChanged();
-                        Log.d(TAG, "Discovered new device: " + dev.getName());
+                    Log.d(TAG, "Discovered new Bluetooth device " + dev.getAddress());
+
+                    if (dev.getName() == null) {
+                        Log.d(TAG, "Could not determine the name of the discovered device. skip.");
+                        return;
                     }
+
+                    for (BluetoothDevice alreadyDiscoveredDevice : discoveredDevices) {
+                        if (alreadyDiscoveredDevice.getAddress().equals(dev.getAddress())) {
+                            Log.d(TAG, "There is already a device with this address in the list.");
+                            return;
+                        }
+                    }
+
+                    discoveredDevices.add(dev);
+                    discovered.notifyDataSetChanged();
                     break;
                 default:
                     Log.d(TAG, intent.getAction() + " intent was not handled in BT broadcast receiver.");
@@ -182,6 +193,7 @@ public class Join extends YaqActivity implements Lobby {
 
         for (BluetoothDevice dev : btAdapter.getBondedDevices()) {
             pairedDevices.add(dev);
+            paired.notifyDataSetChanged();
             Log.d(TAG, "Added already paired device: " + dev.getName());
         }
 
