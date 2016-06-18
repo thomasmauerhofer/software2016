@@ -48,9 +48,9 @@ public class TextQuestionDAO extends DatabaseObject {
         contentValues.put(QUESTION_ANSWER_3, answerList.get(2).getAnswerString());
         contentValues.put(QUESTION_ANSWER_4, answerList.get(3).getAnswerString());
 
-        contentValues.put(QUESTION_ANSWER_1_VALUE, answerList.get(0).getAnswerValue() - Answer.MIN_VAL_HACK);
-        contentValues.put(QUESTION_ANSWER_2_VALUE, answerList.get(1).getAnswerValue() - Answer.MIN_VAL_HACK);
-        contentValues.put(QUESTION_ANSWER_3_VALUE, answerList.get(2).getAnswerValue() - Answer.MIN_VAL_HACK);
-        contentValues.put(QUESTION_ANSWER_4_VALUE, answerList.get(3).getAnswerValue() - Answer.MIN_VAL_HACK);
+        contentValues.put(QUESTION_ANSWER_1_VALUE, answerList.get(0).getAnswerValue());
+        contentValues.put(QUESTION_ANSWER_2_VALUE, answerList.get(1).getAnswerValue());
+        contentValues.put(QUESTION_ANSWER_3_VALUE, answerList.get(2).getAnswerValue());
+        contentValues.put(QUESTION_ANSWER_4_VALUE, answerList.get(3).getAnswerValue());
     }
 }
