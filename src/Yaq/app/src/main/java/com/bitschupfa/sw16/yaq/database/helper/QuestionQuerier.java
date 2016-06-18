@@ -78,7 +78,6 @@ public class QuestionQuerier {
         cursor.moveToFirst();
 
         List<TextQuestion> textQuestionList = new ArrayList<>();
-
         while (!cursor.isAfterLast()) {
             textQuestionList.add(queryTextQuestionTableValues(cursor));
             cursor.moveToNext();

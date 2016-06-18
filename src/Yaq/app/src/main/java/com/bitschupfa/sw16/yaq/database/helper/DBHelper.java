@@ -14,7 +14,7 @@ import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static String DATABASE_NAME = "yaq.db";
-    private static final int DATABASE_VERSION = 25;
+    private static final int DATABASE_VERSION = 32;
     private static DBHelper instance_ = null;
 
     public DBHelper(Context context) {
@@ -70,8 +70,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private void insertInitialData(SQLiteDatabase dataBase) {
         QuestionCatalog questionCatalog1 = new QuestionCatalog(1, 1, "Time", null);
-        QuestionCatalog questionCatalog3 = new QuestionCatalog(3, 3, "TV/Movie", null);
-        QuestionCatalog questionCatalog2 = new QuestionCatalog(2, 2, "General", null);
+        QuestionCatalog questionCatalog3 = new QuestionCatalog(2, 3, "TV/Movie", null);
+        QuestionCatalog questionCatalog2 = new QuestionCatalog(3, 2, "General", null);
 
         QuestionCatalogDAO questionCatalogDAO1 = new QuestionCatalogDAO(questionCatalog1);
         questionCatalogDAO1.insertThisAsInitialBaselineIntoDatabase(dataBase);
@@ -96,9 +96,8 @@ public class DBHelper extends SQLiteOpenHelper {
         answer1 = new Answer("Pina Colada", 0);
         answer2 = new Answer("Zombie", 0);
         answer3 = new Answer("Manhatten", 0);
-
         answer4 = new Answer("Harvey Wallbanger", 10);
-        TextQuestion textQuestion2 = new TextQuestion(2, "Vodka, Galliano and orange juice are used to make which classic cocktail?", answer1, answer2, answer3, answer4, 2);
+        TextQuestion textQuestion2 = new TextQuestion(2, "Vodka, Galliano and orange juice are used to make which classic cocktail?", answer1, answer2, answer3, answer4, 3);
 
 
         answer1 = new Answer("1966", 0);
