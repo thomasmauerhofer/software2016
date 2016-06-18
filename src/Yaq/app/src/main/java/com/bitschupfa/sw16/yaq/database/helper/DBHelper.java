@@ -52,10 +52,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 "`answer2`  		VARCHAR(100) NOT NULL," +
                 "`answer3`  		VARCHAR(100) NOT NULL," +
                 "`answer4`  		VARCHAR(100) NOT NULL," +
-                "`rightanswer1`	    INTEGER CHECK (rightanswer1 IN (0,20))," +
-                "`rightanswer2`	    INTEGER CHECK (rightanswer2 IN (0,20))," +
-                "`rightanswer3`	    INTEGER CHECK (rightanswer3 IN (0,20))," +
-                "`rightanswer4`	    INTEGER CHECK (rightanswer4 IN (0,20))," +
+                "`value1`   	    INTEGER CHECK (value1 IN (0,20))," +
+                "`value2`   	    INTEGER CHECK (value2 IN (0,20))," +
+                "`value3`	        INTEGER CHECK (value3 IN (0,20))," +
+                "`value4`	        INTEGER CHECK (value4 IN (0,20))," +
                 "FOREIGN KEY (`qcid`) REFERENCES QuestionCatalog(`qcid`)" +
                 ");";
 
