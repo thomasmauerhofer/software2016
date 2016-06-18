@@ -14,7 +14,7 @@ import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static String DATABASE_NAME = "yaq.db";
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 25;
     private static DBHelper instance_ = null;
 
     public DBHelper(Context context) {
@@ -40,12 +40,12 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_QUESTIONCATALOG_TABLE = "CREATE TABLE QuestionCatalog ( " +
-                "`qcid`             BIGINT UNSIGNED PRIMARY KEY NOT NULL," +
+                "`qcid`             INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                 "`qcdiff`           INTEGER NOT NULL," +
                 "`description` 	    VARCHAR(250) NOT NULL);";
 
         String CREATE_QUESTION_TABLE = "CREATE TABLE Question ( " +
-                "`qid`   			BIGINT UNSIGNED PRIMARY KEY NOT NULL," +
+                "`qid`   			INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                 "`qcid`  			BIGINT UNSIGNED NOT NULL," +
                 "`question`  		VARCHAR(250) NOT NULL," +
                 "`answer1`  		VARCHAR(100) NOT NULL," +
