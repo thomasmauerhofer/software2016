@@ -6,11 +6,10 @@ import java.io.Serializable;
 public class Answer implements Serializable {
     private String answer;
     private int answerValue;
-    public static final int MIN_VAL_HACK = -10;
 
     public Answer(String answer, int value) {
         this.answer = answer;
-        this.answerValue = value + MIN_VAL_HACK;
+        this.answerValue = value;
     }
 
     public String getAnswerString() {
