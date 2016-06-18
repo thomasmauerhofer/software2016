@@ -88,17 +88,20 @@
         <activity
             android:name=".activities.ManageQuestions"
             android:label="@string/title_activity_show_cataloges"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan"></activity>
 
         <activity
             android:name=".activities.ShowQuestions"
             android:label="@string/title_activity_show_questions"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan"></activity>
 
         <activity
             android:name=".activities.EditQuestions"
             android:label="@string/title_activity_edit_questions"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan"></activity>
     </application>
 
 </manifest>

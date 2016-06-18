@@ -27,36 +27,40 @@
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <EditText
-                    android:id="@+id/answer1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center"
-                    android:background="@drawable/question_border" />
+                android:id="@+id/answer1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:singleLine="true"
+                android:background="@drawable/question_border" />
 
             <EditText
-                    android:id="@+id/answer2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center"
-                    android:background="@drawable/question_border" />
+                android:id="@+id/answer2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:singleLine="true"
+                android:background="@drawable/question_border" />
 
             <EditText
-                    android:id="@+id/answer3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center"
-                    android:background="@drawable/question_border" />
+                android:id="@+id/answer3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:singleLine="true"
+                android:background="@drawable/question_border" />
 
             <EditText
-                    android:id="@+id/answer4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center"
-                    android:background="@drawable/question_border" />
+                android:id="@+id/answer4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:singleLine="true"
+                android:background="@drawable/question_border" />
 
         </LinearLayout>
 

@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 
 import com.bitschupfa.sw16.yaq.R;
+import com.bitschupfa.sw16.yaq.database.dao.QuestionCatalogDAO;
 import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
 import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
 import com.bitschupfa.sw16.yaq.ui.ManageQuestionsAdapter;
@@ -113,7 +114,7 @@ public class ManageQuestions extends YaqActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(ManageQuestions.this);
         LayoutInflater li = LayoutInflater.from(ManageQuestions.this);
         View dialogView = li.inflate(R.layout.dialog_manage_questions, null);
-        EditText input = (EditText) dialogView.findViewById(R.id.editText);
+        final EditText input = (EditText) dialogView.findViewById(R.id.editText);
         RadioButton checkEasy = (RadioButton) dialogView.findViewById(R.id.checkEasyDialog);
         RadioButton checkMedium = (RadioButton) dialogView.findViewById(R.id.checkMediumDialog);
         RadioButton checkHard = (RadioButton) dialogView.findViewById(R.id.checkHardDialog);
@@ -139,6 +140,10 @@ public class ManageQuestions extends YaqActivity {
                     actualQuestionCatalog = null;
                 } else {
                     //TODO add catalog in db
+                    QuestionCatalog questionCatalog = new QuestionCatalog(0, 1, input.getText().toString(), null);
+                    QuestionCatalogDAO newQuestionCatalog = new QuestionCatalogDAO(questionCatalog);
+                    newQuestionCatalog.insertIntoDatabase(ManageQuestions.this);
+                    dataAdapter.notifyDataSetChanged();
                 }
                 dialog.dismiss();
             }
