@@ -31,7 +31,7 @@ public class TextQuestionTest {
         List<Answer> answerList = textQuestion.getAnswers();
         int i = 0;
         for(Answer answer : answerList){
-            assertEquals("Answer should be answer minus RIGHT_ANSWER_DECREASE", answer.getRightAnswerValue(), answerValue[i++]-RIGHT_ANSWER_DECREASE);
+            assertEquals("Answer should be answer minus RIGHT_ANSWER_DECREASE", answer.getAnswerValue(), answerValue[i++]-RIGHT_ANSWER_DECREASE);
         }
     }
 

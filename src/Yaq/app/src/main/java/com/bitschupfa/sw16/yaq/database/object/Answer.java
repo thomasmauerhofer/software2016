@@ -6,11 +6,10 @@ import java.io.Serializable;
 public class Answer implements Serializable {
     private String answer;
     private int answerValue;
-    public static final int MIN_VAL_HACK = -10;
 
-    public Answer(String answer, int isRightAnswer) {
+    public Answer(String answer, int value) {
         this.answer = answer;
-        this.answerValue = isRightAnswer + MIN_VAL_HACK;
+        this.answerValue = value;
     }
 
     public String getAnswerString() {
@@ -21,7 +20,7 @@ public class Answer implements Serializable {
         this.answer = answer;
     }
 
-    public int getRightAnswerValue() {
+    public int getAnswerValue() {
         return answerValue;
     }
 
@@ -41,7 +40,7 @@ public class Answer implements Serializable {
 
         if (o instanceof Answer) {
             Answer other = (Answer) o;
-            return answer.equals(other.getAnswerString()) && answerValue == other.getRightAnswerValue();
+            return answer.equals(other.getAnswerString()) && answerValue == other.getAnswerValue();
         }
 
         return false;

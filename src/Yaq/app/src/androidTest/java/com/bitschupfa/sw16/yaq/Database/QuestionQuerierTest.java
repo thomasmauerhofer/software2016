@@ -46,7 +46,7 @@ public class QuestionQuerierTest extends AndroidTestCase {
             }
 
             for(Answer answer : answers){
-                int answerValue = answer.getRightAnswerValue();
+                int answerValue = answer.getAnswerValue();
                 assertTrue("Is right answer should be between -10 and 10", answerValue >= -10);
             }
         }
