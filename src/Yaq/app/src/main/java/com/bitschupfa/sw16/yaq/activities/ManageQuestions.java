@@ -135,13 +135,15 @@ public class ManageQuestions extends YaqActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // TODO get difficulty
-                QuestionCatalog questionCatalog = new QuestionCatalog(0, 1, input.getText().toString(), null);
-                QuestionCatalogDAO newQuestionCatalog = new QuestionCatalogDAO(questionCatalog);
                 if(actualQuestionCatalog != null) {
-                    // TODO don't work
-                    newQuestionCatalog.editEntry(ManageQuestions.this);
+                    actualQuestionCatalog.setName(input.getText().toString());
+                    actualQuestionCatalog.setDifficulty(0);
+                    QuestionCatalogDAO editQuestionCatalog = new QuestionCatalogDAO(actualQuestionCatalog);
+                    editQuestionCatalog.editEntry(ManageQuestions.this);
                     actualQuestionCatalog = null;
                 } else {
+                    QuestionCatalog questionCatalog = new QuestionCatalog(0, 1, input.getText().toString(), null);
+                    QuestionCatalogDAO newQuestionCatalog = new QuestionCatalogDAO(questionCatalog);
                     newQuestionCatalog.insertIntoDatabase(ManageQuestions.this);
                 }
                 updateListView();
