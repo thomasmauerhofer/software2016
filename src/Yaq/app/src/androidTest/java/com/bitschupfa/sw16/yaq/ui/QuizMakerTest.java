@@ -82,20 +82,20 @@ public class QuizMakerTest extends ActivityInstrumentationTestCase2<QuizMaker> {
         Answer answer2 = textQuestion1.getAnswers().get(1);
         Answer answer3 = textQuestion1.getAnswers().get(2);
         Answer answer4 = textQuestion1.getAnswers().get(3);
-        assertEquals("Answer values should be equal", -10, answer1.getRightAnswerValue()+10);
-        assertEquals("Answer values should be equal", -8, answer2.getRightAnswerValue()+10);
-        assertEquals("Answer values should be equal", -7, answer3.getRightAnswerValue()+10);
-        assertEquals("Answer values should be equal", 10, answer4.getRightAnswerValue()+10);
+        assertEquals("Answer values should be equal", -10, answer1.getAnswerValue());
+        assertEquals("Answer values should be equal", -8, answer2.getAnswerValue());
+        assertEquals("Answer values should be equal", -7, answer3.getAnswerValue());
+        assertEquals("Answer values should be equal", 10, answer4.getAnswerValue());
 
         assertTrue("Question should have four answers", textQuestion2.getAnswers().size() == 4);
         answer1 = textQuestion2.getAnswers().get(0);
         answer2 = textQuestion2.getAnswers().get(1);
         answer3 = textQuestion2.getAnswers().get(2);
         answer4 = textQuestion2.getAnswers().get(3);
-        assertEquals("Answer values should be equal", -9, answer1.getRightAnswerValue()+10);
-        assertEquals("Answer values should be equal", 0, answer2.getRightAnswerValue()+10);
-        assertEquals("Answer values should be equal", -5, answer3.getRightAnswerValue()+10);
-        assertEquals("Answer values should be equal", 3, answer4.getRightAnswerValue()+10);
+        assertEquals("Answer values should be equal", -9, answer1.getAnswerValue());
+        assertEquals("Answer values should be equal", 0, answer2.getAnswerValue());
+        assertEquals("Answer values should be equal", -5, answer3.getAnswerValue());
+        assertEquals("Answer values should be equal", 3, answer4.getAnswerValue());
     }
 
 
