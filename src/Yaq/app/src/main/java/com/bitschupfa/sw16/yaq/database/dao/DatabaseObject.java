@@ -7,6 +7,8 @@ import android.util.Log;
 
 import com.bitschupfa.sw16.yaq.database.helper.DBHelper;
 
+import java.util.HashMap;
+
 /**
  * Created by Patrik on 05.05.2016.
  */
@@ -23,8 +25,14 @@ public abstract class DatabaseObject {
     private void insertIntoDatabase(SQLiteDatabase database, boolean initial){
         fillDatabaseContentValues(initial);
 
-        Log.e("Database", "Table Name: " + tableName);
+        Log.e("Database", "Inserted data into Table: " + tableName);
         database.insert(tableName, null, contentValues);
+        StringBuilder stringBuilder = new StringBuilder();
+        for(String key : contentValues.keySet()){
+            stringBuilder.append(key+": ");
+            stringBuilder.append(contentValues.getAsString(key)+" ");
+        }
+        Log.e("Database", "Inserted: "+stringBuilder.toString());
     }
 
     public void insertIntoDatabase(Context context) {

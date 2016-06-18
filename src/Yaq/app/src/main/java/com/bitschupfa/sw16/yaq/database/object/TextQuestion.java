@@ -15,8 +15,6 @@ public class TextQuestion implements Serializable {
     private Answer answer3;
     private Answer answer4;
 
-    private int difficulty;
-
     public TextQuestion(int questionID, String question, Answer answer1, Answer answer2, Answer answer3, Answer answer4, int catalogID) {
         this.questionID = questionID;
         this.question = question;

@@ -14,7 +14,7 @@ import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static String DATABASE_NAME = "yaq.db";
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 25;
     private static DBHelper instance_ = null;
 
     public DBHelper(Context context) {
@@ -40,22 +40,22 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_QUESTIONCATALOG_TABLE = "CREATE TABLE QuestionCatalog ( " +
-                "`qcid`             BIGINT UNSIGNED PRIMARY KEY NOT NULL," +
+                "`qcid`             INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                 "`qcdiff`           INTEGER NOT NULL," +
                 "`description` 	    VARCHAR(250) NOT NULL);";
 
         String CREATE_QUESTION_TABLE = "CREATE TABLE Question ( " +
-                "`qid`   			BIGINT UNSIGNED PRIMARY KEY NOT NULL," +
+                "`qid`   			INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                 "`qcid`  			BIGINT UNSIGNED NOT NULL," +
                 "`question`  		VARCHAR(250) NOT NULL," +
                 "`answer1`  		VARCHAR(100) NOT NULL," +
                 "`answer2`  		VARCHAR(100) NOT NULL," +
                 "`answer3`  		VARCHAR(100) NOT NULL," +
                 "`answer4`  		VARCHAR(100) NOT NULL," +
-                "`rightanswer1`	    INTEGER CHECK (rightanswer1 IN (0,20))," +
-                "`rightanswer2`	    INTEGER CHECK (rightanswer2 IN (0,20))," +
-                "`rightanswer3`	    INTEGER CHECK (rightanswer3 IN (0,20))," +
-                "`rightanswer4`	    INTEGER CHECK (rightanswer4 IN (0,20))," +
+                "`rightanswer1`	    INTEGER," +
+                "`rightanswer2`	    INTEGER," +
+                "`rightanswer3`	    INTEGER," +
+                "`rightanswer4`	    INTEGER," +
                 "FOREIGN KEY (`qcid`) REFERENCES QuestionCatalog(`qcid`)" +
                 ");";
 
@@ -70,7 +70,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private void insertInitialData(SQLiteDatabase dataBase) {
         QuestionCatalog questionCatalog1 = new QuestionCatalog(1, 1, "Time", null);
-            QuestionCatalog questionCatalog3 = new QuestionCatalog(3, 3, "TV/Movie", null);
+        QuestionCatalog questionCatalog3 = new QuestionCatalog(3, 3, "TV/Movie", null);
         QuestionCatalog questionCatalog2 = new QuestionCatalog(2, 2, "General", null);
 
         QuestionCatalogDAO questionCatalogDAO1 = new QuestionCatalogDAO(questionCatalog1);
