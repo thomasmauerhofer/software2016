@@ -96,4 +96,6 @@
     <!-- Chromecast -->
     <string name="waiting_for_gamestart">Waiting for game to start …</string>
     <string name="waiting_for_players">Waiting for players to join …</string>
+
+    <string name="title_activity_quiz_maker">Quiz Maker</string>
 </resources>

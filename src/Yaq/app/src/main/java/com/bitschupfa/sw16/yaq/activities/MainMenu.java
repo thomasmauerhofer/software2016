@@ -149,6 +149,9 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
         } else if (id == R.id.menu_themes) {
             Intent intent = new Intent(MainMenu.this, Themes.class);
             startActivityForResult(intent, RESULT_FINISH);
+        } else if (id == R.id.menu_manage){
+            Intent intent = new Intent(MainMenu.this, QuizMaker.class);
+            startActivity(intent);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         assert drawer != null;
