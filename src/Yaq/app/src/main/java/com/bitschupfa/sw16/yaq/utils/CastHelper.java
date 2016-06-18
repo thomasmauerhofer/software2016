@@ -279,7 +279,7 @@ public class CastHelper {
             for (Answer answer : answers) {
                 JSONObject json_answer = new JSONObject();
                 json_answer.put("id", i);
-                json_answer.put("value", answer.getRightAnswerValue());
+                json_answer.put("value", answer.getAnswerValue());
                 json_answer.put("text", answer.getAnswerString());
                 json_answers.put(json_answer);
                 i++;

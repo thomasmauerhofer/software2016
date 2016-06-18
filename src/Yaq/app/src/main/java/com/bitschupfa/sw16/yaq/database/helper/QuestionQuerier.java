@@ -41,15 +41,15 @@ public class QuestionQuerier {
         String answer2String = cursor.getString(cursor.getColumnIndex(TextQuestionDAO.QUESTION_ANSWER_2));
         String answer3String = cursor.getString(cursor.getColumnIndex(TextQuestionDAO.QUESTION_ANSWER_3));
         String answer4String = cursor.getString(cursor.getColumnIndex(TextQuestionDAO.QUESTION_ANSWER_4));
-        int rightAnswer1 = cursor.getInt(cursor.getColumnIndex(TextQuestionDAO.QUESTION_RIGHT_ANSWER_1_VALUE));
-        int rightAnswer2 = cursor.getInt(cursor.getColumnIndex(TextQuestionDAO.QUESTION_RIGHT_ANSWER_2_VALUE));
-        int rightAnswer3 = cursor.getInt(cursor.getColumnIndex(TextQuestionDAO.QUESTION_RIGHT_ANSWER_3_VALUE));
-        int rightAnswer4 = cursor.getInt(cursor.getColumnIndex(TextQuestionDAO.QUESTION_RIGHT_ANSWER_4_VALUE));
+        int value1 = cursor.getInt(cursor.getColumnIndex(TextQuestionDAO.QUESTION_ANSWER_1_VALUE));
+        int value2 = cursor.getInt(cursor.getColumnIndex(TextQuestionDAO.QUESTION_ANSWER_2_VALUE));
+        int value3 = cursor.getInt(cursor.getColumnIndex(TextQuestionDAO.QUESTION_ANSWER_3_VALUE));
+        int value4 = cursor.getInt(cursor.getColumnIndex(TextQuestionDAO.QUESTION_ANSWER_4_VALUE));
 
-        Answer answer1 = new Answer(answer1String, rightAnswer1);
-        Answer answer2 = new Answer(answer2String, rightAnswer2);
-        Answer answer3 = new Answer(answer3String, rightAnswer3);
-        Answer answer4 = new Answer(answer4String, rightAnswer4);
+        Answer answer1 = new Answer(answer1String, value1);
+        Answer answer2 = new Answer(answer2String, value2);
+        Answer answer3 = new Answer(answer3String, value3);
+        Answer answer4 = new Answer(answer4String, value4);
 
         return new TextQuestion(questionID, question, answer1, answer2, answer3, answer4, catalogID);
     }

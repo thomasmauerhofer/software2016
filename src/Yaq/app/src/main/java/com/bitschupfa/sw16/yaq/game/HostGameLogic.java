@@ -152,7 +152,7 @@ public class HostGameLogic implements ClientMessageHandler {
         Answer mostCorrectAnswer = currentQuestion.getAnswers().get(0);
         for (int i = 1; i < currentQuestion.getAnswers().size(); ++i) {
             Answer tmp = currentQuestion.getAnswers().get(i);
-            if (mostCorrectAnswer.getRightAnswerValue() < tmp.getRightAnswerValue()) {
+            if (mostCorrectAnswer.getAnswerValue() < tmp.getAnswerValue()) {
                 mostCorrectAnswer = tmp;
             }
         }
@@ -160,7 +160,7 @@ public class HostGameLogic implements ClientMessageHandler {
             String id = entry.getKey();
             Answer answer = entry.getValue();
 
-            players.getPlayer(id).addScore(answer.getRightAnswerValue());
+            players.getPlayer(id).addScore(answer.getAnswerValue());
 
             if (!answer.isCorrectAnswer()) {
                 answer = mostCorrectAnswer;
