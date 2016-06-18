@@ -70,17 +70,12 @@ public class QuizMaker extends AppCompatActivity {
     public void readFile(File file) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(file));
         try {
-            String line = br.readLine();
-            if (line == null) {
-                throw new IOException();
-            }
-            readCatalogName(line);
+            readCatalog(br);
 
+            String line = br.readLine();
             while (line != null) {
+                readQuestion(line);
                 line = br.readLine();
-                if (line != null) {
-                    readQuestion(line);
-                }
             }
         } finally {
             br.close();
@@ -106,14 +101,44 @@ public class QuizMaker extends AppCompatActivity {
 
         new FileChooser(this).setFileListener(new FileChooser.FileSelectedListener() {
             @Override
-            public void fileSelected(final File file) throws IOException {
-                readFile(file);
+            public void fileSelected(final File file) {
+                try {
+                    readFile(file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }).showDialog();
     }
 
-    private void readCatalogName(String line) throws IOException {
-        QuestionCatalog questionCatalog1 = new QuestionCatalog(0, 1, line, null);
+    public static boolean isInteger(String s) {
+        return isInteger(s,10);
+    }
+
+    public static boolean isInteger(String s, int radix) {
+        if(s.isEmpty()) return false;
+        for(int i = 0; i < s.length(); i++) {
+            if(i == 0 && s.charAt(i) == '-') {
+                if(s.length() == 1) return false;
+                else continue;
+            }
+            if(Character.digit(s.charAt(i),radix) < 0) return false;
+        }
+        return true;
+    }
+
+    private void readCatalog(BufferedReader reader) throws IOException {
+        String questionCatalogName = reader.readLine();
+        if (questionCatalogName == null) {
+            throw new IOException();
+        }
+
+        String difficultyString = reader.readLine();
+        if (!isInteger(difficultyString)) {
+            throw new IOException();
+        }
+        int difficulty = Integer.parseInt(difficultyString);
+        QuestionCatalog questionCatalog1 = new QuestionCatalog(0, difficulty, questionCatalogName, null);
         QuestionCatalogDAO questionCatalogDAO = new QuestionCatalogDAO(questionCatalog1);
         questionCatalogDAO.insertIntoDatabase(this);
         boolean catalogFound = false;
@@ -121,7 +146,7 @@ public class QuizMaker extends AppCompatActivity {
         QuestionQuerier questionQuerier = new QuestionQuerier(this);
         List<QuestionCatalog> questionCatalogs = questionQuerier.getAllQuestionCatalogsOnlyIdAndName();
         for (QuestionCatalog questionCatalog : questionCatalogs) {
-            if (questionCatalog.getName().equals(line)) {
+            if (questionCatalog.getName().equals(questionCatalogName)) {
                 questionCatalogId = questionCatalog.getCatalogID();
                 catalogFound = true;
             }
@@ -130,11 +155,10 @@ public class QuizMaker extends AppCompatActivity {
         if (!catalogFound) {
             throw new IOException();
         }
-
     }
 
-    private void readQuestion(String line) {
-        StringTokenizer stringTokenizer = new StringTokenizer(line, ",");
+    private void readQuestion(String line) throws IOException {
+        StringTokenizer stringTokenizer = new StringTokenizer(line, ";");
 
         String question = stringTokenizer.nextToken();
         String answer1String = stringTokenizer.nextToken();
@@ -142,10 +166,20 @@ public class QuizMaker extends AppCompatActivity {
         String answer3String = stringTokenizer.nextToken();
         String answer4String = stringTokenizer.nextToken();
 
-        int answer1Value = Integer.parseInt(stringTokenizer.nextToken());
-        int answer2Value = Integer.parseInt(stringTokenizer.nextToken());
-        int answer3Value = Integer.parseInt(stringTokenizer.nextToken());
-        int answer4Value = Integer.parseInt(stringTokenizer.nextToken());
+        String answer1ValueString = stringTokenizer.nextToken();
+        String answer2ValueString = stringTokenizer.nextToken();
+        String answer3ValueString = stringTokenizer.nextToken();
+        String answer4ValueString = stringTokenizer.nextToken();
+
+        if (!isInteger(answer1ValueString) || !isInteger(answer2ValueString) ||
+                !isInteger(answer3ValueString) || !isInteger(answer4ValueString)) {
+            throw new IOException();
+        }
+
+        int answer1Value = Integer.parseInt(answer1ValueString);
+        int answer2Value = Integer.parseInt(answer2ValueString);
+        int answer3Value = Integer.parseInt(answer3ValueString);
+        int answer4Value = Integer.parseInt(answer4ValueString);
 
         Answer answer1 = new Answer(answer1String, answer1Value);
         Answer answer2 = new Answer(answer2String, answer2Value);
