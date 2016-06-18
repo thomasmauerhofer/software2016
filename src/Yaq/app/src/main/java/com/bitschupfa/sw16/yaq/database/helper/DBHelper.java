@@ -56,6 +56,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 "`value2`   	    INTEGER," +
                 "`value3`	        INTEGER," +
                 "`value4`	        INTEGER," +
+                "`rightanswer1`	    INTEGER," +
+                "`rightanswer2`	    INTEGER," +
+                "`rightanswer3`	    INTEGER," +
+                "`rightanswer4`	    INTEGER," +
                 "FOREIGN KEY (`qcid`) REFERENCES QuestionCatalog(`qcid`)" +
                 ");";
 

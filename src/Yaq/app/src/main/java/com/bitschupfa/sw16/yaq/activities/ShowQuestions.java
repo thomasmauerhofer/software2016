@@ -14,6 +14,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
+import com.bitschupfa.sw16.yaq.database.dao.QuestionCatalogDAO;
+import com.bitschupfa.sw16.yaq.database.dao.TextQuestionDAO;
 import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.ui.ShowQuestionsAdapter;
@@ -24,6 +26,7 @@ public class ShowQuestions extends YaqActivity {
     private ArrayAdapter dataAdapter = null;
     private TextView textCatalogue;
     private TextQuestion actualTextQuestion;
+    private QuestionCatalog catalog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,7 @@ public class ShowQuestions extends YaqActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowQuestions.this, EditQuestions.class);
+                intent.putExtra("QuestionCatalog", catalog);
                 startActivity(intent);
             }
         });
@@ -55,25 +59,30 @@ public class ShowQuestions extends YaqActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
             case R.id.edit:
-                // TODO edit question
                 Intent intent = new Intent(ShowQuestions.this, EditQuestions.class);
                 intent.putExtra("Question", actualTextQuestion);
                 startActivity(intent);
                 return true;
             case R.id.delete:
-                // TODO delete question
+                TextQuestionDAO deleteQuestion = new TextQuestionDAO(actualTextQuestion);
+                deleteQuestion.deleteEntry(ShowQuestions.this);
+                updateListView();
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
     }
 
-    public void displayListView() {
+    public void updateListView() {
+        listView.setAdapter(null);
+        dataAdapter.clear();
+        displayListView();
+    }
 
-        QuestionCatalog catalog = (QuestionCatalog) getIntent().getSerializableExtra("QuestionCatalogue");
+    public void displayListView() {
+        catalog = (QuestionCatalog) getIntent().getSerializableExtra("QuestionCatalogue");
 
         textCatalogue = (TextView) findViewById(R.id.textCatalogue);
         textCatalogue.setText(catalog.getName());
@@ -101,7 +110,6 @@ public class ShowQuestions extends YaqActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
                 TextQuestion item = (TextQuestion) listView.getItemAtPosition(pos);
-                Log.d("blah", "long click: " + item.getQuestion());
                 actualTextQuestion = item;
                 openContextMenu(listView);
                 return true;

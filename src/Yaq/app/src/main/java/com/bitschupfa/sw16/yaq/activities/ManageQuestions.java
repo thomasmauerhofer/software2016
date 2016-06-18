@@ -101,7 +101,6 @@ public class ManageQuestions extends YaqActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
                 QuestionCatalogItem item = (QuestionCatalogItem) listView.getItemAtPosition(pos);
-                Log.d("blah","long click: " + item.getCatalog().getName());
                 actualQuestionCatalog = item.getCatalog();
                 openContextMenu(listView);
                 return true;
@@ -135,16 +134,17 @@ public class ManageQuestions extends YaqActivity {
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                // TODO get difficulty
+                QuestionCatalog questionCatalog = new QuestionCatalog(0, 1, input.getText().toString(), null);
+                QuestionCatalogDAO newQuestionCatalog = new QuestionCatalogDAO(questionCatalog);
                 if(actualQuestionCatalog != null) {
-                    //TODO edit catalog in db
+                    // TODO don't work
+                    newQuestionCatalog.editEntry(ManageQuestions.this);
                     actualQuestionCatalog = null;
                 } else {
-                    //TODO add catalog in db
-                    QuestionCatalog questionCatalog = new QuestionCatalog(0, 1, input.getText().toString(), null);
-                    QuestionCatalogDAO newQuestionCatalog = new QuestionCatalogDAO(questionCatalog);
                     newQuestionCatalog.insertIntoDatabase(ManageQuestions.this);
-                    dataAdapter.notifyDataSetChanged();
                 }
+                updateListView();
                 dialog.dismiss();
             }
         });
@@ -158,6 +158,12 @@ public class ManageQuestions extends YaqActivity {
         builder.show();
     }
 
+    public void updateListView() {
+        listView.setAdapter(null);
+        dataAdapter.clear();
+        displayListView();
+    }
+
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -165,7 +171,10 @@ public class ManageQuestions extends YaqActivity {
                 showEditDialog();
                 return true;
             case R.id.delete:
-                // TODO delete cataloge
+                // TODO don't work
+                QuestionCatalogDAO deleteQuestionCatalog = new QuestionCatalogDAO(actualQuestionCatalog);
+                deleteQuestionCatalog.deleteEntry(ManageQuestions.this);
+                updateListView();
                 return true;
             default:
                 return super.onContextItemSelected(item);
