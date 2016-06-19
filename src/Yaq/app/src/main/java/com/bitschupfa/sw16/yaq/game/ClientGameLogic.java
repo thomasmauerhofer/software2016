@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ClientGameLogic implements HostMessageHandler {
     private static final String TAG = "ClientGameLogic";
-    private static final Answer noAnswer = new Answer("no answer", 10);
+    private static final Answer noAnswer = new Answer("no answer", 0);
     private static final ClientGameLogic instance = new ClientGameLogic();
     private final BlockingQueue<Answer> answerQueue = new ArrayBlockingQueue<>(1);
 
