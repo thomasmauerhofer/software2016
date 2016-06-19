@@ -10,8 +10,6 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class TextQuestionTest {
-    private final int RIGHT_ANSWER_DECREASE = 10;
-
     @Test
     public void testGetAnswers(){
         String question = "Test";
@@ -31,7 +29,7 @@ public class TextQuestionTest {
         List<Answer> answerList = textQuestion.getAnswers();
         int i = 0;
         for(Answer answer : answerList){
-            assertEquals("Answer should be answer minus RIGHT_ANSWER_DECREASE", answer.getAnswerValue(), answerValue[i++]-RIGHT_ANSWER_DECREASE);
+            assertEquals("Wrong answer value", answer.getAnswerValue(), answerValue[i++]);
         }
     }
 

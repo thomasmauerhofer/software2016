@@ -2,10 +2,15 @@ package com.bitschupfa.sw16.yaq.database.object;
 
 import java.io.Serializable;
 
+import io.realm.RealmObject;
 
-public class Answer implements Serializable {
+
+public class Answer extends RealmObject implements Serializable {
     private String answer;
     private int answerValue;
+
+    public Answer() {
+    }
 
     public Answer(String answer, int value) {
         this.answer = answer;

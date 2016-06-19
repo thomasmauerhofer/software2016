@@ -11,8 +11,12 @@ import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 public class QuestionQuerierTest extends AndroidTestCase {
     private QuestionQuerier questionQuerier;
+    private Realm realm;
 
     public QuestionQuerierTest() {
         super();
@@ -21,8 +25,18 @@ public class QuestionQuerierTest extends AndroidTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        RenamingDelegatingContext context = new RenamingDelegatingContext(getContext(), "test");
-        questionQuerier = new QuestionQuerier(context);
+        RealmConfiguration config = new RealmConfiguration.Builder(getContext())
+                .name("yaq.realm")
+                .build();
+        Realm.setDefaultConfiguration(config);
+        realm = Realm.getDefaultInstance();
+        questionQuerier = new QuestionQuerier(realm);
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        realm.close();
     }
 
     public void testAllQuestionsFromCatalog() {
@@ -31,7 +45,7 @@ public class QuestionQuerierTest extends AndroidTestCase {
     }
 
     public void testAllQuestionsFromCatalogGeneric(List<TextQuestion> textQuestionList, Integer referenceCatalogID, Integer referenceDifficulty) {
-        assertTrue("Should be more than one element", textQuestionList.size() > 0);
+        assertTrue("Should be more than one element", (textQuestionList != null && textQuestionList.size() > 0));
 
         for (TextQuestion textQuestion : textQuestionList) {
             String question = textQuestion.getQuestion();

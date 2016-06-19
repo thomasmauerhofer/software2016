@@ -23,6 +23,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmList;
+
 public class BuildQuizTest extends InstrumentationTestCase{
 
     private BuildQuizAdapter mAdapter;
@@ -35,7 +37,7 @@ public class BuildQuizTest extends InstrumentationTestCase{
         ArrayList<QuestionCatalogItem> data = new ArrayList<>();
 
         Answer answer = new Answer("aaa", 0);
-        List<TextQuestion> questions = new ArrayList<>();
+        RealmList<TextQuestion> questions = new RealmList<>();
         questions.add(new TextQuestion(42, "question", answer, answer, answer, answer, 0));
         questions.add(new TextQuestion(42, "question", answer, answer, answer, answer, 0));
         questions.add(new TextQuestion(42, "question", answer, answer, answer, answer, 0));

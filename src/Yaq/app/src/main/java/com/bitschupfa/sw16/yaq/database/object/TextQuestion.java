@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TextQuestion implements Serializable {
+import io.realm.RealmObject;
 
+public class TextQuestion extends RealmObject implements Serializable {
     private int questionID;
     private String question;
     private int catalogID;
@@ -16,6 +17,9 @@ public class TextQuestion implements Serializable {
     private Answer answer4;
 
     private int difficulty;
+
+    public TextQuestion() {
+    }
 
     public TextQuestion(int questionID, String question, Answer answer1, Answer answer2, Answer answer3, Answer answer4, int catalogID) {
         this.questionID = questionID;
@@ -76,6 +80,15 @@ public class TextQuestion implements Serializable {
         answers.add(answer4);
 
         return answers;
+    }
+
+    public void setAnswers(List<Answer> newAnswers) {
+        if (newAnswers.size() == 4) {
+            answer1 = newAnswers.get(0);
+            answer2 = newAnswers.get(1);
+            answer3 = newAnswers.get(2);
+            answer4 = newAnswers.get(3);
+        }
     }
 
     public int getCatalogID() {
