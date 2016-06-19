@@ -2,7 +2,7 @@ package com.bitschupfa.sw16.yaq.utils;
 
 import android.app.Activity;
 import android.app.Instrumentation;
-import android.widget.Button;
+import android.widget.TextView;
 
 import com.robotium.solo.Solo;
 
@@ -11,32 +11,32 @@ import java.util.List;
 
 public class SoloWrapper extends Solo {
 
-    public List<ButtonWrapper> buttonsOfActivity = new ArrayList<>();
+    public List<ButtonTextWrapper> answerTextFieldsOfActivity = new ArrayList<>();
 
     public SoloWrapper(Instrumentation instrumentation, Activity activity) {
         super(instrumentation, activity);
     }
 
-    public void addButton(Button button) {
-        buttonsOfActivity.add(new ButtonWrapper(button));
+    public void addButton(TextView button) {
+        answerTextFieldsOfActivity.add(new ButtonTextWrapper(button));
     }
 
-    public ButtonWrapper getButtonWrapper(String buttonText) throws Exception {
-        for (ButtonWrapper button : buttonsOfActivity) {
-            if (button.getButton().getText().equals(buttonText)) {
-                return button;
+    public ButtonTextWrapper getButtonWrapper(String buttonText) throws Exception {
+        for (ButtonTextWrapper buttonTextField : answerTextFieldsOfActivity) {
+            if (buttonTextField.getButtonTextField().getText().equals(buttonText)) {
+                return buttonTextField;
             }
         }
         throw new Exception("No Button found!");
     }
 
     @Override
-    public void clickOnButton(String text) {
-        super.clickOnButton(text);
-        clickOnAnswerButton(text);
+    public void clickOnText(String text) {
+        super.clickOnText(text);
+        clickOnAnswerButtonText(text);
     }
 
-    private boolean clickOnAnswerButton(String buttonText) {
+    private boolean clickOnAnswerButtonText(String buttonText) {
         try {
             getButtonWrapper(buttonText).click();
             return true;

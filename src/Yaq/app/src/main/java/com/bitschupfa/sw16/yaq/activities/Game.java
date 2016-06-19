@@ -20,6 +20,7 @@ import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.game.ClientGameLogic;
 import com.bitschupfa.sw16.yaq.ui.RankingItem;
+import com.bitschupfa.sw16.yaq.utils.AutoResizeTextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,10 +33,11 @@ public class Game extends YaqActivity {
 
     private ProgressBar countdownTimerBar;
     private TextView countdownTimerText;
-    private TextView questionView;
+    private AutoResizeTextView questionView;
     protected LinearLayout questionViewLL;
     protected LinearLayout questionAskLL;
     private List<Button> answerButtons;
+    private List<AutoResizeTextView> answerTextViews;
 
     private Button answerButtonPressed;
     private Answer selectedAnswer;
@@ -54,17 +56,23 @@ public class Game extends YaqActivity {
 
         countdownTimerBar = (ProgressBar) findViewById(R.id.barTimer);
         countdownTimerText = (TextView) findViewById(R.id.time);
-        questionView = (TextView) findViewById(R.id.question);
+        questionView = (AutoResizeTextView) findViewById(R.id.question);
         questionViewLL = (LinearLayout) findViewById(R.id.questionOverlay);
         questionAskLL = (LinearLayout) findViewById(R.id.questionAskedView);
 
+
+        answerTextViews = new ArrayList<>(
+                Arrays.asList(
+                        (AutoResizeTextView) findViewById(R.id.answer1Text), (AutoResizeTextView) findViewById(R.id.answer2Text),
+                        (AutoResizeTextView) findViewById(R.id.answer3Text), (AutoResizeTextView) findViewById(R.id.answer4Text)
+                )
+        );
         answerButtons = new ArrayList<>(
                 Arrays.asList(
                         (Button) findViewById(R.id.answer1), (Button) findViewById(R.id.answer2),
                         (Button) findViewById(R.id.answer3), (Button) findViewById(R.id.answer4)
                 )
         );
-
         handleTheme();
     }
 
@@ -86,12 +94,12 @@ public class Game extends YaqActivity {
                             PorterDuff.Mode.SRC);
                 }
                 questionView.setText(question.getQuestion());
+                questionView.refreshDrawableState();
 
                 List<Answer> answers = question.getShuffledAnswers();
-                answerButtons.get(0).setText(answers.get(0).getAnswerString());
-                answerButtons.get(1).setText(answers.get(1).getAnswerString());
-                answerButtons.get(2).setText(answers.get(2).getAnswerString());
-                answerButtons.get(3).setText(answers.get(3).getAnswerString());
+                for (int i = 0; i < answerTextViews.size(); i++) {
+                    answerTextViews.get(i).setText(answers.get(i).getAnswerString());
+                }
 
                 answerMapping.clear();
                 answerMapping.put(answerButtons.get(0), answers.get(0));
