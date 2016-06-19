@@ -69,13 +69,13 @@ public class TextQuestion implements Serializable {
     }
 
     public List<Answer> getAnswers() {
-        List<Answer> rightAnswers = new ArrayList<>();
-        rightAnswers.add(answer1);
-        rightAnswers.add(answer2);
-        rightAnswers.add(answer3);
-        rightAnswers.add(answer4);
+        List<Answer> answers = new ArrayList<>();
+        answers.add(answer1);
+        answers.add(answer2);
+        answers.add(answer3);
+        answers.add(answer4);
 
-        return rightAnswers;
+        return answers;
     }
 
     public int getCatalogID() {

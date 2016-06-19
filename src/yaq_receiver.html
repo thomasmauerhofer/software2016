@@ -6,12 +6,12 @@
 
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-    
+
     <style type="text/css">
         body {
             overflow: hidden;
         }
-        
+
         div#main {
             height: 720PX;
             width: 1280PX;
@@ -27,24 +27,23 @@
             margin-left: auto;
             margin-right: auto;
         }
-        
+
         #question {
             display: none;
             margin: 20px;
         }
-        
+
         .answer {
-            display: none;
             margin: 10px;
             font-size: 28px;
         }
-        
+
         #answers_box {
             display: none;
             margin: 20px;
             vertical-align: middle;
         }
-        
+
         #scoreboard {
             display: none;
             font-size: 20px;
@@ -52,23 +51,23 @@
             margin-left: auto;
             margin-right: auto;
         }
-        
+
         #scoreboard .row {
             border-bottom: 1px #88bbcb dotted;
         }
-        
+
         #scoreboard .rank-1 {
             font-size: 36px;
         }
-        
+
         #scoreboard .rank-2 {
             font-size: 32px;
         }
-        
+
         #scoreboard .rank-3 {
             font-size: 28px;
         }
-        
+
         .col-md-5 {
             width: 48.3% !important;
         }
@@ -97,23 +96,24 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-    <script type="text/javascript">        
-        window.onload = function () {
-            cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
+    <script type="text/javascript">
+        window.onload = function() {
+            var question = null;
+
             window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
             console.log('Starting Receiver Manager');
 
-            castReceiverManager.onReady = function (event) {
+            castReceiverManager.onReady = function(event) {
                 console.log('Received Ready event: ' + JSON.stringify(event.data));
                 window.castReceiverManager.setApplicationState("Application status is ready...");
             };
 
-            castReceiverManager.onSenderConnected = function (event) {
+            castReceiverManager.onSenderConnected = function(event) {
                 console.log('Received Sender Connected event: ' + event.data);
                 console.log(window.castReceiverManager.getSender(event.data).userAgent);
             };
 
-            castReceiverManager.onSenderDisconnected = function (event) {
+            castReceiverManager.onSenderDisconnected = function(event) {
                 console.log('Received Sender Disconnected event: ' + event.data);
                 hideQuestionAndAnswers();
                 if (window.castReceiverManager.getSenders().length == 0) {
@@ -123,7 +123,7 @@
                 }
             };
 
-            castReceiverManager.onSystemVolumeChanged = function (event) {
+            castReceiverManager.onSystemVolumeChanged = function(event) {
                 console.log('Received System Volume Changed event: ' + event.data['level'] + ' ' +
                     event.data['muted']);
             };
@@ -132,13 +132,15 @@
                 window.castReceiverManager.getCastMessageBus(
                     'urn:x-cast:com.bitschupfa.sw16.yaq');
 
-            window.messageBus.onMessage = function (event) {
+            window.messageBus.onMessage = function(event) {
                 console.log('Message [' + event.senderId + ']: ' + event.data);
                 try {
                     var data = JSON.parse(event.data);
                     if (data != null) {
-                        if(data.type == "question" ) {
+                        if (data.type == "question") {
                             displayQuestionAndAnswers(data);
+                        } else if (data.type == "solve") {
+                            displayCorrectAnswers();
                         } else if (data.type == "scoreboard") {
                             displayScoreboard(data);
                         }
@@ -156,27 +158,35 @@
             });
             console.log('Receiver Manager started');
         };
-        
+
         function displayQuestionAndAnswers(data) {
-            //displayQuestionAndAnswers(JSON.parse('{"question": "What\'s >>>> the rest?", "answer_1": "2000 meters", "answer_2": "2 kilometer", "answer_3": "1 mile", "answer_4": "1 light-year"}'));
-            console.log(data);
+            //displayQuestionAndAnswers(JSON.parse('{"question": "What\'s >>>> the rest?", "answers" : [{"id": "1", "text": "2000 meters", "value": "10"}, {"id": "2", "text": "zwei", "value": "-10"}, {"id": "3", "text": "drei", "value": "10"}, {"id": "4", "text": "vier", "value": "0"}]}'));
+            questionData = data;
+            hideQuestionAndAnswers();
             $("#message").hide('slow');
             $("#scoreboard").hide('slow');
-            $("#question").show('slow');
-            $("#answers_box").show();
             $("#question").html(data.question);
-            $("#answer_1").html(data.answer_1);
-            $("#answer_2").html(data.answer_2);
-            $("#answer_3").html(data.answer_3);
-            $("#answer_4").html(data.answer_4);
-            $("#answer_1").show(400);
-            $("#answer_2").show(600);
-            $("#answer_3").show(800);
-            $("#answer_4").show(1000);
-            
+            $("#question").show('slow');
+            data.answers.forEach(function(answer) {
+                $("#answer_" + answer.id).html(answer.text);
+            });
+            $("#answers_box").show('slow');
+
             window.castReceiverManager.setApplicationState("Game in progress");
         }
-        
+
+        function displayCorrectAnswers() {
+            if (questionData != null) {
+                questionData.answers.forEach(function(answer) {
+                    if (answer.value > 0) {
+                        $("#answer_" + answer.id).addClass("btn-success");
+                        $("#answer_" + answer.id).removeClass("btn-default");
+                    }
+                });
+                questionData = null;
+            }
+        }
+
         function displayScoreboard(data) {
             //displayScoreboard(JSON.parse('{"type":"scoreboard","players":[{"name":"Patrik Meier","score":10},{"name":"Jo","score":10},{"name":"Thomas Mauerhofer","score":10},{"name":"Matthias","score":10}]}'));
             hideQuestionAndAnswers();
@@ -192,19 +202,19 @@
                 $(".rank-" + i).append('<div class="col-md-4">' + rank.score + '</div>');
                 i++;
             });
-            
+
             $("#scoreboard").show('slow');
-            
+
             window.castReceiverManager.setApplicationState("Game Finished");
         }
-        
+
         function hideQuestionAndAnswers() {
-            $("#question").hide('slow');
-            $("#answers_box").hide('slow');
-            $("#answer_1").hide('slow');
-            $("#answer_2").hide('slow');
-            $("#answer_3").hide('slow');
-            $("#answer_4").hide('slow');
+            $("#question").hide();
+            $("#answers_box").hide();
+            for(i = 1; i <= 4; i++) {
+                $("#answer_" + i).addClass("btn-default");
+                $("#answer_" + i).removeClass("btn-success");
+            }
         }
 
         function displayText(text) {
@@ -212,7 +222,7 @@
             hideQuestionAndAnswers();
             $("#message").show('slow');
             $("#message").html(text);
-            
+
             window.castReceiverManager.setApplicationState(text);
         };
     </script>

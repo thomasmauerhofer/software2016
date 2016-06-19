@@ -74,6 +74,8 @@ public class Game extends YaqActivity {
                         (Button) findViewById(R.id.answer3), (Button) findViewById(R.id.answer4)
                 )
         );
+
+        setAnswerButtonsClickable(false);
         handleTheme();
     }
 
@@ -170,6 +172,7 @@ public class Game extends YaqActivity {
 
             @Override
             public void onFinish() {
+                setAnswerButtonsClickable(false);
                 countdownTimerBar.setVisibility(View.INVISIBLE);
                 countdownTimerText.setVisibility(View.INVISIBLE);
             }

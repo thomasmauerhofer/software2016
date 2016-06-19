@@ -8,6 +8,7 @@ import android.support.v7.media.MediaRouter;
 import android.util.Log;
 
 import com.bitschupfa.sw16.yaq.R;
+import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.ui.RankingItem;
 import com.google.android.gms.cast.ApplicationMetadata;
@@ -272,10 +273,28 @@ public class CastHelper {
         try {
             json.put("type", "question");
             json.put("question", question.getQuestion());
-            json.put("answer_1", question.getAnswers().get(0).getAnswerString());
-            json.put("answer_2", question.getAnswers().get(1).getAnswerString());
-            json.put("answer_3", question.getAnswers().get(2).getAnswerString());
-            json.put("answer_4", question.getAnswers().get(3).getAnswerString());
+            List<Answer> answers = question.getAnswers();
+            int i = 1;
+            JSONArray json_answers = new JSONArray();
+            for (Answer answer : answers) {
+                JSONObject json_answer = new JSONObject();
+                json_answer.put("id", i);
+                json_answer.put("value", answer.getAnswerValue());
+                json_answer.put("text", answer.getAnswerString());
+                json_answers.put(json_answer);
+                i++;
+            }
+            json.put("answers", json_answers);
+        } catch (JSONException e) {
+            Log.d(TAG, e.getMessage());
+        }
+        sendMessage(json.toString());
+    }
+
+    public void sendShowCorrectAnswers() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("type", "solve");
         } catch (JSONException e) {
             Log.d(TAG, e.getMessage());
         }

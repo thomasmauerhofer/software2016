@@ -45,8 +45,9 @@ public class QuestionQuerierTest extends AndroidTestCase {
                 assertTrue("CatalogID should be same as referenceCatalogID", referenceCatalogID == catalogID);
             }
 
-            for (Answer answer : answers) {
-                int answerValue = answer.getRightAnswerValue();
+            for(Answer answer : answers){
+                int answerValue = answer.getAnswerValue();
+
                 assertTrue("Is right answer should be between -10 and 10", answerValue >= -10);
             }
         }
