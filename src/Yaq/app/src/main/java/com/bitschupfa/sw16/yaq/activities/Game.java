@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
@@ -93,8 +94,7 @@ public class Game extends YaqActivity {
                     answerButton.getBackground().setColorFilter(themeChooser.getThemeStorage().getPrimaryColor(),
                             PorterDuff.Mode.SRC);
                 }
-                questionView.setText(question.getQuestion());
-                questionView.refreshDrawableState();
+                questionView.setText(Html.fromHtml(question.getQuestion()));
 
                 List<Answer> answers = question.getShuffledAnswers();
                 for (int i = 0; i < answerTextViews.size(); i++) {
