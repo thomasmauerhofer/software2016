@@ -16,13 +16,13 @@ public class TextQuestionDAO extends DatabaseObject {
     public static final String QUESTION_ANSWER_2 = "answer2";
     public static final String QUESTION_ANSWER_3 = "answer3";
     public static final String QUESTION_ANSWER_4 = "answer4";
-    public static final String QUESTION_RIGHT_ANSWER_1_VALUE = "rightanswer1";
-    public static final String QUESTION_RIGHT_ANSWER_2_VALUE = "rightanswer2";
-    public static final String QUESTION_RIGHT_ANSWER_3_VALUE = "rightanswer3";
-    public static final String QUESTION_RIGHT_ANSWER_4_VALUE = "rightanswer4";
+    public static final String QUESTION_ANSWER_1_VALUE = "value1";
+    public static final String QUESTION_ANSWER_2_VALUE = "value2";
+    public static final String QUESTION_ANSWER_3_VALUE = "value3";
+    public static final String QUESTION_ANSWER_4_VALUE = "value4";
     public static final String[] QUESTION_ALL_COLUMN_NAMES = {QUESTION_ID, QuestionCatalogDAO.QUESTIONCATALOG_ID, QUESTION_TEXT,
-            QUESTION_ANSWER_1, QUESTION_ANSWER_2, QUESTION_ANSWER_3, QUESTION_ANSWER_4, QUESTION_RIGHT_ANSWER_1_VALUE,
-            QUESTION_RIGHT_ANSWER_2_VALUE, QUESTION_RIGHT_ANSWER_3_VALUE, QUESTION_RIGHT_ANSWER_4_VALUE};
+            QUESTION_ANSWER_1, QUESTION_ANSWER_2, QUESTION_ANSWER_3, QUESTION_ANSWER_4, QUESTION_ANSWER_1_VALUE,
+            QUESTION_ANSWER_2_VALUE, QUESTION_ANSWER_3_VALUE, QUESTION_ANSWER_4_VALUE};
 
     private TextQuestion textQuestion;
 
@@ -46,9 +46,9 @@ public class TextQuestionDAO extends DatabaseObject {
         contentValues.put(QUESTION_ANSWER_3, answerList.get(2).getAnswerString());
         contentValues.put(QUESTION_ANSWER_4, answerList.get(3).getAnswerString());
 
-        contentValues.put(QUESTION_RIGHT_ANSWER_1_VALUE, answerList.get(0).getRightAnswerValue() - Answer.MIN_VAL_HACK);
-        contentValues.put(QUESTION_RIGHT_ANSWER_2_VALUE, answerList.get(1).getRightAnswerValue() - Answer.MIN_VAL_HACK);
-        contentValues.put(QUESTION_RIGHT_ANSWER_3_VALUE, answerList.get(2).getRightAnswerValue() - Answer.MIN_VAL_HACK);
-        contentValues.put(QUESTION_RIGHT_ANSWER_4_VALUE, answerList.get(3).getRightAnswerValue() - Answer.MIN_VAL_HACK);
+        contentValues.put(QUESTION_ANSWER_1_VALUE, answerList.get(0).getAnswerValue());
+        contentValues.put(QUESTION_ANSWER_2_VALUE, answerList.get(1).getAnswerValue());
+        contentValues.put(QUESTION_ANSWER_3_VALUE, answerList.get(2).getAnswerValue());
+        contentValues.put(QUESTION_ANSWER_4_VALUE, answerList.get(3).getAnswerValue());
     }
 }
