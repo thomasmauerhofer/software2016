@@ -10,8 +10,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
-import com.bitschupfa.sw16.yaq.database.dao.QuestionCatalogDAO;
-import com.bitschupfa.sw16.yaq.database.dao.TextQuestionDAO;
 import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
@@ -20,18 +18,22 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.List;
 import java.util.StringTokenizer;
+
+import io.realm.Realm;
+import io.realm.RealmList;
 
 public class CatalogImporter {
     int questionCatalogId = 0;
     private Activity activity;
     private static final int READ_REQUEST_CODE = 42;
+    private Realm realm;
+    private QuestionQuerier questionQuerier;
 
-    public CatalogImporter(Activity activity) {
+    public CatalogImporter(Activity activity, Realm realm) {
         this.activity = activity;
+        this.realm = realm;
+        this.questionQuerier = new QuestionQuerier(realm);
     }
 
     public  boolean isStoragePermissionGranted() {
@@ -52,30 +54,40 @@ public class CatalogImporter {
         }
     }
 
-    public void readFile(File f) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(f));
-        readFile(br);
-    }
-
-    private void readFile(BufferedReader br) throws IOException {
-        Log.e("Import","Input ging");
+    public QuestionCatalog readFile(File file) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(file));
         try {
-            readCatalog(br);
+            QuestionCatalog catalog = readCatalog(br);
+            RealmList<TextQuestion> questions = new RealmList<>();
 
             String line = br.readLine();
+            int questionId = questionQuerier.getHighestQuestionId() + 1;
             while (line != null) {
-                readQuestion(line);
+                try {
+                    TextQuestion question = readQuestion(line);
+                    question.setQuestionID(++questionId);
+                    questions.add(question);
+                } catch (IOException e) {
+                    Log.e(CatalogImporter.class.getCanonicalName(), "Import of question failed. Line: " + line);
+                }
                 line = br.readLine();
             }
-        } finally {
             br.close();
+            catalog.setTextQuestionList(questions);
+            realm.beginTransaction();
+            realm.copyToRealm(catalog);
+            realm.commitTransaction();
+            return catalog;
+        } catch (Exception e) {
+            br.close();
+            Log.e(CatalogImporter.class.getCanonicalName(), "Import of catalog failed. Error: " + e.getMessage());
+            return null;
         }
     }
 
     public void readFile(Uri uri) throws IOException {
-        InputStream inputStream = activity.getContentResolver().openInputStream(uri);
-        BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-        readFile(br);
+        File file = new File(uri.getPath());
+        readFile(file);
     }
 
     public void importFile() {
@@ -87,7 +99,7 @@ public class CatalogImporter {
         }
     }
 
-    private void readCatalog(BufferedReader reader) throws IOException {
+    private QuestionCatalog readCatalog(BufferedReader reader) throws IOException {
         String questionCatalogName = reader.readLine();
         if (questionCatalogName == null) {
             throw new IOException();
@@ -102,26 +114,12 @@ public class CatalogImporter {
             throw new IOException();
         }
 
-        QuestionCatalog questionCatalog1 = new QuestionCatalog(0, difficulty, questionCatalogName, null);
-        QuestionCatalogDAO questionCatalogDAO = new QuestionCatalogDAO(questionCatalog1);
-        questionCatalogDAO.insertIntoDatabase(activity);
-        boolean catalogFound = false;
+        int catalogID = questionQuerier.getHighestCatalogId() + 1;
 
-        QuestionQuerier questionQuerier = new QuestionQuerier(activity);
-        List<QuestionCatalog> questionCatalogs = questionQuerier.getAllQuestionCatalogsOnlyIdAndName();
-        for (QuestionCatalog questionCatalog : questionCatalogs) {
-            if (questionCatalog.getName().equals(questionCatalogName)) {
-                questionCatalogId = questionCatalog.getCatalogID();
-                catalogFound = true;
-            }
-        }
-
-        if (!catalogFound) {
-            throw new IOException();
-        }
+        return new QuestionCatalog(catalogID, difficulty, questionCatalogName, null);
     }
 
-    private void readQuestion(String line) throws IOException {
+    private TextQuestion readQuestion(String line) throws IOException {
         StringTokenizer stringTokenizer = new StringTokenizer(line, ";");
 
         String question = stringTokenizer.nextToken();
@@ -150,9 +148,8 @@ public class CatalogImporter {
         Answer answer3 = new Answer(answer3String, answer3Value);
         Answer answer4 = new Answer(answer4String, answer4Value);
 
-        TextQuestion textQuestion = new TextQuestion(0, question, answer1, answer2, answer3, answer4, questionCatalogId);
-        TextQuestionDAO textQuestionDAO = new TextQuestionDAO(textQuestion);
-        textQuestionDAO.insertIntoDatabase(activity);
+        return new TextQuestion(0, question, answer1, answer2, answer3, answer4, questionCatalogId);
+
     }
 
     public void performFileSearch() {

@@ -13,13 +13,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
-import com.bitschupfa.sw16.yaq.database.dao.TextQuestionDAO;
 import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
 import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.ui.ShowQuestionsAdapter;
 
 import java.util.ArrayList;
+
+import io.realm.Realm;
 
 public class ShowQuestions extends YaqActivity {
 
@@ -29,6 +30,7 @@ public class ShowQuestions extends YaqActivity {
     private TextQuestion actualTextQuestion;
     private QuestionCatalog catalog;
     private ArrayList<TextQuestion> questionList = new ArrayList<>();
+    private Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class ShowQuestions extends YaqActivity {
         setSupportActionBar(toolbar);
         handleTheme();
 
+        realm = Realm.getDefaultInstance();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,8 +75,10 @@ public class ShowQuestions extends YaqActivity {
                 startActivity(intent);
                 return true;
             case R.id.delete:
-                TextQuestionDAO deleteQuestion = new TextQuestionDAO(actualTextQuestion);
-                deleteQuestion.deleteEntry(ShowQuestions.this);
+                realm.beginTransaction();
+                actualTextQuestion.deleteFromRealm();
+                realm.commitTransaction();
+                actualTextQuestion = null;
                 updateListView();
                 return true;
             default:
@@ -95,7 +100,7 @@ public class ShowQuestions extends YaqActivity {
         textCatalogue = (TextView) findViewById(R.id.textCatalogue);
         textCatalogue.setText(catalog.getName());
 
-        QuestionQuerier questionQuerier = new QuestionQuerier(this);
+        QuestionQuerier questionQuerier = new QuestionQuerier(realm);
         questionList.addAll(questionQuerier.getAllQuestionsFromCatalog(catalog.getCatalogID()));
 
         dataAdapter = new ShowQuestionsAdapter(this, R.layout.list_show_questions, questionList);

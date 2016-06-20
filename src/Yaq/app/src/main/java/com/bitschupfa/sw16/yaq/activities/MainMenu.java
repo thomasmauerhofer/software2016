@@ -26,6 +26,7 @@ import com.bitschupfa.sw16.yaq.database.helper.CatalogImporter;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfileStorage;
 
 import java.io.IOException;
+import io.realm.Realm;
 
 public class MainMenu extends YaqActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -40,6 +41,8 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
     private static final int READ_REQUEST_CODE = 42;
     public static final int NAVIGATION_VIEW_HEADER_INDEX = 0;
     public static final int RESULT_FINISH = 99;
+
+    private Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +92,14 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
         refreshProfileInNavigationHeader();
         handleTheme();
 
-        importer = new CatalogImporter(this);
+        importer = new CatalogImporter(this, realm);
+        realm = Realm.getDefaultInstance();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realm.close();
     }
 
     @Override
@@ -166,6 +176,7 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
             Intent intent = new Intent(MainMenu.this, ManageQuestions.class);
             startActivity(intent);
         } else if (id == R.id.menu_import){
+            CatalogImporter importer = new CatalogImporter(this, realm);
             importer.importFile();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -214,6 +225,7 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
+            CatalogImporter importer = new CatalogImporter(this, realm);
             importer.importFile();
         }
     }

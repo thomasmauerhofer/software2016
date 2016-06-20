@@ -3,14 +3,23 @@ package com.bitschupfa.sw16.yaq.database.object;
 import java.io.Serializable;
 import java.util.List;
 
-public class QuestionCatalog implements Serializable {
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class QuestionCatalog extends RealmObject implements Serializable {
+    @PrimaryKey
     private int catalogID;
+
     private int difficulty;
     private String name;
-    private List<TextQuestion> textQuestionList = null;
+    private RealmList<TextQuestion> textQuestionList = null;
     private int counter;
 
-    public QuestionCatalog(int catalogID, int difficulty, String name, List<TextQuestion> textQuestionList) {
+    public QuestionCatalog() {
+    }
+
+    public QuestionCatalog(int catalogID, int difficulty, String name, RealmList<TextQuestion> textQuestionList) {
         this.catalogID = catalogID;
         this.difficulty = difficulty;
         this.name = name;
@@ -38,7 +47,7 @@ public class QuestionCatalog implements Serializable {
         return textQuestionList;
     }
 
-    public void setTextQuestionList(List<TextQuestion> textQuestionList) {
+    public void setTextQuestionList(RealmList<TextQuestion> textQuestionList) {
         this.textQuestionList = textQuestionList;
     }
 

@@ -9,10 +9,12 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
-import com.bitschupfa.sw16.yaq.database.dao.TextQuestionDAO;
+import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
 import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
+
+import io.realm.Realm;
 
 public class EditQuestions extends YaqActivity {
 
@@ -32,6 +34,8 @@ public class EditQuestions extends YaqActivity {
     private TextQuestion textQuestion;
     private QuestionCatalog catalog;
 
+    private Realm realm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +44,14 @@ public class EditQuestions extends YaqActivity {
         setSupportActionBar(toolbar);
         handleTheme();
 
+        realm = Realm.getDefaultInstance();
         displayQuestion();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realm.close();
     }
 
     public void displayQuestion() {
@@ -81,14 +92,18 @@ public class EditQuestions extends YaqActivity {
         if(textQuestion != null) {
             textQuestion.setQuestion(question);
             textQuestion.setAnswers(answer1, answer2, answer3, answer4);
-            TextQuestionDAO editQuestion = new TextQuestionDAO(textQuestion);
-            editQuestion.editEntry(EditQuestions.this);
+            realm.beginTransaction();
+            realm.copyToRealm(textQuestion);
+            realm.commitTransaction();
+            textQuestion = null;
         }
         else {
-            TextQuestion newTextQuestion = new TextQuestion(0, question,
-                    answer1, answer2, answer3, answer4, catalog.getCatalogID());
-            TextQuestionDAO newQuestion = new TextQuestionDAO(newTextQuestion);
-            newQuestion.insertIntoDatabase(EditQuestions.this);
+            QuestionQuerier questionQuerier = new QuestionQuerier(realm);
+            TextQuestion newTextQuestion = new TextQuestion(questionQuerier.getHighestQuestionId() + 1,
+                    question, answer1, answer2, answer3, answer4, catalog.getCatalogID());
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(newTextQuestion);
+            realm.commitTransaction();
         }
         finish();
     }

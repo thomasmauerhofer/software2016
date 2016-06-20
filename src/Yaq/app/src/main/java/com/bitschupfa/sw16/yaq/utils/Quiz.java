@@ -1,5 +1,6 @@
 package com.bitschupfa.sw16.yaq.utils;
 
+import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 
 import java.util.ArrayList;
