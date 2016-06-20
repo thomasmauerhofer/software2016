@@ -1,5 +1,6 @@
 package com.bitschupfa.sw16.yaq.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +32,8 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
 
     public static final int NAVIGATION_VIEW_HEADER_INDEX = 0;
     public static final int RESULT_FINISH = 99;
+
+    public static int dialogClickCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,11 +144,27 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.menu_about) {
-            new AlertDialog.Builder(this)
+            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this)
                     .setTitle(getResources().getString(R.string.about_dialog_title) + " V" + getResources().getString(R.string.versionName))
-                    .setMessage(R.string.about_dialog_message)
-                    .setIcon(R.drawable.ic_help_black_24dp)
-                    .show();
+                    .setMessage(R.string.about_dialog_message);
+            alertDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                @Override
+                public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                        dialogClickCounter++;
+                    }
+                    return false;
+                }
+            });
+            if (dialogClickCounter == 10) {
+                alertDialog.setIcon(R.drawable.yak);
+                dialogClickCounter = 0;
+
+            } else {
+                alertDialog.setIcon(R.drawable.ic_help_black_24dp);
+            }
+            alertDialog.show();
+
         } else if (id == R.id.menu_themes) {
             Intent intent = new Intent(MainMenu.this, Themes.class);
             startActivityForResult(intent, RESULT_FINISH);
