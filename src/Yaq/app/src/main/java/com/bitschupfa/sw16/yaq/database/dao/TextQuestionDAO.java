@@ -34,9 +34,10 @@ public class TextQuestionDAO extends DatabaseObject {
 
     @Override
     protected void fillDatabaseContentValues(boolean initial) {
-        if(initial){
+        if(initial) {
             contentValues.put(QUESTION_ID, textQuestion.getQuestionID());
         }
+
         contentValues.put(QuestionCatalogDAO.QUESTIONCATALOG_ID, textQuestion.getCatalogID());
 
         contentValues.put(QUESTION_TEXT, textQuestion.getQuestion());
