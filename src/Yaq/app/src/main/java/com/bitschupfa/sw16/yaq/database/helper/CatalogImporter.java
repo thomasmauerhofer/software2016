@@ -18,7 +18,6 @@ import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -173,5 +172,4 @@ public class CatalogImporter {
 
         activity.startActivityForResult(intent, READ_REQUEST_CODE);
     }
-
 }
