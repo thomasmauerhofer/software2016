@@ -44,7 +44,7 @@ public class JoinTests extends ActivityInstrumentationTestCase2<Join> {
     public void testDialog() {
         Set<BluetoothDevice> devices = mBluetoothAdapter.getBondedDevices();
 
-        if(devices.isEmpty()) {
+        if (devices.isEmpty()) {
             assertTrue("Text not shown in Dialog",
                     solo.searchText(getActivity().getString(R.string.dialog_no_devices_found)));
         } else {

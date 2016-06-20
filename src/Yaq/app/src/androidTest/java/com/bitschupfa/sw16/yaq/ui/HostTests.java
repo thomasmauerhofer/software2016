@@ -76,35 +76,37 @@ public class HostTests extends ActivityInstrumentationTestCase2<Host> {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public void testSinglePlayerCorrectAnswer() throws Exception{
+    public void testSinglePlayerCorrectAnswer() throws Exception {
         initHostForGame(true);
 
-        solo.clickOnButton(CORRECT_TEXT);
+        solo.clickOnText(CORRECT_TEXT);
         solo.sleep(100);
 
         assertTrue(solo.getButtonWrapper(CORRECT_TEXT).wasClicked());
         assertFalse(solo.getButtonWrapper(WRONG1_TEXT).wasClicked());
         assertFalse(solo.getButtonWrapper(WRONG2_TEXT).wasClicked());
         assertFalse(solo.getButtonWrapper(WRONG3_TEXT).wasClicked());
+        solo.sleep(100);
 
         checkStatistics();
     }
 
-    public void testSinglePlayerWrongAnswer() throws Exception{
+    public void testSinglePlayerWrongAnswer() throws Exception {
         initHostForGame(true);
-        solo.clickOnButton(WRONG1_TEXT);
+        solo.clickOnText(WRONG1_TEXT);
         solo.sleep(100);
 
         assertTrue(solo.getButtonWrapper(WRONG1_TEXT).wasClicked());
         assertFalse(solo.getButtonWrapper(CORRECT_TEXT).wasClicked());
         assertFalse(solo.getButtonWrapper(WRONG2_TEXT).wasClicked());
         assertFalse(solo.getButtonWrapper(WRONG3_TEXT).wasClicked());
+        solo.sleep(100);
 
         checkStatistics();
     }
 
     private void initHostForGame(boolean startGame) {
-        if(startGame) {
+        if (startGame) {
             solo.clickOnButton(getActivity().getResources().getString(R.string.start_game));
         }
 
@@ -112,10 +114,10 @@ public class HostTests extends ActivityInstrumentationTestCase2<Host> {
         assertTrue("Wrong Activity!", solo.waitForActivity(GameAtHost.class));
 
         solo.sleep(500);
-        solo.addButton(solo.getButton("correct"));
-        solo.addButton(solo.getButton("wrong1"));
-        solo.addButton(solo.getButton("wrong2"));
-        solo.addButton(solo.getButton("wrong3"));
+        solo.addButton(solo.getText("correct"));
+        solo.addButton(solo.getText("wrong1"));
+        solo.addButton(solo.getText("wrong2"));
+        solo.addButton(solo.getText("wrong3"));
     }
 
     private void initHostGameLogic() {

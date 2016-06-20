@@ -79,10 +79,11 @@
                 android:background="@drawable/question_border"
 
                 >
-                <TextView
+
+                <com.bitschupfa.sw16.yaq.utils.AutoResizeTextView
                     android:id="@+id/question"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_margin="@dimen/fab_margin"
                     android:gravity="center"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -106,25 +107,57 @@
                 android:orientation="horizontal"
                 android:weightSum="2">
 
-                <Button
-                    android:id="@+id/answer1"
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="@dimen/button_margin"
-                    android:layout_weight="1"
-                    android:clickable="false"
-                    android:onClick="answerButtonClicked"
-                    android:theme="@style/defaultButton" />
+                    android:layout_weight="1">
 
-                <Button
-                    android:id="@+id/answer2"
+                    <Button
+                        android:id="@+id/answer1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/button_margin"
+                        android:clickable="false"
+                        android:onClick="answerButtonClicked"
+                        android:theme="@style/defaultButton" />
+
+                    <com.bitschupfa.sw16.yaq.utils.AutoResizeTextView
+                        android:id="@+id/answer1Text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/fab_margin"
+                        android:elevation="100dp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                </FrameLayout>
+
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="@dimen/button_margin"
-                    android:layout_weight="1"
-                    android:clickable="false"
-                    android:onClick="answerButtonClicked"
-                    android:theme="@style/defaultButton" />
+                    android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/answer2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/button_margin"
+                        android:clickable="false"
+                        android:onClick="answerButtonClicked"
+                        android:theme="@style/defaultButton" />
+
+                    <com.bitschupfa.sw16.yaq.utils.AutoResizeTextView
+                        android:id="@+id/answer2Text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/fab_margin"
+                        android:elevation="100dp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                </FrameLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -134,25 +167,57 @@
                 android:orientation="horizontal"
                 android:weightSum="2">
 
-                <Button
-                    android:id="@+id/answer3"
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="@dimen/button_margin"
-                    android:layout_weight="1"
-                    android:clickable="false"
-                    android:onClick="answerButtonClicked"
-                    android:theme="@style/defaultButton" />
+                    android:layout_weight="1">
 
-                <Button
-                    android:id="@+id/answer4"
+                    <Button
+                        android:id="@+id/answer3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/button_margin"
+                        android:clickable="false"
+                        android:onClick="answerButtonClicked"
+                        android:theme="@style/defaultButton" />
+
+                    <com.bitschupfa.sw16.yaq.utils.AutoResizeTextView
+                        android:id="@+id/answer3Text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/fab_margin"
+                        android:gravity="center"
+                        android:elevation="100dp"
+                        android:textColor="@color/white"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                </FrameLayout>
+
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="@dimen/button_margin"
-                    android:layout_weight="1"
-                    android:clickable="false"
-                    android:onClick="answerButtonClicked"
-                    android:theme="@style/defaultButton" />
+                    android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/answer4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/button_margin"
+                        android:clickable="false"
+                        android:onClick="answerButtonClicked"
+                        android:theme="@style/defaultButton" />
+
+                    <com.bitschupfa.sw16.yaq.utils.AutoResizeTextView
+                        android:id="@+id/answer4Text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/fab_margin"
+                        android:gravity="center"
+                        android:elevation="100dp"
+                        android:textColor="@color/white"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                </FrameLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
