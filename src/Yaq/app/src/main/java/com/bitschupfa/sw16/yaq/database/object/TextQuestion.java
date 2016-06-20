@@ -15,8 +15,6 @@ public class TextQuestion implements Serializable {
     private Answer answer3;
     private Answer answer4;
 
-    private int difficulty;
-
     public TextQuestion(int questionID, String question, Answer answer1, Answer answer2, Answer answer3, Answer answer4, int catalogID) {
         this.questionID = questionID;
         this.question = question;
@@ -76,6 +74,13 @@ public class TextQuestion implements Serializable {
         answers.add(answer4);
 
         return answers;
+    }
+
+    public void setAnswers(Answer answer1_, Answer answer2_, Answer answer3_, Answer answer4_) {
+        answer1 = answer1_;
+        answer2 = answer2_;
+        answer3 = answer3_;
+        answer4 = answer4_;
     }
 
     public int getCatalogID() {

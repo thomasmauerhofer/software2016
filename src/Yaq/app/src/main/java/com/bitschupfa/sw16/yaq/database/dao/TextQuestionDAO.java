@@ -1,5 +1,7 @@
 package com.bitschupfa.sw16.yaq.database.dao;
 
+import android.content.Context;
+
 import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 
@@ -34,8 +36,10 @@ public class TextQuestionDAO extends DatabaseObject {
 
 
     @Override
-    protected void fillDatabaseContentValues() {
-        contentValues.put(QUESTION_ID, textQuestion.getQuestionID());
+    protected void fillDatabaseContentValues(boolean initial) {
+        if(initial){
+            contentValues.put(QUESTION_ID, textQuestion.getQuestionID());
+        }
         contentValues.put(QuestionCatalogDAO.QUESTIONCATALOG_ID, textQuestion.getCatalogID());
 
         contentValues.put(QUESTION_TEXT, textQuestion.getQuestion());
@@ -50,5 +54,13 @@ public class TextQuestionDAO extends DatabaseObject {
         contentValues.put(QUESTION_ANSWER_2_VALUE, answerList.get(1).getAnswerValue());
         contentValues.put(QUESTION_ANSWER_3_VALUE, answerList.get(2).getAnswerValue());
         contentValues.put(QUESTION_ANSWER_4_VALUE, answerList.get(3).getAnswerValue());
+    }
+
+    public void editEntry(Context context){
+        editEntry(context, QUESTION_ID, textQuestion.getQuestionID());
+    }
+
+    public void deleteEntry(Context context){
+        deleteEntry(context, QUESTION_ID, textQuestion.getQuestionID());
     }
 }
