@@ -6,17 +6,18 @@ import java.util.Collections;
 import java.util.List;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class TextQuestion extends RealmObject implements Serializable {
+    @PrimaryKey
     private int questionID;
+
     private String question;
     private int catalogID;
     private Answer answer1;
     private Answer answer2;
     private Answer answer3;
     private Answer answer4;
-
-    private int difficulty;
 
     public TextQuestion() {
     }
@@ -82,13 +83,11 @@ public class TextQuestion extends RealmObject implements Serializable {
         return answers;
     }
 
-    public void setAnswers(List<Answer> newAnswers) {
-        if (newAnswers.size() == 4) {
-            answer1 = newAnswers.get(0);
-            answer2 = newAnswers.get(1);
-            answer3 = newAnswers.get(2);
-            answer4 = newAnswers.get(3);
-        }
+    public void setAnswers(Answer answer1_, Answer answer2_, Answer answer3_, Answer answer4_) {
+        answer1 = answer1_;
+        answer2 = answer2_;
+        answer3 = answer3_;
+        answer4 = answer4_;
     }
 
     public int getCatalogID() {

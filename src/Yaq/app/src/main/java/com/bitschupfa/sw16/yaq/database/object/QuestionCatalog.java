@@ -5,9 +5,12 @@ import java.util.List;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class QuestionCatalog extends RealmObject implements Serializable {
+    @PrimaryKey
     private int catalogID;
+
     private int difficulty;
     private String name;
     private RealmList<TextQuestion> textQuestionList = null;
