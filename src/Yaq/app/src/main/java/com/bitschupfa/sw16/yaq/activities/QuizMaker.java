@@ -52,17 +52,16 @@ public class QuizMaker extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {
-                Log.v("ERROR","Permission is granted");
+                Log.d("ERROR","Permission is granted");
                 return true;
             } else {
-
-                Log.v("ERROR","Permission is revoked");
+                Log.d("ERROR","Permission is revoked");
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
                 return false;
             }
         }
         else { //permission is automatically granted on sdk<23 upon installation
-            Log.v("ERROR","Permission is granted");
+            Log.d("ERROR","Permission is granted");
             return true;
         }
     }
@@ -86,29 +85,29 @@ public class QuizMaker extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
-            Log.v("Error","Permission: "+permissions[0]+ "was "+grantResults[0]);
+            Log.v("Error","Permission: " + permissions[0] + "was " + grantResults[0]);
             //resume tasks needing this permission
+            importFile(findViewById(R.id.fab));
         }
     }
 
     @TargetApi(Build.VERSION_CODES.M)
     private void importFile(View view) {
-
         if(!isStoragePermissionGranted()){
             Snackbar.make(view, "No permission for reading storage", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
-        }
-
-        new FileChooser(this).setFileListener(new FileChooser.FileSelectedListener() {
-            @Override
-            public void fileSelected(final File file) {
-                try {
-                    readFile(file);
-                } catch (IOException e) {
-                    e.printStackTrace();
+        } else {
+            new FileChooser(this).setFileListener(new FileChooser.FileSelectedListener() {
+                @Override
+                public void fileSelected(final File file) {
+                    try {
+                        readFile(file);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        }).showDialog();
+            }).showDialog();
+        }
     }
 
     public static boolean isInteger(String s) {
