@@ -1,11 +1,8 @@
 package com.bitschupfa.sw16.yaq.game;
 
 
-import android.content.Context;
-import android.content.res.Resources;
 import android.util.Log;
 
-import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.activities.GameAtHost;
 import com.bitschupfa.sw16.yaq.communication.ClientMessageHandler;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
@@ -27,7 +24,6 @@ import com.bitschupfa.sw16.yaq.utils.Quiz;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 
