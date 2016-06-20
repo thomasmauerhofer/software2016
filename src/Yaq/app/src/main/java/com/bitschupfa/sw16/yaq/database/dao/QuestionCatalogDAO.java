@@ -3,9 +3,6 @@ package com.bitschupfa.sw16.yaq.database.dao;
 import android.content.Context;
 import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
 
-/**
- * Created by Patrik on 05.05.2016.
- */
 public class QuestionCatalogDAO extends DatabaseObject {
     public static String TABLE_NAME = "QuestionCatalog";
     public static final String QUESTIONCATALOG_ID = "qcid";
@@ -22,8 +19,11 @@ public class QuestionCatalogDAO extends DatabaseObject {
     }
 
     @Override
-    protected void fillDatabaseContentValues() {
-        contentValues.put(QUESTIONCATALOG_ID, questionCatalog.getCatalogID());
+    protected void fillDatabaseContentValues(boolean initial) {
+        if(initial) {
+            contentValues.put(QUESTIONCATALOG_ID, questionCatalog.getCatalogID());
+        }
+
         contentValues.put(QUESTIONCATALOG_DESCRIPTION, questionCatalog.getName());
         contentValues.put(QUESTIONCATALOG_DIFFICULTY, questionCatalog.getDifficulty());
     }
