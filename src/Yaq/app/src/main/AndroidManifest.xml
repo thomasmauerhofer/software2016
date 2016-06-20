@@ -76,7 +76,7 @@
             android:name="com.soundcloud.android.crop.CropImageActivity" />
         <activity
             android:name=".activities.ManageQuestions"
-            android:label="@string/title_activity_show_cataloges"
+            android:label="@string/title_activity_show_catalogues"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
