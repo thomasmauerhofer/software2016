@@ -17,17 +17,37 @@ public abstract class DatabaseObject {
 
     protected abstract void fillDatabaseContentValues(boolean initial);
 
+    protected void editEntry(Context context, String idRowName, int id){
+        fillDatabaseContentValues(false);
+        Log.d("Database", "Edit data entry from Table: " + tableName + " with "+idRowName+"= "+id);
+        SQLiteDatabase database = DBHelper.instance(context).getInsertionDatabase();
+        database.update(tableName, contentValues, idRowName + " = ?", new String[] {""+id});
+        database.close();
+        StringBuilder stringBuilder = new StringBuilder();
+        for(String key : contentValues.keySet()){
+            stringBuilder.append(key + ": ");
+            stringBuilder.append(contentValues.getAsString(key)+" ");
+        }
+        Log.d("Database", "Edited: " + stringBuilder.toString());
+    }
+
+    protected void deleteEntry(Context context, String idRowName, int id){
+        SQLiteDatabase database = DBHelper.instance(context).getInsertionDatabase();
+        database.delete(tableName, idRowName + " = ?", new String[]{"" + id});
+        database.close();
+    }
+
     private void insertIntoDatabase(SQLiteDatabase database, boolean initial){
         fillDatabaseContentValues(initial);
 
-        Log.e("Database", "Inserted data into Table: " + tableName);
+        Log.d("Database", "Inserted data into Table: " + tableName);
         database.insert(tableName, null, contentValues);
         StringBuilder stringBuilder = new StringBuilder();
         for(String key : contentValues.keySet()){
-            stringBuilder.append(key+": ");
+            stringBuilder.append(key + ": ");
             stringBuilder.append(contentValues.getAsString(key)+" ");
         }
-        Log.e("Database", "Inserted: "+stringBuilder.toString());
+        Log.d("Database", "Inserted: " + stringBuilder.toString());
     }
 
     public void insertIntoDatabase(Context context) {
@@ -36,7 +56,7 @@ public abstract class DatabaseObject {
         database.close();
     }
 
-    public void insertThisAsInitialBaselineIntoDatabase(SQLiteDatabase database){
+    public void insertThisAsInitialBaselineIntoDatabase(SQLiteDatabase database) {
         insertIntoDatabase(database, true);
     }
 }
