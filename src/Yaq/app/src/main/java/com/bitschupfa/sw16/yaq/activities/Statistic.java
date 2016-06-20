@@ -8,6 +8,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.bitschupfa.sw16.yaq.R;
+import com.bitschupfa.sw16.yaq.game.ClientGameLogic;
 import com.bitschupfa.sw16.yaq.ui.RankingItem;
 import com.bitschupfa.sw16.yaq.ui.RankingList;
 
@@ -39,12 +40,12 @@ public class Statistic extends YaqActivity {
             Toast.makeText(this, R.string.error_cant_show_score, Toast.LENGTH_LONG).show();
         }
         handleTheme();
+        ClientGameLogic.getInstance().setStatisticActivity(this);
     }
 
-    @SuppressWarnings("UnusedParameters")
-    public void playAgainButtonClicked(View view) {
-        Intent intent = new Intent(Statistic.this, Join.class);
-        startActivity(intent);
-        finish();
+    @Override
+    public void onBackPressed() {
+        ClientGameLogic.getInstance().quit();
+        super.onBackPressed();
     }
 }

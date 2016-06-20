@@ -46,11 +46,10 @@ public class Game extends YaqActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ClientGameLogic.getInstance().setGameActivity(this);
         setContentView(R.layout.activity_game);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        ClientGameLogic.getInstance().setGameActivity(this);
 
         countdownTimerBar = (ProgressBar) findViewById(R.id.barTimer);
         countdownTimerText = (TextView) findViewById(R.id.time);
@@ -77,7 +76,6 @@ public class Game extends YaqActivity {
     }
 
     public void showQuestion(final TextQuestion question, final int timeout) {
-        final Activity activity = this;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -85,6 +83,7 @@ public class Game extends YaqActivity {
                 for (Button answerButton : answerButtons) {
                     answerButton.getBackground().setColorFilter(themeChooser.getThemeStorage().getPrimaryColor(),
                             PorterDuff.Mode.SRC);
+                    answerButton.setVisibility(View.VISIBLE);
                 }
                 questionView.setText(question.getQuestion());
 
@@ -181,5 +180,11 @@ public class Game extends YaqActivity {
         for (Button answerButton : answerButtons) {
             answerButton.setClickable(clickable);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        ClientGameLogic.getInstance().quit();
+        super.onBackPressed();
     }
 }

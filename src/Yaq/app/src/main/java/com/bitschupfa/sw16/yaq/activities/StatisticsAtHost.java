@@ -1,14 +1,16 @@
 package com.bitschupfa.sw16.yaq.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.MediaRouteActionProvider;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import com.bitschupfa.sw16.yaq.R;
+import com.bitschupfa.sw16.yaq.communication.messages.PLAYAGAINMessage;
+import com.bitschupfa.sw16.yaq.game.HostGameLogic;
 import com.bitschupfa.sw16.yaq.utils.CastHelper;
 import com.bitschupfa.sw16.yaq.utils.QuizFactory;
 
@@ -21,6 +23,9 @@ public class StatisticsAtHost extends Statistic {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         castHelper = CastHelper.getInstance(getApplicationContext(), CastHelper.GameState.END);
+
+        Button playAgainButton = (Button) findViewById(R.id.playAgainButton);
+        playAgainButton.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -40,11 +45,8 @@ public class StatisticsAtHost extends Statistic {
     }
 
     @SuppressWarnings("UnusedParameters")
-    @Override
     public void playAgainButtonClicked(View view) {
-        Intent intent = new Intent(StatisticsAtHost.this, Host.class);
-        startActivity(intent);
-        finish();
+        HostGameLogic.getInstance().sendMessageToClients(new PLAYAGAINMessage());
     }
 
     @Override
@@ -52,5 +54,8 @@ public class StatisticsAtHost extends Statistic {
         super.onBackPressed();
         QuizFactory.instance().clearQuiz();
         QuizFactory.instance().setNumberOfQuestions(10);
+
+        HostGameLogic.getInstance().quit(getResources().getString(R.string.connectionClosedByHost));
+        castHelper.teardown(false);
     }
 }

@@ -1,6 +1,7 @@
 package com.bitschupfa.sw16.yaq.activities;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -36,6 +37,7 @@ import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfileStorage;
 import com.bitschupfa.sw16.yaq.ui.BluetoothDeviceList;
 import com.bitschupfa.sw16.yaq.ui.PlayerList;
+import com.bitschupfa.sw16.yaq.utils.QuizFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -335,7 +337,6 @@ public class Join extends YaqActivity implements Lobby {
     @Override
     public void handleFullGame() {
         ClientGameLogic.getInstance().quit();
-        ClientGameLogic.getInstance().setLobbyActivity(this);
 
         runOnUiThread(new Runnable() {
             @Override
@@ -344,6 +345,16 @@ public class Join extends YaqActivity implements Lobby {
                 finish();
             }
         });
+    }
+
+    @Override
+    public void quit() {
+        finish();
+    }
+
+    @Override
+    public Activity getActivity() {
+        return this;
     }
 
     private final class ClientConnector extends AsyncTask<BluetoothDevice, Void, ConnectedDevice> {
@@ -414,5 +425,11 @@ public class Join extends YaqActivity implements Lobby {
             }
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        ClientGameLogic.getInstance().quit();
+        super.onBackPressed();
     }
 }

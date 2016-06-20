@@ -37,6 +37,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Host extends YaqActivity implements Lobby {
+    private static final String TAG = "HOST";
+
     private static final int REQUEST_ENABLE_DISCOVERABLE_BT = 42;
     private static final int BUILD_QUIZ = 1;
 
@@ -45,6 +47,8 @@ public class Host extends YaqActivity implements Lobby {
     private PlayerList playerList = new PlayerList(this);
 
     private CastHelper castHelper;
+
+    private ServerSocket fakeHost = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,6 +208,23 @@ public class Host extends YaqActivity implements Lobby {
         // the host is always part of the game
     }
 
+    @Override
+    public void quit() {
+        try {
+            fakeHost.close();
+            btConnectionListener.close();
+        } catch (IOException e) {
+            Log.e(TAG, "Error while activity closed!");
+        }
+        finish();
+
+    }
+
+    @Override
+    public Activity getActivity() {
+        return this;
+    }
+
     private void selfConnectionHack() {
         final int fakeHostPort = 7777;
         final Activity activity = this;
@@ -211,7 +232,7 @@ public class Host extends YaqActivity implements Lobby {
             @Override
             public void run() {
                 try {
-                    ServerSocket fakeHost = new ServerSocket(fakeHostPort);
+                    fakeHost = new ServerSocket(fakeHostPort);
                     Socket socket = fakeHost.accept();
                     ConnectedDevice client = new ConnectedClientDevice("localhost", socket,
                             HostGameLogic.getInstance()
@@ -255,7 +276,16 @@ public class Host extends YaqActivity implements Lobby {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        QuizFactory.instance().clearQuiz();
-        QuizFactory.instance().setNumberOfQuestions(10);
+        try {
+            QuizFactory.instance().clearQuiz();
+            QuizFactory.instance().setNumberOfQuestions(10);
+            HostGameLogic.getInstance().quit(getResources().getString(R.string.connectionClosedByHost));
+            castHelper.teardown(false);
+
+            fakeHost.close();
+            btConnectionListener.close();
+        } catch (IOException e) {
+            Log.e(TAG, "Error while Backbutton pressed!");
+        }
     }
 }

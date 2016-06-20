@@ -1,5 +1,6 @@
 package com.bitschupfa.sw16.yaq.communication;
 
 public enum Errors {
-    GAME_FULL
+    GAME_FULL,
+    SHOW_MESSAGE
 }

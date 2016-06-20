@@ -114,7 +114,8 @@
                     android:layout_weight="1"
                     android:clickable="false"
                     android:onClick="answerButtonClicked"
-                    android:theme="@style/defaultButton" />
+                    android:theme="@style/defaultButton"
+                    android:visibility="invisible" />
 
                 <Button
                     android:id="@+id/answer2"
@@ -124,7 +125,8 @@
                     android:layout_weight="1"
                     android:clickable="false"
                     android:onClick="answerButtonClicked"
-                    android:theme="@style/defaultButton" />
+                    android:theme="@style/defaultButton"
+                    android:visibility="invisible" />
             </LinearLayout>
 
             <LinearLayout
@@ -142,7 +144,8 @@
                     android:layout_weight="1"
                     android:clickable="false"
                     android:onClick="answerButtonClicked"
-                    android:theme="@style/defaultButton" />
+                    android:theme="@style/defaultButton"
+                    android:visibility="invisible" />
 
                 <Button
                     android:id="@+id/answer4"
@@ -152,7 +155,8 @@
                     android:layout_weight="1"
                     android:clickable="false"
                     android:onClick="answerButtonClicked"
-                    android:theme="@style/defaultButton" />
+                    android:theme="@style/defaultButton"
+                    android:visibility="invisible" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

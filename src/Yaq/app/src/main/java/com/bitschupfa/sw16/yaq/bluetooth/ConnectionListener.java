@@ -3,8 +3,10 @@ package com.bitschupfa.sw16.yaq.bluetooth;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.util.Log;
 
+import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.communication.ConnectedClientDevice;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
 import com.bitschupfa.sw16.yaq.game.HostGameLogic;
@@ -19,7 +21,6 @@ public class ConnectionListener implements Runnable {
 
 
     public ConnectionListener() {
-
     }
 
     @Override

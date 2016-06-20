@@ -102,5 +102,8 @@ public class GameAtHost extends Game {
         super.onBackPressed();
         QuizFactory.instance().clearQuiz();
         QuizFactory.instance().setNumberOfQuestions(10);
+
+        HostGameLogic.getInstance().quit(getResources().getString(R.string.connectionClosedByHost));
+        castHelper.teardown(false);
     }
 }
