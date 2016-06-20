@@ -5,7 +5,8 @@ import android.content.res.AssetManager;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 
-import com.bitschupfa.sw16.yaq.activities.QuizMaker;
+import com.bitschupfa.sw16.yaq.activities.MainMenu;
+import com.bitschupfa.sw16.yaq.database.helper.CatalogImporter;
 import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
 import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
@@ -19,12 +20,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-public class QuizMakerTest extends ActivityInstrumentationTestCase2<QuizMaker> {
+public class CatalogImporterTest extends ActivityInstrumentationTestCase2<MainMenu> {
 
     private Solo solo;
 
-    public QuizMakerTest() {
-        super(QuizMaker.class);
+    public CatalogImporterTest() {
+        super(MainMenu.class);
     }
 
     @Override
@@ -42,7 +43,8 @@ public class QuizMakerTest extends ActivityInstrumentationTestCase2<QuizMaker> {
         AssetManager am = getActivity().getBaseContext().getAssets();
         InputStream inputStream = am.open("testQuestions.txt");
         File file = createFileFromInputStream(inputStream);
-        getActivity().readFile(file);
+        CatalogImporter importer = new CatalogImporter(getActivity());
+        importer.readFile(file);
         QuestionQuerier questionQuerier = new QuestionQuerier(this.getActivity());
         List<QuestionCatalog> questionCatalogList = questionQuerier.getAllQuestionCatalogs();
         QuestionCatalog testQuestionCatalog = null;

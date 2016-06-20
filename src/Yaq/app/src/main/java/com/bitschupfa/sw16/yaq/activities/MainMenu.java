@@ -1,7 +1,7 @@
 package com.bitschupfa.sw16.yaq.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -10,7 +10,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
+import com.bitschupfa.sw16.yaq.database.helper.CatalogImporter;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfileStorage;
 
 public class MainMenu extends YaqActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -32,8 +32,6 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
 
     public static final int NAVIGATION_VIEW_HEADER_INDEX = 0;
     public static final int RESULT_FINISH = 99;
-
-    public static int dialogClickCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,33 +144,20 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.menu_about) {
-            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this)
+            new AlertDialog.Builder(this)
                     .setTitle(getResources().getString(R.string.about_dialog_title) + " V" + getResources().getString(R.string.versionName))
-                    .setMessage(R.string.about_dialog_message);
-            alertDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
-                @Override
-                public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                    if (keyCode == KeyEvent.KEYCODE_BACK) {
-                        dialogClickCounter++;
-                    }
-                    return false;
-                }
-            });
-            if (dialogClickCounter == 10) {
-                alertDialog.setIcon(R.drawable.yak);
-                dialogClickCounter = 0;
-
-            } else {
-                alertDialog.setIcon(R.drawable.ic_help_black_24dp);
-            }
-            alertDialog.show();
-
+                    .setMessage(R.string.about_dialog_message)
+                    .setIcon(R.drawable.ic_help_black_24dp)
+                    .show();
         } else if (id == R.id.menu_themes) {
             Intent intent = new Intent(MainMenu.this, Themes.class);
             startActivityForResult(intent, RESULT_FINISH);
         } else if (id == R.id.menu_manage) {
             Intent intent = new Intent(MainMenu.this, ManageQuestions.class);
             startActivity(intent);
+        } else if (id == R.id.menu_import){
+            CatalogImporter importer = new CatalogImporter(this);
+            importer.importFile();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         assert drawer != null;
@@ -190,5 +175,14 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         finish();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
+            CatalogImporter importer = new CatalogImporter(this);
+            importer.importFile();
+        }
     }
 }

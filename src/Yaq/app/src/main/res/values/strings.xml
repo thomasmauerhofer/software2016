@@ -14,7 +14,8 @@
     <string name="action_settings">Game Settings</string>
     <string name="action_about">About YAQ</string>
     <string name="action_themes">Themes</string>
-    <string name="manage_questions">Manage questions</string>
+    <string name="manage_questions">Manage Questions</string>
+    <string name="questions_import">Questions Import</string>
     <string name="profile">Profile</string>
     <string name="about_dialog_message">
         <b>&#169; by Team Bitschupfa</b> \n
@@ -98,7 +99,7 @@
     <string name="waiting_for_players">Waiting for players to join …</string>
 
     <!-- ManageQuestions -->
-    <string name="title_activity_show_cataloges">Show catalogues</string>
+    <string name="title_activity_show_catalogues">Show catalogues</string>
     <string name="title_activity_show_questions">Show questions</string>
     <string name="title_activity_edit_questions">Edit questions</string>
     <string name="title_dialog_add_catalog">Add Catalog</string>
