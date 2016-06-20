@@ -1,8 +1,5 @@
 package com.bitschupfa.sw16.yaq.ui;
 
-/**
- * Created by Patrik on 30.05.2016.
- */
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Environment;
