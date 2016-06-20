@@ -14,7 +14,7 @@ import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static String DATABASE_NAME = "yaq.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 35;
     private static DBHelper instance_ = null;
 
     public DBHelper(Context context) {

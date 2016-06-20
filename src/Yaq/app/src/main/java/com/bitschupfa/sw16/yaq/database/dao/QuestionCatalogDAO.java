@@ -1,5 +1,6 @@
 package com.bitschupfa.sw16.yaq.database.dao;
 
+import android.content.Context;
 import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
 
 /**
@@ -25,5 +26,13 @@ public class QuestionCatalogDAO extends DatabaseObject {
         contentValues.put(QUESTIONCATALOG_ID, questionCatalog.getCatalogID());
         contentValues.put(QUESTIONCATALOG_DESCRIPTION, questionCatalog.getName());
         contentValues.put(QUESTIONCATALOG_DIFFICULTY, questionCatalog.getDifficulty());
+    }
+
+    public void editEntry(Context context){
+        editEntry(context, QUESTIONCATALOG_ID, questionCatalog.getCatalogID());
+    }
+
+    public void deleteEntry(Context context){
+        deleteEntry(context, QUESTIONCATALOG_ID, questionCatalog.getCatalogID());
     }
 }
