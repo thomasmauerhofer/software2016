@@ -29,57 +29,66 @@
         <activity
             android:name=".activities.Host"
             android:label="@string/title_activity_host"
-            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".activities.MainMenu"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.Join"
             android:label="@string/title_activity_join"
-            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".activities.MainMenu"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.Game"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_questions_asked"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.BuildQuiz"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/title_activity_build_quiz"
             android:parentActivityName=".activities.Host"
-            android:windowSoftInputMode="adjustPan"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.Statistic"
             android:label="@string/title_activity_statistic"
-            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".activities.MainMenu"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.StatisticsAtHost"
             android:label="@string/title_activity_statistic"
-            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".activities.MainMenu"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.Profile"
             android:label="@string/title_activity_profile"
-            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".activities.MainMenu"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.GameAtHost"
             android:label="@string/title_activity_questions_asked"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.Themes"
             android:label="@string/title_activity_themes"
-            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".activities.MainMenu"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.soundcloud.android.crop.CropImageActivity" />
+        <activity
+            android:name=".activities.ManageQuestions"
+            android:label="@string/title_activity_show_cataloges"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.ShowQuestions"
+            android:label="@string/title_activity_show_questions"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.EditQuestions"
+            android:label="@string/title_activity_edit_questions"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
         <!--
              ATTENTION: This was auto-generated to add Google Play services to your project for
              App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -88,12 +97,6 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
-        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
-        <activity
-            android:name=".activities.QuizMaker"
-            android:label="@string/title_activity_quiz_maker"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
