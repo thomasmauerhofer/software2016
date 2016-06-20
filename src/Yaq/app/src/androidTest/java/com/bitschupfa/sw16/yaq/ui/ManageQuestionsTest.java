@@ -5,7 +5,6 @@ import android.widget.EditText;
 
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.activities.EditQuestions;
-import com.bitschupfa.sw16.yaq.activities.Host;
 import com.bitschupfa.sw16.yaq.activities.ManageQuestions;
 import com.bitschupfa.sw16.yaq.activities.ShowQuestions;
 import com.robotium.solo.Solo;

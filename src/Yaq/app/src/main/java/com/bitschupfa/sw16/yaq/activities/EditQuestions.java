@@ -17,7 +17,7 @@ import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 public class EditQuestions extends YaqActivity {
 
     private static final int MIN_ANSWER_NUMBER = 0;
-    private static final int MAX_ANSWER_NUMBER = 10;
+    private static final int MAX_ANSWER_NUMBER = 20;
 
     private EditText textQuestionEdit;
     private EditText textAnswer1Edit;
@@ -121,11 +121,25 @@ public class EditQuestions extends YaqActivity {
         picker.setMinValue(MIN_ANSWER_NUMBER);
         picker.setMaxValue(MAX_ANSWER_NUMBER);
 
+        picker.setFormatter(new NumberPicker.Formatter() {
+            @Override
+            public String format(int i) {
+                if (i > 10) {
+                    i = 10 - i;
+                }
+                return String.valueOf(i);
+            }
+        });
+
         picker.setValue(Integer.parseInt(numberPickerLabel.getText().toString()));
 
         picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                if(newVal > 10) {
+                    newVal -= 10;
+                    newVal = -newVal;
+                }
                 numberPickerLabel.setText(String.valueOf(newVal));
             }
         });

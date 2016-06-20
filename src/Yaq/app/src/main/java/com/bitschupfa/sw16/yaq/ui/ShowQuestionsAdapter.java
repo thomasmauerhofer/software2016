@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
-import com.bitschupfa.sw16.yaq.activities.ShowQuestions;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 
 import java.util.ArrayList;

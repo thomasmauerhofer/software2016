@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -69,12 +68,10 @@ public class ShowQuestions extends YaqActivity {
         switch (item.getItemId()) {
             case R.id.edit:
                 Intent intent = new Intent(ShowQuestions.this, EditQuestions.class);
-                Log.d("blah","edit Question (SHOW): " + actualTextQuestion.getQuestion().toString());
                 intent.putExtra("Question", actualTextQuestion);
                 startActivity(intent);
                 return true;
             case R.id.delete:
-                Log.d("blah","delete Question (SHOW): " + actualTextQuestion.getQuestion().toString());
                 TextQuestionDAO deleteQuestion = new TextQuestionDAO(actualTextQuestion);
                 deleteQuestion.deleteEntry(ShowQuestions.this);
                 updateListView();

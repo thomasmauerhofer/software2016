@@ -42,7 +42,7 @@
 
         <TextView
             android:id="@+id/numberPickerEdit1"
-            android:layout_width="50dp"
+            android:layout_width="60dp"
             android:layout_height="45dp"
             android:layout_marginTop="-15dp"
             android:layout_alignParentRight="true"
@@ -71,7 +71,7 @@
 
             <TextView
                 android:id="@+id/numberPickerEdit2"
-                android:layout_width="50dp"
+                android:layout_width="60dp"
                 android:layout_height="45dp"
                 android:layout_marginTop="-15dp"
                 android:layout_alignParentRight="true"
@@ -100,7 +100,7 @@
 
             <TextView
                 android:id="@+id/numberPickerEdit3"
-                android:layout_width="50dp"
+                android:layout_width="60dp"
                 android:layout_height="45dp"
                 android:layout_marginTop="-15dp"
                 android:layout_alignParentRight="true"
@@ -129,7 +129,7 @@
 
             <TextView
                 android:id="@+id/numberPickerEdit4"
-                android:layout_width="50dp"
+                android:layout_width="60dp"
                 android:layout_height="45dp"
                 android:layout_marginTop="-15dp"
                 android:layout_alignParentRight="true"
