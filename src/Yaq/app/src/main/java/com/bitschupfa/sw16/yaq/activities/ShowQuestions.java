@@ -14,11 +14,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
-import com.bitschupfa.sw16.yaq.database.dao.QuestionCatalogDAO;
 import com.bitschupfa.sw16.yaq.database.dao.TextQuestionDAO;
+import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
 import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.ui.ShowQuestionsAdapter;
+
+import java.util.ArrayList;
 
 public class ShowQuestions extends YaqActivity {
 
@@ -27,6 +29,7 @@ public class ShowQuestions extends YaqActivity {
     private TextView textCatalogue;
     private TextQuestion actualTextQuestion;
     private QuestionCatalog catalog;
+    private ArrayList<TextQuestion> questionList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +38,6 @@ public class ShowQuestions extends YaqActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         handleTheme();
-
-        displayListView();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -47,6 +48,12 @@ public class ShowQuestions extends YaqActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        updateListView();
     }
 
     @Override
@@ -62,10 +69,12 @@ public class ShowQuestions extends YaqActivity {
         switch (item.getItemId()) {
             case R.id.edit:
                 Intent intent = new Intent(ShowQuestions.this, EditQuestions.class);
+                Log.d("blah","edit Question (SHOW): " + actualTextQuestion.getQuestion().toString());
                 intent.putExtra("Question", actualTextQuestion);
                 startActivity(intent);
                 return true;
             case R.id.delete:
+                Log.d("blah","delete Question (SHOW): " + actualTextQuestion.getQuestion().toString());
                 TextQuestionDAO deleteQuestion = new TextQuestionDAO(actualTextQuestion);
                 deleteQuestion.deleteEntry(ShowQuestions.this);
                 updateListView();
@@ -76,8 +85,10 @@ public class ShowQuestions extends YaqActivity {
     }
 
     public void updateListView() {
-        listView.setAdapter(null);
-        dataAdapter.clear();
+        if(listView != null) {
+            listView.setAdapter(null);
+            dataAdapter.clear();
+        }
         displayListView();
     }
 
@@ -87,7 +98,10 @@ public class ShowQuestions extends YaqActivity {
         textCatalogue = (TextView) findViewById(R.id.textCatalogue);
         textCatalogue.setText(catalog.getName());
 
-        dataAdapter = new ShowQuestionsAdapter(this, R.layout.list_show_questions, catalog.getTextQuestionList());
+        QuestionQuerier questionQuerier = new QuestionQuerier(this);
+        questionList.addAll(questionQuerier.getAllQuestionsFromCatalog(catalog.getCatalogID()));
+
+        dataAdapter = new ShowQuestionsAdapter(this, R.layout.list_show_questions, questionList);
         listView = (ListView) findViewById(R.id.ListViewShowQuestions);
         listView.setAdapter(dataAdapter);
 

@@ -86,6 +86,7 @@
         <activity
             android:name=".activities.QuizMaker"
             android:label="@string/title_activity_quiz_maker" />
+
         <activity
             android:name=".activities.ManageQuestions"
             android:label="@string/title_activity_show_cataloges"

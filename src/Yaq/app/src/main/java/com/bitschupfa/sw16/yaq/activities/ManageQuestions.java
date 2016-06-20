@@ -8,7 +8,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -40,6 +39,9 @@ public class ManageQuestions extends YaqActivity {
     private ManageQuestionsAdapter dataAdapter = null;
     private EditText searchText;
     private QuestionCatalog actualQuestionCatalog;
+    private RadioButton checkEasy;
+    private RadioButton checkMedium;
+    private RadioButton checkHard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +52,6 @@ public class ManageQuestions extends YaqActivity {
         handleTheme();
 
         initSearchView();
-        displayListView();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +60,12 @@ public class ManageQuestions extends YaqActivity {
                 showEditDialog();
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        updateListView();
     }
 
     @Override
@@ -108,41 +115,40 @@ public class ManageQuestions extends YaqActivity {
         });
     }
 
-    public void showEditDialog()
-    {
+    public void showEditDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(ManageQuestions.this);
         LayoutInflater li = LayoutInflater.from(ManageQuestions.this);
         View dialogView = li.inflate(R.layout.dialog_manage_questions, null);
         final EditText input = (EditText) dialogView.findViewById(R.id.editText);
-        RadioButton checkEasy = (RadioButton) dialogView.findViewById(R.id.checkEasyDialog);
-        RadioButton checkMedium = (RadioButton) dialogView.findViewById(R.id.checkMediumDialog);
-        RadioButton checkHard = (RadioButton) dialogView.findViewById(R.id.checkHardDialog);
+        checkEasy = (RadioButton) dialogView.findViewById(R.id.checkEasyDialog);
+        checkMedium = (RadioButton) dialogView.findViewById(R.id.checkMediumDialog);
+        checkHard = (RadioButton) dialogView.findViewById(R.id.checkHardDialog);
 
-        if(actualQuestionCatalog != null) {
-            builder.setTitle("Edit Catalog");
+        if (actualQuestionCatalog != null) {
+            builder.setTitle(getResources().getString(R.string.title_dialog_edit_catalog));
             input.setText(actualQuestionCatalog.getName());
             checkEasy.setChecked(actualQuestionCatalog.getDifficulty() == 1);
             checkMedium.setChecked(actualQuestionCatalog.getDifficulty() == 2);
             checkHard.setChecked(actualQuestionCatalog.getDifficulty() == 3);
-        }
-        else {
-            builder.setTitle("Add Catalog");
+        } else {
+            checkEasy.setChecked(true);
+            builder.setTitle(getResources().getString(R.string.title_dialog_add_catalog));
         }
 
+        builder.setCancelable(false);
         builder.setView(dialogView);
 
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // TODO get difficulty
-                if(actualQuestionCatalog != null) {
+                if (actualQuestionCatalog != null) {
                     actualQuestionCatalog.setName(input.getText().toString());
-                    actualQuestionCatalog.setDifficulty(0);
+                    actualQuestionCatalog.setDifficulty(getDifficulty());
                     QuestionCatalogDAO editQuestionCatalog = new QuestionCatalogDAO(actualQuestionCatalog);
                     editQuestionCatalog.editEntry(ManageQuestions.this);
                     actualQuestionCatalog = null;
                 } else {
-                    QuestionCatalog questionCatalog = new QuestionCatalog(0, 1, input.getText().toString(), null);
+                    QuestionCatalog questionCatalog = new QuestionCatalog(0, getDifficulty(), input.getText().toString(), null);
                     QuestionCatalogDAO newQuestionCatalog = new QuestionCatalogDAO(questionCatalog);
                     newQuestionCatalog.insertIntoDatabase(ManageQuestions.this);
                 }
@@ -160,9 +166,22 @@ public class ManageQuestions extends YaqActivity {
         builder.show();
     }
 
+    public int getDifficulty() {
+        if (checkEasy.isChecked()) {
+            return 1;
+        } else if (checkMedium.isChecked()) {
+            return 2;
+        } else if (checkHard.isChecked()) {
+            return 3;
+        }
+        return 0;
+    }
+
     public void updateListView() {
-        listView.setAdapter(null);
-        dataAdapter.clear();
+        if(listView != null) {
+            listView.setAdapter(null);
+            dataAdapter.clear();
+        }
         displayListView();
     }
 
@@ -173,7 +192,6 @@ public class ManageQuestions extends YaqActivity {
                 showEditDialog();
                 return true;
             case R.id.delete:
-                // TODO don't work
                 QuestionCatalogDAO deleteQuestionCatalog = new QuestionCatalogDAO(actualQuestionCatalog);
                 deleteQuestionCatalog.deleteEntry(ManageQuestions.this);
                 updateListView();

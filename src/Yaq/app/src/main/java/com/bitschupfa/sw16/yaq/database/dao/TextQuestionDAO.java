@@ -57,10 +57,10 @@ public class TextQuestionDAO extends DatabaseObject {
     }
 
     public void editEntry(Context context){
-        editEntry(context, QUESTION_ID, textQuestion.getCatalogID());
+        editEntry(context, QUESTION_ID, textQuestion.getQuestionID());
     }
 
     public void deleteEntry(Context context){
-        deleteEntry(context, QUESTION_ID, textQuestion.getCatalogID());
+        deleteEntry(context, QUESTION_ID, textQuestion.getQuestionID());
     }
 }

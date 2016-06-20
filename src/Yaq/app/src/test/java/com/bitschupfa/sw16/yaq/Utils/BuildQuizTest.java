@@ -23,7 +23,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BuildQuizTest extends InstrumentationTestCase{
+public class BuildQuizTest extends InstrumentationTestCase {
 
     private BuildQuizAdapter mAdapter;
     private QuestionCatalogItem item1;
