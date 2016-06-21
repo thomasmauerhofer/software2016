@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
@@ -19,10 +21,12 @@ import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -59,7 +63,6 @@ public class CatalogImporter {
     }
 
     private void readFile(BufferedReader br) throws IOException {
-        Log.e("Import","Input ging");
         try {
             readCatalog(br);
 
@@ -120,6 +123,54 @@ public class CatalogImporter {
         if (!catalogFound) {
             throw new IOException();
         }
+    }
+
+    public void baseLineImport(String fileName) {
+        AssetManager am = activity.getBaseContext().getAssets();
+        InputStream inputStream = null;
+        try {
+            inputStream = am.open(fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        File file = createFileFromInputStream(inputStream);
+        try {
+            this.readFile(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private File createFileFromInputStream(InputStream inputStream) {
+        try{
+            System.out.println("Line 0");
+            Log.e("Error", "Line 0");
+            File f = new File(activity.getFilesDir(), "asdf");
+            OutputStream outputStream = new FileOutputStream(f);
+            byte buffer[] = new byte[1024];
+            int length = 0;
+            System.out.println("Line 1");
+            Log.e("Error", "Line 1");
+
+            while((length=inputStream.read(buffer)) > 0) {
+                outputStream.write(buffer, 0, length);
+                System.out.println("Line 2");
+                Log.e("Error", "Line 2");
+                Log.e("Error", buffer.toString());
+            }
+
+            outputStream.close();
+            inputStream.close();
+
+            return f;
+        }catch (IOException e) {
+            //Logging exception
+            System.err.print(e.getStackTrace());
+            Log.e("Error", e.getStackTrace().toString());
+            Log.e("Error", e.getMessage().toString());
+        }
+
+        return null;
     }
 
     private void readQuestion(String line) throws IOException {
