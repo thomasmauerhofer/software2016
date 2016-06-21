@@ -124,9 +124,9 @@ public class Host extends YaqActivity implements Lobby {
 
         if (btAdapter == null) {
             new AlertDialog.Builder(this)
-                    .setTitle("Error")
+                    .setTitle(R.string.error)
                     .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setMessage("Bluetooth is not supported on this device.")
+                    .setMessage(R.string.bluetooth_not_supported_error)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
