@@ -3,6 +3,7 @@ package com.bitschupfa.sw16.yaq.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,8 +24,10 @@ import android.widget.Toast;
 
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.database.helper.CatalogImporter;
+import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfileStorage;
 
+import java.io.File;
 import java.io.IOException;
 import io.realm.Realm;
 
@@ -92,8 +95,10 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
         refreshProfileInNavigationHeader();
         handleTheme();
 
-        importer = new CatalogImporter(this, realm);
         realm = Realm.getDefaultInstance();
+        importer = new CatalogImporter(this, realm);
+
+        importDemoFiles();
     }
 
     @Override
@@ -225,8 +230,18 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
-            CatalogImporter importer = new CatalogImporter(this, realm);
             importer.importFile();
+        }
+    }
+
+    private void importDemoFiles() {
+        if (realm.where(QuestionCatalog.class).findAll().size() == 0 ) {
+            try {
+                importer.readFile("Medizin.txt");
+                importer.readFile("general.txt");
+            } catch (IOException e) {
+                Log.e(MainMenu.class.getCanonicalName(), "Error while importing file: " + e.getMessage());
+            }
         }
     }
 }
