@@ -69,115 +69,70 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     private void insertInitialData(SQLiteDatabase dataBase) {
-        QuestionCatalog questionCatalog1 = new QuestionCatalog(1, 1, "Time", null);
-        QuestionCatalog questionCatalog2 = new QuestionCatalog(2, 2, "General", null);
-        QuestionCatalog questionCatalog3 = new QuestionCatalog(3, 3, "TV/Movie", null);
 
+        QuestionCatalog questionCatalog1 = new QuestionCatalog(1, 3, "TV/Movie", null);
 
         QuestionCatalogDAO questionCatalogDAO1 = new QuestionCatalogDAO(questionCatalog1);
         questionCatalogDAO1.insertThisAsInitialBaselineIntoDatabase(dataBase);
-
-        QuestionCatalogDAO questionCatalogDAO2 = new QuestionCatalogDAO(questionCatalog2);
-        questionCatalogDAO2.insertThisAsInitialBaselineIntoDatabase(dataBase);
-
-        QuestionCatalogDAO questionCatalogDAO3 = new QuestionCatalogDAO(questionCatalog3);
-        questionCatalogDAO3.insertThisAsInitialBaselineIntoDatabase(dataBase);
 
         Answer answer1;
         Answer answer2;
         Answer answer3;
         Answer answer4;
 
-        answer1 = new Answer("Tina Turner", 10);
-        answer2 = new Answer("Michael Jackson", 0);
-        answer3 = new Answer("Michael Jackson", 0);
-        answer4 = new Answer("Michael Jackson", 0);
-        TextQuestion textQuestion1 = new TextQuestion(1, "Which singer joined Mel Gibson in the movie Mad Max: Beyond The Thunderdome?", answer1, answer2, answer3, answer4, 2);
-
-        answer1 = new Answer("Pina Colada", 0);
-        answer2 = new Answer("Zombie", 0);
-        answer3 = new Answer("Manhatten", 0);
-        answer4 = new Answer("Harvey Wallbanger", 10);
-        TextQuestion textQuestion2 = new TextQuestion(2, "Vodka, Galliano and orange juice are used to make which classic cocktail?", answer1, answer2, answer3, answer4, 2);
-
-        answer1 = new Answer("1966", 0);
-        answer2 = new Answer("1967", 10);
-        answer3 = new Answer("1968", 0);
-        answer4 = new Answer("1969", 0);
-        TextQuestion textQuestion3 = new TextQuestion(3, "In which year did Foinavon win the Grand National?", answer1, answer2, answer3, answer4, 1);
-
-        answer1 = new Answer("Peter Tosh", 0);
-        answer2 = new Answer("Lee Perry", 0);
-        answer3 = new Answer("Bob Marley", 10);
-        answer4 = new Answer("Shaggy", 0);
-        TextQuestion textQuestion4 = new TextQuestion(4, "Which reggae singing star died 11th May 1981?", answer1, answer2, answer3, answer4, 1);
-
-        answer1 = new Answer("1960", 10);
-        answer2 = new Answer("1969", 0);
-        answer3 = new Answer("1971", 0);
-        answer4 = new Answer("1988", 0);
-        TextQuestion textQuestion5 = new TextQuestion(5, "In what year was Prince Andrew born?", answer1, answer2, answer3, answer4, 1);
-
-        answer1 = new Answer("1966", 0);
-        answer2 = new Answer("1967", 10);
-        answer3 = new Answer("1968", 0);
-        answer4 = new Answer("1969", 0);
-        TextQuestion textQuestion6 = new TextQuestion(6, "In which year did Foinavon win the Grand National?", answer1, answer2, answer3, answer4, 1);
-
         answer1 = new Answer("1", 0);
         answer2 = new Answer("5", 0);
         answer3 = new Answer("10", 0);
         answer4 = new Answer("11", 10);
-        TextQuestion textQuestion7 = new TextQuestion(7, "How many oscars did the Titanic movie got?", answer1, answer2, answer3, answer4, 3);
+        TextQuestion textQuestion1 = new TextQuestion(1, "How many oscars did the Titanic movie got?", answer1, answer2, answer3, answer4, 1);
 
         answer1 = new Answer("1", 0);
         answer2 = new Answer("2", 10);
         answer3 = new Answer("3", 0);
         answer4 = new Answer("4", 0);
-        TextQuestion textQuestion8 = new TextQuestion(8, "How many Tomb Raider movies were made?", answer1, answer2, answer3, answer4, 3);
+        TextQuestion textQuestion2 = new TextQuestion(2, "How many Tomb Raider movies were made?", answer1, answer2, answer3, answer4, 1);
 
         answer1 = new Answer("Bastille", 0);
         answer2 = new Answer("Alcatraz", 10);
         answer3 = new Answer("Newgate", 0);
         answer4 = new Answer("Tower of London", 0);
-        TextQuestion textQuestion9 = new TextQuestion(9, "What is the name of the prison in the film The Rock?", answer1, answer2, answer3, answer4, 3);
+        TextQuestion textQuestion3 = new TextQuestion(3, "What is the name of the prison in the film The Rock?", answer1, answer2, answer3, answer4, 1);
 
         answer1 = new Answer("Mushu", 10);
         answer2 = new Answer("Mishu", 0);
         answer3 = new Answer("Masha", 0);
         answer4 = new Answer("Sasha", 0);
-        TextQuestion textQuestion10 = new TextQuestion(10, "What is the name of the little dragon in the animated movie Mulan?", answer1, answer2, answer3, answer4, 3);
+        TextQuestion textQuestion4 = new TextQuestion(4, "What is the name of the little dragon in the animated movie Mulan?", answer1, answer2, answer3, answer4, 1);
 
         answer1 = new Answer("Rob Bowman", 10);
         answer2 = new Answer("Arnold Schwarzenegger", 0);
         answer3 = new Answer("Sergio Leone", 0);
         answer4 = new Answer("Antonio Salieri", 0);
-        TextQuestion textQuestion11 = new TextQuestion(11, "Who is the director of the X-files?", answer1, answer2, answer3, answer4, 3);
+        TextQuestion textQuestion5 = new TextQuestion(5, "Who is the director of the X-files?", answer1, answer2, answer3, answer4, 1);
 
         answer1 = new Answer("Seaman,", 10);
         answer2 = new Answer("Engineer", -10);
         answer3 = new Answer("Farmer", 0);
         answer4 = new Answer("Electrician", 0);
-        TextQuestion textQuestion12 = new TextQuestion(12, "What is the profession of Popeye?", answer1, answer2, answer3, answer4, 3);
+        TextQuestion textQuestion6 = new TextQuestion(6, "What is the profession of Popeye?", answer1, answer2, answer3, answer4, 1);
 
         answer1 = new Answer("0815", 0);
         answer2 = new Answer("742", 10);
         answer3 = new Answer("1001", 5);
         answer4 = new Answer("5", 0);
-        TextQuestion textQuestion13 = new TextQuestion(13, "What is the house number of the Simpsons?", answer1, answer2, answer3, answer4, 3);
+        TextQuestion textQuestion7 = new TextQuestion(7, "What is the house number of the Simpsons?", answer1, answer2, answer3, answer4, 1);
 
         answer1 = new Answer("Captain Picard", 0);
         answer2 = new Answer("Antonio Salieri", 10);
         answer3 = new Answer("Robert Redford", 5);
         answer4 = new Answer("Colin Farell", 0);
-        TextQuestion textQuestion14 = new TextQuestion(14, "Who was Mozart s great rival in Amadeus movie?", answer1, answer2, answer3, answer4, 3);
-
-
+        TextQuestion textQuestion8 = new TextQuestion(8, "Who was Mozart s great rival in Amadeus movie?", answer1, answer2, answer3, answer4, 1);
+        
         answer1 = new Answer("Robin Williams", 10);
         answer2 = new Answer("Robert Redford", 0);
         answer3 = new Answer("Rob Bowman", 0);
         answer4 = new Answer("Woody Allen", 0);
-        TextQuestion textQuestion15 = new TextQuestion(15, "Who did play the role of Peter Pan in the Peter Pan movie?", answer1, answer2, answer3, answer4, 3);
+        TextQuestion textQuestion9 = new TextQuestion(9, "Who did play the role of Peter Pan in the Peter Pan movie?", answer1, answer2, answer3, answer4, 1);
 
         TextQuestionDAO textQuestionDAO1 = new TextQuestionDAO(textQuestion1);
         textQuestionDAO1.insertThisAsInitialBaselineIntoDatabase(dataBase);
@@ -205,26 +160,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         TextQuestionDAO textQuestionDAO9 = new TextQuestionDAO(textQuestion9);
         textQuestionDAO9.insertThisAsInitialBaselineIntoDatabase(dataBase);
-
-        TextQuestionDAO textQuestionDAO10 = new TextQuestionDAO(textQuestion10);
-        textQuestionDAO10.insertThisAsInitialBaselineIntoDatabase(dataBase);
-
-        TextQuestionDAO textQuestionDAO11 = new TextQuestionDAO(textQuestion11);
-        textQuestionDAO11.insertThisAsInitialBaselineIntoDatabase(dataBase);
-
-        TextQuestionDAO textQuestionDAO12 = new TextQuestionDAO(textQuestion12);
-        textQuestionDAO12.insertThisAsInitialBaselineIntoDatabase(dataBase);
-
-        TextQuestionDAO textQuestionDAO13 = new TextQuestionDAO(textQuestion13);
-        textQuestionDAO13.insertThisAsInitialBaselineIntoDatabase(dataBase);
-
-        TextQuestionDAO textQuestionDAO14 = new TextQuestionDAO(textQuestion14);
-        textQuestionDAO14.insertThisAsInitialBaselineIntoDatabase(dataBase);
-
-        TextQuestionDAO textQuestionDAO15 = new TextQuestionDAO(textQuestion15);
-        textQuestionDAO15.insertThisAsInitialBaselineIntoDatabase(dataBase);
     }
-
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
