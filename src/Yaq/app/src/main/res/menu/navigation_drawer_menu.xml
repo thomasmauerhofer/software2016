@@ -3,14 +3,12 @@
     >
     <item
         android:id="@+id/menu_settings"
-        android:orderInCategory="100"
         android:title="@string/action_settings"
         android:icon="@drawable/ic_settings_black_24dp"
         app:showAsAction="never"
         android:visible="false"/>
     <item
         android:id="@+id/menu_manage"
-        android:orderInCategory="100"
         android:title="@string/manage_questions"
         android:icon="@drawable/ic_mode_comment_black_24dp"
         app:showAsAction="never" />
@@ -21,13 +19,11 @@
         app:showAsAction="never" />
     <item
         android:id="@+id/menu_themes"
-        android:orderInCategory="100"
         android:title="@string/action_themes"
         android:icon="@drawable/ic_brightness_6_black_24dp"
         app:showAsAction="never" />
     <item
         android:id="@+id/menu_about"
-        android:orderInCategory="100"
         android:title="@string/action_about"
         android:icon="@drawable/ic_help_black_24dp"
         app:showAsAction="never" />
