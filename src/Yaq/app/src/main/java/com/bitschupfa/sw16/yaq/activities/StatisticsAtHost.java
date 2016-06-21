@@ -52,6 +52,7 @@ public class StatisticsAtHost extends Statistic {
 
     @Override
     public void onBackPressed() {
-        new HostCloseConnectionDialog(this, castHelper, true).show(getFragmentManager(), TAG);
+        new HostCloseConnectionDialog(this, castHelper).show(getFragmentManager(), TAG);
+        castHelper.teardown(false);
     }
 }

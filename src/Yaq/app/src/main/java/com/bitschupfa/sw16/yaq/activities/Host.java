@@ -276,6 +276,17 @@ public class Host extends YaqActivity implements Lobby {
 
     @Override
     public void onBackPressed() {
-        new HostCloseConnectionDialog(this, castHelper, fakeHost, btConnectionListener, true).show(getFragmentManager(), TAG);
+        if(HostGameLogic.getInstance().getPlayers().getPlayers().size() > 1) {
+            new HostCloseConnectionDialog(this, castHelper).show(getFragmentManager(), TAG);
+        } else {
+            try {
+                HostGameLogic.getInstance().quit(getResources().getString(R.string.connectionClosedByHost));
+                fakeHost.close();
+                btConnectionListener.close();
+            } catch (IOException e) {
+                Log.e(TAG, "Error while BackButton pressed!");
+            }
+        }
+        castHelper.teardown(false);
     }
 }

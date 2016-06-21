@@ -3,6 +3,7 @@ package com.bitschupfa.sw16.yaq.game;
 
 import android.util.Log;
 
+import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.activities.GameAtHost;
 import com.bitschupfa.sw16.yaq.communication.ClientMessageHandler;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
@@ -21,6 +22,7 @@ import com.bitschupfa.sw16.yaq.ui.RankingItem;
 import com.bitschupfa.sw16.yaq.utils.AnswerCollector;
 import com.bitschupfa.sw16.yaq.utils.CastHelper;
 import com.bitschupfa.sw16.yaq.utils.Quiz;
+import com.bitschupfa.sw16.yaq.utils.QuizFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -116,6 +118,10 @@ public class HostGameLogic implements ClientMessageHandler {
         answerCollector.addAnswerForPlayer(address, answer);
     }
 
+    public PlayerList getPlayers() {
+        return players;
+    }
+
     @Override
     public void clientQuits(String id) {
         players.removePlayer(id);
@@ -137,6 +143,10 @@ public class HostGameLogic implements ClientMessageHandler {
 
     @Override
     public void quit(String msg) {
+        QuizFactory.instance().clearQuiz();
+        QuizFactory.instance().setNumberOfQuestions(10);
+        ClientGameLogic.getInstance().quit();
+
         disconnectAllClients(msg);
         quiz = null;
         //answerCollector = null;
