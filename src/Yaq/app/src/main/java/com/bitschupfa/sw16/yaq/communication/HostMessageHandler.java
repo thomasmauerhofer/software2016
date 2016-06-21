@@ -8,9 +8,18 @@ import java.util.ArrayList;
 
 public interface HostMessageHandler {
     void updatePlayerList(String[] playerNames);
+
     void startGame();
+
     void showNextQuestion(TextQuestion question, int timeout);
+
     void showCorrectAnswer(Answer answer);
+
     void endGame(ArrayList<RankingItem> scoreList);
+
     void quit();
+
+    void handleError(Errors error, String message);
+
+    void playAgain();
 }

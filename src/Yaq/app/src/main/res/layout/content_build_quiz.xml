@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activities.BuildQuiz"
+    tools:showIn="@layout/activity_build_quiz"
+    android:orientation="vertical"
+    android:weightSum="100">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="18">
+
+        <EditText
+            android:id="@+id/EditTextBuildQuiz"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_search_quiz"
+            android:inputType="textVisiblePassword"
+            android:textColor="@color/grey900"
+            android:paddingTop="15dp"
+            android:drawableLeft="@drawable/abc_ic_search_api_mtrl_alpha">
+        </EditText>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            >
+
+                <CheckBox
+                    android:id="@+id/checkEasy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/checkEasy"
+                    android:checked="true"
+                    android:textColor="@color/grey900"
+                    android:onClick="onCheckboxClicked"/>
+
+                <CheckBox
+                    android:id="@+id/checkMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/checkMedium"
+                    android:checked="true"
+                    android:textColor="@color/grey900"
+                    android:onClick="onCheckboxClicked"/>
+
+                <CheckBox
+                    android:id="@+id/checkHard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/checkHard"
+                    android:checked="true"
+                    android:textColor="@color/grey900"
+                    android:onClick="onCheckboxClicked"/>
+
+            </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="5dip"
+            android:id="@+id/horizontalLine1"
+           />
+
+        <ListView
+            android:id="@+id/ListViewBuildQuiz"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true" >
+        </ListView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:theme="@android:style/Theme.Holo"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_weight="40">
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="5dip"
+            android:id="@+id/horizontalLine2"
+            />
+
+        <TextView
+            android:id="@+id/numberOfQuestionsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/numberOfQuestions"
+            android:gravity="center"
+            android:textColor="@color/grey900"
+            android:paddingTop="10dp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:theme="@android:style/Theme.Holo"
+            android:orientation="horizontal"
+            android:paddingTop="5dp">
+
+            <Button
+                android:id="@+id/nPB1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/minus"
+                android:onClick="numberPickerMinusClicked">
+            </Button>
+
+            <TextView
+                android:id="@+id/numberPicker"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:theme="@style/defaultButton"
+                android:textColor="@color/white"
+                android:clickable="true"
+                android:onClick="showNumberPickerDialog" />
+
+            <Button
+                android:id="@+id/nPB2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/plus"
+                android:onClick="numberPickerPlusClicked">
+            </Button>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="43"
+        android:gravity="bottom">
+
+        <Button
+            android:id="@+id/submitQuizButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/submit_quiz"
+            android:theme="@style/defaultButton"
+            android:layout_margin="@dimen/button_margin"
+            android:gravity="center"
+            android:onClick="submitButtonClick">
+        </Button>
+    </LinearLayout>
+
+</LinearLayout>

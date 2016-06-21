@@ -1,133 +1,68 @@
 package com.bitschupfa.sw16.yaq.database.helper;
 
-import android.app.Activity;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-
-import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
 
-public class QuestionQuerier extends Activity{
-    private final Context context;
-    private final SQLiteDatabase database;
 
-    public QuestionQuerier(Context context){
-        this.context = context;
-        database = DBHelper.instance(context).getDatabase();
+public class QuestionQuerier {
+    private final Realm realm;
+
+
+    public QuestionQuerier(Realm realm) {
+        this.realm = realm;
     }
 
+    public List<TextQuestion> getAllQuestionsFromCatalog(int catalogID) {
+        QuestionCatalog result = realm.where(QuestionCatalog.class)
+                .equalTo("catalogID", catalogID)
+                .findFirst();
 
-    private TextQuestion fillTextQuestion(Cursor cursor){
-        Log.e("Columns: ", ""+cursor.getColumnCount());
-        int catalogID = cursor.getInt(1);
-        int difficulty = cursor.getInt(2);
-        String question = cursor.getString(3);
-        String answer1String = cursor.getString(4);
-        String answer2String = cursor.getString(5);
-        String answer3String = cursor.getString(6);
-        String answer4String = cursor.getString(7);
-        int rightAnswer1 = cursor.getInt(8);
-        int rightAnswer2 = cursor.getInt(9);
-        int rightAnswer3 = cursor.getInt(10);
-        int rightAnswer4 = cursor.getInt(11);
-
-        Answer answer1 = new Answer(answer1String, rightAnswer1);
-        Answer answer2 = new Answer(answer2String, rightAnswer2);
-        Answer answer3 = new Answer(answer3String, rightAnswer3);
-        Answer answer4 = new Answer(answer4String, rightAnswer4);
-
-        return new TextQuestion(question,answer1,answer2,answer3,answer4, difficulty, catalogID);
-    }
-
-    public List<TextQuestion> getAllQuestionsFromCatalogByDifficulty(int catalog, int difficulty){
-        Cursor cursor = database.rawQuery("SELECT * FROM Question WHERE qcid="+catalog+" AND difficulty="+difficulty, null);
-        cursor.moveToFirst();
-        List<TextQuestion> textQuestionList = new ArrayList<>();
-        Log.v("Querier Log", "TextQuestion");
-
-        while (!cursor.isAfterLast()) {
-            textQuestionList.add(fillTextQuestion(cursor));
-            cursor.moveToNext();
+        if (result != null) {
+            return result.getTextQuestionList();
+        } else {
+            return null;
         }
-        return textQuestionList;
     }
 
-    public List<TextQuestion> getAllQuestionsFromCatalog(int catalog){
-        Cursor cursor = database.rawQuery("SELECT * FROM Question WHERE qcid="+catalog, null);
-        cursor.moveToFirst();
+    public QuestionCatalog getQuestionCatalogById(int catalogId) {
+        QuestionCatalog result = realm.where(QuestionCatalog.class)
+                .equalTo("catalogID", catalogId)
+                .findFirst();
+        return result;
+    }
 
-        List<TextQuestion> textQuestionList = new ArrayList<>();
+    public List<QuestionCatalog> getAllQuestionCatalogs() {
+        RealmResults<QuestionCatalog> results = realm.where(QuestionCatalog.class).findAll();
+        return results;
+    }
 
-        while (!cursor.isAfterLast()) {
-            textQuestionList.add(fillTextQuestion(cursor));
-            cursor.moveToNext();
+    public TextQuestion getQuestionById(int questionId) {
+        TextQuestion result = realm.where(TextQuestion.class)
+                .equalTo("questionID", questionId)
+                .findFirst();
+        return result;
+    }
+
+    public int getHighestCatalogId() {
+        RealmResults<QuestionCatalog> results = realm.where(QuestionCatalog.class).findAll();
+        if (results.size() > 0) {
+            return results.max("catalogID").intValue();
+        } else {
+            return 0;
         }
-        return textQuestionList;
     }
 
-    public List<QuestionCatalog> getAllQuestionCatalogsOnlyIdAndName(){
-        Cursor cursor = database.rawQuery("SELECT * FROM QuestionCatalog", null);
-        cursor.moveToFirst();
-
-        List<QuestionCatalog> questionCatalogs = new ArrayList<>();
-
-        while (!cursor.isAfterLast()) {
-            int catalogID = cursor.getInt(0);
-            String name = cursor.getString(1);
-            cursor.moveToNext();
-            QuestionCatalog questionCatalog = new QuestionCatalog(catalogID, name, null);
-            questionCatalogs.add(questionCatalog);
+    public int getHighestQuestionId() {
+        RealmResults<TextQuestion> results = realm.where(TextQuestion.class).findAll();
+        if (results.size() > 0) {
+            return results.max("questionID").intValue();
+        } else {
+            return 0;
         }
-        cursor.close();
-        return questionCatalogs;
-    }
-
-    public QuestionCatalog getQuestionCatalogById(int catalogId){
-        Cursor cursor = database.rawQuery("SELECT * FROM QuestionCatalog WHERE qcid=" + catalogId, null);
-        cursor.moveToFirst();
-
-        int catalogID = cursor.getInt(0);
-        String question = cursor.getString(1);
-        cursor.moveToNext();
-        List<TextQuestion> textQuestionList = getAllQuestionsFromCatalog(catalogID);
-        cursor.close();
-        return new QuestionCatalog(catalogID,question,textQuestionList);
-    }
-
-    public QuestionCatalog getQuestionCatalogByIdAndDifficulty(int catalogId, int difficulty){
-        Cursor cursor = database.rawQuery("SELECT * FROM QuestionCatalog WHERE qcid=" + catalogId, null);
-        cursor.moveToFirst();
-
-        int catalogID = cursor.getInt(0);
-        String question = cursor.getString(1);
-        cursor.moveToNext();
-        List<TextQuestion> textQuestionList = getAllQuestionsFromCatalogByDifficulty(catalogID, difficulty);
-        cursor.close();
-        return new QuestionCatalog(catalogID,question,textQuestionList);
-    }
-
-    public List<QuestionCatalog> getAllQuestionCatalogs(){
-        Cursor cursor = database.rawQuery("SELECT * FROM QuestionCatalog", null);
-        cursor.moveToFirst();
-
-        List<QuestionCatalog> questionCatalogList = new ArrayList<>();
-
-        while (!cursor.isAfterLast()) {
-            int catalogID = cursor.getInt(0);
-            String question = cursor.getString(1);
-            cursor.moveToNext();
-            List<TextQuestion> textQuestionList = getAllQuestionsFromCatalog(catalogID);
-            QuestionCatalog questionCatalog = new QuestionCatalog(catalogID,question,textQuestionList);
-            questionCatalogList.add(questionCatalog);
-        }
-        cursor.close();
-        return questionCatalogList;
     }
 }

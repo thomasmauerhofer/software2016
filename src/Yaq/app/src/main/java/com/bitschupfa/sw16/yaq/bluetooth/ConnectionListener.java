@@ -19,7 +19,6 @@ public class ConnectionListener implements Runnable {
 
 
     public ConnectionListener() {
-
     }
 
     @Override
@@ -65,7 +64,7 @@ public class ConnectionListener implements Runnable {
 
             if (socket != null) {
                 try {
-                    ConnectedDevice client =  new ConnectedClientDevice(
+                    ConnectedDevice client = new ConnectedClientDevice(
                             socket.getRemoteDevice().getAddress(), socket,
                             HostGameLogic.getInstance());
                     HostGameLogic.getInstance().registerConnectedDevice(client);
@@ -77,7 +76,7 @@ public class ConnectionListener implements Runnable {
     }
 
     public void close() {
-        if(btServerSocket == null) {
+        if (btServerSocket == null) {
             return;
         }
         Log.d(TAG, "Killing thread.");

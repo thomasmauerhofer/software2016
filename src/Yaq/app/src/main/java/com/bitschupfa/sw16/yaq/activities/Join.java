@@ -1,6 +1,7 @@
 package com.bitschupfa.sw16.yaq.activities;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -13,10 +14,8 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,7 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Join extends AppCompatActivity implements Lobby {
+public class Join extends YaqActivity implements Lobby {
     private final static String TAG = "JoinGameActivity";
     private final static int REQUEST_ENABLE_BT = 42;
     private final static int REQUEST_COARSE_LOCATION_PERMISSIONS = 43;
@@ -53,8 +52,6 @@ public class Join extends AppCompatActivity implements Lobby {
     private final List<BluetoothDevice> discoveredDevices = new ArrayList<>();
 
     private PlayerList playerList;
-    private TextView textView;
-    private ProgressBar pBar;
 
     private AlertDialog findDeviceDialog;
     private BluetoothDeviceList discovered;
@@ -82,11 +79,22 @@ public class Join extends AppCompatActivity implements Lobby {
                     break;
                 case BluetoothDevice.ACTION_FOUND:
                     BluetoothDevice dev = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                    if (!discoveredDevices.contains(dev)) {
-                        discoveredDevices.add(dev);
-                        discovered.notifyDataSetChanged();
-                        Log.d(TAG, "Discovered new device: " + dev.getName());
+                    Log.d(TAG, "Discovered new Bluetooth device " + dev.getAddress());
+
+                    if (dev.getName() == null) {
+                        Log.d(TAG, "Could not determine the name of the discovered device. skip.");
+                        return;
                     }
+
+                    for (BluetoothDevice alreadyDiscoveredDevice : discoveredDevices) {
+                        if (alreadyDiscoveredDevice.getAddress().equals(dev.getAddress())) {
+                            Log.d(TAG, "There is already a device with this address in the list.");
+                            return;
+                        }
+                    }
+
+                    discoveredDevices.add(dev);
+                    discovered.notifyDataSetChanged();
                     break;
                 default:
                     Log.d(TAG, intent.getAction() + " intent was not handled in BT broadcast receiver.");
@@ -102,6 +110,8 @@ public class Join extends AppCompatActivity implements Lobby {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         ClientGameLogic.getInstance().setLobbyActivity(this);
 
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
@@ -111,21 +121,12 @@ public class Join extends AppCompatActivity implements Lobby {
         registerReceiver(btBroadcastReceiver, filter);
 
         if (!ClientGameLogic.getInstance().isConnected() && setupBluetooth()) {
-               findOtherBluetoothDevices();
+            findOtherBluetoothDevices();
         }
 
         playerList = new PlayerList(this);
-        pBar = (ProgressBar) findViewById(R.id.loadingBar);
-        textView = (TextView) findViewById(R.id.textView);
 
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pBar.setVisibility(View.INVISIBLE);
-                textView.setTextSize(40);
-                startTimer();
-            }
-        });
+        handleTheme();
     }
 
     @Override
@@ -153,7 +154,7 @@ public class Join extends AppCompatActivity implements Lobby {
                         }
                     })
                     .show();
-             return false;
+            return false;
         }
 
         if (!btAdapter.isEnabled()) {
@@ -172,13 +173,14 @@ public class Join extends AppCompatActivity implements Lobby {
         if (hasPermission != PackageManager.PERMISSION_GRANTED) {
             Log.d(TAG, "Ask user for permission to discover nearby devices.");
             ActivityCompat.requestPermissions(Join.this,
-                    new String[] { android.Manifest.permission.ACCESS_COARSE_LOCATION },
+                    new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
                     REQUEST_COARSE_LOCATION_PERMISSIONS);
             return;
         }
 
         for (BluetoothDevice dev : btAdapter.getBondedDevices()) {
             pairedDevices.add(dev);
+            paired.notifyDataSetChanged();
             Log.d(TAG, "Added already paired device: " + dev.getName());
         }
 
@@ -188,7 +190,7 @@ public class Join extends AppCompatActivity implements Lobby {
         }
         if (!btAdapter.startDiscovery()) {
             Log.e(TAG, "Could not start Bluetooth device discovery.");
-            Toast.makeText(Join.this, "Could not start device discovery", Toast.LENGTH_LONG).show();
+            Toast.makeText(Join.this, R.string.start_discovery_error, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -217,20 +219,6 @@ public class Join extends AppCompatActivity implements Lobby {
         }
     }
 
-    private void startTimer() {
-        new CountDownTimer(4000, 1000) {
-            public void onTick(long millisUntilFinished) {
-                long time = millisUntilFinished / 1000;
-                textView.setText(String.valueOf(time));
-            }
-
-            public void onFinish() {
-                Intent intent = new Intent(Join.this, Game.class);
-                startActivity(intent);
-            }
-        }.start();
-    }
-
     private void setBluetoothDeviceLists() {
         ViewGroup parent = (ViewGroup) findViewById(android.R.id.content);
         final View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_find_device, parent, false);
@@ -241,13 +229,13 @@ public class Join extends AppCompatActivity implements Lobby {
                 .create();
         findDeviceDialog.setCanceledOnTouchOutside(false);
 
-        dialogBar  = (ProgressBar) dialogView.findViewById(R.id.find_devices_bar);
+        dialogBar = (ProgressBar) dialogView.findViewById(R.id.find_devices_bar);
         ListView pairedList = (ListView) dialogView.findViewById(R.id.paired_devices);
         ListView discoveredList = (ListView) dialogView.findViewById(R.id.unpaired_devices);
         TextView noPairedDevices = (TextView) dialogView.findViewById(R.id.no_paired_devices_found);
         TextView noUnpairedDevices = (TextView) dialogView.findViewById(R.id.no_unpaired_devices_found);
 
-        paired = new BluetoothDeviceList(this,  pairedDevices, noPairedDevices);
+        paired = new BluetoothDeviceList(this, pairedDevices, noPairedDevices);
         discovered = new BluetoothDeviceList(this, discoveredDevices, noUnpairedDevices);
 
         pairedList.setAdapter(paired);
@@ -317,6 +305,29 @@ public class Join extends AppCompatActivity implements Lobby {
         finish();
     }
 
+    @Override
+    public void handleFullGame() {
+        ClientGameLogic.getInstance().quit();
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(Join.this, R.string.game_full_error, Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
+    }
+
+    @Override
+    public void quit() {
+        finish();
+    }
+
+    @Override
+    public Activity getActivity() {
+        return this;
+    }
+
     private final class ClientConnector extends AsyncTask<BluetoothDevice, Void, ConnectedDevice> {
         private final static String TAG = "BTClientConnector";
 
@@ -376,13 +387,19 @@ public class Join extends AppCompatActivity implements Lobby {
                     findDeviceDialog.dismiss();
                 } catch (IOException e) {
                     Log.e(TAG, "Could not send HELLO message to host: " + e.getMessage());
-                    Toast.makeText(Join.this, "Unable to communicate with the other device.",
+                    Toast.makeText(Join.this, R.string.communication_error,
                             Toast.LENGTH_LONG).show();
                 }
             } else {
-                Toast.makeText(Join.this, "Unable to connect to the other device.",
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(Join.this, R.string.connection_error, Toast.LENGTH_LONG).show();
             }
         }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        ClientGameLogic.getInstance().quit();
+        super.onBackPressed();
     }
 }

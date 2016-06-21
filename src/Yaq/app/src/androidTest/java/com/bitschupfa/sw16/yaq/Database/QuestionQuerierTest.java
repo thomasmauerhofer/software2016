@@ -1,7 +1,8 @@
 package com.bitschupfa.sw16.yaq.Database;
 
-import android.test.ActivityInstrumentationTestCase2;
+import android.test.AndroidTestCase;
 import android.test.RenamingDelegatingContext;
+import android.util.Log;
 
 import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
 import com.bitschupfa.sw16.yaq.database.object.Answer;
@@ -11,60 +12,69 @@ import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuestionQuerierTest extends ActivityInstrumentationTestCase2<QuestionQuerier> {
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
+public class QuestionQuerierTest extends AndroidTestCase {
     private QuestionQuerier questionQuerier;
+    private Realm realm;
 
     public QuestionQuerierTest() {
-        super(QuestionQuerier.class);
+        super();
     }
-
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        RenamingDelegatingContext context = new RenamingDelegatingContext(getInstrumentation().getContext(), "test");
-        questionQuerier = new QuestionQuerier(context);
+        RealmConfiguration config = new RealmConfiguration.Builder(getContext())
+                .name("yaq.realm")
+                .build();
+        Realm.setDefaultConfiguration(config);
+        realm = Realm.getDefaultInstance();
+        questionQuerier = new QuestionQuerier(realm);
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        realm.close();
     }
 
     public void testAllQuestionsFromCatalog() {
-        List<TextQuestion> textQuestionList = questionQuerier.getAllQuestionsFromCatalog(1);
+        List<QuestionCatalog> catalogs = questionQuerier.getAllQuestionCatalogs();
+        Log.e("catalogs", "catalog size: " + catalogs.size());
+        List<TextQuestion> textQuestionList = questionQuerier.getAllQuestionsFromCatalog(catalogs.get(0).getCatalogID());
         testAllQuestionsFromCatalogGeneric(textQuestionList, null, null);
     }
 
     public void testAllQuestionsFromCatalogGeneric(List<TextQuestion> textQuestionList, Integer referenceCatalogID, Integer referenceDifficulty) {
-        assertTrue("Should be more than one element", textQuestionList.size() > 0);
+        assertTrue("Should be more than zero elements", (textQuestionList != null && textQuestionList.size() > 0));
 
-        for(TextQuestion textQuestion : textQuestionList){
+        for (TextQuestion textQuestion : textQuestionList) {
             String question = textQuestion.getQuestion();
             int catalogID = textQuestion.getCatalogID();
-            int difficulty = textQuestion.getDifficulty();
             List<Answer> answers = textQuestion.getAnswers();
 
             assertNotNull("Question shouldn't be null", question);
             assertTrue("Question shouldn't be empty", !question.equals(""));
-            assertTrue("Difficulty should be between 1 and 3", difficulty >= 1 && difficulty <= 3);
 
-            if(referenceCatalogID != null){
+            if (referenceCatalogID != null) {
                 assertTrue("CatalogID should be same as referenceCatalogID", referenceCatalogID == catalogID);
             }
 
-            if(referenceDifficulty != null){
-                assertTrue("Difficulty should be same as referenceDifficulty", difficulty == referenceDifficulty);
-            }
-
-
             for(Answer answer : answers){
-                int answerValue = answer.getRightAnswerValue();
-                assertTrue("Is right answer should be between -10 and 10", answerValue >= -10 && difficulty <= 10);
+                int answerValue = answer.getAnswerValue();
+
+                assertTrue("Is right answer should be between -10 and 10", answerValue >= -10);
             }
         }
     }
 
-    public void testGetQuestionCatalogGeneric(List<QuestionCatalog> questionCatalogList, boolean onlyNameAndID, Integer referenceCatalogID, Integer referenceDifficulty){
-        assertTrue("Should be more than one element", questionCatalogList.size() > 0);
+    public void testGetQuestionCatalogGeneric(List<QuestionCatalog> questionCatalogList, boolean onlyNameAndID, Integer referenceCatalogID, Integer referenceDifficulty) {
+        assertTrue("Should be more than zero elements", questionCatalogList.size() > 0);
 
-        if(!onlyNameAndID){
-            for(QuestionCatalog questionCatalog : questionCatalogList){
+        if (!onlyNameAndID) {
+            for (QuestionCatalog questionCatalog : questionCatalogList) {
 
                 List<TextQuestion> textQuestionList = questionCatalog.getTextQuestionList();
                 testAllQuestionsFromCatalogGeneric(textQuestionList, referenceCatalogID, referenceDifficulty);
@@ -75,72 +85,41 @@ public class QuestionQuerierTest extends ActivityInstrumentationTestCase2<Questi
         }
     }
 
-    public void testGetAllQuestionCatalogsGeneric(boolean onlyNameAndID){
+    public void testGetAllQuestionCatalogsGeneric(boolean onlyNameAndID) {
         List<QuestionCatalog> questionCatalogList = questionQuerier.getAllQuestionCatalogs();
         testGetQuestionCatalogGeneric(questionCatalogList, onlyNameAndID, null, null);
     }
 
-    public void testGetAllQuestionCatalogs(){
+    public void testGetAllQuestionCatalogs() {
         testGetAllQuestionCatalogsGeneric(false);
     }
 
-    public void testGetAllQuestionCatalogsOnlyIdAndName(){
+    public void testGetAllQuestionCatalogsOnlyIdAndName() {
         testGetAllQuestionCatalogsGeneric(true);
     }
 
-    public void testGetAllQuestionsFromCatalog1ByDifficulty1(){
-        List<TextQuestion> textQuestionList = questionQuerier.getAllQuestionsFromCatalogByDifficulty(1, 1);
-        testAllQuestionsFromCatalogGeneric(textQuestionList, 1, 1);
-    }
-
-    public void testGetAllQuestionsFromCatalog1ByDifficulty2(){
-        List<TextQuestion> textQuestionList = questionQuerier.getAllQuestionsFromCatalogByDifficulty(1,2);
-        testAllQuestionsFromCatalogGeneric(textQuestionList, 1, 2);
-    }
-
-    public void testGetAllQuestionsFromCatalog1ByDifficulty3(){
-        List<TextQuestion> textQuestionList = questionQuerier.getAllQuestionsFromCatalogByDifficulty(1,3);
-        testAllQuestionsFromCatalogGeneric(textQuestionList, 1, 3);
-    }
-
-    public void testGetAllQuestionsFromCatalog2ByDifficulty1(){
-        List<TextQuestion> textQuestionList = questionQuerier.getAllQuestionsFromCatalogByDifficulty(2,1);
-        testAllQuestionsFromCatalogGeneric(textQuestionList, 2, 1);
-    }
-
-    public void testGetAllQuestionsFromCatalog2ByDifficulty2(){
-        List<TextQuestion> textQuestionList = questionQuerier.getAllQuestionsFromCatalogByDifficulty(2,2);
-        testAllQuestionsFromCatalogGeneric(textQuestionList, 2, 2);
-    }
-
-    public void testGetAllQuestionsFromCatalog2ByDifficulty3(){
-        List<TextQuestion> textQuestionList = questionQuerier.getAllQuestionsFromCatalogByDifficulty(2,3);
-        testAllQuestionsFromCatalogGeneric(textQuestionList, 2, 3);
-
-    }
-
-    public void testGetQuestionsCatalogById1(){
+    public void testGetQuestionsCatalogById1() {
         QuestionCatalog questionCatalog = questionQuerier.getQuestionCatalogById(1);
         List<QuestionCatalog> questionCatalogList = new ArrayList<>();
         questionCatalogList.add(questionCatalog);
         testGetQuestionCatalogGeneric(questionCatalogList, true, 1, null);
     }
 
-    public void testGetQuestionsCatalogById2(){
+    public void testGetQuestionsCatalogById2() {
         QuestionCatalog questionCatalog = questionQuerier.getQuestionCatalogById(2);
         List<QuestionCatalog> questionCatalogList = new ArrayList<>();
         questionCatalogList.add(questionCatalog);
         testGetQuestionCatalogGeneric(questionCatalogList, true, 2, null);
     }
 
-    public void testGetQuestionsCatalogById1AndDifficulty1(){
+    public void testGetQuestionsCatalogById1AndDifficulty1() {
         QuestionCatalog questionCatalog = questionQuerier.getQuestionCatalogById(2);
         List<QuestionCatalog> questionCatalogList = new ArrayList<>();
         questionCatalogList.add(questionCatalog);
         testGetQuestionCatalogGeneric(questionCatalogList, true, 2, 1);
     }
 
-    public void testGetQuestionsCatalogById1AndDifficulty2(){
+    public void testGetQuestionsCatalogById1AndDifficulty2() {
         QuestionCatalog questionCatalog = questionQuerier.getQuestionCatalogById(2);
         List<QuestionCatalog> questionCatalogList = new ArrayList<>();
         questionCatalogList.add(questionCatalog);
@@ -148,14 +127,14 @@ public class QuestionQuerierTest extends ActivityInstrumentationTestCase2<Questi
     }
 
 
-    public void testGetQuestionsCatalogById2AndDifficulty1(){
+    public void testGetQuestionsCatalogById2AndDifficulty1() {
         QuestionCatalog questionCatalog = questionQuerier.getQuestionCatalogById(2);
         List<QuestionCatalog> questionCatalogList = new ArrayList<>();
         questionCatalogList.add(questionCatalog);
         testGetQuestionCatalogGeneric(questionCatalogList, true, 2, 1);
     }
 
-    public void testGetQuestionsCatalogById2AndDifficulty2(){
+    public void testGetQuestionsCatalogById2AndDifficulty2() {
         QuestionCatalog questionCatalog = questionQuerier.getQuestionCatalogById(2);
         List<QuestionCatalog> questionCatalogList = new ArrayList<>();
         questionCatalogList.add(questionCatalog);

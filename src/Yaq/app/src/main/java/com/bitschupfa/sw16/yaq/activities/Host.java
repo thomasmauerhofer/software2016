@@ -9,9 +9,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.MediaRouteActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,24 +24,32 @@ import com.bitschupfa.sw16.yaq.bluetooth.ConnectionListener;
 import com.bitschupfa.sw16.yaq.communication.ConnectedClientDevice;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
 import com.bitschupfa.sw16.yaq.communication.ConnectedHostDevice;
-import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
 import com.bitschupfa.sw16.yaq.game.ClientGameLogic;
 import com.bitschupfa.sw16.yaq.game.HostGameLogic;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfileStorage;
+import com.bitschupfa.sw16.yaq.ui.HostCloseConnectionDialog;
 import com.bitschupfa.sw16.yaq.ui.PlayerList;
-import com.bitschupfa.sw16.yaq.utils.Quiz;
+import com.bitschupfa.sw16.yaq.utils.CastHelper;
+import com.bitschupfa.sw16.yaq.utils.QuizFactory;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Host extends AppCompatActivity implements Lobby {
+public class Host extends YaqActivity implements Lobby {
+    private static final String TAG = "HOST";
+
     private static final int REQUEST_ENABLE_DISCOVERABLE_BT = 42;
+    private static final int BUILD_QUIZ = 1;
 
     private final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
     private final ConnectionListener btConnectionListener = new ConnectionListener();
     private PlayerList playerList = new PlayerList(this);
+
+    private CastHelper castHelper;
+
+    private ServerSocket fakeHost = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +57,10 @@ public class Host extends AppCompatActivity implements Lobby {
         setContentView(R.layout.activity_host);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        TextView numberOfQuestions = (TextView) findViewById(R.id.numberOfQuestions);
+        numberOfQuestions.setText(getResources().getString(R.string.numberQuestionsText) + " " + QuizFactory.instance().getSmallestNumberOfQuestions());
 
         ClientGameLogic.getInstance().setLobbyActivity(this);
 
@@ -53,12 +68,28 @@ public class Host extends AppCompatActivity implements Lobby {
             new Thread(btConnectionListener, "BT Connection Listener Thread").start();
             TextView hostnameLabel = (TextView) findViewById(R.id.lbl_hostname);
             if (hostnameLabel != null) {
-                hostnameLabel.append(btAdapter.getName());
+                hostnameLabel.append(" " + btAdapter.getName());
             }
         }
-
-        HostGameLogic.getInstance().setQuiz(this.buildTmpQuiz());
         selfConnectionHack();
+        castHelper = CastHelper.getInstance(getApplicationContext(), CastHelper.GameState.LOBBY);
+        handleTheme();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main_menu, menu);
+        MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
+        MediaRouteActionProvider mediaRouteActionProvider =
+                (MediaRouteActionProvider) MenuItemCompat.getActionProvider(mediaRouteMenuItem);
+        mediaRouteActionProvider.setRouteSelector(castHelper.mMediaRouteSelector);
+        return true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        castHelper.addCallbacks();
     }
 
     @Override
@@ -69,12 +100,18 @@ public class Host extends AppCompatActivity implements Lobby {
     }
 
     public void startButtonClicked(View view) {
+        if (QuizFactory.instance().getSmallestNumberOfQuestions() == 0) {
+            Toast.makeText(this, R.string.noQuestionsSelected, Toast.LENGTH_LONG).show();
+            return;
+        }
+        HostGameLogic.getInstance().setQuiz(QuizFactory.instance().createNewQuiz());
         HostGameLogic.getInstance().startGame();
     }
 
     @SuppressWarnings("UnusedParameters")
     public void buildQuizButtonClicked(View view) {
-        Toast.makeText(this, R.string.not_implemented, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(Host.this, BuildQuiz.class);
+        startActivityForResult(intent, BUILD_QUIZ);
     }
 
     @SuppressWarnings("UnusedParameters")
@@ -87,9 +124,9 @@ public class Host extends AppCompatActivity implements Lobby {
 
         if (btAdapter == null) {
             new AlertDialog.Builder(this)
-                    .setTitle("Error")
+                    .setTitle(R.string.error)
                     .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setMessage("Bluetooth is not supported on this device.")
+                    .setMessage(R.string.bluetooth_not_supported_error)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -121,6 +158,10 @@ public class Host extends AppCompatActivity implements Lobby {
                     Log.d("BT", "Could not enable discoverability.");
                     finish();
                 }
+                break;
+            case BUILD_QUIZ:
+                TextView numberOfQuestions = (TextView) findViewById(R.id.numberOfQuestions);
+                numberOfQuestions.setText(getResources().getString(R.string.numberQuestionsText) + " " + QuizFactory.instance().getSmallestNumberOfQuestions());
                 break;
             default:
                 Log.d("Host:onActivityResult", "unknown requestCode: " + resultCode);
@@ -163,6 +204,28 @@ public class Host extends AppCompatActivity implements Lobby {
         finish();
     }
 
+    @Override
+    public void handleFullGame() {
+        // the host is always part of the game
+    }
+
+    @Override
+    public void quit() {
+        try {
+            fakeHost.close();
+            btConnectionListener.close();
+        } catch (IOException e) {
+            Log.e(TAG, "Error while activity closed!");
+        }
+        finish();
+
+    }
+
+    @Override
+    public Activity getActivity() {
+        return this;
+    }
+
     private void selfConnectionHack() {
         final int fakeHostPort = 7777;
         final Activity activity = this;
@@ -170,7 +233,7 @@ public class Host extends AppCompatActivity implements Lobby {
             @Override
             public void run() {
                 try {
-                    ServerSocket fakeHost = new ServerSocket(fakeHostPort);
+                    fakeHost = new ServerSocket(fakeHostPort);
                     Socket socket = fakeHost.accept();
                     ConnectedDevice client = new ConnectedClientDevice("localhost", socket,
                             HostGameLogic.getInstance()
@@ -211,10 +274,19 @@ public class Host extends AppCompatActivity implements Lobby {
         }).start();
     }
 
-    private Quiz buildTmpQuiz() {
-        Quiz quiz = new Quiz();
-        QuestionQuerier questionQuerier = new QuestionQuerier(this);
-        quiz.addQuestions(questionQuerier.getAllQuestionsFromCatalog(1));
-        return quiz;
+    @Override
+    public void onBackPressed() {
+        if(HostGameLogic.getInstance().getPlayers().getPlayers().size() > 1) {
+            new HostCloseConnectionDialog(this, castHelper).show(getFragmentManager(), TAG);
+        } else {
+            try {
+                HostGameLogic.getInstance().quit(getResources().getString(R.string.connectionClosedByHost));
+                fakeHost.close();
+                btConnectionListener.close();
+            } catch (IOException e) {
+                Log.e(TAG, "Error while BackButton pressed!");
+            }
+        }
+        castHelper.teardown(false);
     }
 }

@@ -31,21 +31,27 @@ public class BluetoothDeviceList extends ArrayAdapter<BluetoothDevice> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
-        if(convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            if ((listText.getVisibility() == View.VISIBLE) && !devices.isEmpty()) {
-                listText.setVisibility(View.INVISIBLE);
-            } else if ((listText.getVisibility() == View.INVISIBLE) && devices.isEmpty()) {
-                listText.setVisibility(View.VISIBLE);
-            }
-
-            convertView = inflater.inflate(R.layout.list_bluetooth_device, parent, false);
-            TextView deviceName = (TextView) convertView.findViewById(R.id.bluetoothEntry);
-
-            deviceName.setText(devices.get(position).getName());
+        View view = convertView;
+        if (view == null) {
+            LayoutInflater vi = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            view = vi.inflate(R.layout.list_bluetooth_device, parent, false);
         }
-        return convertView;
+
+        if ((listText.getVisibility() == View.VISIBLE) && !devices.isEmpty()) {
+            listText.setVisibility(View.INVISIBLE);
+        } else if ((listText.getVisibility() == View.INVISIBLE) && devices.isEmpty()) {
+            listText.setVisibility(View.VISIBLE);
+        }
+
+        String item = devices.get(position).getName();
+        if (item != null) {
+            TextView deviceName = (TextView) view.findViewById(R.id.bluetoothEntry);
+
+            if (deviceName != null) {
+                deviceName.setText(item);
+            }
+        }
+
+        return view;
     }
 }

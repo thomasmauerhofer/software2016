@@ -6,18 +6,15 @@ import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
 
 
-public class Player implements Comparable<Player>{
+public class Player implements Comparable<Player> {
     private final ConnectedDevice device;
-    private PlayerProfile profile;
+    private final PlayerProfile profile;
     private int score;
 
-    public Player(@NonNull ConnectedDevice device) {
+    public Player(@NonNull ConnectedDevice device, @NonNull PlayerProfile profile) {
         this.device = device;
-        this.score = 0;
-    }
-
-    public void setProfile(PlayerProfile profile) {
         this.profile = profile;
+        this.score = 0;
     }
 
     public void addScore(int score) {

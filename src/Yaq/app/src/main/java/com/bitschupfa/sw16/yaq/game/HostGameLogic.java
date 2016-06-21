@@ -3,11 +3,14 @@ package com.bitschupfa.sw16.yaq.game;
 
 import android.util.Log;
 
+import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.activities.GameAtHost;
 import com.bitschupfa.sw16.yaq.communication.ClientMessageHandler;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
+import com.bitschupfa.sw16.yaq.communication.Errors;
 import com.bitschupfa.sw16.yaq.communication.messages.ANSWERMessage;
 import com.bitschupfa.sw16.yaq.communication.messages.ENDGAMEMessage;
+import com.bitschupfa.sw16.yaq.communication.messages.ERRORMessage;
 import com.bitschupfa.sw16.yaq.communication.messages.Message;
 import com.bitschupfa.sw16.yaq.communication.messages.NEWPLAYERMessage;
 import com.bitschupfa.sw16.yaq.communication.messages.QUESTIONMessage;
@@ -15,14 +18,17 @@ import com.bitschupfa.sw16.yaq.communication.messages.STARTGAMEMessage;
 import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
+import com.bitschupfa.sw16.yaq.ui.RankingItem;
 import com.bitschupfa.sw16.yaq.utils.AnswerCollector;
+import com.bitschupfa.sw16.yaq.utils.CastHelper;
 import com.bitschupfa.sw16.yaq.utils.Quiz;
+import com.bitschupfa.sw16.yaq.utils.QuizFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 
 
-// TODO Handle disconnect of user(Remove from all maps, and answerCollector)
 public class HostGameLogic implements ClientMessageHandler {
     private static final String TAG = "HostGameLogic";
     private static final HostGameLogic instance = new HostGameLogic();
@@ -34,6 +40,8 @@ public class HostGameLogic implements ClientMessageHandler {
     private AnswerCollector answerCollector = new AnswerCollector();
     private TextQuestion currentQuestion;
 
+    private CastHelper castHelper;
+
     public static HostGameLogic getInstance() {
         return instance;
     }
@@ -43,10 +51,16 @@ public class HostGameLogic implements ClientMessageHandler {
 
     public void setGameActivity(GameAtHost gameActivity) {
         this.gameActivity = gameActivity;
+        this.castHelper = CastHelper.getInstance(gameActivity.getApplicationContext(), CastHelper.GameState.GAME);
     }
 
     public void setQuiz(Quiz quiz) {
         this.quiz = quiz;
+        this.quiz.resetQuiz();
+    }
+
+    public Quiz getQuiz() {
+        return quiz;
     }
 
     public void setTimeout(int timeout) {
@@ -55,13 +69,18 @@ public class HostGameLogic implements ClientMessageHandler {
 
     @Override
     public void askNextQuestion() {
-        if(quiz.hasNext()) {
+        if (quiz.hasNext()) {
             currentQuestion = quiz.next();
             currentQuestion.shuffleAnswers();
             answerCollector.init(players.getPlayerIds());
             sendMessageToClients(new QUESTIONMessage(currentQuestion, timeout));
+            castHelper.setQuestionToDisplay(currentQuestion);
+            castHelper.sendTextQuestion(currentQuestion);
         } else {
-            sendMessageToClients(new ENDGAMEMessage(players.getSortedScoreList()));
+            ArrayList<RankingItem> scoreboard = players.getSortedScoreList();
+            sendMessageToClients(new ENDGAMEMessage(scoreboard));
+            castHelper.setScoreboardToDisplay(scoreboard);
+            castHelper.sendScoreboard(scoreboard);
         }
     }
 
@@ -69,14 +88,23 @@ public class HostGameLogic implements ClientMessageHandler {
     public void registerConnectedDevice(ConnectedDevice client) {
         Log.d(TAG, "added new connected client device: " + client.getAddress());
         new Thread(client).start();
-        players.addPlayer(client.getAddress(), client);
+        players.registerConnectedDevice(client.getAddress(), client);
     }
 
     @Override
     public void registerClient(String id, PlayerProfile profile) {
-        players.getPlayer(id).setProfile(profile);
-        String[] playersNames = players.getPlayerNames().toArray(new String[players.getNumberOfPlayers()]);
-        sendMessageToClients(new NEWPLAYERMessage(playersNames));
+        try {
+            players.addPlayer(id, profile);
+            String[] playersNames = players.getPlayerNames().toArray(new String[players.getNumberOfPlayers()]);
+            sendMessageToClients(new NEWPLAYERMessage(playersNames));
+        } catch (IllegalStateException e) {
+            try {
+                ConnectedDevice device = players.unregisterConnectedDevice(id);
+                device.sendMessage(new ERRORMessage(Errors.GAME_FULL, e.getMessage()));
+            } catch (IOException ioe) {
+                Log.e(TAG, ioe.getMessage());
+            }
+        }
     }
 
     @Override
@@ -90,23 +118,43 @@ public class HostGameLogic implements ClientMessageHandler {
         answerCollector.addAnswerForPlayer(address, answer);
     }
 
+    public PlayerList getPlayers() {
+        return players;
+    }
+
     @Override
     public void clientQuits(String id) {
         players.removePlayer(id);
         answerCollector.removePlayer(id);
+        String[] playersNames = players.getPlayerNames().toArray(new String[players.getNumberOfPlayers()]);
+        sendMessageToClients(new NEWPLAYERMessage(playersNames));
     }
 
     @Override
-    public void quit() {
+    public void handleError(Errors error, String message) {
+        Log.e(TAG, "received error message from client: " + message);
+    }
+
+    @Override
+    public void playAgain() {
+        String[] playersNames = players.getPlayerNames().toArray(new String[players.getNumberOfPlayers()]);
+        sendMessageToClients(new NEWPLAYERMessage(playersNames));
+    }
+
+    @Override
+    public void quit(String msg) {
+        QuizFactory.instance().clearQuiz();
+        QuizFactory.instance().setNumberOfQuestions(10);
+        ClientGameLogic.getInstance().quit();
+
+        disconnectAllClients(msg);
         quiz = null;
-        gameActivity = null;
-        players.clear();
-        answerCollector = null;
+        //answerCollector = null;
         currentQuestion = null;
     }
 
-    private void sendMessageToClients(Message message) {
-        for(Player player : players.getPlayers()) {
+    public void sendMessageToClients(Message message) {
+        for (Player player : players.getPlayers()) {
             try {
                 player.getDevice().sendMessage(message);
             } catch (IOException e) {
@@ -116,11 +164,30 @@ public class HostGameLogic implements ClientMessageHandler {
         }
     }
 
+    private void disconnectAllClients(String msg) {
+        try {
+            for (Player player : players.getPlayers()) {
+                if(msg != null && player.getDevice().getAddress() != "localhost") {
+                    player.getDevice().sendMessage(
+                            new ERRORMessage(Errors.SHOW_MESSAGE, msg));
+                }
+                player.getDevice().disconnect();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error occurs while disconnect devices...");
+        }
+        players.clear();
+    }
+
     public void questionFinished() {
+        if(currentQuestion == null) {
+            return;
+        }
+
         Answer mostCorrectAnswer = currentQuestion.getAnswers().get(0);
         for (int i = 1; i < currentQuestion.getAnswers().size(); ++i) {
             Answer tmp = currentQuestion.getAnswers().get(i);
-            if (mostCorrectAnswer.getRightAnswerValue() < tmp.getRightAnswerValue()) {
+            if (mostCorrectAnswer.getAnswerValue() < tmp.getAnswerValue()) {
                 mostCorrectAnswer = tmp;
             }
         }
@@ -128,7 +195,7 @@ public class HostGameLogic implements ClientMessageHandler {
             String id = entry.getKey();
             Answer answer = entry.getValue();
 
-            players.getPlayer(id).addScore(answer.getRightAnswerValue());
+            players.getPlayer(id).addScore(answer.getAnswerValue());
 
             if (!answer.isCorrectAnswer()) {
                 answer = mostCorrectAnswer;
@@ -141,5 +208,7 @@ public class HostGameLogic implements ClientMessageHandler {
             }
         }
         gameActivity.enableShowNextQuestion(true);
+
+        castHelper.sendShowCorrectAnswers();
     }
 }

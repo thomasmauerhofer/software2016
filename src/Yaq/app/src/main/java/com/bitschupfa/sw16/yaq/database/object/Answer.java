@@ -2,14 +2,19 @@ package com.bitschupfa.sw16.yaq.database.object;
 
 import java.io.Serializable;
 
+import io.realm.RealmObject;
 
-public class Answer implements Serializable{
+
+public class Answer extends RealmObject implements Serializable {
     private String answer;
     private int answerValue;
 
-    public Answer(String answer, int isRightAnswer) {
+    public Answer() {
+    }
+
+    public Answer(String answer, int value) {
         this.answer = answer;
-        this.answerValue = isRightAnswer - 10;
+        this.answerValue = value;
     }
 
     public String getAnswerString() {
@@ -20,7 +25,7 @@ public class Answer implements Serializable{
         this.answer = answer;
     }
 
-    public int getRightAnswerValue() {
+    public int getAnswerValue() {
         return answerValue;
     }
 
@@ -40,7 +45,7 @@ public class Answer implements Serializable{
 
         if (o instanceof Answer) {
             Answer other = (Answer) o;
-            return answer.equals(other.getAnswerString()) && answerValue == other.getRightAnswerValue();
+            return answer.equals(other.getAnswerString()) && answerValue == other.getAnswerValue();
         }
 
         return false;

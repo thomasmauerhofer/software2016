@@ -19,19 +19,31 @@
         android:weightSum="1">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/hostname"
             android:id="@+id/lbl_hostname"
-            android:layout_marginBottom="15dp" />
+            android:paddingBottom="5dp"
+             />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/numberQuestionsText"
+            android:id="@+id/numberOfQuestions"
+            android:paddingBottom="15dp"
+             />
 
         <Button
             android:text="@string/build"
-            android:id="@+id/select"
-            android:background="@drawable/button_blue"
-            style="@style/button_text"
-            android:onClick="buildQuizButtonClicked"/>
+            android:id="@+id/host_select_button"
+            android:layout_margin="@dimen/button_margin"
+            android:theme="@style/defaultButton"
+            android:onClick="buildQuizButtonClicked"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent" />
 
         <TableLayout
             android:layout_width="match_parent"
@@ -47,7 +59,7 @@
                     android:layout_weight="1"
                     android:id="@+id/player1_name"
                     android:text="@string/player1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     style="@style/table_text_gray"
                     android:paddingLeft="10dp"
                     android:paddingRight="0dp"
@@ -55,16 +67,18 @@
                     android:paddingEnd="0dp"
                     android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/player_table_inactive"
+                    android:textColor="@color/grey500"
                     android:drawableLeft="@mipmap/icon_player_black"
                     android:drawableStart="@mipmap/icon_player_black"
-                    android:drawablePadding="5dp"/>
+                    android:drawablePadding="5dp"
+                    android:singleLine="true"
+                    android:ellipsize="end"/>
 
                 <TextView
                     android:layout_weight="1"
                     android:id="@+id/player2_name"
                     android:text="@string/player2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     style="@style/table_text_gray"
                     android:paddingLeft="10dp"
                     android:paddingRight="0dp"
@@ -72,10 +86,12 @@
                     android:paddingEnd="0dp"
                     android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/player_table_inactive"
+                    android:textColor="@color/grey500"
                     android:drawableLeft="@mipmap/icon_player_black"
                     android:drawableStart="@mipmap/icon_player_black"
-                    android:drawablePadding="5dp"/>
+                    android:drawablePadding="5dp"
+                    android:singleLine="true"
+                    android:ellipsize="end"/>
             </TableRow>
 
             <TableRow
@@ -87,7 +103,7 @@
                     android:layout_weight="1"
                     android:id="@+id/player3_name"
                     android:text="@string/player3"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     style="@style/table_text_gray"
                     android:paddingLeft="10dp"
                     android:paddingRight="0dp"
@@ -95,16 +111,18 @@
                     android:paddingEnd="0dp"
                     android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/player_table_inactive"
+                    android:textColor="@color/grey500"
                     android:drawableLeft="@mipmap/icon_player_black"
                     android:drawableStart="@mipmap/icon_player_black"
-                    android:drawablePadding="5dp"/>
+                    android:drawablePadding="5dp"
+                    android:singleLine="true"
+                    android:ellipsize="end"/>
 
                 <TextView
                     android:layout_weight="1"
                     android:id="@+id/player4_name"
                     android:text="@string/player4"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     style="@style/table_text_gray"
                     android:paddingLeft="10dp"
                     android:paddingRight="0dp"
@@ -112,10 +130,12 @@
                     android:paddingEnd="0dp"
                     android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/player_table_inactive"
+                    android:textColor="@color/grey500"
                     android:drawableLeft="@mipmap/icon_player_black"
                     android:drawableStart="@mipmap/icon_player_black"
-                    android:drawablePadding="5dp"/>
+                    android:drawablePadding="5dp"
+                    android:singleLine="true"
+                    android:ellipsize="end"/>
             </TableRow>
 
             <TableRow
@@ -127,7 +147,7 @@
                     android:layout_weight="1"
                     android:id="@+id/player5_name"
                     android:text="@string/player5"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     style="@style/table_text_gray"
                     android:paddingLeft="10dp"
                     android:paddingRight="0dp"
@@ -135,16 +155,18 @@
                     android:paddingEnd="0dp"
                     android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/player_table_inactive"
+                    android:textColor="@color/grey500"
                     android:drawableLeft="@mipmap/icon_player_black"
                     android:drawableStart="@mipmap/icon_player_black"
-                    android:drawablePadding="5dp"/>
+                    android:drawablePadding="5dp"
+                    android:singleLine="true"
+                    android:ellipsize="end"/>
 
                 <TextView
                     android:layout_weight="1"
                     android:id="@+id/player6_name"
                     android:text="@string/player6"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     style="@style/table_text_gray"
                     android:paddingLeft="10dp"
                     android:paddingRight="0dp"
@@ -152,10 +174,12 @@
                     android:paddingEnd="0dp"
                     android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/player_table_inactive"
+                    android:textColor="@color/grey500"
                     android:drawableLeft="@mipmap/icon_player_black"
                     android:drawableStart="@mipmap/icon_player_black"
-                    android:drawablePadding="5dp"/>
+                    android:drawablePadding="5dp"
+                    android:singleLine="true"
+                    android:ellipsize="end"/>
             </TableRow>
 
             <TableRow
@@ -167,7 +191,7 @@
                     android:layout_weight="1"
                     android:id="@+id/player7_name"
                     android:text="@string/player7"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     style="@style/table_text_gray"
                     android:paddingLeft="10dp"
                     android:paddingRight="0dp"
@@ -175,16 +199,18 @@
                     android:paddingEnd="0dp"
                     android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/player_table_inactive"
+                    android:textColor="@color/grey500"
                     android:drawableLeft="@mipmap/icon_player_black"
                     android:drawableStart="@mipmap/icon_player_black"
-                    android:drawablePadding="5dp"/>
+                    android:drawablePadding="5dp"
+                    android:singleLine="true"
+                    android:ellipsize="end"/>
 
                 <TextView
                     android:layout_weight="1"
                     android:id="@+id/player8_name"
                     android:text="@string/player8"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     style="@style/table_text_gray"
                     android:paddingLeft="10dp"
                     android:paddingRight="0dp"
@@ -192,10 +218,12 @@
                     android:paddingEnd="0dp"
                     android:textIsSelectable="false"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/player_table_inactive"
+                    android:textColor="@color/grey500"
                     android:drawableLeft="@mipmap/icon_player_black"
                     android:drawableStart="@mipmap/icon_player_black"
-                    android:drawablePadding="5dp"/>
+                    android:drawablePadding="5dp"
+                    android:singleLine="true"
+                    android:ellipsize="end"/>
             </TableRow>
         </TableLayout>
 
@@ -206,18 +234,22 @@
             android:gravity="center_horizontal">
 
             <Button
-                android:id="@+id/start_btn"
+                android:id="@+id/host_start_button"
                 android:text="@string/start_game"
-                android:background="@drawable/button_blue"
-                style="@style/button_text"
-                android:onClick="startButtonClicked"/>
+                android:layout_margin="@dimen/button_margin"
+                android:onClick="startButtonClicked"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
             <Button
-                android:id="@+id/advanced_btn"
+                android:id="@+id/host_advanced_button"
                 android:text="@string/advanced_settings"
-                android:background="@drawable/button_blue"
-                style="@style/button_text"
-                android:onClick="advancedSettingsButtonClicked"/>
+                android:layout_margin="@dimen/button_margin"
+                android:onClick="advancedSettingsButtonClicked"
+                android:theme="@style/defaultButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
 
         </LinearLayout>
 

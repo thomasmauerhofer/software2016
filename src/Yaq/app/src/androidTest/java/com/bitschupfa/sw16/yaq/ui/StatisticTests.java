@@ -6,6 +6,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.activities.Join;
 import com.bitschupfa.sw16.yaq.activities.Statistic;
+import com.bitschupfa.sw16.yaq.activities.StatisticsAtHost;
 import com.robotium.solo.Solo;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class StatisticTests extends ActivityInstrumentationTestCase2<Statistic> 
 
     @Override
     public void tearDown() throws Exception {
+        solo.finishOpenedActivities();
         super.tearDown();
     }
 
@@ -46,10 +48,6 @@ public class StatisticTests extends ActivityInstrumentationTestCase2<Statistic> 
     public void testStatisticWithScoreList() {
         assertTrue(solo.searchText("Tom"));
         assertTrue(solo.searchText("Matthias"));
-    }
-
-    public void testPlayAgainButton() {
-        solo.clickOnButton(getActivity().getResources().getString(R.string.play_again));
-        assertTrue("Wrong Activity!", solo.waitForActivity(Join.class));
+        assertTrue("Wrong activity", solo.waitForActivity(Statistic.class));
     }
 }

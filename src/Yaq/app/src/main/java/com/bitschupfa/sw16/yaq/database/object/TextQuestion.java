@@ -5,7 +5,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TextQuestion implements Serializable{
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class TextQuestion extends RealmObject implements Serializable {
+    @PrimaryKey
+    private int questionID;
 
     private String question;
     private int catalogID;
@@ -14,15 +19,16 @@ public class TextQuestion implements Serializable{
     private Answer answer3;
     private Answer answer4;
 
-    private int difficulty;
+    public TextQuestion() {
+    }
 
-    public TextQuestion(String question, Answer answer1, Answer answer2, Answer answer3, Answer answer4, int difficulty, int catalogID) {
+    public TextQuestion(int questionID, String question, Answer answer1, Answer answer2, Answer answer3, Answer answer4, int catalogID) {
+        this.questionID = questionID;
         this.question = question;
         this.answer1 = answer1;
         this.answer2 = answer2;
         this.answer3 = answer3;
         this.answer4 = answer4;
-        this.difficulty = difficulty;
         this.catalogID = catalogID;
     }
 
@@ -34,12 +40,12 @@ public class TextQuestion implements Serializable{
         this.question = question;
     }
 
-    public int getDifficulty() {
-        return difficulty;
+    public int getQuestionID() {
+        return questionID;
     }
 
-    public void setDifficulty(int difficulty) {
-        this.difficulty = difficulty;
+    public void setQuestionID(int questionID) {
+        this.questionID = questionID;
     }
 
     public List<Answer> getShuffledAnswers() {
@@ -68,13 +74,20 @@ public class TextQuestion implements Serializable{
     }
 
     public List<Answer> getAnswers() {
-        List<Answer> rightAnswers = new ArrayList<>();
-        rightAnswers.add(answer1);
-        rightAnswers.add(answer2);
-        rightAnswers.add(answer3);
-        rightAnswers.add(answer4);
+        List<Answer> answers = new ArrayList<>();
+        answers.add(answer1);
+        answers.add(answer2);
+        answers.add(answer3);
+        answers.add(answer4);
 
-        return rightAnswers;
+        return answers;
+    }
+
+    public void setAnswers(Answer answer1_, Answer answer2_, Answer answer3_, Answer answer4_) {
+        answer1 = answer1_;
+        answer2 = answer2_;
+        answer3 = answer3_;
+        answer4 = answer4_;
     }
 
     public int getCatalogID() {

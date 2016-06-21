@@ -22,7 +22,7 @@ public class AnswerCollector {
 
     public void init(Set<String> playerIds) {
         answers.clear();
-        for(String id : playerIds) {
+        for (String id : playerIds) {
             answers.put(id, noAnswer);
         }
     }
@@ -43,6 +43,10 @@ public class AnswerCollector {
     }
 
     private boolean isComplete() {
+        if(answers.values().size() == 0) {
+            return false;
+        }
+
         for (Answer answer : answers.values()) {
             if (answer == noAnswer) {
                 return false;

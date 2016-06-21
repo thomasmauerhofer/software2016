@@ -6,11 +6,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bitschupfa.sw16.yaq.R;
@@ -20,17 +22,22 @@ import com.soundcloud.android.crop.Crop;
 import java.io.File;
 import java.io.IOException;
 
-public class Profile extends AppCompatActivity {
+public class Profile extends YaqActivity {
     private final static String TAG = "ProfileActivity";
+    private final static int MAX_NAME_LENGTH = 26;
 
     private PlayerProfileStorage profile;
-    private EditText nameTextBox;
+    private TextView nameTextBox;
     private ImageView avatarImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         FloatingActionButton actionButton = (FloatingActionButton) findViewById(R.id.fab);
         nameTextBox = (EditText) findViewById(R.id.txt_playerName);
@@ -39,19 +46,45 @@ public class Profile extends AppCompatActivity {
 
         nameTextBox.setText(profile.getPlayerName());
         avatarImageView.setImageBitmap(profile.getPlayerAvatar());
+
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Crop.pickImage(Profile.this);
             }
         });
+        handleTheme();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.onOptionsItemSelected(item);
+                handleProfileNameUpdate();
+                startActivity(new Intent(Profile.this, MainMenu.class));
+                break;
+        }
+        return true;
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        handleProfileNameUpdate();
+        nameTextBox.setText(profile.getPlayerName());
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        handleProfileNameUpdate();
+    }
+
+    private void handleProfileNameUpdate() {
         String playerName = nameTextBox.getText().toString();
+        if (playerName.length() > MAX_NAME_LENGTH)
+            playerName = playerName.substring(0, MAX_NAME_LENGTH);
         if (!playerName.equals(profile.getPlayerName())) {
             profile.setPlayerName(playerName);
         }

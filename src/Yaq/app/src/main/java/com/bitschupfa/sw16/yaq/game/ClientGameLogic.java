@@ -1,11 +1,15 @@
 package com.bitschupfa.sw16.yaq.game;
 
 
+import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.bitschupfa.sw16.yaq.activities.Game;
 import com.bitschupfa.sw16.yaq.activities.Lobby;
+import com.bitschupfa.sw16.yaq.activities.Statistic;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
+import com.bitschupfa.sw16.yaq.communication.Errors;
 import com.bitschupfa.sw16.yaq.communication.HostMessageHandler;
 import com.bitschupfa.sw16.yaq.communication.messages.ANSWERMessage;
 import com.bitschupfa.sw16.yaq.communication.messages.HELLOMessage;
@@ -22,13 +26,14 @@ import java.util.concurrent.TimeUnit;
 
 public class ClientGameLogic implements HostMessageHandler {
     private static final String TAG = "ClientGameLogic";
-    private static final Answer noAnswer = new Answer("no answer", 10);
+    private static final Answer noAnswer = new Answer("no answer", 0);
     private static final ClientGameLogic instance = new ClientGameLogic();
     private final BlockingQueue<Answer> answerQueue = new ArrayBlockingQueue<>(1);
 
     private ConnectedDevice hostDevice;
     private Lobby lobbyActivity;
     private Game gameActivity;
+    private Statistic statisticActivity;
     private boolean isConnected = false;
 
 
@@ -45,10 +50,16 @@ public class ClientGameLogic implements HostMessageHandler {
 
     public void setLobbyActivity(Lobby lobby) {
         lobbyActivity = lobby;
+        gameActivity = null;
+        statisticActivity = null;
     }
 
     public void setGameActivity(Game game) {
         gameActivity = game;
+    }
+
+    public void setStatisticActivity(Statistic statistic) {
+        statisticActivity = statistic;
     }
 
     public void setConnectedHostDevice(ConnectedDevice connectedDevice) throws IOException {
@@ -81,7 +92,9 @@ public class ClientGameLogic implements HostMessageHandler {
 
         try {
             answer = answer == null ? noAnswer : answer;
-            hostDevice.sendMessage(new ANSWERMessage(answer));
+            if(hostDevice != null) {
+                hostDevice.sendMessage(new ANSWERMessage(answer));
+            }
         } catch (IOException e) {
             Log.e(TAG, "Could not send answer message to host: " + e.getMessage());
         }
@@ -93,20 +106,57 @@ public class ClientGameLogic implements HostMessageHandler {
 
     @Override
     public void showCorrectAnswer(Answer answer) {
+        if(gameActivity == null) {
+            return;
+        }
         gameActivity.showAnswer(answer);
     }
 
     @Override
     public void endGame(ArrayList<RankingItem> scoreList) {
+        if(gameActivity == null) {
+            return;
+        }
         gameActivity.showStatisticActivity(scoreList);
     }
 
     @Override
     public void quit() {
+        if(hostDevice == null)
+            return;
+
+        hostDevice.disconnect();
         isConnected = false;
-        gameActivity = null;
-        lobbyActivity = null;
         answerQueue.clear();
         hostDevice = null;
+
+        if(statisticActivity != null) {
+            statisticActivity.finish();
+        } else if(gameActivity != null) {
+            gameActivity.finish();
+        } else if (lobbyActivity != null) {
+            lobbyActivity.quit();
+        }
+    }
+
+    @Override
+    public void handleError(Errors error, final String message) {
+        if (error == Errors.GAME_FULL) {
+            lobbyActivity.handleFullGame();
+        } else if (error == Errors.SHOW_MESSAGE) {
+            lobbyActivity.getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(lobbyActivity.getActivity(), message, Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+    }
+
+    @Override
+    public void playAgain() {
+        Intent intent = new Intent(statisticActivity, lobbyActivity.getClass());
+        statisticActivity.startActivity(intent);
+        statisticActivity.finish();
     }
 }

@@ -12,19 +12,21 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView"
-            android:src="@mipmap/yak"
-            android:minHeight="380dp"
-            android:minWidth="300dp"
-            android:paddingBottom="20dp"
-            android:paddingTop="10dp"
+            android:id="@+id/logoImageView"
             android:layout_gravity="center"
             android:contentDescription="@string/player"/>
-
+        <TextView
+            android:text="@string/versionName"
+            android:layout_gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -34,16 +36,20 @@
 
             <Button
                 android:id="@+id/host_btn"
+                android:layout_margin="@dimen/button_margin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="@string/host"
-                android:background="@drawable/button_blue"
-                style="@style/button_text"
+                android:theme="@style/defaultButton"
                 android:onClick="hostButtonClicked"/>
 
             <Button
                 android:id="@+id/join_btn"
+                android:layout_margin="@dimen/button_margin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="@string/join"
-                android:background="@drawable/button_blue"
-                style="@style/button_text"
+                android:theme="@style/defaultButton"
                 android:onClick="joinButtonClicked"/>
 
         </LinearLayout>

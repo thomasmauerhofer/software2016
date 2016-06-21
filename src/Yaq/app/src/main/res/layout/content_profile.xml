@@ -12,32 +12,53 @@
     tools:context=".activities.Profile"
     tools:showIn="@layout/activity_profile">
 
-    <ImageView
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imgView_avatar"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:clickable="false"
-        android:minHeight="300dp"
-        android:minWidth="300dp"
-        android:maxHeight="300dp"
-        android:maxWidth="300dp"
-        android:layout_marginTop="20dp"
-        android:contentDescription="@string/profile"/>
+        android:id="@+id/profileFrameLayout"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentRight="false"
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:id="@+id/imgView_avatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:clickable="false"
+            android:contentDescription="@string/profile"
+            android:maxHeight="300dp"
+            android:maxWidth="300dp"
+            android:minHeight="300dp"
+            android:minWidth="300dp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/ic_add_a_photo_white_24dp" />
+    </FrameLayout>
 
     <EditText
+        android:id="@+id/txt_playerName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/txt_playerName"
-        android:layout_below="@+id/imgView_avatar"
-        android:layout_marginTop="10dp"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
-        android:hint="@string/player_name"
-        android:textStyle="bold"
+        android:layout_below="@+id/profileFrameLayout"
+        android:layout_marginTop="10dp"
         android:gravity="center"
-        android:inputType="text" />
+        android:hint="@string/player_name"
+        android:inputType="text"
+        android:textStyle="bold" />
 </RelativeLayout>
