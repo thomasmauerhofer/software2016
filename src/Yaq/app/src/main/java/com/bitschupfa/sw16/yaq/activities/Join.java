@@ -14,7 +14,6 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
@@ -53,8 +52,6 @@ public class Join extends YaqActivity implements Lobby {
     private final List<BluetoothDevice> discoveredDevices = new ArrayList<>();
 
     private PlayerList playerList;
-    private TextView textView;
-    private ProgressBar pBar;
 
     private AlertDialog findDeviceDialog;
     private BluetoothDeviceList discovered;
@@ -128,17 +125,6 @@ public class Join extends YaqActivity implements Lobby {
         }
 
         playerList = new PlayerList(this);
-        pBar = (ProgressBar) findViewById(R.id.loadingBar);
-        textView = (TextView) findViewById(R.id.textView);
-
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pBar.setVisibility(View.INVISIBLE);
-                textView.setTextSize(40);
-                startTimer();
-            }
-        });
 
         handleTheme();
     }
@@ -231,20 +217,6 @@ public class Join extends YaqActivity implements Lobby {
                 }
                 break;
         }
-    }
-
-    private void startTimer() {
-        new CountDownTimer(4000, 1000) {
-            public void onTick(long millisUntilFinished) {
-                long time = millisUntilFinished / 1000;
-                textView.setText(String.valueOf(time));
-            }
-
-            public void onFinish() {
-                Intent intent = new Intent(Join.this, Game.class);
-                startActivity(intent);
-            }
-        }.start();
     }
 
     private void setBluetoothDeviceLists() {
