@@ -135,7 +135,6 @@ public class ManageQuestions extends YaqActivity {
         if (actualQuestionCatalog != null) {
             builder.setTitle(getResources().getString(R.string.title_dialog_edit_catalog));
             input.setText(actualQuestionCatalog.getName());
-            input.selectAll();
             checkEasy.setChecked(actualQuestionCatalog.getDifficulty() == 1);
             checkMedium.setChecked(actualQuestionCatalog.getDifficulty() == 2);
             checkHard.setChecked(actualQuestionCatalog.getDifficulty() == 3);
@@ -201,7 +200,6 @@ public class ManageQuestions extends YaqActivity {
         switch (item.getItemId()) {
             case R.id.edit:
                 showEditDialog();
-                actualQuestionCatalog = null;
                 return true;
             case R.id.delete:
                 realm.beginTransaction();
