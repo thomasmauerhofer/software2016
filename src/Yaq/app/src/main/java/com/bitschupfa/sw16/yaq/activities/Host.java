@@ -276,6 +276,6 @@ public class Host extends YaqActivity implements Lobby {
 
     @Override
     public void onBackPressed() {
-        new HostCloseConnectionDialog(this, castHelper, fakeHost, btConnectionListener).show(getFragmentManager(), TAG);
+        new HostCloseConnectionDialog(this, castHelper, fakeHost, btConnectionListener, true).show(getFragmentManager(), TAG);
     }
 }

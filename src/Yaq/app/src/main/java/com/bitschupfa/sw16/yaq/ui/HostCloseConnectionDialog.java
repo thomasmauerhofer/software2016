@@ -11,6 +11,7 @@ import android.util.Log;
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.activities.GameAtHost;
 import com.bitschupfa.sw16.yaq.bluetooth.ConnectionListener;
+import com.bitschupfa.sw16.yaq.game.ClientGameLogic;
 import com.bitschupfa.sw16.yaq.game.HostGameLogic;
 import com.bitschupfa.sw16.yaq.utils.CastHelper;
 import com.bitschupfa.sw16.yaq.utils.QuizFactory;
@@ -25,18 +26,21 @@ public class HostCloseConnectionDialog extends DialogFragment {
     private CastHelper castHelper = null;
     private ServerSocket fakeHost = null;
     private ConnectionListener btConnectionListener = null;
+    private boolean isHost = false;
 
     public HostCloseConnectionDialog(Activity activity, CastHelper castHelper, ServerSocket fakeHost,
-                                     ConnectionListener btConnectionListener) {
+                                     ConnectionListener btConnectionListener, boolean isHost) {
         this.activity = activity;
         this.castHelper = castHelper;
         this.fakeHost = fakeHost;
         this.btConnectionListener = btConnectionListener;
+        this.isHost = isHost;
     }
 
-    public HostCloseConnectionDialog(Activity activity, CastHelper castHelper) {
+    public HostCloseConnectionDialog(Activity activity, CastHelper castHelper, boolean isHost) {
         this.activity = activity;
         this.castHelper = castHelper;
+        this.isHost = isHost;
     }
 
     @Override
@@ -46,7 +50,6 @@ public class HostCloseConnectionDialog extends DialogFragment {
         builder.setMessage(R.string.shouldConnectionBeClosed)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        activity.onBackPressed();
 
                         try {
                             QuizFactory.instance().clearQuiz();
@@ -59,6 +62,9 @@ public class HostCloseConnectionDialog extends DialogFragment {
 
                             if(btConnectionListener != null)
                                 btConnectionListener.close();
+
+                            if(isHost)
+                                ClientGameLogic.getInstance().quit();
                         } catch (IOException e) {
                             Log.e(TAG, "Error while BackButton pressed!");
                         }
