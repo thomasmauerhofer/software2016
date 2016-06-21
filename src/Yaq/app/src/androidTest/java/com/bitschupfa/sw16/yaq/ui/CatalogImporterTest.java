@@ -55,7 +55,7 @@ public class CatalogImporterTest extends ActivityInstrumentationTestCase2<MainMe
 
         assertNotNull("Imported catalog should not be null", importedCatalog);
         assertNotNull("Saved catalog should not be null", savedCatalog);
-        assertEquals("Catalog name should be equal", "TestCatalog", savedCatalog.getName());
+        assertEquals("Catalog name should be equal", "testCatalog", savedCatalog.getName());
         assertEquals("Catalog difficulty should be equal", 1, savedCatalog.getDifficulty());
 
         List<TextQuestion> textQuestionList = savedCatalog.getTextQuestionList();

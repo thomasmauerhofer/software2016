@@ -14,8 +14,11 @@ import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.game.HostGameLogic;
+import com.bitschupfa.sw16.yaq.utils.Quiz;
 import com.bitschupfa.sw16.yaq.utils.QuizFactory;
 import com.bitschupfa.sw16.yaq.utils.SoloWrapper;
+
+import java.util.ArrayList;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -60,6 +63,8 @@ public class HostTests extends ActivityInstrumentationTestCase2<Host> {
     }
 
     public void testStartGameButtonNoQuestions() {
+        QuizFactory.instance().clearQuiz();
+        HostGameLogic.getInstance().setQuiz(new Quiz(new ArrayList<TextQuestion>()));
         solo.clickOnButton(getActivity().getResources().getString(R.string.start_game));
         solo.sleep(500);
         assertTrue("Wrong Activity!", solo.waitForActivity(Host.class));

@@ -2,6 +2,7 @@ package com.bitschupfa.sw16.yaq.Database;
 
 import android.test.AndroidTestCase;
 import android.test.RenamingDelegatingContext;
+import android.util.Log;
 
 import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
 import com.bitschupfa.sw16.yaq.database.object.Answer;
@@ -40,12 +41,14 @@ public class QuestionQuerierTest extends AndroidTestCase {
     }
 
     public void testAllQuestionsFromCatalog() {
-        List<TextQuestion> textQuestionList = questionQuerier.getAllQuestionsFromCatalog(1);
+        List<QuestionCatalog> catalogs = questionQuerier.getAllQuestionCatalogs();
+        Log.e("catalogs", "catalog size: " + catalogs.size());
+        List<TextQuestion> textQuestionList = questionQuerier.getAllQuestionsFromCatalog(catalogs.get(0).getCatalogID());
         testAllQuestionsFromCatalogGeneric(textQuestionList, null, null);
     }
 
     public void testAllQuestionsFromCatalogGeneric(List<TextQuestion> textQuestionList, Integer referenceCatalogID, Integer referenceDifficulty) {
-        assertTrue("Should be more than one element", (textQuestionList != null && textQuestionList.size() > 0));
+        assertTrue("Should be more than zero elements", (textQuestionList != null && textQuestionList.size() > 0));
 
         for (TextQuestion textQuestion : textQuestionList) {
             String question = textQuestion.getQuestion();
@@ -68,7 +71,7 @@ public class QuestionQuerierTest extends AndroidTestCase {
     }
 
     public void testGetQuestionCatalogGeneric(List<QuestionCatalog> questionCatalogList, boolean onlyNameAndID, Integer referenceCatalogID, Integer referenceDifficulty) {
-        assertTrue("Should be more than one element", questionCatalogList.size() > 0);
+        assertTrue("Should be more than zero elements", questionCatalogList.size() > 0);
 
         if (!onlyNameAndID) {
             for (QuestionCatalog questionCatalog : questionCatalogList) {
