@@ -2,6 +2,7 @@ package com.bitschupfa.sw16.yaq.Database;
 
 import android.test.AndroidTestCase;
 import android.test.RenamingDelegatingContext;
+import android.util.Log;
 
 import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
 import com.bitschupfa.sw16.yaq.database.object.Answer;
@@ -11,8 +12,12 @@ import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 public class QuestionQuerierTest extends AndroidTestCase {
     private QuestionQuerier questionQuerier;
+    private Realm realm;
 
     public QuestionQuerierTest() {
         super();
@@ -21,17 +26,29 @@ public class QuestionQuerierTest extends AndroidTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        RenamingDelegatingContext context = new RenamingDelegatingContext(getContext(), "test");
-        questionQuerier = new QuestionQuerier(context);
+        RealmConfiguration config = new RealmConfiguration.Builder(getContext())
+                .name("yaq.realm")
+                .build();
+        Realm.setDefaultConfiguration(config);
+        realm = Realm.getDefaultInstance();
+        questionQuerier = new QuestionQuerier(realm);
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        realm.close();
     }
 
     public void testAllQuestionsFromCatalog() {
-        List<TextQuestion> textQuestionList = questionQuerier.getAllQuestionsFromCatalog(1);
+        List<QuestionCatalog> catalogs = questionQuerier.getAllQuestionCatalogs();
+        Log.e("catalogs", "catalog size: " + catalogs.size());
+        List<TextQuestion> textQuestionList = questionQuerier.getAllQuestionsFromCatalog(catalogs.get(0).getCatalogID());
         testAllQuestionsFromCatalogGeneric(textQuestionList, null, null);
     }
 
     public void testAllQuestionsFromCatalogGeneric(List<TextQuestion> textQuestionList, Integer referenceCatalogID, Integer referenceDifficulty) {
-        assertTrue("Should be more than one element", textQuestionList.size() > 0);
+        assertTrue("Should be more than zero elements", (textQuestionList != null && textQuestionList.size() > 0));
 
         for (TextQuestion textQuestion : textQuestionList) {
             String question = textQuestion.getQuestion();
@@ -54,7 +71,7 @@ public class QuestionQuerierTest extends AndroidTestCase {
     }
 
     public void testGetQuestionCatalogGeneric(List<QuestionCatalog> questionCatalogList, boolean onlyNameAndID, Integer referenceCatalogID, Integer referenceDifficulty) {
-        assertTrue("Should be more than one element", questionCatalogList.size() > 0);
+        assertTrue("Should be more than zero elements", questionCatalogList.size() > 0);
 
         if (!onlyNameAndID) {
             for (QuestionCatalog questionCatalog : questionCatalogList) {

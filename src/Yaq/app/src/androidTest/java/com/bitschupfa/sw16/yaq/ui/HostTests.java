@@ -11,13 +11,18 @@ import com.bitschupfa.sw16.yaq.activities.GameAtHost;
 import com.bitschupfa.sw16.yaq.activities.Host;
 import com.bitschupfa.sw16.yaq.activities.StatisticsAtHost;
 import com.bitschupfa.sw16.yaq.database.object.Answer;
+import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.game.HostGameLogic;
+import com.bitschupfa.sw16.yaq.utils.Quiz;
 import com.bitschupfa.sw16.yaq.utils.QuizFactory;
 import com.bitschupfa.sw16.yaq.utils.SoloWrapper;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmList;
 
 
 public class HostTests extends ActivityInstrumentationTestCase2<Host> {
@@ -26,6 +31,7 @@ public class HostTests extends ActivityInstrumentationTestCase2<Host> {
     private static final String WRONG2_TEXT = "wrong2";
     private static final String WRONG3_TEXT = "wrong3";
 
+    private Realm realm;
     private SoloWrapper solo;
 
     public HostTests() {
@@ -45,15 +51,20 @@ public class HostTests extends ActivityInstrumentationTestCase2<Host> {
                 throw new Exception("Bluetooth is not enabled..");
             }
         }
+
+        realm = Realm.getDefaultInstance();
     }
 
     @Override
     public void tearDown() throws Exception {
         solo.finishOpenedActivities();
+        realm.close();
         super.tearDown();
     }
 
     public void testStartGameButtonNoQuestions() {
+        QuizFactory.instance().clearQuiz();
+        HostGameLogic.getInstance().setQuiz(new Quiz(new ArrayList<TextQuestion>()));
         solo.clickOnButton(getActivity().getResources().getString(R.string.start_game));
         solo.sleep(500);
         assertTrue("Wrong Activity!", solo.waitForActivity(Host.class));
@@ -120,10 +131,13 @@ public class HostTests extends ActivityInstrumentationTestCase2<Host> {
         Answer answer2 = new Answer(WRONG1_TEXT, 0);
         Answer answer3 = new Answer(WRONG2_TEXT, 0);
         Answer answer4 = new Answer(WRONG3_TEXT, 0);
-        List<TextQuestion> questions = new ArrayList<>();
-        questions.add(new TextQuestion(42, "Question1", answer1, answer2, answer3, answer4, 1));
+        RealmList<TextQuestion> questions = new RealmList<>();
+        TextQuestion question = new TextQuestion(42, "Question1", answer1, answer2, answer3, answer4, 1);
+        questions.add(question);
+        QuestionCatalog catalog = new QuestionCatalog(99, 1, "test", questions);
+
         QuizFactory.instance().clearQuiz();
-        QuizFactory.instance().addQuestions("test", questions);
+        QuizFactory.instance().addQuestions(catalog.getName(), questions);
         HostGameLogic.getInstance().setQuiz(QuizFactory.instance().createNewQuiz());
     }
 

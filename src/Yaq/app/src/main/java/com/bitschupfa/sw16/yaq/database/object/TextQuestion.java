@@ -5,15 +5,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TextQuestion implements Serializable {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
+public class TextQuestion extends RealmObject implements Serializable {
+    @PrimaryKey
     private int questionID;
+
     private String question;
     private int catalogID;
     private Answer answer1;
     private Answer answer2;
     private Answer answer3;
     private Answer answer4;
+
+    public TextQuestion() {
+    }
 
     public TextQuestion(int questionID, String question, Answer answer1, Answer answer2, Answer answer3, Answer answer4, int catalogID) {
         this.questionID = questionID;

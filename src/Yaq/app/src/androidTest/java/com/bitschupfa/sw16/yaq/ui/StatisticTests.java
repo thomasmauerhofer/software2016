@@ -6,6 +6,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.activities.Join;
 import com.bitschupfa.sw16.yaq.activities.Statistic;
+import com.bitschupfa.sw16.yaq.activities.StatisticsAtHost;
 import com.robotium.solo.Solo;
 
 import java.util.ArrayList;
@@ -47,5 +48,6 @@ public class StatisticTests extends ActivityInstrumentationTestCase2<Statistic> 
     public void testStatisticWithScoreList() {
         assertTrue(solo.searchText("Tom"));
         assertTrue(solo.searchText("Matthias"));
+        assertTrue("Wrong activity", solo.waitForActivity(Statistic.class));
     }
 }

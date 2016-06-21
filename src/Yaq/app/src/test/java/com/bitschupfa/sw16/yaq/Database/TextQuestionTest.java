@@ -29,7 +29,7 @@ public class TextQuestionTest {
         List<Answer> answerList = textQuestion.getAnswers();
         int i = 0;
         for(Answer answer : answerList){
-            assertEquals("Answer should be answer", answer.getAnswerValue(), answerValue[i++]);
+            assertEquals("Wrong answer value", answer.getAnswerValue(), answerValue[i++]);
         }
     }
 
