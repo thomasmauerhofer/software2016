@@ -25,8 +25,6 @@
             android:layout_height="wrap_content"
             android:hint="@string/hint_search_quiz"
             android:inputType="textVisiblePassword"
-            android:textColor="@color/colorPrimaryDark"
-            android:theme="@android:style/Theme.Holo"
             android:paddingTop="15dp"
             android:drawableLeft="@drawable/abc_ic_search_api_mtrl_alpha">
         </EditText>
@@ -34,16 +32,15 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:theme="@android:style/Theme.Holo">
+            android:gravity="center">
 
             <CheckBox
                 android:id="@+id/checkEasy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/checkEasy"
-                android:textColor="@color/colorPrimaryDark"
                 android:checked="true"
+                android:textColor="@color/grey900"
                 android:onClick="onCheckboxClicked"/>
 
             <CheckBox
@@ -51,8 +48,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/checkMedium"
-                android:textColor="@color/colorPrimaryDark"
                 android:checked="true"
+                android:textColor="@color/grey900"
                 android:onClick="onCheckboxClicked"/>
 
             <CheckBox
@@ -60,8 +57,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/checkHard"
-                android:textColor="@color/colorPrimaryDark"
                 android:checked="true"
+                android:textColor="@color/grey900"
                 android:onClick="onCheckboxClicked"/>
 
         </LinearLayout>
@@ -69,7 +66,6 @@
         <View
             android:layout_width="fill_parent"
             android:layout_height="5dip"
-            android:background="@color/colorPrimaryDark"
             android:id="@+id/line1" />
 
         <ListView

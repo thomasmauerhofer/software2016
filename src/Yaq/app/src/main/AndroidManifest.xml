@@ -77,16 +77,19 @@
         <activity
             android:name=".activities.ManageQuestions"
             android:label="@string/title_activity_show_catalogues"
+            android:parentActivityName=".activities.MainMenu"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.ShowQuestions"
             android:label="@string/title_activity_show_questions"
+            android:parentActivityName=".activities.ManageQuestions"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.EditQuestions"
             android:label="@string/title_activity_edit_questions"
+            android:parentActivityName=".activities.ShowQuestions"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <!--

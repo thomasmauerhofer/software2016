@@ -19,29 +19,29 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center"
-        android:theme="@android:style/Theme.Holo">
+        android:gravity="center">
 
         <RadioButton
             android:id="@+id/checkEasyDialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/checkEasy"
-            android:textColor="@color/colorPrimaryDark" />
+            android:textColor="@color/grey900" />
 
         <RadioButton
             android:id="@+id/checkMediumDialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/checkMedium"
-            android:textColor="@color/colorPrimaryDark" />
+            android:textColor="@color/grey900"
+            />
 
         <RadioButton
             android:id="@+id/checkHardDialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/checkHard"
-            android:textColor="@color/colorPrimaryDark" />
+            android:textColor="@color/grey900" />
 
     </RadioGroup>
 

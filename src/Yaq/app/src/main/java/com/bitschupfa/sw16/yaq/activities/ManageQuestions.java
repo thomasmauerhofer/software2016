@@ -49,6 +49,8 @@ public class ManageQuestions extends YaqActivity {
         setContentView(R.layout.activity_manage_questions);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         handleTheme();
 
         initSearchView();

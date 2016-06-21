@@ -36,6 +36,8 @@ public class ShowQuestions extends YaqActivity {
         setContentView(R.layout.activity_show_questions);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         handleTheme();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

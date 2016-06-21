@@ -154,7 +154,7 @@
                     android:layout_alignParentBottom="true"
                     android:text="@string/submit_quiz"
                     android:theme="@style/defaultButton"
-                    android:gravity="center_horizontal"
+                    android:gravity="center"
                     android:onClick="submitEditButtonClick">
                 </Button>
         </RelativeLayout>

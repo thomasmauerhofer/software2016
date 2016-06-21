@@ -33,11 +33,7 @@ public class RankingList extends ArrayAdapter<RankingItem> {
             TextView rank = (TextView) convertView.findViewById(R.id.rank);
             TextView player = (TextView) convertView.findViewById(R.id.player_name);
             TextView score = (TextView) convertView.findViewById(R.id.score);
-            if (position % 2 == 0) {
-                //  convertView.setBackgroundColor(activity.themeChooser.getThemeStorage().getPrimaryColor());
-            }
             rank.setText(String.valueOf(position + 1));
-            score.setBackgroundColor(activity.themeChooser.getThemeStorage().getPrimaryColor600());
             player.setText(items.get(position).getName());
             score.setText(String.valueOf(items.get(position).getScore()));
         }

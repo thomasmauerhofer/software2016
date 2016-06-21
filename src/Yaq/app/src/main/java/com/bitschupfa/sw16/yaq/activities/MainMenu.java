@@ -207,6 +207,9 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
         else if (requestCode == READ_REQUEST_CODE && resultCode != Activity.RESULT_OK) {
             Toast.makeText(this, R.string.import_not_successul, Toast.LENGTH_SHORT).show();
         }
+        else if ( requestCode == RESULT_FINISH){
+            finish();
+        }
     }
 
     @Override
