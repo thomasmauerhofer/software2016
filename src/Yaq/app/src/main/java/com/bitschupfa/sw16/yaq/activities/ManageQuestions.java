@@ -147,7 +147,6 @@ public class ManageQuestions extends YaqActivity {
                     actualQuestionCatalog.setDifficulty(getDifficulty());
                     QuestionCatalogDAO editQuestionCatalog = new QuestionCatalogDAO(actualQuestionCatalog);
                     editQuestionCatalog.editEntry(ManageQuestions.this);
-                    actualQuestionCatalog = null;
                 } else {
                     QuestionCatalog questionCatalog = new QuestionCatalog(0, getDifficulty(), input.getText().toString(), null);
                     QuestionCatalogDAO newQuestionCatalog = new QuestionCatalogDAO(questionCatalog);
@@ -191,11 +190,13 @@ public class ManageQuestions extends YaqActivity {
         switch (item.getItemId()) {
             case R.id.edit:
                 showEditDialog();
+                actualQuestionCatalog = null;
                 return true;
             case R.id.delete:
                 QuestionCatalogDAO deleteQuestionCatalog = new QuestionCatalogDAO(actualQuestionCatalog);
                 deleteQuestionCatalog.deleteEntry(ManageQuestions.this);
                 updateListView();
+                actualQuestionCatalog = null;
                 return true;
             default:
                 return super.onContextItemSelected(item);
