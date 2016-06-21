@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
@@ -18,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 import io.realm.Realm;
@@ -54,8 +56,7 @@ public class CatalogImporter {
         }
     }
 
-    public QuestionCatalog readFile(File file) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(file));
+    public QuestionCatalog readFileContents(BufferedReader br) {
         try {
             QuestionCatalog catalog = readCatalog(br);
             RealmList<TextQuestion> questions = new RealmList<>();
@@ -79,10 +80,19 @@ public class CatalogImporter {
             realm.commitTransaction();
             return catalog;
         } catch (Exception e) {
-            br.close();
             Log.e(CatalogImporter.class.getCanonicalName(), "Import of catalog failed. Error: " + e.getMessage());
             return null;
         }
+    }
+
+    public QuestionCatalog readFile(File file) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        return readFileContents(br);
+    }
+
+    public void readFile(String fileName) throws IOException {
+        readFileContents(new BufferedReader(
+                new InputStreamReader(activity.getAssets().open(fileName))));
     }
 
     public void readFile(Uri uri) throws IOException {
