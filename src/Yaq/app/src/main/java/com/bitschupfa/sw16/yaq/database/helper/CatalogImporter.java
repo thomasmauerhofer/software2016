@@ -125,11 +125,11 @@ public class CatalogImporter {
         }
     }
 
-    public void baseLineImport() {
+    public void baseLineImport(String fileName) {
         AssetManager am = activity.getBaseContext().getAssets();
         InputStream inputStream = null;
         try {
-            inputStream = am.open("Medizin.txt");
+            inputStream = am.open(fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }

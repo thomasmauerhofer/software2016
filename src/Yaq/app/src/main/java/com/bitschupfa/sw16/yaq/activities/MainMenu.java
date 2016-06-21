@@ -183,7 +183,8 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
 
         if (prefs.getBoolean("firstrun", true)) {
             CatalogImporter catalogImporter = new CatalogImporter(this);
-            catalogImporter.baseLineImport();
+            catalogImporter.baseLineImport("Medizin.txt");
+            catalogImporter.baseLineImport("general.txt");
             prefs.edit().putBoolean("firstrun", false).commit();
         }
 
