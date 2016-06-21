@@ -204,7 +204,7 @@ public class Join extends YaqActivity implements Lobby {
         }
         if (!btAdapter.startDiscovery()) {
             Log.e(TAG, "Could not start Bluetooth device discovery.");
-            Toast.makeText(Join.this, "Could not start device discovery", Toast.LENGTH_LONG).show();
+            Toast.makeText(Join.this, R.string.start_discovery_error, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -340,7 +340,7 @@ public class Join extends YaqActivity implements Lobby {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(Join.this, "Sorry, the game is already full", Toast.LENGTH_LONG).show();
+                Toast.makeText(Join.this, R.string.game_full_error, Toast.LENGTH_LONG).show();
                 finish();
             }
         });
@@ -415,12 +415,11 @@ public class Join extends YaqActivity implements Lobby {
                     findDeviceDialog.dismiss();
                 } catch (IOException e) {
                     Log.e(TAG, "Could not send HELLO message to host: " + e.getMessage());
-                    Toast.makeText(Join.this, "Unable to communicate with the other device.",
+                    Toast.makeText(Join.this, R.string.communication_error,
                             Toast.LENGTH_LONG).show();
                 }
             } else {
-                Toast.makeText(Join.this, "Unable to connect to the other device.",
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(Join.this, R.string.connection_error, Toast.LENGTH_LONG).show();
             }
         }
 
