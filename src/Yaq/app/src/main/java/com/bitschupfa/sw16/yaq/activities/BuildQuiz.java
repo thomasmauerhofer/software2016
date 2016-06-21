@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import io.realm.Realm;
+
 public class BuildQuiz extends YaqActivity {
 
     private static final int MIN_NUMBER_OF_QUESTIONS = 1;
@@ -41,6 +43,7 @@ public class BuildQuiz extends YaqActivity {
     private BuildQuizAdapter dataAdapter = null;
     private EditText searchText;
     private CastHelper castHelper;
+    private Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,8 @@ public class BuildQuiz extends YaqActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        realm = Realm.getDefaultInstance();
 
         initSearchView();
         initNumberPicker();
@@ -67,6 +72,12 @@ public class BuildQuiz extends YaqActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realm.close();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main_menu, menu);
         MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
@@ -77,7 +88,7 @@ public class BuildQuiz extends YaqActivity {
     }
 
     public void displayListView() {
-        questionQuerier = new QuestionQuerier(this);
+        questionQuerier = new QuestionQuerier(realm);
         questionCatalogList = questionQuerier.getAllQuestionCatalogs();
 
         for (QuestionCatalog catalog : questionCatalogList) {
@@ -164,7 +175,7 @@ public class BuildQuiz extends YaqActivity {
 
         for (QuestionCatalogItem catalog : dataAdapter.getCatalogItems()) {
             if (catalog.isChecked()) {
-                QuizFactory.instance().addQuestions(catalog.getCatalog().getName(), catalog.getCatalog().getTextQuestionList());
+                QuizFactory.instance().addQuestions(catalog.getCatalog().getName(), realm.copyFromRealm(catalog.getCatalog().getTextQuestionList()));
             }
         }
         finish();

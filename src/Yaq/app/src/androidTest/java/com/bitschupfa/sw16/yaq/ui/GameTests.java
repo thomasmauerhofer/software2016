@@ -21,10 +21,15 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmList;
+
 public class GameTests extends ActivityInstrumentationTestCase2<GameAtHost> {
 
     private Solo solo;
     private final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+    private Realm realm;
 
     public GameTests() {
         super(GameAtHost.class);
@@ -34,6 +39,11 @@ public class GameTests extends ActivityInstrumentationTestCase2<GameAtHost> {
     public void setUp() throws Exception {
         super.setUp();
         ClientGameLogic.getInstance().setLobbyActivity(new Host());
+        RealmConfiguration config = new RealmConfiguration.Builder(getActivity().getApplicationContext())
+                .name("yaq.realm")
+                .build();
+        Realm.setDefaultConfiguration(config);
+        realm = Realm.getDefaultInstance();
         //selfConnectionHack();
         initHostGameLogic();
         solo = new Solo(getInstrumentation(), getActivity());
@@ -43,8 +53,8 @@ public class GameTests extends ActivityInstrumentationTestCase2<GameAtHost> {
     @Override
     public void tearDown() throws Exception {
         solo.finishOpenedActivities();
+        realm.close();
         super.tearDown();
-
     }
 
 
@@ -89,8 +99,9 @@ public class GameTests extends ActivityInstrumentationTestCase2<GameAtHost> {
         Answer answer2 = new Answer("wrong1", 0);
         Answer answer3 = new Answer("wrong2", 0);
         Answer answer4 = new Answer("wrong3", 0);
-        List<TextQuestion> questions = new ArrayList<>();
+        RealmList<TextQuestion> questions = new RealmList<>();
         questions.add(new TextQuestion(42, "Question1", answer1, answer2, answer3, answer4, 1));
+
         QuizFactory.instance().addQuestions("text", questions);
         HostGameLogic.getInstance().setQuiz(QuizFactory.instance().createNewQuiz());
     }

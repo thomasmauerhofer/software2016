@@ -3,16 +3,19 @@ package com.bitschupfa.sw16.yaq.activities;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
-import com.bitschupfa.sw16.yaq.database.dao.TextQuestionDAO;
+import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
 import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
+
+import io.realm.Realm;
 
 public class EditQuestions extends YaqActivity {
 
@@ -30,7 +33,10 @@ public class EditQuestions extends YaqActivity {
     private TextView numberPickerLabel4;
 
     private TextQuestion textQuestion;
-    private QuestionCatalog catalog;
+    private int catalogId;
+
+    private Realm realm;
+    private QuestionQuerier questionQuerier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +46,21 @@ public class EditQuestions extends YaqActivity {
         setSupportActionBar(toolbar);
         handleTheme();
 
+        realm = Realm.getDefaultInstance();
+        questionQuerier = new QuestionQuerier(realm);
         displayQuestion();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realm.close();
+    }
+
     public void displayQuestion() {
-        catalog = (QuestionCatalog) getIntent().getSerializableExtra("QuestionCatalog");
-        textQuestion = (TextQuestion) getIntent().getSerializableExtra("Question");
+        questionQuerier = new QuestionQuerier(realm);
+        catalogId = getIntent().getIntExtra("QuestionCatalog", 0);
+        textQuestion = questionQuerier.getQuestionById(getIntent().getIntExtra("Question", 0));
 
         textQuestionEdit = (EditText) findViewById(R.id.question);
         textAnswer1Edit = (EditText) findViewById(R.id.answer1);
@@ -73,22 +88,42 @@ public class EditQuestions extends YaqActivity {
     @SuppressWarnings("UnusedParameters")
     public void submitEditButtonClick(View view) {
         String question = textQuestionEdit.getText().toString();
-        Answer answer1 = new Answer(textAnswer1Edit.getText().toString(), Integer.parseInt(numberPickerLabel1.getText().toString()));
-        Answer answer2 = new Answer(textAnswer2Edit.getText().toString(), Integer.parseInt(numberPickerLabel2.getText().toString()));
-        Answer answer3 = new Answer(textAnswer3Edit.getText().toString(), Integer.parseInt(numberPickerLabel3.getText().toString()));
-        Answer answer4 = new Answer(textAnswer4Edit.getText().toString(), Integer.parseInt(numberPickerLabel4.getText().toString()));
+
+        realm.beginTransaction();
+        Answer answer1 = realm.createObject(Answer.class);
+        answer1.setAnswerString(textAnswer1Edit.getText().toString());
+        answer1.setAnswerValue(Integer.parseInt(numberPickerLabel1.getText().toString()));
+        Answer answer2 = realm.createObject(Answer.class);
+        answer2.setAnswerString(textAnswer2Edit.getText().toString());
+        answer2.setAnswerValue(Integer.parseInt(numberPickerLabel2.getText().toString()));
+        Answer answer3 = realm.createObject(Answer.class);
+        answer3.setAnswerString(textAnswer3Edit.getText().toString());
+        answer3.setAnswerValue(Integer.parseInt(numberPickerLabel3.getText().toString()));
+        Answer answer4 = realm.createObject(Answer.class);
+        answer4.setAnswerString(textAnswer4Edit.getText().toString());
+        answer4.setAnswerValue(Integer.parseInt(numberPickerLabel4.getText().toString()));
+        realm.commitTransaction();
 
         if(textQuestion != null) {
+            realm.beginTransaction();
+            for(Answer answer : textQuestion.getAnswers()) {
+                answer.deleteFromRealm();
+            }
             textQuestion.setQuestion(question);
             textQuestion.setAnswers(answer1, answer2, answer3, answer4);
-            TextQuestionDAO editQuestion = new TextQuestionDAO(textQuestion);
-            editQuestion.editEntry(EditQuestions.this);
+            realm.copyToRealmOrUpdate(textQuestion);
+            realm.commitTransaction();
+            textQuestion = null;
         }
         else {
-            TextQuestion newTextQuestion = new TextQuestion(0, question,
-                    answer1, answer2, answer3, answer4, catalog.getCatalogID());
-            TextQuestionDAO newQuestion = new TextQuestionDAO(newTextQuestion);
-            newQuestion.insertIntoDatabase(EditQuestions.this);
+            QuestionCatalog catalog = questionQuerier.getQuestionCatalogById(catalogId);
+
+            realm.beginTransaction();
+            TextQuestion newTextQuestion = new TextQuestion(questionQuerier.getHighestQuestionId() + 1,
+                    question, answer1, answer2, answer3, answer4, catalogId);
+            catalog.getTextQuestionList().add(newTextQuestion);
+            //realm.copyToRealm(newTextQuestion);
+            realm.commitTransaction();
         }
         finish();
     }

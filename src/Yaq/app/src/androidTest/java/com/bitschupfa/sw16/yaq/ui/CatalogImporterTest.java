@@ -7,7 +7,6 @@ import android.util.Log;
 
 import com.bitschupfa.sw16.yaq.activities.MainMenu;
 import com.bitschupfa.sw16.yaq.database.helper.CatalogImporter;
-import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
 import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
@@ -20,9 +19,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
+import io.realm.Realm;
+
 public class CatalogImporterTest extends ActivityInstrumentationTestCase2<MainMenu> {
 
     private Solo solo;
+    private Realm realm;
 
     public CatalogImporterTest() {
         super(MainMenu.class);
@@ -32,10 +34,12 @@ public class CatalogImporterTest extends ActivityInstrumentationTestCase2<MainMe
     public void setUp() throws Exception {
         super.setUp();
         solo = new Solo(getInstrumentation(), getActivity());
+        realm = Realm.getDefaultInstance();
     }
 
     @Override
     public void tearDown() throws Exception {
+        realm.close();
         super.tearDown();
     }
 
@@ -43,26 +47,22 @@ public class CatalogImporterTest extends ActivityInstrumentationTestCase2<MainMe
         AssetManager am = getActivity().getBaseContext().getAssets();
         InputStream inputStream = am.open("testQuestions.txt");
         File file = createFileFromInputStream(inputStream);
-        CatalogImporter importer = new CatalogImporter(getActivity());
-        importer.readFile(file);
-        QuestionQuerier questionQuerier = new QuestionQuerier(this.getActivity());
-        List<QuestionCatalog> questionCatalogList = questionQuerier.getAllQuestionCatalogs();
-        QuestionCatalog testQuestionCatalog = null;
-        for(QuestionCatalog questionCatalog : questionCatalogList){
-            if("testCatalog".equals(questionCatalog.getName())){
-                testQuestionCatalog = questionCatalog;
-            }
-        }
 
-        assertNotNull("Catalog should not be null", testQuestionCatalog);
-        assertEquals("Catalog name should be equal", "testCatalog", testQuestionCatalog.getName());
-        assertEquals("Catalog difficulty should be equal", 1, testQuestionCatalog.getDifficulty());
+        CatalogImporter importer = new CatalogImporter(getActivity(), realm);
+        QuestionCatalog importedCatalog = importer.readFile(file);
+        QuestionCatalog savedCatalog = realm.where(QuestionCatalog.class)
+                .equalTo("catalogID", importedCatalog.getCatalogID()).findFirst();
 
-        List<TextQuestion> textQuestionList = testQuestionCatalog.getTextQuestionList();
+        assertNotNull("Imported catalog should not be null", importedCatalog);
+        assertNotNull("Saved catalog should not be null", savedCatalog);
+        assertEquals("Catalog name should be equal", "testCatalog", savedCatalog.getName());
+        assertEquals("Catalog difficulty should be equal", 1, savedCatalog.getDifficulty());
+
+        List<TextQuestion> textQuestionList = savedCatalog.getTextQuestionList();
         for(TextQuestion textQuestion : textQuestionList){
-            Log.e("TextQuestion: ", "CatalogID   : " + textQuestion.getCatalogID());
-            Log.e("TextQuestion: ", "QuestionID : " + textQuestion.getQuestionID());
-            Log.e("TextQuestion: ", "Question   : " + textQuestion.getQuestion());
+            Log.d("TextQuestion: ", "CatalogID   : " + textQuestion.getCatalogID());
+            Log.d("TextQuestion: ", "QuestionID : " + textQuestion.getQuestionID());
+            Log.d("TextQuestion: ", "Question   : " + textQuestion.getQuestion());
         }
 
         assertTrue("Catalog should have two questions", textQuestionList.size() >= 2 && textQuestionList.size() % 2 == 0);
@@ -93,25 +93,22 @@ public class CatalogImporterTest extends ActivityInstrumentationTestCase2<MainMe
         assertEquals("Answer values should be equal", 0, answer2.getAnswerValue());
         assertEquals("Answer values should be equal", -5, answer3.getAnswerValue());
         assertEquals("Answer values should be equal", 3, answer4.getAnswerValue());
+
+        realm.beginTransaction();
+        savedCatalog.deleteFromRealm();
+        realm.commitTransaction();
     }
 
 
     private File createFileFromInputStream(InputStream inputStream) {
         try{
-            System.out.println("Line 0");
-            Log.e("Error", "Line 0");
             File f = new File(getActivity().getFilesDir(), "testCatalog");
             OutputStream outputStream = new FileOutputStream(f);
             byte buffer[] = new byte[1024];
             int length = 0;
-            System.out.println("Line 1");
-            Log.e("Error", "Line 1");
 
             while((length=inputStream.read(buffer)) > 0) {
                 outputStream.write(buffer, 0, length);
-                System.out.println("Line 2");
-                Log.e("Error", "Line 2");
-                Log.e("Error", buffer.toString());
             }
 
             outputStream.close();
@@ -119,10 +116,7 @@ public class CatalogImporterTest extends ActivityInstrumentationTestCase2<MainMe
 
             return f;
         }catch (IOException e) {
-            //Logging exception
-            System.err.print(e.getStackTrace());
-            Log.e("Error", e.getStackTrace().toString());
-            Log.e("Error", e.getMessage().toString());
+            Log.e("Error", e.getMessage());
         }
 
         return null;

@@ -1,145 +1,60 @@
 package com.bitschupfa.sw16.yaq.database.helper;
 
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-
-import com.bitschupfa.sw16.yaq.database.dao.QuestionCatalogDAO;
-import com.bitschupfa.sw16.yaq.database.dao.TextQuestionDAO;
-import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 
 public class QuestionQuerier {
-    private final Context context;
-    private final SQLiteDatabase database;
+    private final Realm realm;
 
 
-    public QuestionQuerier(Context context) {
-        this.context = context;
-        database = DBHelper.instance(context).getDatabase();
+    public QuestionQuerier(Realm realm) {
+        this.realm = realm;
     }
-
-    private QuestionCatalog queryQuestionCatalogTable(Cursor cursor) {
-        int catalogID = cursor.getInt(cursor.getColumnIndex(QuestionCatalogDAO.QUESTIONCATALOG_ID));
-        String catalogName = cursor.getString(cursor.getColumnIndex(QuestionCatalogDAO.QUESTIONCATALOG_DESCRIPTION));
-        int catalogDifficulty = cursor.getInt(cursor.getColumnIndex(QuestionCatalogDAO.QUESTIONCATALOG_DIFFICULTY));
-
-        return new QuestionCatalog(catalogID, catalogDifficulty, catalogName, null);
-    }
-
-    private TextQuestion queryTextQuestionTableValues(Cursor cursor) {
-        int questionID = cursor.getInt(cursor.getColumnIndex(TextQuestionDAO.QUESTION_ID));
-        int catalogID = cursor.getInt(cursor.getColumnIndex(QuestionCatalogDAO.QUESTIONCATALOG_ID));
-        String question = cursor.getString(cursor.getColumnIndex(TextQuestionDAO.QUESTION_TEXT));
-        String answer1String = cursor.getString(cursor.getColumnIndex(TextQuestionDAO.QUESTION_ANSWER_1));
-        String answer2String = cursor.getString(cursor.getColumnIndex(TextQuestionDAO.QUESTION_ANSWER_2));
-        String answer3String = cursor.getString(cursor.getColumnIndex(TextQuestionDAO.QUESTION_ANSWER_3));
-        String answer4String = cursor.getString(cursor.getColumnIndex(TextQuestionDAO.QUESTION_ANSWER_4));
-        int value1 = cursor.getInt(cursor.getColumnIndex(TextQuestionDAO.QUESTION_ANSWER_1_VALUE));
-        int value2 = cursor.getInt(cursor.getColumnIndex(TextQuestionDAO.QUESTION_ANSWER_2_VALUE));
-        int value3 = cursor.getInt(cursor.getColumnIndex(TextQuestionDAO.QUESTION_ANSWER_3_VALUE));
-        int value4 = cursor.getInt(cursor.getColumnIndex(TextQuestionDAO.QUESTION_ANSWER_4_VALUE));
-
-        Answer answer1 = new Answer(answer1String, value1);
-        Answer answer2 = new Answer(answer2String, value2);
-        Answer answer3 = new Answer(answer3String, value3);
-        Answer answer4 = new Answer(answer4String, value4);
-
-        return new TextQuestion(questionID, question, answer1, answer2, answer3, answer4, catalogID);
-    }
-
-     /*public List<TextQuestion> getAllQuestionsFromCatalogByDifficulty(int catalogID, int difficulty){
-       String catalogIDString = "" + catalogID;
-        String difficultyString = "" + difficulty;
-        Cursor cursor = database.query(TextQuestionDAO.TABLE_NAME, TextQuestionDAO.QUESTION_ALL_COLUMN_NAMES,
-                QuestionCatalogDAO.QUESTIONCATALOG_ID+"=? and "+TextQuestionDAO.QUESTION_DIFFICULTY+"=?",
-                new String[]{catalogIDString, difficultyString}, null, null, null);
-        cursor.moveToFirst();
-        List<TextQuestion> textQuestionList = new ArrayList<>();
-
-        while (!cursor.isAfterLast()) {
-            textQuestionList.add(queryTextQuestionTableValues(cursor));
-            cursor.moveToNext();
-        }
-        return textQuestionList;
-    }*/
 
     public List<TextQuestion> getAllQuestionsFromCatalog(int catalogID) {
-        String catalogIDString = "" + catalogID;
-        Cursor cursor = database.query(TextQuestionDAO.TABLE_NAME, TextQuestionDAO.QUESTION_ALL_COLUMN_NAMES,
-                QuestionCatalogDAO.QUESTIONCATALOG_ID + "=?",
-                new String[]{catalogIDString}, null, null, null);
-        cursor.moveToFirst();
+        QuestionCatalog result = realm.where(QuestionCatalog.class)
+                .equalTo("catalogID", catalogID)
+                .findFirst();
 
-        List<TextQuestion> textQuestionList = new ArrayList<>();
-
-        while (!cursor.isAfterLast()) {
-            textQuestionList.add(queryTextQuestionTableValues(cursor));
-            cursor.moveToNext();
+        if (result != null) {
+            return result.getTextQuestionList();
+        } else {
+            return null;
         }
-        return textQuestionList;
     }
-
-    public List<QuestionCatalog> getAllQuestionCatalogsOnlyIdAndName() {
-        Cursor cursor = database.query(QuestionCatalogDAO.TABLE_NAME, QuestionCatalogDAO.QUESTIONCATALOG_ALL_COLUMN_NAMES,
-                null, null, null, null, null);
-        cursor.moveToFirst();
-
-        List<QuestionCatalog> questionCatalogs = new ArrayList<>();
-
-        while (!cursor.isAfterLast()) {
-            QuestionCatalog questionCatalog = queryQuestionCatalogTable(cursor);
-            cursor.moveToNext();
-            questionCatalogs.add(questionCatalog);
-        }
-        cursor.close();
-        return questionCatalogs;
-    }
-
 
     public QuestionCatalog getQuestionCatalogById(int catalogId) {
-        String catalogIDString = "" + catalogId;
-        Cursor cursor = database.query(QuestionCatalogDAO.TABLE_NAME, QuestionCatalogDAO.QUESTIONCATALOG_ALL_COLUMN_NAMES,
-                QuestionCatalogDAO.QUESTIONCATALOG_ID + "=?", new String[]{catalogIDString}, null, null, null);
-        cursor.moveToFirst();
-        cursor.moveToFirst();
-
-        QuestionCatalog questionCatalog = queryQuestionCatalogTable(cursor);
-        cursor.moveToNext();
-        List<TextQuestion> textQuestionList = getAllQuestionsFromCatalog(questionCatalog.getCatalogID());
-        cursor.close();
-        questionCatalog.setTextQuestionList(textQuestionList);
-        return questionCatalog;
-    }
-
-    public QuestionCatalog getQuestionCatalogByIdAndDifficulty(int catalogId, int difficulty) {
-        QuestionCatalog questionCatalog = getQuestionCatalogById(catalogId);
-        List<TextQuestion> textQuestionList = getAllQuestionsFromCatalog(catalogId);
-        questionCatalog.setTextQuestionList(textQuestionList);
-        return questionCatalog;
+        QuestionCatalog result = realm.where(QuestionCatalog.class)
+                .equalTo("catalogID", catalogId)
+                .findFirst();
+        return result;
     }
 
     public List<QuestionCatalog> getAllQuestionCatalogs() {
-        Cursor cursor = database.query(QuestionCatalogDAO.TABLE_NAME, QuestionCatalogDAO.QUESTIONCATALOG_ALL_COLUMN_NAMES,
-                null, null, null, null, null);
-        cursor.moveToFirst();
+        RealmResults<QuestionCatalog> results = realm.where(QuestionCatalog.class).findAll();
+        return results;
+    }
 
-        List<QuestionCatalog> questionCatalogList = new ArrayList<>();
+    public TextQuestion getQuestionById(int questionId) {
+        TextQuestion result = realm.where(TextQuestion.class)
+                .equalTo("questionID", questionId)
+                .findFirst();
+        return result;
+    }
 
-        while (!cursor.isAfterLast()) {
-            QuestionCatalog questionCatalog = queryQuestionCatalogTable(cursor);
-            cursor.moveToNext();
-            List<TextQuestion> textQuestionList = getAllQuestionsFromCatalog(questionCatalog.getCatalogID());
-            questionCatalog.setTextQuestionList(textQuestionList);
-            questionCatalogList.add(questionCatalog);
-        }
-        cursor.close();
-        return questionCatalogList;
+    public int getHighestCatalogId() {
+        RealmResults<QuestionCatalog> results = realm.where(QuestionCatalog.class).findAll();
+        return results.max("catalogID").intValue();
+    }
+
+    public int getHighestQuestionId() {
+        RealmResults<TextQuestion> results = realm.where(TextQuestion.class).findAll();
+        return results.max("questionID").intValue();
     }
 }
