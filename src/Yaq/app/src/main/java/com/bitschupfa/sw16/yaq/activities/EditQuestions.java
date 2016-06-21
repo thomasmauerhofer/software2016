@@ -3,7 +3,7 @@ package com.bitschupfa.sw16.yaq.activities;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.NumberPicker;
@@ -44,6 +44,8 @@ public class EditQuestions extends YaqActivity {
         setContentView(R.layout.activity_edit_questions);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         handleTheme();
 
         realm = Realm.getDefaultInstance();
@@ -185,6 +187,16 @@ public class EditQuestions extends YaqActivity {
     @Override
     protected void handleTheme() {
         setBackgroundImage();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
 
