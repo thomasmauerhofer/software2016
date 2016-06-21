@@ -14,7 +14,7 @@ import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static String DATABASE_NAME = "yaq.db";
-    private static final int DATABASE_VERSION = 35;
+    private static final int DATABASE_VERSION = 36;
     private static DBHelper instance_ = null;
 
     public DBHelper(Context context) {
@@ -125,58 +125,58 @@ public class DBHelper extends SQLiteOpenHelper {
         TextQuestion textQuestion6 = new TextQuestion(6, "In which year did Foinavon win the Grand National?", answer1, answer2, answer3, answer4, 1);
 
         answer1 = new Answer("1", 0);
-        answer2 = new Answer("5", 10);
-        answer3 = new Answer("10", 10);
-        answer4 = new Answer("11", 20);
+        answer2 = new Answer("5", 0);
+        answer3 = new Answer("10", 0);
+        answer4 = new Answer("11", 10);
         TextQuestion textQuestion7 = new TextQuestion(7, "How many oscars did the Titanic movie got?", answer1, answer2, answer3, answer4, 3);
 
-        answer1 = new Answer("1", 10);
-        answer2 = new Answer("2", 20);
-        answer3 = new Answer("3", 10);
-        answer4 = new Answer("4", 10);
+        answer1 = new Answer("1", 0);
+        answer2 = new Answer("2", 10);
+        answer3 = new Answer("3", 0);
+        answer4 = new Answer("4", 0);
         TextQuestion textQuestion8 = new TextQuestion(8, "How many Tomb Raider movies were made?", answer1, answer2, answer3, answer4, 3);
 
-        answer1 = new Answer("Bastille", 10);
-        answer2 = new Answer("Alcatraz", 20);
-        answer3 = new Answer("Newgate", 10);
+        answer1 = new Answer("Bastille", 0);
+        answer2 = new Answer("Alcatraz", 10);
+        answer3 = new Answer("Newgate", 0);
         answer4 = new Answer("Tower of London", 0);
         TextQuestion textQuestion9 = new TextQuestion(9, "What is the name of the prison in the film The Rock?", answer1, answer2, answer3, answer4, 3);
 
-        answer1 = new Answer("Mushu", 20);
-        answer2 = new Answer("Mishu", 10);
-        answer3 = new Answer("Masha", 10);
+        answer1 = new Answer("Mushu", 10);
+        answer2 = new Answer("Mishu", 0);
+        answer3 = new Answer("Masha", 0);
         answer4 = new Answer("Sasha", 0);
         TextQuestion textQuestion10 = new TextQuestion(10, "What is the name of the little dragon in the animated movie Mulan?", answer1, answer2, answer3, answer4, 3);
 
-        answer1 = new Answer("Rob Bowman", 20);
+        answer1 = new Answer("Rob Bowman", 10);
         answer2 = new Answer("Arnold Schwarzenegger", 0);
-        answer3 = new Answer("Sergio Leone", 10);
-        answer4 = new Answer("Antonio Salieri", 10);
+        answer3 = new Answer("Sergio Leone", 0);
+        answer4 = new Answer("Antonio Salieri", 0);
         TextQuestion textQuestion11 = new TextQuestion(11, "Who is the director of the X-files?", answer1, answer2, answer3, answer4, 3);
 
-        answer1 = new Answer("Seaman,", 20);
-        answer2 = new Answer("Engineer", 0);
-        answer3 = new Answer("Farmer", 10);
+        answer1 = new Answer("Seaman,", 10);
+        answer2 = new Answer("Engineer", -10);
+        answer3 = new Answer("Farmer", 0);
         answer4 = new Answer("Electrician", 0);
         TextQuestion textQuestion12 = new TextQuestion(12, "What is the profession of Popeye?", answer1, answer2, answer3, answer4, 3);
 
         answer1 = new Answer("0815", 0);
-        answer2 = new Answer("742", 20);
-        answer3 = new Answer("1001", 15);
+        answer2 = new Answer("742", 10);
+        answer3 = new Answer("1001", 5);
         answer4 = new Answer("5", 0);
         TextQuestion textQuestion13 = new TextQuestion(13, "What is the house number of the Simpsons?", answer1, answer2, answer3, answer4, 3);
 
         answer1 = new Answer("Captain Picard", 0);
-        answer2 = new Answer("Antonio Salieri", 20);
-        answer3 = new Answer("Robert Redford", 15);
+        answer2 = new Answer("Antonio Salieri", 10);
+        answer3 = new Answer("Robert Redford", 5);
         answer4 = new Answer("Colin Farell", 0);
         TextQuestion textQuestion14 = new TextQuestion(14, "Who was Mozart s great rival in Amadeus movie?", answer1, answer2, answer3, answer4, 3);
 
 
-        answer1 = new Answer("Robin Williams", 20);
-        answer2 = new Answer("Robert Redford", 10);
-        answer3 = new Answer("Rob Bowman", 10);
-        answer4 = new Answer("Woody Allen", 10);
+        answer1 = new Answer("Robin Williams", 10);
+        answer2 = new Answer("Robert Redford", 0);
+        answer3 = new Answer("Rob Bowman", 0);
+        answer4 = new Answer("Woody Allen", 0);
         TextQuestion textQuestion15 = new TextQuestion(15, "Who did play the role of Peter Pan in the Peter Pan movie?", answer1, answer2, answer3, answer4, 3);
 
         TextQuestionDAO textQuestionDAO1 = new TextQuestionDAO(textQuestion1);
