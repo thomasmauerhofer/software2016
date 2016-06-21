@@ -16,7 +16,8 @@
     <string name="action_settings">Game Settings</string>
     <string name="action_about">About YAQ</string>
     <string name="action_themes">Themes</string>
-    <string name="manage_questions">Manage questions</string>
+    <string name="manage_questions">Manage Questions</string>
+    <string name="questions_import">Questions Import</string>
     <string name="profile">Profile</string>
     <string name="about_dialog_message">
         <b>&#169; by Team Bitschupfa</b> \n
@@ -24,6 +25,8 @@
         Yak horns designed by <a href="http://www.vectorportal.com">Vectorportal</a></string>
     <string name="about_dialog_title">About YAQ</string>
     <string name="chromecast">Cast</string>
+    <string name="import_successul">Import was successful</string>
+    <string name="import_not_successul">Import was not successful</string>
 
     <!-- HostActivity -->
     <string name="title_activity_host">Host Game</string>
@@ -105,4 +108,13 @@
     <!-- Chromecast -->
     <string name="waiting_for_gamestart">Waiting for game to start …</string>
     <string name="waiting_for_players">Waiting for players to join …</string>
+
+    <!-- ManageQuestions -->
+    <string name="title_activity_show_catalogues">Show catalogues</string>
+    <string name="title_activity_show_questions">Show questions</string>
+    <string name="title_activity_edit_questions">Edit questions</string>
+    <string name="title_dialog_add_catalog">Add Catalog</string>
+    <string name="title_dialog_edit_catalog">Edit Catalog</string>
+    <string name="menu_edit">edit</string>
+    <string name="menu_delete">delete</string>
 </resources>
