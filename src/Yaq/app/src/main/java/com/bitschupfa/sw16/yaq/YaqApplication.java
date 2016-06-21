@@ -72,8 +72,8 @@ public class YaqApplication extends Application {
             questionList2.add(textQuestion5);
             questionList2.add(textQuestion6);
 
-            QuestionCatalog questionCatalog1 = new QuestionCatalog(1, 1, "Time", questionList1);
-            QuestionCatalog questionCatalog2 = new QuestionCatalog(2, 2, "General", questionList2);
+            QuestionCatalog questionCatalog1 = new QuestionCatalog(1, 1, "Time", questionList2);
+            QuestionCatalog questionCatalog2 = new QuestionCatalog(2, 2, "General", questionList1);
 
             realm.beginTransaction();
             realm.copyToRealm(questionCatalog1);

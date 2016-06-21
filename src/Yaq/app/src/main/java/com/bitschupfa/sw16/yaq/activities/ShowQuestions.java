@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
+import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.ui.ShowQuestionsAdapter;
@@ -29,8 +30,10 @@ public class ShowQuestions extends YaqActivity {
     private TextView textCatalogue;
     private TextQuestion actualTextQuestion;
     private QuestionCatalog catalog;
+    private int catalogId;
     private ArrayList<TextQuestion> questionList = new ArrayList<>();
     private Realm realm;
+    private QuestionQuerier questionQuerier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +44,14 @@ public class ShowQuestions extends YaqActivity {
         handleTheme();
 
         realm = Realm.getDefaultInstance();
+        questionQuerier = new QuestionQuerier(realm);
+        catalogId = getIntent().getIntExtra("QuestionCatalog", 0);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ShowQuestions.this, EditQuestions.class);
-                intent.putExtra("QuestionCatalog", catalog);
+                intent.putExtra("QuestionCatalog", catalog.getCatalogID());
                 startActivity(intent);
             }
         });
@@ -71,11 +76,14 @@ public class ShowQuestions extends YaqActivity {
         switch (item.getItemId()) {
             case R.id.edit:
                 Intent intent = new Intent(ShowQuestions.this, EditQuestions.class);
-                intent.putExtra("Question", actualTextQuestion);
+                intent.putExtra("Question", actualTextQuestion.getQuestionID());
                 startActivity(intent);
                 return true;
             case R.id.delete:
                 realm.beginTransaction();
+                for (Answer answer : actualTextQuestion.getAnswers()) {
+                    answer.deleteFromRealm();
+                }
                 actualTextQuestion.deleteFromRealm();
                 realm.commitTransaction();
                 actualTextQuestion = null;
@@ -95,12 +103,11 @@ public class ShowQuestions extends YaqActivity {
     }
 
     public void displayListView() {
-        catalog = (QuestionCatalog) getIntent().getSerializableExtra("QuestionCatalogue");
+        catalog = questionQuerier.getQuestionCatalogById(catalogId);
 
         textCatalogue = (TextView) findViewById(R.id.textCatalogue);
         textCatalogue.setText(catalog.getName());
 
-        QuestionQuerier questionQuerier = new QuestionQuerier(realm);
         questionList.addAll(questionQuerier.getAllQuestionsFromCatalog(catalog.getCatalogID()));
 
         dataAdapter = new ShowQuestionsAdapter(this, R.layout.list_show_questions, questionList);
@@ -113,11 +120,10 @@ public class ShowQuestions extends YaqActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-
                 TextQuestion item = (TextQuestion) listView.getItemAtPosition(position);
 
                 Intent intent = new Intent(ShowQuestions.this, EditQuestions.class);
-                intent.putExtra("Question", item);
+                intent.putExtra("Question", item.getQuestionID());
                 startActivity(intent);
             }
         });

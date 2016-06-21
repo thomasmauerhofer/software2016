@@ -41,6 +41,13 @@ public class QuestionQuerier {
         return results;
     }
 
+    public TextQuestion getQuestionById(int questionId) {
+        TextQuestion result = realm.where(TextQuestion.class)
+                .equalTo("questionID", questionId)
+                .findFirst();
+        return result;
+    }
+
     public int getHighestCatalogId() {
         RealmResults<QuestionCatalog> results = realm.where(QuestionCatalog.class).findAll();
         return results.max("catalogID").intValue();

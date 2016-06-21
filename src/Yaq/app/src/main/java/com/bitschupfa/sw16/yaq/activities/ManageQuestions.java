@@ -20,15 +20,19 @@ import android.widget.RadioButton;
 
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.database.helper.QuestionQuerier;
+import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
+import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
 import com.bitschupfa.sw16.yaq.ui.ManageQuestionsAdapter;
 import com.bitschupfa.sw16.yaq.ui.QuestionCatalogItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmResults;
 
 public class ManageQuestions extends YaqActivity {
@@ -103,7 +107,7 @@ public class ManageQuestions extends YaqActivity {
                 QuestionCatalogItem item = (QuestionCatalogItem) listView.getItemAtPosition(position);
 
                 Intent intent = new Intent(ManageQuestions.this, ShowQuestions.class);
-                intent.putExtra("QuestionCatalogue", item.getCatalog());
+                intent.putExtra("QuestionCatalog", item.getCatalog().getCatalogID());
                 startActivity(intent);
             }
         });
@@ -147,9 +151,9 @@ public class ManageQuestions extends YaqActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (actualQuestionCatalog != null) {
+                    realm.beginTransaction();
                     actualQuestionCatalog.setName(input.getText().toString());
                     actualQuestionCatalog.setDifficulty(getDifficulty());
-                    realm.beginTransaction();
                     realm.copyToRealmOrUpdate(actualQuestionCatalog);
                     realm.commitTransaction();
                     actualQuestionCatalog = null;
@@ -201,8 +205,16 @@ public class ManageQuestions extends YaqActivity {
                 return true;
             case R.id.delete:
                 realm.beginTransaction();
+                for (int i = 0; i < actualQuestionCatalog.getTextQuestionList().size(); i++) {
+                    TextQuestion question = actualQuestionCatalog.getTextQuestionList().get(0);
+                    for (Answer answer : question.getAnswers()) {
+                        answer.deleteFromRealm();
+                    }
+                    question.deleteFromRealm();
+                }
                 actualQuestionCatalog.deleteFromRealm();
                 realm.commitTransaction();
+                actualQuestionCatalog = null;
                 updateListView();
                 actualQuestionCatalog = null;
                 return true;

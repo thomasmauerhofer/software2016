@@ -14,7 +14,6 @@ public class QuestionCatalog extends RealmObject implements Serializable {
     private int difficulty;
     private String name;
     private RealmList<TextQuestion> textQuestionList = null;
-    private int counter;
 
     public QuestionCatalog() {
     }
@@ -24,7 +23,6 @@ public class QuestionCatalog extends RealmObject implements Serializable {
         this.difficulty = difficulty;
         this.name = name;
         this.textQuestionList = textQuestionList;
-        this.counter = 0;
     }
 
     public int getCatalogID() {
@@ -49,14 +47,6 @@ public class QuestionCatalog extends RealmObject implements Serializable {
 
     public void setTextQuestionList(RealmList<TextQuestion> textQuestionList) {
         this.textQuestionList = textQuestionList;
-    }
-
-    public void setCounter(int counter) {
-        this.counter = counter;
-    }
-
-    public int getCounter() {
-        return counter;
     }
 
     public void setDifficulty(int difficulty) {
