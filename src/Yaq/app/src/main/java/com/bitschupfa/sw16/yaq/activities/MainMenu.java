@@ -2,6 +2,7 @@ package com.bitschupfa.sw16.yaq.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
@@ -35,7 +36,8 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
     public PlayerProfileStorage profileStorage;
     public NavigationView navigationView;
     public AnimationDrawable drawerBackgroundAnimation;
-    CatalogImporter importer;
+    public CatalogImporter importer;
+    private SharedPreferences prefs;
 
     private static final int READ_REQUEST_CODE = 42;
     public static final int NAVIGATION_VIEW_HEADER_INDEX = 0;
@@ -44,6 +46,8 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        prefs = getSharedPreferences("com.bitschupfa.sw16.yaq", MODE_PRIVATE);
 
         setContentView(R.layout.activity_main_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -176,9 +180,15 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (prefs.getBoolean("firstrun", true)) {
+            CatalogImporter catalogImporter = new CatalogImporter(this);
+            catalogImporter.baseLineImport();
+            prefs.edit().putBoolean("firstrun", false).commit();
+        }
+
         refreshProfileInNavigationHeader();
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -1,0 +1,21 @@
+Medizin
+3
+Was ist eine Zelle?;Aufenthaltsort für einen Häftling;kleinstes selbstständig lebensfähige Biosystem;eine Volkstanz der Indianer;eine Zigarettenmarke;5;10;-10;-8
+Aus was bestehen die Membranen einer Zelle?;Lipiddoppelschicht mit einem hydrophoben Anteil ins Cytosol gerichtet;Lipiddoppelschicht mit einem hydrophilen Anteil ins Cytosol gerichtet;Lipiddoppelschicht mit einem lipophilen Anteil ins Cytosol gerichtet;Lipiddoppelschicht mit einem lipophoben Anteil zueinander gerichtet;-5;10;-5;-5
+Was enthält das Cytosol einer Zelle?;Wasser;Proteine;Schokolade;Eiweisse;10;2;-10;2
+Die Membran einer Zelle ist...;ist eine starre Struktur;ist durchlässig;heißt Holger;ist eine bewegliche Struktur;-2;8;-10;10
+Welche Zellorganellen besitzen eine doppelte Membran?;Nucleus;Zellkern;Lysosom;Omonom;10;10;-4;-10
+Was ist ein Neuron?;Ein perverser Außerirdischer;eine Nervenzelle;eine Synapse;eine Blumenart;-10;10;0;-5
+<b>Menschliche Zentriolen ...</b><br> 1. kommen in der Interphase meist paarweise vor.<br> 2. beteiligen sich nicht an der Bildung des MTOC (microtubule-organizing center).<br> 3. setzen sich aus neun Dreiergruppen zusammen.<br> 4. setzen sich aus neun Zweiergruppen zusammen.;1., 2. und 3. sind richtig.;2. und 4. sind richtig.;1. und 3. sind richtig.;"4. ist richitig. ";0;0;10;0
+Was bewirkt die Einnahme von Drogen wie Kokain?;hohe Dopaminausschüttung im Hirn;hohe Adrenalinausschüttung;hohe FSH Ausschüttung;"hohe Testosteronausschüttung ";10;0;0;0
+Wie groß ist der Durchmesser vom Auge bei einem erwachsenen, normalsichtigen Menschen?;2,4cm;1,4cm;5cm;3,9cm;10;0;0;0
+Was heißt die innerste Schicht des Auges?;Vorhaut;Aderhaut;Netzhaut;Retina;-5;0;10;10
+Wie heißt der Punkt im Auge der mit dem Sehnerv verbunden ist?;Blinder Fleck;G-Punkt;Gelber Fleck;Zentralgrube;10;-5;0;0
+Lichtstrahlen, welche aud das Auge treffen, werden gebrochen durch ...;Aderhaut;Hornhaut;Luft;Glaskörper;0;10;-5;10
+Beim Sehen in die Ferne ist der Ciliarmuskel ...;angespannt;erschlafft;gedehnt;erstaunt;0;10;0;-10
+Als Akkommodation bezeichnet man ...;die Veränderungen des Glaskörpers.;Brechkrafteinstellungen der Linse.;Abtragen der Hornhaut.;Lähmung des Sehnervs.;0;10;-5;-5
+Bei Weitsichtigkeit ist der Augapfel ...;zu schlaff;zu hell;zu kurz;zu lang;-5;-5;10;0
+Bei Kurzsichtigkeit ist der Augapfel ...;zu oval;zu dunkel;zu kurz;zu lang;-5;-5;0;10
+Aus welchen Abschnitten besteht das Ohr?;äußeres Ohr, Mittelohr und Innenohr;hohes Ohr, Mittelohr und niederes Ohr;kurzes Ohr, Mittelohr und langes Ohr;schnelles Ohr, Mittelohr und langsames Ohr;10;-5;-5;-5
+Wie heißt die Verbindung vom Mittelohr zur Mundhöhle?;Geystachi'sche Röhre;Luftröhre;Eustachi'sche Röhre;Speiseröhre;0;-5;10;-5
+Was ist kein Teil des Ohrs?;Hammer;Amboss;Steigbügel;Rohrzange;-10;-10;-10;10
