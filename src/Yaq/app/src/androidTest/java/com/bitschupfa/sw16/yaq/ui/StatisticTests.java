@@ -48,9 +48,4 @@ public class StatisticTests extends ActivityInstrumentationTestCase2<Statistic> 
         assertTrue(solo.searchText("Tom"));
         assertTrue(solo.searchText("Matthias"));
     }
-
-    public void testPlayAgainButton() {
-        solo.clickOnButton(getActivity().getResources().getString(R.string.play_again));
-        assertTrue("Wrong Activity!", solo.waitForActivity(Join.class));
-    }
 }
