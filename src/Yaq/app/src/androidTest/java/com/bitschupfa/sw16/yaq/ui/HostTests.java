@@ -64,11 +64,6 @@ public class HostTests extends ActivityInstrumentationTestCase2<Host> {
         assertTrue("Wrong Activity!", solo.waitForActivity(GameAtHost.class));
     }
 
-    public void testAdvancedSettingsButton() {
-        solo.clickOnButton(getActivity().getResources().getString(R.string.advanced_settings));
-        solo.searchText(getActivity().getResources().getString(R.string.not_implemented));
-    }
-
     public void testBuildQuizButton() {
         solo.clickOnButton(getActivity().getResources().getString(R.string.build));
         assertTrue("Wrong Activity!", solo.waitForActivity(BuildQuiz.class));
