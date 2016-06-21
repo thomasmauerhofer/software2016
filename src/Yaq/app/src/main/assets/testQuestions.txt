@@ -1,4 +1,4 @@
-TestCatalog
+testCatalog
 1
 Test 1?;Test 1;Test 2;Test 3;Test 4;-10;-8;-7;10
 Test 2?;Test 5;Test 6;Test 7;Test 8;-9;0;-5;3

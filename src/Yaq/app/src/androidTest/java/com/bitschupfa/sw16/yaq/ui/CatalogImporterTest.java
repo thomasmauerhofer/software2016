@@ -49,13 +49,13 @@ public class CatalogImporterTest extends ActivityInstrumentationTestCase2<MainMe
         List<QuestionCatalog> questionCatalogList = questionQuerier.getAllQuestionCatalogs();
         QuestionCatalog testQuestionCatalog = null;
         for(QuestionCatalog questionCatalog : questionCatalogList){
-            if("TestCatalog".equals(questionCatalog.getName())){
+            if("testCatalog".equals(questionCatalog.getName())){
                 testQuestionCatalog = questionCatalog;
             }
         }
 
         assertNotNull("Catalog should not be null", testQuestionCatalog);
-        assertEquals("Catalog name should be equal", "TestCatalog", testQuestionCatalog.getName());
+        assertEquals("Catalog name should be equal", "testCatalog", testQuestionCatalog.getName());
         assertEquals("Catalog difficulty should be equal", 1, testQuestionCatalog.getDifficulty());
 
         List<TextQuestion> textQuestionList = testQuestionCatalog.getTextQuestionList();

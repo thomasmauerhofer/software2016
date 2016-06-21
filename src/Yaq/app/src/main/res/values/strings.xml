@@ -25,6 +25,8 @@
         Yak horns designed by <a href="http://www.vectorportal.com">Vectorportal</a></string>
     <string name="about_dialog_title">About YAQ</string>
     <string name="chromecast">Cast</string>
+    <string name="import_successul">Import was successful</string>
+    <string name="import_not_successul">Import was not successful</string>
 
     <!-- HostActivity -->
     <string name="title_activity_host">Host Game</string>

@@ -1,8 +1,10 @@
 package com.bitschupfa.sw16.yaq.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.AnimationDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -10,16 +12,20 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.database.helper.CatalogImporter;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfileStorage;
+
+import java.io.IOException;
 
 public class MainMenu extends YaqActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -29,7 +35,9 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
     public PlayerProfileStorage profileStorage;
     public NavigationView navigationView;
     public AnimationDrawable drawerBackgroundAnimation;
+    CatalogImporter importer;
 
+    private static final int READ_REQUEST_CODE = 42;
     public static final int NAVIGATION_VIEW_HEADER_INDEX = 0;
     public static final int RESULT_FINISH = 99;
 
@@ -156,7 +164,7 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
             Intent intent = new Intent(MainMenu.this, ManageQuestions.class);
             startActivity(intent);
         } else if (id == R.id.menu_import){
-            CatalogImporter importer = new CatalogImporter(this);
+            importer = new CatalogImporter(this);
             importer.importFile();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -171,10 +179,34 @@ public class MainMenu extends YaqActivity implements NavigationView.OnNavigation
         refreshProfileInNavigationHeader();
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        finish();
+        // The ACTION_OPEN_DOCUMENT intent was sent with the request code
+        // READ_REQUEST_CODE. If the request code seen here doesn't match, it's the
+        // response to some other intent, and the code below shouldn't run at all.
+
+        if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            // The document selected by the user won't be returned in the intent.
+            // Instead, a URI to that document will be contained in the return intent
+            // provided to this method as a parameter.
+            // Pull that URI using resultData.getData().
+            Uri uri = null;
+            if (data != null) {
+                uri = data.getData();
+                try {
+                    Log.e("Import", "Uri ist: " + uri.toString());
+                    importer.readFile(uri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            Toast.makeText(this, R.string.import_successul, Toast.LENGTH_SHORT).show();
+        }
+        else if (requestCode == READ_REQUEST_CODE && resultCode != Activity.RESULT_OK) {
+            Toast.makeText(this, R.string.import_not_successul, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

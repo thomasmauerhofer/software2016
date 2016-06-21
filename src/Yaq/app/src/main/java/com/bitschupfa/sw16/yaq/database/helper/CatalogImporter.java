@@ -2,7 +2,9 @@ package com.bitschupfa.sw16.yaq.database.helper;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -13,18 +15,21 @@ import com.bitschupfa.sw16.yaq.database.dao.TextQuestionDAO;
 import com.bitschupfa.sw16.yaq.database.object.Answer;
 import com.bitschupfa.sw16.yaq.database.object.QuestionCatalog;
 import com.bitschupfa.sw16.yaq.database.object.TextQuestion;
-import com.bitschupfa.sw16.yaq.ui.FileChooser;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.StringTokenizer;
 
 public class CatalogImporter {
     int questionCatalogId = 0;
     private Activity activity;
+    private static final int READ_REQUEST_CODE = 42;
 
     public CatalogImporter(Activity activity) {
         this.activity = activity;
@@ -48,8 +53,13 @@ public class CatalogImporter {
         }
     }
 
-    public void readFile(File file) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(file));
+    public void readFile(File f) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(f));
+        readFile(br);
+    }
+
+    private void readFile(BufferedReader br) throws IOException {
+        Log.e("Import","Input ging");
         try {
             readCatalog(br);
 
@@ -63,21 +73,18 @@ public class CatalogImporter {
         }
     }
 
+    public void readFile(Uri uri) throws IOException {
+        InputStream inputStream = activity.getContentResolver().openInputStream(uri);
+        BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+        readFile(br);
+    }
+
     public void importFile() {
         if(!isStoragePermissionGranted()){
             Snackbar.make(activity.getCurrentFocus(), "No permission for reading storage", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         } else {
-            new FileChooser(activity).setFileListener(new FileChooser.FileSelectedListener() {
-                @Override
-                public void fileSelected(final File file) {
-                    try {
-                        readFile(file);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).showDialog();
+            performFileSearch();
         }
     }
 
@@ -147,6 +154,24 @@ public class CatalogImporter {
         TextQuestion textQuestion = new TextQuestion(0, question, answer1, answer2, answer3, answer4, questionCatalogId);
         TextQuestionDAO textQuestionDAO = new TextQuestionDAO(textQuestion);
         textQuestionDAO.insertIntoDatabase(activity);
+    }
+
+    public void performFileSearch() {
+        // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
+        // browser.
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+
+        // Filter to only show results that can be "opened", such as a
+        // file (as opposed to a list of contacts or timezones)
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        // Filter to show only images, using the image MIME data type.
+        // If one wanted to search for ogg vorbis files, the type would be "audio/ogg".
+        // To search for all documents available via installed storage providers,
+        // it would be "*/*".
+        intent.setType("text/plain");
+
+        activity.startActivityForResult(intent, READ_REQUEST_CODE);
     }
 
 }

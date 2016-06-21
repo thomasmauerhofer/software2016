@@ -15,7 +15,6 @@ public class ManageQuestionsTest extends ActivityInstrumentationTestCase2<Manage
     private String editCatalog = "testEditCatalog";
     private String question = "testQuestion";
     private String editQuestion = "testEditQuestion";
-
     public ManageQuestionsTest() {
         super(ManageQuestions.class);
     }
@@ -23,6 +22,11 @@ public class ManageQuestionsTest extends ActivityInstrumentationTestCase2<Manage
     @Override
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
+
+        while(solo.searchText(catalog)) {
+            solo.clickLongOnText(catalog);
+            solo.clickOnText(getActivity().getString(R.string.menu_delete));
+        }
     }
 
     @Override
