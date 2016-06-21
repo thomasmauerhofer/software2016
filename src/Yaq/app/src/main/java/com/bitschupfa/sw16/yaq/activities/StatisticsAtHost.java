@@ -11,11 +11,12 @@ import android.widget.Button;
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.communication.messages.PLAYAGAINMessage;
 import com.bitschupfa.sw16.yaq.game.HostGameLogic;
+import com.bitschupfa.sw16.yaq.ui.HostCloseConnectionDialog;
 import com.bitschupfa.sw16.yaq.utils.CastHelper;
 import com.bitschupfa.sw16.yaq.utils.QuizFactory;
 
 public class StatisticsAtHost extends Statistic {
-
+    private static final String TAG = "StatisticsAtHost";
     private CastHelper castHelper;
 
     @Override
@@ -51,11 +52,6 @@ public class StatisticsAtHost extends Statistic {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        QuizFactory.instance().clearQuiz();
-        QuizFactory.instance().setNumberOfQuestions(10);
-
-        HostGameLogic.getInstance().quit(getResources().getString(R.string.connectionClosedByHost));
-        castHelper.teardown(false);
+        new HostCloseConnectionDialog(this, castHelper).show(getFragmentManager(), TAG);
     }
 }

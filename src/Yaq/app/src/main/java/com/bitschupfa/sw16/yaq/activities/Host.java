@@ -28,6 +28,7 @@ import com.bitschupfa.sw16.yaq.game.ClientGameLogic;
 import com.bitschupfa.sw16.yaq.game.HostGameLogic;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfileStorage;
+import com.bitschupfa.sw16.yaq.ui.HostCloseConnectionDialog;
 import com.bitschupfa.sw16.yaq.ui.PlayerList;
 import com.bitschupfa.sw16.yaq.utils.CastHelper;
 import com.bitschupfa.sw16.yaq.utils.QuizFactory;
@@ -275,17 +276,6 @@ public class Host extends YaqActivity implements Lobby {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        try {
-            QuizFactory.instance().clearQuiz();
-            QuizFactory.instance().setNumberOfQuestions(10);
-            HostGameLogic.getInstance().quit(getResources().getString(R.string.connectionClosedByHost));
-            castHelper.teardown(false);
-
-            fakeHost.close();
-            btConnectionListener.close();
-        } catch (IOException e) {
-            Log.e(TAG, "Error while Backbutton pressed!");
-        }
+        new HostCloseConnectionDialog(this, castHelper, fakeHost, btConnectionListener).show(getFragmentManager(), TAG);
     }
 }

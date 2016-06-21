@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 
-// TODO Handle disconnect of user(Remove from all maps, and answerCollector)
 public class HostGameLogic implements ClientMessageHandler {
     private static final String TAG = "HostGameLogic";
     private static final HostGameLogic instance = new HostGameLogic();
@@ -134,11 +133,6 @@ public class HostGameLogic implements ClientMessageHandler {
     public void playAgain() {
         String[] playersNames = players.getPlayerNames().toArray(new String[players.getNumberOfPlayers()]);
         sendMessageToClients(new NEWPLAYERMessage(playersNames));
-    }
-
-    @Override
-    public void quit() {
-        quit(null);
     }
 
     @Override

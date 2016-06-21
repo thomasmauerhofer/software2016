@@ -16,8 +16,6 @@ public interface ClientMessageHandler {
 
     void quit(String msg);
 
-    void quit();
-
     void clientQuits(String id);
 
     void handleError(Errors error, String message);
