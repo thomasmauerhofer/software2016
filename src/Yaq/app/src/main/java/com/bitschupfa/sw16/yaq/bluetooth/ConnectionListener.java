@@ -19,7 +19,6 @@ public class ConnectionListener implements Runnable {
 
 
     public ConnectionListener() {
-
     }
 
     @Override

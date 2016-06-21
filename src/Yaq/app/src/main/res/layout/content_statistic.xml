@@ -31,7 +31,8 @@
             android:theme="@style/defaultButton"
             android:onClick="playAgainButtonClicked"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent" />
+            android:layout_width="fill_parent"
+            android:visibility="invisible"/>
     </FrameLayout>
 
 </LinearLayout>

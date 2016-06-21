@@ -43,6 +43,10 @@ public class AnswerCollector {
     }
 
     private boolean isComplete() {
+        if(answers.values().size() == 0) {
+            return false;
+        }
+
         for (Answer answer : answers.values()) {
             if (answer == noAnswer) {
                 return false;

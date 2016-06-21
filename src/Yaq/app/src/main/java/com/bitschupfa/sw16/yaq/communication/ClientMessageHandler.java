@@ -14,9 +14,11 @@ public interface ClientMessageHandler {
 
     void handleAnswer(String id, Answer answer);
 
-    void quit();
+    void quit(String msg);
 
     void clientQuits(String id);
 
     void handleError(Errors error, String message);
+
+    void playAgain();
 }

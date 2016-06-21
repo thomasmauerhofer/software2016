@@ -61,7 +61,8 @@
             android:text="@string/dialog_paired_devices"
             android:id="@+id/textView2"
             android:paddingBottom="10dp"
-            android:gravity="center" />
+            android:gravity="center"
+            android:paddingTop="25dp" />
 
         <RelativeLayout
             android:layout_width="match_parent"

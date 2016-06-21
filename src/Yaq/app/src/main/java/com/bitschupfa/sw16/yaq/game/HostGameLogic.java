@@ -3,6 +3,7 @@ package com.bitschupfa.sw16.yaq.game;
 
 import android.util.Log;
 
+import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.activities.GameAtHost;
 import com.bitschupfa.sw16.yaq.communication.ClientMessageHandler;
 import com.bitschupfa.sw16.yaq.communication.ConnectedDevice;
@@ -21,13 +22,13 @@ import com.bitschupfa.sw16.yaq.ui.RankingItem;
 import com.bitschupfa.sw16.yaq.utils.AnswerCollector;
 import com.bitschupfa.sw16.yaq.utils.CastHelper;
 import com.bitschupfa.sw16.yaq.utils.Quiz;
+import com.bitschupfa.sw16.yaq.utils.QuizFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
 
-// TODO Handle disconnect of user(Remove from all maps, and answerCollector)
 public class HostGameLogic implements ClientMessageHandler {
     private static final String TAG = "HostGameLogic";
     private static final HostGameLogic instance = new HostGameLogic();
@@ -117,10 +118,16 @@ public class HostGameLogic implements ClientMessageHandler {
         answerCollector.addAnswerForPlayer(address, answer);
     }
 
+    public PlayerList getPlayers() {
+        return players;
+    }
+
     @Override
     public void clientQuits(String id) {
         players.removePlayer(id);
         answerCollector.removePlayer(id);
+        String[] playersNames = players.getPlayerNames().toArray(new String[players.getNumberOfPlayers()]);
+        sendMessageToClients(new NEWPLAYERMessage(playersNames));
     }
 
     @Override
@@ -129,15 +136,24 @@ public class HostGameLogic implements ClientMessageHandler {
     }
 
     @Override
-    public void quit() {
+    public void playAgain() {
+        String[] playersNames = players.getPlayerNames().toArray(new String[players.getNumberOfPlayers()]);
+        sendMessageToClients(new NEWPLAYERMessage(playersNames));
+    }
+
+    @Override
+    public void quit(String msg) {
+        QuizFactory.instance().clearQuiz();
+        QuizFactory.instance().setNumberOfQuestions(10);
+        ClientGameLogic.getInstance().quit();
+
+        disconnectAllClients(msg);
         quiz = null;
-        gameActivity = null;
-        players.clear();
-        answerCollector = null;
+        //answerCollector = null;
         currentQuestion = null;
     }
 
-    private void sendMessageToClients(Message message) {
+    public void sendMessageToClients(Message message) {
         for (Player player : players.getPlayers()) {
             try {
                 player.getDevice().sendMessage(message);
@@ -148,7 +164,26 @@ public class HostGameLogic implements ClientMessageHandler {
         }
     }
 
+    private void disconnectAllClients(String msg) {
+        try {
+            for (Player player : players.getPlayers()) {
+                if(msg != null && player.getDevice().getAddress() != "localhost") {
+                    player.getDevice().sendMessage(
+                            new ERRORMessage(Errors.SHOW_MESSAGE, msg));
+                }
+                player.getDevice().disconnect();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error occurs while disconnect devices...");
+        }
+        players.clear();
+    }
+
     public void questionFinished() {
+        if(currentQuestion == null) {
+            return;
+        }
+
         Answer mostCorrectAnswer = currentQuestion.getAnswers().get(0);
         for (int i = 1; i < currentQuestion.getAnswers().size(); ++i) {
             Answer tmp = currentQuestion.getAnswers().get(i);

@@ -28,6 +28,7 @@ import com.bitschupfa.sw16.yaq.game.ClientGameLogic;
 import com.bitschupfa.sw16.yaq.game.HostGameLogic;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfile;
 import com.bitschupfa.sw16.yaq.profile.PlayerProfileStorage;
+import com.bitschupfa.sw16.yaq.ui.HostCloseConnectionDialog;
 import com.bitschupfa.sw16.yaq.ui.PlayerList;
 import com.bitschupfa.sw16.yaq.utils.CastHelper;
 import com.bitschupfa.sw16.yaq.utils.QuizFactory;
@@ -37,6 +38,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Host extends YaqActivity implements Lobby {
+    private static final String TAG = "HOST";
+
     private static final int REQUEST_ENABLE_DISCOVERABLE_BT = 42;
     private static final int BUILD_QUIZ = 1;
 
@@ -45,6 +48,8 @@ public class Host extends YaqActivity implements Lobby {
     private PlayerList playerList = new PlayerList(this);
 
     private CastHelper castHelper;
+
+    private ServerSocket fakeHost = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,6 +209,23 @@ public class Host extends YaqActivity implements Lobby {
         // the host is always part of the game
     }
 
+    @Override
+    public void quit() {
+        try {
+            fakeHost.close();
+            btConnectionListener.close();
+        } catch (IOException e) {
+            Log.e(TAG, "Error while activity closed!");
+        }
+        finish();
+
+    }
+
+    @Override
+    public Activity getActivity() {
+        return this;
+    }
+
     private void selfConnectionHack() {
         final int fakeHostPort = 7777;
         final Activity activity = this;
@@ -211,7 +233,7 @@ public class Host extends YaqActivity implements Lobby {
             @Override
             public void run() {
                 try {
-                    ServerSocket fakeHost = new ServerSocket(fakeHostPort);
+                    fakeHost = new ServerSocket(fakeHostPort);
                     Socket socket = fakeHost.accept();
                     ConnectedDevice client = new ConnectedClientDevice("localhost", socket,
                             HostGameLogic.getInstance()
@@ -254,8 +276,17 @@ public class Host extends YaqActivity implements Lobby {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        QuizFactory.instance().clearQuiz();
-        QuizFactory.instance().setNumberOfQuestions(10);
+        if(HostGameLogic.getInstance().getPlayers().getPlayers().size() > 1) {
+            new HostCloseConnectionDialog(this, castHelper).show(getFragmentManager(), TAG);
+        } else {
+            try {
+                HostGameLogic.getInstance().quit(getResources().getString(R.string.connectionClosedByHost));
+                fakeHost.close();
+                btConnectionListener.close();
+            } catch (IOException e) {
+                Log.e(TAG, "Error while BackButton pressed!");
+            }
+        }
+        castHelper.teardown(false);
     }
 }

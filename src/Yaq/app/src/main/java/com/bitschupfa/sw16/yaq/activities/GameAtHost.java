@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import com.bitschupfa.sw16.yaq.R;
 import com.bitschupfa.sw16.yaq.game.ClientGameLogic;
 import com.bitschupfa.sw16.yaq.game.HostGameLogic;
+import com.bitschupfa.sw16.yaq.ui.HostCloseConnectionDialog;
 import com.bitschupfa.sw16.yaq.ui.RankingItem;
 import com.bitschupfa.sw16.yaq.utils.CastHelper;
 import com.bitschupfa.sw16.yaq.utils.QuizFactory;
@@ -22,7 +23,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class GameAtHost extends Game {
-
+    private static final String TAG = "GameAtHost";
     private LinearLayout askedView;
     private Button nextQuestion;
 
@@ -99,8 +100,7 @@ public class GameAtHost extends Game {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        QuizFactory.instance().clearQuiz();
-        QuizFactory.instance().setNumberOfQuestions(10);
+        new HostCloseConnectionDialog(this, castHelper).show(getFragmentManager(), TAG);
+        castHelper.teardown(false);
     }
 }

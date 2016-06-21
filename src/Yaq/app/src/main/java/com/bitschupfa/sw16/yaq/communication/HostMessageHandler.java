@@ -20,4 +20,6 @@ public interface HostMessageHandler {
     void quit();
 
     void handleError(Errors error, String message);
+
+    void playAgain();
 }
