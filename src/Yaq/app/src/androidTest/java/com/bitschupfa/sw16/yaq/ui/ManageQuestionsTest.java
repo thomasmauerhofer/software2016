@@ -86,6 +86,7 @@ public class ManageQuestionsTest extends ActivityInstrumentationTestCase2<Manage
         solo.goBack();
         solo.clickLongOnText(catalog);
         solo.clickOnText(getActivity().getString(R.string.menu_delete));
+        assertTrue("Wrong Activity!", solo.waitForActivity(ManageQuestions.class));
         assertFalse(solo.searchText(catalog));
     }
 }
